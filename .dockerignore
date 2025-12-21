@@ -1,6 +1,8 @@
+.dockerignore
 .git
 .gitignore
 .idea
+.next
 biome.json
 docker-compose.yml
 Dockerfile
