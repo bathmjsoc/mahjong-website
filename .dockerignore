@@ -1,0 +1,7 @@
+.git
+.gitignore
+.idea
+biome.json
+docker-compose.yml
+Dockerfile
+node_modules
