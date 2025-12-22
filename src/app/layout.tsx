@@ -1,16 +1,15 @@
+import { Oxygen_Mono } from "next/font/google";
 import { ReactNode } from "react";
-import { Montserrat } from "next/font/google";
 import "./styles.css";
 
-const montserrat = Montserrat({
+const oxygenMono = Oxygen_Mono({
   subsets: ["latin"],
-  weight: "500",
+  weight: "400",
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={montserrat.className}>
-      <body>{children}</body>
+    <html lang="en" className={oxygenMono.className}>
       <body className="bg-(--bg-color)">{children}</body>
     </html>
   );
