@@ -11,6 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={montserrat.className}>
       <body>{children}</body>
+      <body className="bg-(--bg-color)">{children}</body>
     </html>
   );
 }
