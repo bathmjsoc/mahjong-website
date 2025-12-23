@@ -1,31 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { type ComponentPropsWithoutRef } from "react";
+
+type TextButtonProps = ComponentPropsWithoutRef<typeof Link>;
 
 export default function TextButton({
-  type = "button",
-  href,
   children,
-  className,
-}: {
-  type?: "button" | "submit" | "reset";
-  href: string;
-  children: ReactNode;
-  className?: string;
-}) {
+  className = "",
+  ...props
+}: TextButtonProps) {
   return (
-    <Link href={href}>
-      <button
-        type={type}
-        className={`
-        text-xs cursor-pointer outline-none underline
+    <Link
+      {...props}
+      className={`
+        text-xs outline-none underline
         transition-all duration-300 hover:text-(--accent-color)
         ${className}
       `}
-      >
-        {children}
-      </button>
+    >
+      {children}
     </Link>
   );
 }
