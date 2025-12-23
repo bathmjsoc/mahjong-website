@@ -9,30 +9,22 @@ import { authClient } from "@/lib/auth-client";
 
 export default function SignInForm() {
   const router = useRouter();
-
-  const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
+    e.preventDefault(); // Prevent page reload
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
     await authClient.signIn.email(
       {
-        email,
-        password,
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
       },
       {
-        onRequest: () => setPending(true),
-        onSuccess: () => {
-          router.push("/");
-        },
-        onError: (ctx) => {
-          alert(ctx.error.message);
-          setPending(false);
-        },
+        onRequest: () => setLoading(true),
+        onResponse: () => setLoading(false),
+        onSuccess: () => router.push("/"),
+        onError: (ctx) => alert(ctx.error.message),
       },
     );
   }
@@ -46,23 +38,31 @@ export default function SignInForm() {
             w-full max-w-sm px-5 py-5
           "
     >
-      <LabelledInput id="email" type="email" autoComplete="email">
+      <LabelledInput
+        id="email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+      >
         Email Address
       </LabelledInput>
 
       <LabelledInput
         id="password"
+        name="password"
         type="password"
         autoComplete="current-password"
+        required
       >
         Password
       </LabelledInput>
 
-      <FilledButton type="submit" disabled={pending}>
+      <FilledButton type="submit" disabled={loading}>
         Sign In
       </FilledButton>
 
-      <div className="flex space-x-10 justify-center">
+      <div className="flex justify-center -mb-1">
         <TextButton href="/sign-up">Register</TextButton>
       </div>
     </form>

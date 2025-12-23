@@ -1,12 +1,12 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Dashboard",
 };
 
-export default async function Home() {
+export default function Dashboard() {
   return (
-    <main className="flex flex-col min-h-screen justify-center items-center">
+    <main className="flex flex-col min-h-dvh justify-center items-center">
       <p>Hello World!</p>
     </main>
   );

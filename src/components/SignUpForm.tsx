@@ -8,30 +8,24 @@ import { authClient } from "@/lib/auth-client";
 
 export default function SignUpForm() {
   const router = useRouter();
-
-  const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
     await authClient.signUp.email(
       {
-        email,
-        password,
-        name: "unused",
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        name: "", // Name is not collected
       },
       {
-        onRequest: () => setPending(true),
-        onSuccess: () => {
-          router.push("/sign-in");
-        },
+        onRequest: () => setLoading(true),
+        onResponse: () => setLoading(false),
+        onSuccess: () => router.push("/sign-in"),
         onError: (ctx) => {
           alert(ctx.error.message);
-          setPending(false);
         },
       },
     );
@@ -46,15 +40,29 @@ export default function SignUpForm() {
             w-full max-w-sm px-5 py-5
           "
     >
-      <LabelledInput id="email" type="email" autoComplete="email">
+      <LabelledInput
+        id="email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        autoFocus
+      >
         Email Address
       </LabelledInput>
 
-      <LabelledInput id="password" type="password" autoComplete="new-password">
+      <LabelledInput
+        id="password"
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        required
+        minLength={8}
+      >
         Password
       </LabelledInput>
 
-      <FilledButton type="submit" disabled={pending}>
+      <FilledButton type="submit" disabled={loading}>
         Sign Up
       </FilledButton>
     </form>

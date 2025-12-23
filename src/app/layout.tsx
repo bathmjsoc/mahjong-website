@@ -1,5 +1,5 @@
 import { Oxygen_Mono } from "next/font/google";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import "./styles.css";
 
 const oxygenMono = Oxygen_Mono({
@@ -9,8 +9,10 @@ const oxygenMono = Oxygen_Mono({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={oxygenMono.className}>
-      <body className="bg-(--bg-color)">{children}</body>
+    <html lang="en">
+      <body className={`${oxygenMono.className} bg-(--bg-color)`}>
+        {children}
+      </body>
     </html>
   );
 }
