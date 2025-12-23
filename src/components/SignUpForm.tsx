@@ -25,7 +25,7 @@ export default function SignUpForm() {
         onResponse: () => setLoading(false),
         onSuccess: () => router.push("/sign-in"),
         onError: (ctx) => {
-          toast.error(ctx.error.message);
+          alert(ctx.error.message);
         },
       },
     );
