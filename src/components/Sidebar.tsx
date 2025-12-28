@@ -6,7 +6,7 @@ import {
   MinusCircleIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import PlayerList from "@/components/PlayerList";
 import AutocompleteSelect from "@/elements/AutocompleteSelect";
 import IconButton from "@/elements/IconButton";
@@ -23,22 +23,16 @@ type SidebarProps = {
 export default function Sidebar({ players, sessions }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const [query, setQuery] = useState("");
+  const sortedPlayers = useMemo(() => sortAlphabetical(players), [players]);
 
-  const sortedPlayers = sortAlphabetical(players);
-  const filteredPlayers =
-    query === ""
-      ? []
-      : sortedPlayers.filter((player) =>
-          player.name.toLowerCase().includes(query.toLowerCase()),
-        );
-
-  const sortedSessions = sortSessionsNewest(sessions);
-  const sessionOptions = sortedSessions.map((session) => ({
-    number: session.number,
-    label: `Session ${session.number} (${session.date.toLocaleDateString()})`,
-  }));
-  sessionOptions.unshift({ number: -1, label: "Overall Standings" });
+  const sessionOptions = useMemo(() => {
+    const sortedSessions = sortSessionsNewest(sessions);
+    const options = sortedSessions.map((s) => ({
+      number: s.number,
+      label: `Session ${s.number} (${s.date.toLocaleDateString()})`,
+    }));
+    return [{ number: -1, label: "Overall Standings" }, ...options];
+  }, [sessions]);
 
   const [selectedSession, setSelectedSession] = useState(
     sessionOptions.length > 1 ? sessionOptions[1] : sessionOptions[0],
@@ -55,27 +49,14 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
       >
         <div className="flex flex-col space-y-5 items-center max-w-md">
           <AutocompleteSelect
-            value={query}
-            onChange={registerPlayer}
-            onQueryChange={setQuery}
+            options={sortedPlayers}
+            onSelect={(player) => registerPlayer(player.uuid)}
+            getDisplayValue={(player) => player.name}
+            getKey={(player) => player.uuid}
             placeholder="Register a member..."
+            emptyMessage="No member found"
             inputClassName="w-88 h-10"
-          >
-            {filteredPlayers.length === 0 ? (
-              <div className="text-center text-xs p-1 italic">
-                No member found
-              </div>
-            ) : (
-              filteredPlayers.map((player) => (
-                <AutocompleteSelect.Option
-                  key={player.uuid}
-                  value={player.uuid}
-                >
-                  {player.name}
-                </AutocompleteSelect.Option>
-              ))
-            )}
-          </AutocompleteSelect>
+          />
 
           <div className="flex space-x-20">
             <IconButton className="hover:text-green-700">
@@ -98,7 +79,7 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
             buttonClassName="h-10 w-88!"
           >
             {sessionOptions.map((option) => (
-              <RoundedListbox.Option key={option.number} value={option.number}>
+              <RoundedListbox.Option key={option.number} value={option}>
                 {option.label}
               </RoundedListbox.Option>
             ))}
