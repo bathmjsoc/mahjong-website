@@ -14,8 +14,8 @@ export async function fetchPlayers(tournamentUuid: string): Promise<Player[]> {
   return generatePlayers(50);
 }
 
-export function getPlayerAt(table: Table, wind: Wind): string {
-  return table.members.get(wind) || "";
+export function getPlayerAt(table: Table, wind: Wind): Player | null {
+  return table.members.get(wind) ?? null;
 }
 
 export async function setPlayerAt(
