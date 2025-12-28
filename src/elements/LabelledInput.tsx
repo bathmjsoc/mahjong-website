@@ -1,7 +1,8 @@
 import { Field, Input, Label } from "@headlessui/react";
 import type { ComponentProps, ReactNode } from "react";
 
-type LabelledInputProps = ComponentProps<"input"> & { // This doesn't work with 'Input' even though it should?
+type LabelledInputProps = ComponentProps<"input"> & {
+  // This doesn't work with 'Input' even though it should?
   children: ReactNode;
   inputClassName?: string;
   labelClassName?: string;
