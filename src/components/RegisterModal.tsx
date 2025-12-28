@@ -29,6 +29,8 @@ export default function RegisterModal({
       setLoading(true);
       await signUp(email, password);
       closeModal();
+    } catch (error) {
+      alert(error);
     } finally {
       setLoading(false);
     }
@@ -37,7 +39,13 @@ export default function RegisterModal({
   return (
     <Modal isOpen={isOpen} onClose={closeModal} title="Create Account">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
-        <LabelledInput name="email" type="email" autoComplete="email" required>
+        <LabelledInput
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          disabled={loading}
+        >
           Email Address
         </LabelledInput>
 
@@ -46,6 +54,7 @@ export default function RegisterModal({
           type="password"
           autoComplete="new-password"
           required
+          disabled={loading}
         >
           Password
         </LabelledInput>

@@ -1,8 +1,4 @@
-import {
-  LockClosedIcon,
-  LockOpenIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
+import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
 import IconButton from "@/elements/IconButton";
 import { deregisterPlayer, sortDescending } from "@/lib/players";
@@ -24,7 +20,7 @@ export default function PlayerList({ players }: PlayerListProps) {
   return (
     <table className="table-fixed">
       <thead>
-        <tr className="text-center">
+        <tr>
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
@@ -48,22 +44,24 @@ function PlayerRow({ player }: PlayerRowProps) {
   const [isLocked, setIsLocked] = useState(false);
 
   return (
-    <tr key={player.uuid}>
-      <td className="text-lg text-center align-middle leading-none">
+    <tr>
+      <td>
         <IconButton
           onClick={() => setIsLocked(!isLocked)}
-          className="hover:text-yellow-600"
+          className="flex items-center justify-center w-full"
         >
           <div className="relative size-4">
-            <LockClosedIcon
+            <LockKeyhole
               className={`
-                absolute transition duration-300
+                absolute transition duration-300 size-4 
+                text-yellow-600 hover:text-(--secondary-color)
                 ${isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50"}
-                `}
+              `}
             />
-            <LockOpenIcon
+            <LockKeyholeOpen
               className={`
-                absolute transition duration-300
+                absolute transition duration-300 size-4
+                text-(--secondary-color) hover:text-yellow-600
                 ${isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100"}
               `}
             />
@@ -71,23 +69,24 @@ function PlayerRow({ player }: PlayerRowProps) {
         </IconButton>
       </td>
 
-      <td className="border-2 border-(--secondary-color) text-left p-2 truncate">
+      <td className="border-(--secondary-color) border-2 text-left p-2 truncate">
         {player.name}
       </td>
 
       <td
-        className={`border-2 border-(--secondary-color) text-center p-2
-              ${scoreToColor(player.score)}`}
+        className={`border-(--secondary-color) border-2 text-center
+          ${scoreToColor(player.score)}
+        `}
       >
         {player.score}
       </td>
 
-      <td className="text-lg text-center align-middle leading-none">
+      <td>
         <IconButton
           onClick={() => deregisterPlayer(player.uuid)}
-          className="hover:text-red-700"
+          className="flex items-center justify-center w-full hover:text-red-700"
         >
-          <XCircleIcon className="size-5" />
+          <X className="size-5" />
         </IconButton>
       </td>
     </tr>

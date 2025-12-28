@@ -11,7 +11,7 @@ export type Session = {
 
 export type Table = {
   id: number;
-  members: Map<Wind, string>;
+  members: Map<Wind, Player | null>;
 };
 
 export type Tournament = {

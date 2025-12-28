@@ -51,7 +51,7 @@ export default function DropDown({
               className={`
                 bg-(--secondary-color) text-(--primary-color)
                 border-(--primary-color) border-2 outline-none
-                flex flex-col rounded-xl text-sm shadow-2xl p-1 z-50
+                flex flex-col rounded-xl text-sm p-1 z-50
                 ${isNested ? "ml-2" : "mt-2"}
                 ${panelClassName}
               `}

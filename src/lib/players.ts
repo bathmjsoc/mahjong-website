@@ -14,8 +14,8 @@ export async function fetchPlayers(tournamentUuid: string): Promise<Player[]> {
   return generatePlayers(50);
 }
 
-export function getPlayerAt(table: Table, wind: Wind): string {
-  return table.members.get(wind) || "";
+export function getPlayerAt(table: Table, wind: Wind): Player | null {
+  return table.members.get(wind) ?? null;
 }
 
 export async function setPlayerAt(
@@ -29,9 +29,7 @@ export async function setPlayerAt(
   );
 }
 
-export async function registerPlayer(playerUuid: string | null): Promise<void> {
-  if (!playerUuid) return;
-
+export async function registerPlayer(playerUuid: string): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   console.log(`registerPlayer(playerUuid=${playerUuid})`);
 }
