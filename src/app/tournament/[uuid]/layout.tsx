@@ -7,9 +7,9 @@ type TournamentLayoutProps = {
 
 export default function TournamentLayout({ children }: TournamentLayoutProps) {
   return (
-    <>
+    <div className="min-w-max">
       <Topbar />
       <main>{children}</main>
-    </>
+    </div>
   );
 }
