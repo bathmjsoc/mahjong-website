@@ -1,8 +1,8 @@
 import { Oxygen_Mono } from "next/font/google";
-import { type ReactNode } from "react";
-import "./styles.css";
+import type { ReactNode } from "react";
+import "./globals.css";
 
-const oxygenMono = Oxygen_Mono({
+const monoFont = Oxygen_Mono({
   subsets: ["latin"],
   weight: "400",
 });
@@ -10,7 +10,7 @@ const oxygenMono = Oxygen_Mono({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${oxygenMono.className} bg-(--bg-color)`}>
+      <body className={`${monoFont.className} bg-(--bg-color)`}>
         {children}
       </body>
     </html>

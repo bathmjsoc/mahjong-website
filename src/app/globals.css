@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  --bg-color: #c0bbba;
+  --primary-color: #35363a;
+  --secondary-color: #ecebea;
+  --accent-color: #285d33;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

@@ -1,5 +1,3 @@
-.env
 .idea
 .next
 node_modules
-sqlite.db

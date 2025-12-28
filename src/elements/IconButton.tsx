@@ -1,22 +1,22 @@
 import { Button } from "@headlessui/react";
 import type { ComponentProps, ReactNode } from "react";
 
-type TextButtonProps = ComponentProps<typeof Button> & {
+type IconButtonProps = ComponentProps<typeof Button> & {
   children: ReactNode;
   className?: string;
 };
 
-export default function TextButton({
+export default function IconButton({
   children,
   className = "",
   ...props
-}: TextButtonProps) {
+}: IconButtonProps) {
   return (
     <Button
       {...props}
       className={`
-        outline-none underline underline-offset-2 cursor-pointer
-        transition duration-300 hover:text-(--accent-color)
+        text-(--secondary-color) outline-none cursor-pointer
+        transition duration-300 hover:scale-95 active:scale-90
         ${className}
       `}
     >
