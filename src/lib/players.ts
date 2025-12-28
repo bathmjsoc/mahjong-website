@@ -29,9 +29,7 @@ export async function setPlayerAt(
   );
 }
 
-export async function registerPlayer(playerUuid: string | null): Promise<void> {
-  if (!playerUuid) return;
-
+export async function registerPlayer(playerUuid: string): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   console.log(`registerPlayer(playerUuid=${playerUuid})`);
 }
