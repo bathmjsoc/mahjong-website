@@ -1,6 +1,6 @@
 import TournamentCard from "@/components/TournamentCard";
-import type { Tournament } from "@/lib/types";
 import { sortTournamentsNewest } from "@/lib/tournaments";
+import type { Tournament } from "@/lib/types";
 
 interface TournamentListProps {
   tournaments: Tournament[];
