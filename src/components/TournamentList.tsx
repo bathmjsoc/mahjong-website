@@ -1,5 +1,5 @@
 import TournamentCard from "@/components/TournamentCard";
-import type { Tournament } from "../lib/types";
+import type { Tournament } from "@/lib/types";
 
 interface TournamentListProps {
   tournaments: Tournament[];
