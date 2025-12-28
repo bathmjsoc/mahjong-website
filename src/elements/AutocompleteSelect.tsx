@@ -34,8 +34,8 @@ export default function AutocompleteCombobox<T>({
   const filteredOptions =
     query === ""
       ? []
-      : options.filter((option) =>
-          getDisplayValue(option).toLowerCase().includes(query.toLowerCase()),
+      : options.filter((o) =>
+          getDisplayValue(o).toLowerCase().includes(query.toLowerCase()),
         );
 
   function handleSelect(item: T | null) {
@@ -58,15 +58,13 @@ export default function AutocompleteCombobox<T>({
       />
       <ComboboxOptions
         anchor="bottom"
-        transition
         className={`
-            bg-(--secondary-color) text-(--primary-color)
-            max-h-50! w-(--input-width) z-50 mt-2 p-1 outline-none
-            rounded-lg text-sm no-scrollbar shadow-2xl
-            transition duration-300 data-closed:scale-95 data-closed:opacity-0
-            empty:invisible
-            ${optionsClassName}
-          `}
+          bg-(--secondary-color) text-(--primary-color)
+          max-h-50! w-(--input-width) z-50 mt-2 p-1 outline-none
+          rounded-lg text-sm no-scrollbar
+          empty:invisible
+          ${optionsClassName}
+        `}
       >
         {filteredOptions.length === 0 && query !== "" ? (
           <div className="text-center text-xs p-1 italic">{emptyMessage}</div>

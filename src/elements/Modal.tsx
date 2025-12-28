@@ -36,7 +36,7 @@ export default function Modal({
           transition
           className="
             bg-(--primary-color) text-(--secondary-color)
-            rounded-xl shadow-xl p-4 transition duration-300
+            rounded-xl p-4 transition duration-300
             data-closed:scale-95 data-closed:opacity-0
           "
         >

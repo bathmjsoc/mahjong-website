@@ -7,8 +7,6 @@ interface TournamentListProps {
 }
 
 export default function TournamentList({ tournaments }: TournamentListProps) {
-  const sortedTournaments = sortTournamentsNewest(tournaments);
-
   if (tournaments.length === 0) {
     return (
       <div className="text-(--primary-color) text-sm">
@@ -16,6 +14,8 @@ export default function TournamentList({ tournaments }: TournamentListProps) {
       </div>
     );
   }
+
+  const sortedTournaments = sortTournamentsNewest(tournaments);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">

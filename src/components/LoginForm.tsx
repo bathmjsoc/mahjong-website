@@ -23,8 +23,10 @@ export default function LoginForm() {
 
     try {
       setLoading(true);
-      await signIn(email, password);
+      await signIn(email.trim(), password);
       router.push("/dashboard");
+    } catch (error) {
+      alert(error);
     } finally {
       setLoading(false);
     }
@@ -36,11 +38,16 @@ export default function LoginForm() {
         onSubmit={handleSubmit}
         className="
             bg-(--primary-color) text-(--secondary-color)
-            flex flex-col space-y-3 border-none rounded-lg shadow-2xl shadow-black/50
-            w-sm p-5
+            flex flex-col space-y-3 border-none rounded-lg w-sm p-5
           "
       >
-        <LabelledInput name="email" type="email" autoComplete="email" required>
+        <LabelledInput
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          disabled={loading}
+        >
           Email Address
         </LabelledInput>
 
@@ -49,6 +56,7 @@ export default function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
+          disabled={loading}
         >
           Password
         </LabelledInput>

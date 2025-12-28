@@ -44,7 +44,7 @@ function PlayerRow({ player }: PlayerRowProps) {
   const [isLocked, setIsLocked] = useState(false);
 
   return (
-    <tr key={player.uuid}>
+    <tr>
       <td>
         <IconButton
           onClick={() => setIsLocked(!isLocked)}

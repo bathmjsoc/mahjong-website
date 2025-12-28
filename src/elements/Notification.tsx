@@ -36,8 +36,7 @@ export default function Notification({
         <div
           className="
           bg-(--secondary-color) text-(--primary-color)
-          border-(--primary-color) border-2
-          w-xs rounded-lg p-3 shadow-xl
+          border-(--primary-color) border-2 rounded-lg p-3 w-xs
         "
         >
           <div className="font-bold text-md mb-2">{title}</div>

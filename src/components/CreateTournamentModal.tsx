@@ -26,8 +26,10 @@ export default function CreateTournamentModal({
 
     try {
       setLoading(true);
-      await createTournament(tournamentName);
+      await createTournament(tournamentName.trim());
       closeModal();
+    } catch (error) {
+      alert(error);
     } finally {
       setLoading(false);
     }
@@ -35,13 +37,8 @@ export default function CreateTournamentModal({
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal} title="Create Tournament">
-      <form
-        onSubmit={handleSubmit}
-        className="
-            flex flex-col space-y-3 w-xs
-          "
-      >
-        <LabelledInput name="tournamentName" required>
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
+        <LabelledInput name="tournamentName" required disabled={loading}>
           Tournament Name
         </LabelledInput>
 

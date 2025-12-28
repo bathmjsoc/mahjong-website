@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Home",
 };
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className="flex flex-col min-h-dvh items-center justify-center">
       <span>Hello World!</span>

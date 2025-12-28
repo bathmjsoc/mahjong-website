@@ -14,17 +14,20 @@ export default function TournamentCard({ tournament }: TournamentCardProps) {
       className="
         bg-(--primary-color) text-(--secondary-color)
         w-full max-w-sm space-y-10 p-3 rounded-lg
-        transition-all duration-300
-        hover:scale-97 active:scale-95
+        transition duration-300 hover:scale-97 active:scale-95
       "
     >
-      <h3 className="text-lg truncate">{tournament.name}</h3>
-      <div className="flex justify-between items-center text-xs">
-        <div className="flex">
-          <Users className="size-4 mr-1" />
+      <h3 title={tournament.name} className="text-lg truncate">
+        {tournament.name}
+      </h3>
+      <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center justify-center gap-1">
+          <Users className="size-4" />
           {tournament.members}
         </div>
-        Updated {formatTimeAgo(tournament.lastUpdated)}
+        <time dateTime={tournament.lastUpdated.toISOString()}>
+          Updated {formatTimeAgo(tournament.lastUpdated)}
+        </time>
       </div>
     </Link>
   );
