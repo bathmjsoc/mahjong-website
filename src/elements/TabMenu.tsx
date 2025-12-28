@@ -1,4 +1,4 @@
-import { TabGroup, TabList } from "@headlessui/react";
+import { Tab, TabGroup, TabList } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentProps, ReactNode } from "react";
@@ -36,19 +36,21 @@ export function TabLink({
   const isActive = pathname === href;
 
   return (
-    <Link
-      href={href}
-      data-active={isActive}
-      {...props}
-      className={`
-          bg-(--primary-color) border-(--primary-color) border-2 outline-none
+    <Tab>
+      <Link
+        href={href}
+        data-active={isActive}
+        {...props}
+        className={`
+          bg-(--primary-color) text-(--secondary-color) border-(--primary-color) border-2 outline-none
           flex flex-1 items-center justify-center rounded-xl p-1
           transition duration-300 hover:scale-97 active:scale-95
           data-[active=true]:border-(--secondary-color)
           ${className}
       `}
-    >
-      {children}
-    </Link>
+      >
+        {children}
+      </Link>
+    </Tab>
   );
 }
