@@ -4,7 +4,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { XCircleIcon } from "@heroicons/react/24/solid";
+import { X } from "lucide-react";
 import type { ReactNode } from "react";
 import IconButton from "@/elements/IconButton";
 
@@ -43,7 +43,7 @@ export default function Modal({
           <div className="flex items-center justify-between mb-4">
             <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
             <IconButton onClick={onClose} className="hover:text-red-700">
-              <XCircleIcon className="size-5" />
+              <X />
             </IconButton>
           </div>
           {children}

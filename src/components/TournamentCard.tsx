@@ -1,13 +1,13 @@
-import { UsersIcon } from "@heroicons/react/24/solid";
+import { Users } from "lucide-react";
 import Link from "next/link";
 import type { Tournament } from "@/lib/types";
 import { formatTimeAgo } from "@/lib/utils";
 
-export default function TournamentCard({
-  tournament,
-}: {
+type TournamentCardProps = {
   tournament: Tournament;
-}) {
+};
+
+export default function TournamentCard({ tournament }: TournamentCardProps) {
   return (
     <Link
       href={`/tournament/${tournament.uuid}`}
@@ -20,12 +20,11 @@ export default function TournamentCard({
     >
       <h3 className="text-lg truncate">{tournament.name}</h3>
       <div className="flex justify-between items-center text-xs">
-        <div className="flex items-center space-x-1">
-          <UsersIcon className="size-4" />
-          <span>{tournament.members}</span>
+        <div className="flex">
+          <Users className="size-4 mr-1" />
+          {tournament.members}
         </div>
-
-        <span>Updated {formatTimeAgo(tournament.lastUpdated)}</span>
+        Updated {formatTimeAgo(tournament.lastUpdated)}
       </div>
     </Link>
   );

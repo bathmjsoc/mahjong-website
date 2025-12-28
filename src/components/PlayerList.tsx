@@ -1,8 +1,4 @@
-import {
-  LockClosedIcon,
-  LockOpenIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
+import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
 import IconButton from "@/elements/IconButton";
 import { deregisterPlayer, sortDescending } from "@/lib/players";
@@ -52,18 +48,20 @@ function PlayerRow({ player }: PlayerRowProps) {
       <td>
         <IconButton
           onClick={() => setIsLocked(!isLocked)}
-          className="flex items-center justify-center w-full hover:text-yellow-600"
+          className="flex items-center justify-center w-full"
         >
           <div className="relative size-4">
-            <LockClosedIcon
+            <LockKeyhole
               className={`
-                absolute transition duration-300
+                absolute transition duration-300 size-4 
+                text-yellow-600 hover:text-(--secondary-color)
                 ${isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50"}
               `}
             />
-            <LockOpenIcon
+            <LockKeyholeOpen
               className={`
-                absolute transition duration-300
+                absolute transition duration-300 size-4
+                text-(--secondary-color) hover:text-yellow-600
                 ${isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100"}
               `}
             />
@@ -88,7 +86,7 @@ function PlayerRow({ player }: PlayerRowProps) {
           onClick={() => deregisterPlayer(player.uuid)}
           className="flex items-center justify-center w-full hover:text-red-700"
         >
-          <XCircleIcon className="size-4" />
+          <X className="size-5" />
         </IconButton>
       </td>
     </tr>

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  ArrowPathIcon,
-  ChevronRightIcon,
-  MinusCircleIcon,
-  PlusCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import PlayerList from "@/components/PlayerList";
 import AutocompleteSelect from "@/elements/AutocompleteSelect";
@@ -60,15 +55,15 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
 
           <div className="flex space-x-20">
             <IconButton className="hover:text-green-700">
-              <PlusCircleIcon className="size-7" />
+              <CirclePlus className="size-7" />
             </IconButton>
 
             <IconButton className="hover:text-red-700">
-              <MinusCircleIcon className="size-7" />
+              <CircleMinus className="size-7" />
             </IconButton>
 
             <IconButton className="hover:text-yellow-600">
-              <ArrowPathIcon className="size-7" />
+              <RefreshCw className="size-7" />
             </IconButton>
           </div>
 
@@ -97,7 +92,7 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
             -ml-1 mt-5 p-2 h-20 w-10
           "
         >
-          <ChevronRightIcon
+          <ChevronRight
             className={`
               transition duration-500
               ${isOpen ? "rotate-180" : "rotate-0"}

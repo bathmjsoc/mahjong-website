@@ -1,6 +1,6 @@
 "use client";
 
-import { ArchiveBoxIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { Archive, Trash2 } from "lucide-react";
 import DropDown from "@/elements/DropDown";
 import IconButton from "@/elements/IconButton";
 import RoundedListbox from "@/elements/RoundedListbox";
@@ -130,19 +130,19 @@ export default function TableCard({
       />
 
       <div className="flex items-center justify-center text-(--primary-color) text-7xl row-start-3 col-start-3">
-        <span>{table.id}</span>
+        {table.id}
       </div>
 
       <div className="flex items-center justify-center space-x-5 row-start-4 col-start-2 col-span-3">
         <IconButton className="hover:text-blue-400">
           <div className="flex items-center justify-center bg-(--primary-color) rounded-full text-md size-8">
-            <ArchiveBoxIcon className="size-5" />
+            <Archive className="size-4" />
           </div>
         </IconButton>
 
-        <IconButton className="hover:text-red-400 ">
+        <IconButton className="hover:text-red-400">
           <div className="flex items-center justify-center bg-(--primary-color) rounded-full text-md size-8">
-            <TrashIcon className="size-5" />
+            <Trash2 className="size-4" />
           </div>
         </IconButton>
       </div>
