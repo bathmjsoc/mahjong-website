@@ -20,30 +20,27 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
 
   const sortedPlayers = useMemo(() => sortAlphabetical(players), [players]);
 
-  const sessionOptions = useMemo(() => {
-    const sortedSessions = sortSessionsNewest(sessions);
-    const options = sortedSessions.map((s) => ({
-      number: s.number,
-      label: `Session ${s.number} (${s.date.toLocaleDateString()})`,
-    }));
-    return [{ number: -1, label: "Overall Standings" }, ...options];
+  const sortedSessions = useMemo(() => {
+    const sorted = sortSessionsNewest(sessions);
+    const overall: Session = { number: -1, date: new Date() };
+    return [overall, ...sorted];
   }, [sessions]);
 
   const [selectedSession, setSelectedSession] = useState(
-    sessionOptions.length > 1 ? sessionOptions[1] : sessionOptions[0],
+    sortedSessions.length > 1 ? sortedSessions[1] : sortedSessions[0],
   );
 
   return (
     <div className="flex">
       <div
         className={`
-        bg-(--primary-color) text-(--secondary-color)
-        transition-all duration-500 overflow-hidden py-10
-        ${isOpen ? "w-md px-5" : "w-0 px-0"}
-    `}
+          bg-(--primary-color) text-(--secondary-color)
+          transition duration-500 overflow-hidden py-10
+          ${isOpen ? "w-md px-5" : "w-0 px-0"}
+        `}
       >
         <div className="flex flex-col space-y-5 items-center max-w-md">
-          <AutocompleteSelect
+          <AutocompleteSelect<Player>
             options={sortedPlayers}
             onSelect={(player) => registerPlayer(player.uuid)}
             getDisplayValue={(player) => player.name}
@@ -53,29 +50,26 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
             inputClassName="w-88 h-10"
           />
 
-          <div className="flex space-x-20">
-            <IconButton className="hover:text-green-700">
-              <CirclePlus className="size-7" />
-            </IconButton>
+          <ActionButtons />
 
-            <IconButton className="hover:text-red-700">
-              <CircleMinus className="size-7" />
-            </IconButton>
-
-            <IconButton className="hover:text-yellow-600">
-              <RefreshCw className="size-7" />
-            </IconButton>
-          </div>
-
-          <RoundedListbox
+          <RoundedListbox<Session>
             value={selectedSession}
             onChange={setSelectedSession}
-            selectedLabel={selectedSession.label}
-            buttonClassName="h-10 w-88!"
+            getDisplayValue={(session) =>
+              session.number === -1
+                ? "Overall Standings"
+                : `Session ${session.number}`
+            }
+            buttonClassName="w-88! h-10"
           >
-            {sessionOptions.map((option) => (
-              <RoundedListbox.Option key={option.number} value={option}>
-                {option.label}
+            {sortedSessions.map((session) => (
+              <RoundedListbox.Option<Session>
+                key={session.number}
+                value={session}
+              >
+                {session.number === -1
+                  ? "Overall Standings"
+                  : `Session ${session.number} (${session.date.toLocaleDateString()})`}
               </RoundedListbox.Option>
             ))}
           </RoundedListbox>
@@ -93,12 +87,27 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
           "
         >
           <ChevronRight
-            className={`
-              transition duration-500
-              ${isOpen ? "rotate-180" : "rotate-0"}
-            `}
+            className={`transition duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
           />
         </div>
+      </IconButton>
+    </div>
+  );
+}
+
+function ActionButtons() {
+  return (
+    <div className="flex space-x-20">
+      <IconButton className="hover:text-green-700">
+        <CirclePlus className="size-7" />
+      </IconButton>
+
+      <IconButton className="hover:text-red-700">
+        <CircleMinus className="size-7" />
+      </IconButton>
+
+      <IconButton className="hover:text-yellow-600">
+        <RefreshCw className="size-7" />
       </IconButton>
     </div>
   );

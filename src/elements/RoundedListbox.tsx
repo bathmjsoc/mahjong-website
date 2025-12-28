@@ -7,10 +7,10 @@ import {
 import type { ReactNode } from "react";
 
 type RoundedListboxProps<T> = {
-  value: T;
+  value: T | null;
   onChange: (value: T) => void;
+  getDisplayValue: (item: T) => string;
   children: ReactNode;
-  selectedLabel?: string;
   placeholder?: string;
   buttonClassName?: string;
   optionsClassName?: string;
@@ -19,17 +19,16 @@ type RoundedListboxProps<T> = {
 export default function RoundedListbox<T>({
   value,
   onChange,
+  getDisplayValue,
   children,
-  selectedLabel,
   placeholder = "[EMPTY]",
   buttonClassName = "",
   optionsClassName = "",
 }: RoundedListboxProps<T>) {
-  const isPlaceholder = !selectedLabel;
-  const displayLabel = selectedLabel ?? placeholder;
+  const isPlaceholder = value === null;
 
   return (
-    <Listbox value={value} onChange={onChange}>
+    <Listbox value={value as T} onChange={onChange}>
       <ListboxButton
         className={`
           bg-(--secondary-color) text-(--primary-color)
@@ -39,7 +38,7 @@ export default function RoundedListbox<T>({
           ${buttonClassName}
         `}
       >
-        {displayLabel}
+        {isPlaceholder ? placeholder : getDisplayValue(value)}
       </ListboxButton>
       <ListboxOptions
         anchor="bottom"
@@ -48,7 +47,7 @@ export default function RoundedListbox<T>({
           bg-(--secondary-color) text-(--primary-color)
           border-(--primary-color) border-2 outline-none
           max-h-50! w-(--button-width) z-50 mt-2 p-1 
-          rounded-xl text-sm shadow-2xl no-scrollbar
+          rounded-xl text-sm no-scrollbar
           transition duration-300 data-closed:scale-95 data-closed:opacity-0
           ${optionsClassName}
         `}
