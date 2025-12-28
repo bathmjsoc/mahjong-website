@@ -24,7 +24,7 @@ export default function PlayerList({ players }: PlayerListProps) {
   return (
     <table className="table-fixed">
       <thead>
-        <tr className="text-center">
+        <tr>
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
@@ -49,17 +49,17 @@ function PlayerRow({ player }: PlayerRowProps) {
 
   return (
     <tr key={player.uuid}>
-      <td className="text-lg text-center align-middle leading-none">
+      <td>
         <IconButton
           onClick={() => setIsLocked(!isLocked)}
-          className="hover:text-yellow-600"
+          className="flex items-center justify-center w-full hover:text-yellow-600"
         >
           <div className="relative size-4">
             <LockClosedIcon
               className={`
                 absolute transition duration-300
                 ${isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50"}
-                `}
+              `}
             />
             <LockOpenIcon
               className={`
@@ -71,23 +71,24 @@ function PlayerRow({ player }: PlayerRowProps) {
         </IconButton>
       </td>
 
-      <td className="border-2 border-(--secondary-color) text-left p-2 truncate">
+      <td className="border-(--secondary-color) border-2 text-left p-2 truncate">
         {player.name}
       </td>
 
       <td
-        className={`border-2 border-(--secondary-color) text-center p-2
-              ${scoreToColor(player.score)}`}
+        className={`border-(--secondary-color) border-2 text-center
+          ${scoreToColor(player.score)}
+        `}
       >
         {player.score}
       </td>
 
-      <td className="text-lg text-center align-middle leading-none">
+      <td>
         <IconButton
           onClick={() => deregisterPlayer(player.uuid)}
-          className="hover:text-red-700"
+          className="flex items-center justify-center w-full hover:text-red-700"
         >
-          <XCircleIcon className="size-5" />
+          <XCircleIcon className="size-4" />
         </IconButton>
       </td>
     </tr>
