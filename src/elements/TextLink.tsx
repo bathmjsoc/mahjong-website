@@ -1,26 +1,26 @@
-import { Button } from "@headlessui/react";
+import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
-type TextButtonProps = ComponentProps<typeof Button> & {
+type ColoredLinkProps = ComponentProps<typeof Link> & {
   children: ReactNode;
   className?: string;
 };
 
-export default function TextButton({
+export default function TextLink({
   children,
   className = "",
   ...props
-}: TextButtonProps) {
+}: ColoredLinkProps) {
   return (
-    <Button
+    <Link
       {...props}
       className={`
-        outline-none underline underline-offset-2 cursor-pointer
+        underline underline-offset-2
         transition duration-300 hover:text-(--accent-color)
         ${className}
       `}
     >
       {children}
-    </Button>
+    </Link>
   );
 }

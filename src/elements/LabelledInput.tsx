@@ -1,38 +1,39 @@
-"use client";
+import { Field, Input, Label } from "@headlessui/react";
+import type { ComponentProps, ReactNode } from "react";
 
-import { type ComponentPropsWithoutRef } from "react";
-
-type LabelledInputProps = ComponentPropsWithoutRef<"input"> & {
-  id: string; // require id
+type LabelledInputProps = ComponentProps<typeof Input> & {
+  children: ReactNode;
+  inputClassName?: string;
+  labelClassName?: string;
 };
 
 export default function LabelledInput({
-  id,
   children,
-  className = "",
+  inputClassName = "",
+  labelClassName = "",
   ...props
 }: LabelledInputProps) {
   return (
-    <div className={`relative ${className}`}>
-      <input
-        id={id}
+    <Field className="relative">
+      <Input
         {...props}
         className={`
-          bg-transparent text-(--text-color) 
-          border-(--secondary-color) border-2 
-          outline-none rounded text-center w-full p-2
+          bg-(--primary-color) text-(--secondary-color) 
+          border-(--secondary-color) border-2 outline-none
+          rounded text-center w-full p-2
+          ${inputClassName}
         `}
       />
-      <label
-        htmlFor={id}
-        className="
+      <Label
+        className={`
           bg-(--primary-color) text-(--secondary-color)
           absolute left-1/2 -translate-x-1/2 top-px -translate-y-1/2
           rounded-full px-1 text-xs pointer-events-none
-        "
+          ${labelClassName}
+        `}
       >
         {children}
-      </label>
-    </div>
+      </Label>
+    </Field>
   );
 }

@@ -1,22 +1,22 @@
-"use client";
+import { Button } from "@headlessui/react";
+import type { ComponentProps, ReactNode } from "react";
 
-import { type ComponentPropsWithoutRef } from "react";
-
-type FilledButtonProps = ComponentPropsWithoutRef<"button">;
+type FilledButtonProps = ComponentProps<typeof Button> & {
+  children: ReactNode;
+  className?: string;
+};
 
 export default function FilledButton({
-  type = "button",
   children,
   className = "",
   ...props
 }: FilledButtonProps) {
   return (
-    <button
-      type={type}
+    <Button
       {...props}
       className={`
           bg-(--accent-color) text-(--secondary-color)
-          border-none outline-none rounded py-2
+          border-none outline-none rounded p-2
           transition-all duration-300
           enabled:cursor-pointer enabled:hover:scale-97 enabled:active:scale-95
           disabled:cursor-not-allowed
@@ -24,6 +24,6 @@ export default function FilledButton({
         `}
     >
       {children}
-    </button>
+    </Button>
   );
 }
