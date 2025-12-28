@@ -1,20 +1,25 @@
 import TournamentCard from "@/components/TournamentCard";
 import type { Tournament } from "@/lib/types";
+import { sortTournamentsNewest } from "@/lib/tournaments";
 
 interface TournamentListProps {
   tournaments: Tournament[];
 }
 
 export default function TournamentList({ tournaments }: TournamentListProps) {
+  const sortedTournaments = sortTournamentsNewest(tournaments);
+
   if (tournaments.length === 0) {
     return (
-      <p className="text-sm text-(--primary-color)">No tournaments found!</p>
+      <div className="text-(--primary-color) text-sm">
+        No tournaments found!
+      </div>
     );
   }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-      {tournaments.map((tournament) => (
+      {sortedTournaments.map((tournament) => (
         <TournamentCard key={tournament.uuid} tournament={tournament} />
       ))}
     </div>
