@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import RegisterModal from "@/components/RegisterModal";
-import ColoredButton from "@/elements/ColoredButton";
+import TextButton from "@/elements/TextButton";
 import FilledButton from "@/elements/FilledButton";
 import LabelledInput from "@/elements/LabelledInput";
 import { signIn } from "@/lib/auth";
@@ -58,9 +58,9 @@ export default function LoginForm() {
         </FilledButton>
 
         <div className="flex justify-center -mb-1">
-          <ColoredButton onClick={() => setIsOpen(true)} className="text-xs">
+          <TextButton onClick={() => setIsOpen(true)} className="text-xs">
             Register
-          </ColoredButton>
+          </TextButton>
         </div>
       </form>
 
