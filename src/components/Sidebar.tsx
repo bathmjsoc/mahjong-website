@@ -3,9 +3,9 @@
 import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import PlayerList from "@/components/PlayerList";
-import AutocompleteSelect from "@/elements/AutocompleteSelect";
 import IconButton from "@/elements/IconButton";
 import RoundedListbox from "@/elements/RoundedListbox";
+import SearchCombobox from "@/elements/SearchCombobox";
 import { registerPlayer, sortAlphabetical } from "@/lib/players";
 import { sortSessionsNewest } from "@/lib/sessions";
 import type { Player, Session } from "@/lib/types";
@@ -40,7 +40,7 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
         `}
       >
         <div className="flex flex-col space-y-5 items-center max-w-md">
-          <AutocompleteSelect<Player>
+          <SearchCombobox<Player>
             options={sortedPlayers}
             onSelect={(player) => registerPlayer(player.uuid)}
             getDisplayValue={(player) => player.name}
@@ -54,25 +54,16 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
 
           <RoundedListbox<Session>
             value={selectedSession}
+            options={sortedSessions}
             onChange={setSelectedSession}
             getDisplayValue={(session) =>
               session.number === -1
                 ? "Overall Standings"
-                : `Session ${session.number}`
+                : `Session ${session.number} (${session.date.toLocaleDateString()})`
             }
+            getKey={(session) => session.number}
             buttonClassName="w-88! h-10"
-          >
-            {sortedSessions.map((session) => (
-              <RoundedListbox.Option<Session>
-                key={session.number}
-                value={session}
-              >
-                {session.number === -1
-                  ? "Overall Standings"
-                  : `Session ${session.number} (${session.date.toLocaleDateString()})`}
-              </RoundedListbox.Option>
-            ))}
-          </RoundedListbox>
+          />
 
           <PlayerList players={players} />
         </div>

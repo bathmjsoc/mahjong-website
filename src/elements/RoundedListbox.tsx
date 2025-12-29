@@ -4,26 +4,30 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import type { ReactNode } from "react";
+import type { Key } from "react";
 
 type RoundedListboxProps<T> = {
   value: T | null;
+  options: T[];
   onChange: (value: T) => void;
   getDisplayValue: (item: T) => string;
-  children: ReactNode;
+  getKey: (item: T) => Key;
   placeholder?: string;
   buttonClassName?: string;
   optionsClassName?: string;
+  optionClassName?: string;
 };
 
 export default function RoundedListbox<T>({
   value,
+  options,
   onChange,
   getDisplayValue,
-  children,
+  getKey,
   placeholder = "[EMPTY]",
   buttonClassName = "",
   optionsClassName = "",
+  optionClassName = "",
 }: RoundedListboxProps<T>) {
   const isPlaceholder = value === null;
 
@@ -52,32 +56,21 @@ export default function RoundedListbox<T>({
           ${optionsClassName}
         `}
       >
-        {children}
+        {options.map((item: T) => (
+          <ListboxOption
+            key={getKey(item)}
+            value={item}
+            className={`
+              flex items-center justify-center
+              outline-none cursor-pointer rounded-md p-1
+              transition duration-300 hover:bg-(--primary-color)/25
+              ${optionClassName}
+            `}
+          >
+            {getDisplayValue(item)}
+          </ListboxOption>
+        ))}
       </ListboxOptions>
     </Listbox>
   );
 }
-
-type OptionProps<T> = {
-  value: T;
-  children: ReactNode;
-  className?: string;
-};
-
-function Option<T>({ value, children, className = "" }: OptionProps<T>) {
-  return (
-    <ListboxOption
-      value={value}
-      className={`
-        flex items-center justify-center
-        outline-none cursor-pointer rounded-md p-1
-        transition duration-300 hover:bg-(--primary-color)/25
-        ${className}
-      `}
-    >
-      {children}
-    </ListboxOption>
-  );
-}
-
-RoundedListbox.Option = Option;
