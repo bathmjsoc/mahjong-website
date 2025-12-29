@@ -9,8 +9,8 @@ import { type Key, useState } from "react";
 type SearchComboboxProps<T> = {
   options: T[];
   onSelect: (item: T) => void;
-  getDisplayValue: (item: T) => string;
-  getKey: (item: T) => Key;
+  getOptionLabel: (item: T) => string;
+  getOptionKey: (item: T) => Key;
   emptyMessage?: string;
   placeholder?: string;
   inputClassName?: string;
@@ -21,8 +21,8 @@ type SearchComboboxProps<T> = {
 export default function SearchCombobox<T>({
   options,
   onSelect,
-  getDisplayValue,
-  getKey,
+  getOptionLabel,
+  getOptionKey,
   emptyMessage = "No results found",
   placeholder = "Select an item...",
   inputClassName = "",
@@ -35,7 +35,7 @@ export default function SearchCombobox<T>({
     query === ""
       ? []
       : options.filter((o) =>
-          getDisplayValue(o).toLowerCase().includes(query.toLowerCase()),
+          getOptionLabel(o).toLowerCase().includes(query.toLowerCase()),
         );
 
   function handleSelect(item: T | null) {
@@ -69,9 +69,9 @@ export default function SearchCombobox<T>({
         {filteredOptions.length === 0 && query !== "" ? (
           <div className="text-center text-xs p-1 italic">{emptyMessage}</div>
         ) : (
-          filteredOptions.map((item: T) => (
+          filteredOptions.map((item) => (
             <ComboboxOption
-              key={getKey(item)}
+              key={getOptionKey(item)}
               value={item}
               className={`
                 flex items-center justify-center 
@@ -80,7 +80,7 @@ export default function SearchCombobox<T>({
                 ${optionClassName}
               `}
             >
-              {getDisplayValue(item)}
+              {getOptionLabel(item)}
             </ComboboxOption>
           ))
         )}
