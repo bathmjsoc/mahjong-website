@@ -4,13 +4,13 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from "@headlessui/react";
-import { useState } from "react";
+import { type Key, useState } from "react";
 
-type AutocompleteComboboxProps<T> = {
+type SearchComboboxProps<T> = {
   options: T[];
   onSelect: (item: T) => void;
   getDisplayValue: (item: T) => string;
-  getKey: (item: T) => string;
+  getKey: (item: T) => Key;
   emptyMessage?: string;
   placeholder?: string;
   inputClassName?: string;
@@ -18,7 +18,7 @@ type AutocompleteComboboxProps<T> = {
   optionClassName?: string;
 };
 
-export default function AutocompleteCombobox<T>({
+export default function SearchCombobox<T>({
   options,
   onSelect,
   getDisplayValue,
@@ -28,7 +28,7 @@ export default function AutocompleteCombobox<T>({
   inputClassName = "",
   optionsClassName = "",
   optionClassName = "",
-}: AutocompleteComboboxProps<T>) {
+}: SearchComboboxProps<T>) {
   const [query, setQuery] = useState("");
 
   const filteredOptions =
