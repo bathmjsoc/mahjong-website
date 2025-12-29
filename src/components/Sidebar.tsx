@@ -41,7 +41,7 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
       <div
         className={`
           bg-(--primary-color) text-(--secondary-color)
-          transition duration-500 overflow-hidden py-10
+          transition-all duration-500 overflow-hidden py-10
           ${isOpen ? "w-md px-5" : "w-0 px-0"}
         `}
       >
