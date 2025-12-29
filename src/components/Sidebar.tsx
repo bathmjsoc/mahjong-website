@@ -30,6 +30,12 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
     sortedSessions.length > 1 ? sortedSessions[1] : sortedSessions[0],
   );
 
+  function handleSessionSelect(session: Session | null) {
+    if (session) {
+      setSelectedSession(session);
+    }
+  }
+
   return (
     <div className="flex">
       <div
@@ -43,8 +49,8 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
           <SearchCombobox<Player>
             options={sortedPlayers}
             onSelect={(player) => registerPlayer(player.uuid)}
-            getDisplayValue={(player) => player.name}
-            getKey={(player) => player.uuid}
+            getOptionLabel={(player) => player.name}
+            getOptionKey={(player) => player.uuid}
             placeholder="Register a member..."
             emptyMessage="No member found"
             inputClassName="w-88 h-10"
@@ -55,13 +61,13 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
           <RoundedListbox<Session>
             value={selectedSession}
             options={sortedSessions}
-            onChange={setSelectedSession}
-            getDisplayValue={(session) =>
+            onChange={handleSessionSelect}
+            getOptionLabel={(session) =>
               session.number === -1
                 ? "Overall Standings"
                 : `Session ${session.number} (${session.date.toLocaleDateString()})`
             }
-            getKey={(session) => session.number}
+            getOptionKey={(session) => session.number}
             buttonClassName="w-88! h-10"
           />
 

@@ -99,9 +99,11 @@ function Seat({
 
   const sortedPlayers = sortAlphabetical(players);
 
-  async function handleSelect(player: Player) {
-    setSelectedPlayer(player);
-    await setPlayerAt(table, wind, player.uuid);
+  async function handleSelect(player: Player | null) {
+    if (player) {
+      setSelectedPlayer(player);
+      await setPlayerAt(table, wind, player.uuid);
+    }
   }
 
   return (
@@ -121,8 +123,10 @@ function Seat({
           value={selectedPlayer}
           options={sortedPlayers}
           onChange={handleSelect}
-          getDisplayValue={(player) => player.name}
-          getKey={(player) => player.uuid}
+          getOptionLabel={(player) => player.name}
+          getOptionKey={(player) => player.uuid}
+          emptyMessage="No players found"
+          placeholder="[EMPTY]"
           buttonClassName="h-8 text-xs"
           optionsClassName="w-auto!"
         />
