@@ -9,9 +9,10 @@ import type { Key } from "react";
 type RoundedListboxProps<T> = {
   value: T | null;
   options: T[];
-  onChange: (value: T) => void;
-  getDisplayValue: (item: T) => string;
-  getKey: (item: T) => Key;
+  onChange: (value: T | null) => void;
+  getOptionLabel: (item: T) => string;
+  getOptionKey: (item: T) => Key;
+  emptyMessage?: string;
   placeholder?: string;
   buttonClassName?: string;
   optionsClassName?: string;
@@ -22,9 +23,10 @@ export default function RoundedListbox<T>({
   value,
   options,
   onChange,
-  getDisplayValue,
-  getKey,
-  placeholder = "[EMPTY]",
+  getOptionLabel,
+  getOptionKey,
+  emptyMessage = "No options available",
+  placeholder = "No option selected",
   buttonClassName = "",
   optionsClassName = "",
   optionClassName = "",
@@ -32,7 +34,7 @@ export default function RoundedListbox<T>({
   const isPlaceholder = value === null;
 
   return (
-    <Listbox value={value as T} onChange={onChange}>
+    <Listbox value={value} onChange={onChange}>
       <ListboxButton
         className={`
           bg-(--secondary-color) text-(--primary-color)
@@ -42,7 +44,7 @@ export default function RoundedListbox<T>({
           ${buttonClassName}
         `}
       >
-        {isPlaceholder ? placeholder : getDisplayValue(value)}
+        {isPlaceholder ? placeholder : getOptionLabel(value)}
       </ListboxButton>
       <ListboxOptions
         anchor="bottom"
@@ -56,20 +58,24 @@ export default function RoundedListbox<T>({
           ${optionsClassName}
         `}
       >
-        {options.map((item: T) => (
-          <ListboxOption
-            key={getKey(item)}
-            value={item}
-            className={`
+        {options.length === 0 ? (
+          <div className="text-center text-xs p-1 italic">{emptyMessage}</div>
+        ) : (
+          options.map((item) => (
+            <ListboxOption
+              key={getOptionKey(item)}
+              value={item}
+              className={`
               flex items-center justify-center
               outline-none cursor-pointer rounded-md p-1
               transition duration-300 hover:bg-(--primary-color)/25
               ${optionClassName}
             `}
-          >
-            {getDisplayValue(item)}
-          </ListboxOption>
-        ))}
+            >
+              {getOptionLabel(item)}
+            </ListboxOption>
+          ))
+        )}
       </ListboxOptions>
     </Listbox>
   );
