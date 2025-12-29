@@ -20,84 +20,6 @@ type seatProps = {
 const TABLE_BUTTON_CLASS =
   "bg-(--primary-color) flex items-center justify-center rounded-full size-8";
 
-function DropDownMenu({ className }: { className: string }) {
-  return (
-    <DropDown title="食" buttonClassName={`rounded-full size-8! ${className}`}>
-      <DropDown title="打出">
-        <DropDown title="some_name">
-          <DropDown.Item onClick={() => console.log(`打出`)}>
-            Test Option
-          </DropDown.Item>
-        </DropDown>
-      </DropDown>
-      <DropDown title="自摸">
-        <DropDown title="some_name">
-          <DropDown.Item onClick={() => console.log(`自摸`)}>
-            Test Option
-          </DropDown.Item>
-        </DropDown>
-      </DropDown>
-      <DropDown title="包自摸">
-        <DropDown title="some_name">
-          <DropDown.Item onClick={() => console.log(`包自摸`)}>
-            Test Option
-          </DropDown.Item>
-        </DropDown>
-      </DropDown>
-    </DropDown>
-  );
-}
-
-function Seat({
-  wind,
-  table,
-  players,
-  gridPosition,
-  tableClassName = "",
-  buttonClassName = "",
-}: seatProps) {
-  const [selectedPlayer, setSelectedPlayer] = useState(
-    getPlayerAt(table, wind),
-  );
-
-  const sortedPlayers = sortAlphabetical(players);
-
-  async function handleSelect(player: Player) {
-    setSelectedPlayer(player);
-    await setPlayerAt(table, wind, player.uuid);
-  }
-
-  return (
-    <div className={`flex items-center justify-center ${gridPosition}`}>
-      <div
-        className={`
-          bg-(--primary-color) text-(--secondary-color) 
-          flex items-center justify-between space-x-1 rounded-full p-1 w-50 shrink-0
-          ${tableClassName}
-        `}
-      >
-        {/* Scoring Menu */}
-        <DropDownMenu className={buttonClassName} />
-
-        {/* Player Select Menu */}
-        <RoundedListbox<Player>
-          value={selectedPlayer}
-          onChange={handleSelect}
-          getDisplayValue={(player) => player.name}
-          buttonClassName="h-8 text-xs"
-          optionsClassName="w-auto!"
-        >
-          {sortedPlayers.map((player) => (
-            <RoundedListbox.Option<Player> key={player.uuid} value={player}>
-              {player.name}
-            </RoundedListbox.Option>
-          ))}
-        </RoundedListbox>
-      </div>
-    </div>
-  );
-}
-
 export default function TableCard({
   table,
   players,
@@ -160,5 +82,79 @@ export default function TableCard({
         </IconButton>
       </div>
     </div>
+  );
+}
+
+function Seat({
+  wind,
+  table,
+  players,
+  gridPosition,
+  tableClassName = "",
+  buttonClassName = "",
+}: seatProps) {
+  const [selectedPlayer, setSelectedPlayer] = useState(
+    getPlayerAt(table, wind),
+  );
+
+  const sortedPlayers = sortAlphabetical(players);
+
+  async function handleSelect(player: Player) {
+    setSelectedPlayer(player);
+    await setPlayerAt(table, wind, player.uuid);
+  }
+
+  return (
+    <div className={`flex items-center justify-center ${gridPosition}`}>
+      <div
+        className={`
+          bg-(--primary-color) text-(--secondary-color) 
+          flex items-center justify-between space-x-1 rounded-full p-1 w-50 shrink-0
+          ${tableClassName}
+        `}
+      >
+        {/* Scoring Menu */}
+        <DropDownMenu className={buttonClassName} />
+
+        {/* Player Select Menu */}
+        <RoundedListbox<Player>
+          value={selectedPlayer}
+          options={sortedPlayers}
+          onChange={handleSelect}
+          getDisplayValue={(player) => player.name}
+          getKey={(player) => player.uuid}
+          buttonClassName="h-8 text-xs"
+          optionsClassName="w-auto!"
+        />
+      </div>
+    </div>
+  );
+}
+
+function DropDownMenu({ className }: { className: string }) {
+  return (
+    <DropDown title="食" buttonClassName={`rounded-full size-8! ${className}`}>
+      <DropDown title="打出">
+        <DropDown title="some_name">
+          <DropDown.Item onClick={() => console.log(`打出`)}>
+            Test Option
+          </DropDown.Item>
+        </DropDown>
+      </DropDown>
+      <DropDown title="自摸">
+        <DropDown title="some_name">
+          <DropDown.Item onClick={() => console.log(`自摸`)}>
+            Test Option
+          </DropDown.Item>
+        </DropDown>
+      </DropDown>
+      <DropDown title="包自摸">
+        <DropDown title="some_name">
+          <DropDown.Item onClick={() => console.log(`包自摸`)}>
+            Test Option
+          </DropDown.Item>
+        </DropDown>
+      </DropDown>
+    </DropDown>
   );
 }
