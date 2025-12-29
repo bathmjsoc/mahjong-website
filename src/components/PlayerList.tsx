@@ -28,9 +28,17 @@ export default function PlayerList({ players }: PlayerListProps) {
         </tr>
       </thead>
       <tbody>
-        {sortedPlayers.map((player) => (
-          <PlayerRow key={player.uuid} player={player} />
-        ))}
+        {sortedPlayers.length > 0 ? (
+          sortedPlayers.map((player) => (
+            <PlayerRow key={player.uuid} player={player} />
+          ))
+        ) : (
+          <tr className="border-(--secondary-color) border-2">
+            <td colSpan={4} className="text-center text-sm p-1 italic">
+              No registered players
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
