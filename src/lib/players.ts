@@ -1,11 +1,24 @@
-import type { Player, Table, Wind } from "@/lib/types";
+import { generateSessions } from "@/lib/sessions";
+import type { Player, Session, Table, Wind } from "@/lib/types";
 
 export function sortAlphabetical(players: Player[]): Player[] {
   return players.slice().sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function sortDescending(players: Player[]): Player[] {
-  return players.slice().sort((a, b) => b.score - a.score);
+export async function sortPlayersDescending(
+  tournamentUuid: string,
+  session: Session,
+): Promise<Player[]> {
+  const players = await fetchPlayers(tournamentUuid);
+  const presentPlayers = getPlayersFromSession(players, session);
+
+  return presentPlayers
+    .slice()
+    .sort((a, b) => b.scores.get(session)! - a.scores.get(session)!);
+}
+
+function getPlayersFromSession(players: Player[], session: Session) {
+  return players.filter((player) => player.scores.has(session));
 }
 
 export async function fetchPlayers(tournamentUuid: string): Promise<Player[]> {
@@ -25,7 +38,7 @@ export async function setPlayerAt(
 ): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   console.log(
-    `setPlayerAt(table=${table.id}, wind=${wind}, playerUuid=${playerUuid})`,
+    `setPlayerAt(table=${table.number}, wind=${wind}, playerUuid=${playerUuid})`,
   );
 }
 
@@ -40,13 +53,17 @@ export async function deregisterPlayer(playerUuid: string): Promise<void> {
 }
 
 // TODO: Replace with database fetch
-function generatePlayers(num: number): Player[] {
+export function generatePlayers(num: number): Player[] {
   return Array.from(
     { length: num },
     (_, i): Player => ({
       uuid: crypto.randomUUID(),
       name: `Player ${i + 1}`,
-      score: Math.floor(Math.random() * 1000) - 500,
+      scores: new Map<Session, number>([
+        [generateSessions(3)[0], Math.floor(Math.random() * 1000) - 500],
+        [generateSessions(3)[1], Math.floor(Math.random() * 1000) - 500],
+        [generateSessions(3)[2], Math.floor(Math.random() * 1000) - 500],
+      ]),
     }),
   );
 }

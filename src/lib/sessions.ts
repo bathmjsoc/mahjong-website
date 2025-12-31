@@ -9,11 +9,11 @@ export async function fetchSessions(
 ): Promise<Session[]> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   console.log(`fetchSessions(tournamentUuid=${tournamentUuid})`);
-  return mockSessions(10);
+  return generateSessions(10);
 }
 
 // TODO: Replace with database fetch
-function mockSessions(num: number): Session[] {
+export function generateSessions(num: number): Session[] {
   return Array.from(
     { length: num },
     (_, i): Session => ({

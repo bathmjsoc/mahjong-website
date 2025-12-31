@@ -1,7 +1,7 @@
 export type Player = {
   uuid: string;
   name: string;
-  score: number;
+  scores: Map<Session, number>;
 };
 
 export type Session = {
@@ -10,7 +10,7 @@ export type Session = {
 };
 
 export type Table = {
-  id: number;
+  number: number;
   members: Map<Wind, Player | null>;
 };
 

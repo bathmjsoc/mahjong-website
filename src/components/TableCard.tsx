@@ -64,7 +64,7 @@ export default function TableCard({
 
       {/* Table Number */}
       <div className="flex items-center justify-center text-(--primary-color) text-7xl row-start-3 col-start-3">
-        {table.id}
+        {table.number}
       </div>
 
       {/* Save/Delete Buttons */}

@@ -6,16 +6,25 @@ import PlayerList from "@/components/PlayerList";
 import IconButton from "@/elements/IconButton";
 import RoundedListbox from "@/elements/RoundedListbox";
 import SearchCombobox from "@/elements/SearchCombobox";
-import { registerPlayer, sortAlphabetical } from "@/lib/players";
+import {
+  registerPlayer,
+  sortAlphabetical,
+  sortPlayersDescending,
+} from "@/lib/players";
 import { sortSessionsNewest } from "@/lib/sessions";
 import type { Player, Session } from "@/lib/types";
 
 type SidebarProps = {
+  tournamentUuid: string;
   players: Player[];
   sessions: Session[];
 };
 
-export default function Sidebar({ players, sessions }: SidebarProps) {
+export default async function Sidebar({
+  tournamentUuid,
+  players,
+  sessions,
+}: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   const sortedPlayers = useMemo(() => sortAlphabetical(players), [players]);
@@ -35,6 +44,11 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
       setSelectedSession(session);
     }
   }
+
+  const presentPlayers = await sortPlayersDescending(
+    tournamentUuid,
+    selectedSession,
+  );
 
   return (
     <div className="flex">
@@ -71,7 +85,7 @@ export default function Sidebar({ players, sessions }: SidebarProps) {
             buttonClassName="w-88! h-10"
           />
 
-          <PlayerList players={players} />
+          <PlayerList players={presentPlayers} session={selectedSession} />
         </div>
       </div>
 

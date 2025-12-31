@@ -20,7 +20,7 @@ export default async function TournamentPage({ params }: PageProps) {
 
   return (
     <main className="flex min-h-dvh">
-      <Sidebar players={players} sessions={sessions} />
+      <Sidebar tournamentUuid={uuid} players={players} sessions={sessions} />
       <section className="flex flex-col items-center w-full h-min">
         <ManageTableButtons />
         <TableList tables={tables} players={players} />

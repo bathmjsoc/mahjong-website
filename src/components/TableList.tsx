@@ -15,7 +15,7 @@ export default function TableList({ tables, players }: TableListProps) {
   return (
     <section className="grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center">
       {sortedTables.map((table) => (
-        <TableCard key={table.id} table={table} players={players} />
+        <TableCard key={table.number} table={table} players={players} />
       ))}
 
       {/* Add New Table Button */}

@@ -1,11 +1,12 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
 import IconButton from "@/elements/IconButton";
-import { deregisterPlayer, sortDescending } from "@/lib/players";
-import type { Player } from "@/lib/types";
+import { deregisterPlayer } from "@/lib/players";
+import type { Player, Session } from "@/lib/types";
 
 type PlayerListProps = {
   players: Player[];
+  session: Session;
 };
 
 function scoreToColor(score: number): string {
@@ -14,9 +15,7 @@ function scoreToColor(score: number): string {
   return "bg-yellow-600";
 }
 
-export default function PlayerList({ players }: PlayerListProps) {
-  const sortedPlayers = sortDescending(players);
-
+export default async function PlayerList({ players, session }: PlayerListProps) {
   return (
     <table className="table-fixed">
       <thead>
@@ -28,9 +27,9 @@ export default function PlayerList({ players }: PlayerListProps) {
         </tr>
       </thead>
       <tbody>
-        {sortedPlayers.length > 0 ? (
-          sortedPlayers.map((player) => (
-            <PlayerRow key={player.uuid} player={player} />
+        {players.length > 0 ? (
+          players.map((player) => (
+            <PlayerRow key={player.uuid} player={player} session={session} />
           ))
         ) : (
           <tr className="border-(--secondary-color) border-2">
@@ -46,10 +45,13 @@ export default function PlayerList({ players }: PlayerListProps) {
 
 type PlayerRowProps = {
   player: Player;
+  session: Session;
 };
 
-function PlayerRow({ player }: PlayerRowProps) {
+function PlayerRow({ player, session }: PlayerRowProps) {
   const [isLocked, setIsLocked] = useState(false);
+
+  const score = player.scores.get(session)!;
 
   return (
     <tr>
@@ -83,10 +85,10 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={`border-(--secondary-color) border-2 text-center
-          ${scoreToColor(player.score)}
+          ${scoreToColor(score)}
         `}
       >
-        {player.score}
+        {score}
       </td>
 
       <td>
