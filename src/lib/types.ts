@@ -1,3 +1,16 @@
+export type Log = {
+  id: string;
+  winner: Player;
+  losers: Player[];
+  points: number;
+  faan: number;
+  type: string;
+  session: Session;
+  date: Date;
+  others: Player[];
+  disabled: boolean;
+};
+
 export type Player = {
   uuid: string;
   name: string;
