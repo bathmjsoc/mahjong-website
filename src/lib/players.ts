@@ -22,11 +22,8 @@ export function getPlayerScore(player: Player, session: Session) {
     return player.scores.get(session) ?? null;
   }
 
-  let totalScore = 0;
-  for (const score of player.scores.values()) {
-    totalScore += score;
-  }
-  return totalScore;
+  const scores = Array.from(player.scores.values());
+  return scores.reduce((sum, score) => sum + score, 0);
 }
 
 export function getSeatOccupant(table: Table, wind: Wind): Player | null {
