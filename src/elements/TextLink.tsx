@@ -12,6 +12,7 @@ export default function TextLink({
     <Link
       {...props}
       className={`
+        text-(--primary-color)
         underline underline-offset-2
         transition duration-300 hover:text-(--accent-color)
         ${className}
