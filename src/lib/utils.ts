@@ -34,3 +34,9 @@ export function parseSearch(query: string): Record<string, string> {
 
   return result;
 }
+
+export function scoreToColor(score: number): string {
+  if (score < 0) return "bg-red-700";
+  if (score > 0) return "bg-green-700";
+  return "bg-yellow-600";
+}
