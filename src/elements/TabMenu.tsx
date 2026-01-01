@@ -34,7 +34,7 @@ export function TabLink({
   const isActive = pathname === href;
 
   return (
-    <Tab>
+    <Tab className="outline-none">
       <Link
         href={href}
         data-active={isActive}
