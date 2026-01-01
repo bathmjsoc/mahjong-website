@@ -2,7 +2,7 @@
 
 import { Trash2 } from "lucide-react";
 import { useTournament } from "@/context/TournamentContext";
-import IconButton from "@/elements/IconButton";
+import { IconButton } from "@/elements/IconButton";
 import type { Log, Player } from "@/lib/types";
 
 export function LogList() {

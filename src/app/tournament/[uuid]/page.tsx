@@ -1,6 +1,6 @@
-import ManageTableButtons from "@/components/ManageTableButtons";
-import Sidebar from "@/components/Sidebar";
-import TableList from "@/components/TableList";
+import { ManageTableButtons } from "@/components/ManageTableButtons";
+import { Sidebar } from "@/components/Sidebar";
+import { TableList } from "@/components/TableList";
 
 export default function TournamentPage() {
   return (

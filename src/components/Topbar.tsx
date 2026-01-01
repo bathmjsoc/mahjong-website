@@ -9,7 +9,7 @@ const TABS = [
   { label: "Graphs", href: "graphs" },
 ];
 
-export default function Topbar() {
+export function Topbar() {
   const { uuid } = useTournament();
 
   return (

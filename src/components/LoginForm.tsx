@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { signIn } from "@/actions/auth";
-import RegisterModal from "@/components/RegisterModal";
-import FilledButton from "@/elements/FilledButton";
-import LabelledInput from "@/elements/LabelledInput";
-import TextButton from "@/elements/TextButton";
+import { RegisterModal } from "@/components/RegisterModal";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { TextButton } from "@/elements/TextButton";
 
-export default function LoginForm() {
+export function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

@@ -1,7 +1,7 @@
 import { PaintBucket, Shuffle } from "lucide-react";
-import IconButton from "@/elements/IconButton";
+import { IconButton } from "@/elements/IconButton";
 
-export default function ManageTableButtons() {
+export function ManageTableButtons() {
   return (
     <div className="flex space-x-10 my-7">
       <IconButton className="bg-(--primary-color) rounded-full p-3 hover:text-(--accent-color)!">

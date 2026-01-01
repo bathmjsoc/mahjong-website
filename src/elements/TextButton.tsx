@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 
 type TextButtonProps = ComponentProps<typeof Button>;
 
-export default function TextButton({
+export function TextButton({
   children,
   className = "",
   ...props

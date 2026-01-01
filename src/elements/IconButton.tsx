@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 
 type IconButtonProps = ComponentProps<typeof Button>;
 
-export default function IconButton({
+export function IconButton({
   children,
   className = "",
   ...props

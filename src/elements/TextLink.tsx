@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 
 type ColoredLinkProps = ComponentProps<typeof Link>;
 
-export default function TextLink({
+export function TextLink({
   children,
   className = "",
   ...props

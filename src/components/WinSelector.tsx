@@ -1,4 +1,4 @@
-import DropDown from "@/elements/DropDown";
+import { DropDown } from "@/elements/DropDown";
 import type { Player, Table } from "@/lib/types";
 
 type WinSelectorProps = {
@@ -9,7 +9,7 @@ type WinSelectorProps = {
 
 const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
-export default function WinSelector({
+export function WinSelector({
   table,
   placeholder = "[EMPTY]",
   className = "",

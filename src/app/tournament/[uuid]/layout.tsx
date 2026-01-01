@@ -5,7 +5,7 @@ import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { getTournamentName } from "@/actions/tournaments";
-import Topbar from "@/components/Topbar";
+import { Topbar } from "@/components/Topbar";
 import { TournamentProvider } from "@/context/TournamentContext";
 
 type TournamentLayoutProps = {

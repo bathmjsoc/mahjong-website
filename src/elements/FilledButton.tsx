@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 
 type FilledButtonProps = ComponentProps<typeof Button>;
 
-export default function FilledButton({
+export function FilledButton({
   children,
   className = "",
   ...props

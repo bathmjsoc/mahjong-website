@@ -6,7 +6,7 @@ import {
 } from "@headlessui/react";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
-import IconButton from "@/elements/IconButton";
+import { IconButton } from "@/elements/IconButton";
 
 type ModalProps = {
   isOpen: boolean;
@@ -15,12 +15,7 @@ type ModalProps = {
   children: ReactNode;
 };
 
-export default function Modal({
-  isOpen,
-  onClose,
-  title,
-  children,
-}: ModalProps) {
+export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogBackdrop

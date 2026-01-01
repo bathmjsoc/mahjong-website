@@ -1,7 +1,7 @@
 import { useState } from "react";
-import WinSelector from "@/components/WinSelector";
+import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
-import RoundedListbox from "@/elements/RoundedListbox";
+import { RoundedListbox } from "@/elements/RoundedListbox";
 import { getSeatOccupant } from "@/lib/players";
 import type { Player, Table, Wind } from "@/lib/types";
 
@@ -13,7 +13,7 @@ type TableSeatProps = {
   buttonClassName?: string;
 };
 
-export default function TableSeat({
+export function TableSeat({
   table,
   wind,
   gridPosition,

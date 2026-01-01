@@ -19,7 +19,7 @@ type RoundedListboxProps<T> = {
   optionClassName?: string;
 };
 
-export default function RoundedListbox<T>({
+export function RoundedListbox<T>({
   value,
   options,
   onChange,

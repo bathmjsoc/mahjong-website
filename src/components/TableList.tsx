@@ -1,11 +1,11 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import TableCard from "@/components/TableCard";
+import { TableCard } from "@/components/TableCard";
 import { useTournament } from "@/context/TournamentContext";
-import IconButton from "@/elements/IconButton";
+import { IconButton } from "@/elements/IconButton";
 
-export default function TableList() {
+export function TableList() {
   const { sortedTables } = useTournament();
 
   return (

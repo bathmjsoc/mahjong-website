@@ -1,15 +1,15 @@
 "use client";
 
 import { Archive, Trash2 } from "lucide-react";
-import TableSeat from "@/components/TableSeat";
-import IconButton from "@/elements/IconButton";
+import { TableSeat } from "@/components/TableSeat";
+import { IconButton } from "@/elements/IconButton";
 import type { Table } from "@/lib/types";
 
 type TableProps = {
   table: Table;
 };
 
-export default function TableCard({ table }: TableProps) {
+export function TableCard({ table }: TableProps) {
   return (
     <div className="grid grid-cols-5 grid-rows-5 w-70 h-70">
       <TableSeat

@@ -21,7 +21,7 @@ type DropDownProps = {
 
 const RootContext = createContext<(() => void) | null>(null);
 
-export default function DropDown({
+export function DropDown({
   title,
   children,
   buttonClassName = "",

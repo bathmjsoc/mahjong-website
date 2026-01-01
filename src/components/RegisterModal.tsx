@@ -2,16 +2,16 @@
 
 import { type FormEvent, useState } from "react";
 import { signUp } from "@/actions/auth";
-import FilledButton from "@/elements/FilledButton";
-import LabelledInput from "@/elements/LabelledInput";
-import Modal from "@/elements/Modal";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { Modal } from "@/elements/Modal";
 
 type RegisterModalProps = {
   isOpen: boolean;
   closeModalAction: () => void;
 };
 
-export default function RegisterModal({
+export function RegisterModal({
   isOpen,
   closeModalAction,
 }: RegisterModalProps) {

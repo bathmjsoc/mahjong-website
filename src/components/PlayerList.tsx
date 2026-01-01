@@ -1,12 +1,12 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
 import { useTournament } from "@/context/TournamentContext";
-import IconButton from "@/elements/IconButton";
+import { IconButton } from "@/elements/IconButton";
 import { getPlayerScore } from "@/lib/players";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
 
-export default function PlayerList() {
+export function PlayerList() {
   const { rankedPlayers } = useTournament();
 
   return (

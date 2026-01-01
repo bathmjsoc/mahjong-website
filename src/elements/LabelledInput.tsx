@@ -8,7 +8,7 @@ type LabelledInputProps = ComponentProps<typeof Input> &
     labelClassName?: string;
   };
 
-export default function LabelledInput({
+export function LabelledInput({
   children,
   inputClassName = "",
   labelClassName = "",

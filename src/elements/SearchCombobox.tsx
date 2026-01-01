@@ -18,7 +18,7 @@ type SearchComboboxProps<T> = {
   optionClassName?: string;
 };
 
-export default function SearchCombobox<T>({
+export function SearchCombobox<T>({
   options,
   onSelect,
   getOptionLabel,

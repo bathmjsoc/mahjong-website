@@ -1,4 +1,4 @@
-import TournamentCard from "@/components/TournamentCard";
+import { TournamentCard } from "@/components/TournamentCard";
 import { sortTournamentsNewest } from "@/lib/tournaments";
 import type { Tournament } from "@/lib/types";
 
@@ -6,7 +6,7 @@ type TournamentListProps = {
   tournaments: Tournament[];
 };
 
-export default function TournamentList({ tournaments }: TournamentListProps) {
+export function TournamentList({ tournaments }: TournamentListProps) {
   if (tournaments.length === 0) {
     return (
       <div className="text-(--primary-color) text-sm">

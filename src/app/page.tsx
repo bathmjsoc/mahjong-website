@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import TextLink from "@/elements/TextLink";
+import { TextLink } from "@/elements/TextLink";
 
 export const metadata: Metadata = {
   title: "Home",

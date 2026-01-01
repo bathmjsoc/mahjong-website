@@ -9,7 +9,7 @@ type NotificationProps = {
   duration?: number;
 };
 
-export default function Notification({
+export function Notification({
   isOpen,
   close,
   title,

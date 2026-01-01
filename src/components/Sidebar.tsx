@@ -2,14 +2,14 @@
 
 import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useState } from "react";
-import PlayerList from "@/components/PlayerList";
+import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
-import IconButton from "@/elements/IconButton";
-import RoundedListbox from "@/elements/RoundedListbox";
-import SearchCombobox from "@/elements/SearchCombobox";
+import { IconButton } from "@/elements/IconButton";
+import { RoundedListbox } from "@/elements/RoundedListbox";
+import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player, Session } from "@/lib/types";
 
-export default function Sidebar() {
+export function Sidebar() {
   const {
     registerPlayer,
     selectedSession,

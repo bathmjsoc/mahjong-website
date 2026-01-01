@@ -2,16 +2,16 @@
 
 import { type FormEvent, useState } from "react";
 import { createTournament } from "@/actions/tournaments";
-import FilledButton from "@/elements/FilledButton";
-import LabelledInput from "@/elements/LabelledInput";
-import Modal from "@/elements/Modal";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { Modal } from "@/elements/Modal";
 
 type CreateTournamentModalProps = {
   isOpen: boolean;
   closeModalAction: () => void;
 };
 
-export default function CreateTournamentModal({
+export function CreateTournamentModal({
   isOpen,
   closeModalAction,
 }: CreateTournamentModalProps) {
