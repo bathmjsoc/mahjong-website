@@ -16,7 +16,7 @@ export function TableList() {
 
       {/* Add New Table Button */}
       <div className="flex items-center justify-center size-70">
-        <IconButton className={`bg-(--accent-color) rounded-full p-3`}>
+        <IconButton className="bg-(--accent-color) rounded-full p-3">
           <Plus className="size-10" />
         </IconButton>
       </div>

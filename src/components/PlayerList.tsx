@@ -1,5 +1,6 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import { getPlayerScore } from "@/lib/players";
@@ -56,18 +57,18 @@ function PlayerRow({ player }: PlayerRowProps) {
         >
           <div className="relative size-4">
             <LockKeyhole
-              className={`
-                absolute transition duration-300 size-4 
-                text-(--neutral-color) hover:text-(--secondary-color)
-                ${isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50"}
-              `}
+              className={twMerge(
+                "text-(--neutral-color) hover:text-(--secondary-color)",
+                "absolute transition duration-300 size-4",
+                isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
+              )}
             />
             <LockKeyholeOpen
-              className={`
-                absolute transition duration-300 size-4
-                text-(--secondary-color) hover:text-(--neutral-color)
-                ${isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100"}
-              `}
+              className={twMerge(
+                "text-(--secondary-color) hover:text-(--neutral-color)",
+                "absolute transition duration-300 size-4",
+                isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
+              )}
             />
           </div>
         </IconButton>
@@ -78,9 +79,10 @@ function PlayerRow({ player }: PlayerRowProps) {
       </td>
 
       <td
-        className={`border-(--secondary-color) border-2 text-center
-          ${scoreToColor(score ?? 0)}
-        `}
+        className={twMerge(
+          "border-(--secondary-color) border-2 text-center",
+          scoreToColor(score ?? 0),
+        )}
       >
         {score}
       </td>

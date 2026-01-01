@@ -35,9 +35,9 @@ export function Notification({
       <div className="fixed bottom-5 right-5 z-99">
         <div
           className="
-          bg-(--secondary-color) text-(--primary-color)
-          border-(--primary-color) border-2 rounded-lg p-3 w-xs
-        "
+            bg-(--secondary-color) text-(--primary-color)
+            border-(--primary-color) border-2 rounded-lg p-3 w-xs
+          "
         >
           <div className="font-bold text-md mb-2">{title}</div>
           <div className="text-xs">{children}</div>

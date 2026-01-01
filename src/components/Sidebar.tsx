@@ -2,6 +2,7 @@
 
 import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
@@ -29,11 +30,11 @@ export function Sidebar() {
   return (
     <div className="flex">
       <div
-        className={`
-          bg-(--primary-color) text-(--secondary-color)
-          transition-all duration-500 overflow-hidden py-10
-          ${isOpen ? "w-md px-5" : "w-0 px-0"}
-        `}
+        className={twMerge(
+          "bg-(--primary-color) text-(--secondary-color)",
+          "transition-all duration-500 overflow-hidden py-10",
+          isOpen ? "w-md px-5" : "w-0 px-0",
+        )}
       >
         <div className="flex flex-col space-y-5 items-center max-w-md">
           <SearchCombobox<Player>
@@ -88,7 +89,10 @@ export function Sidebar() {
         "
       >
         <ChevronRight
-          className={`transition-transform duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
+          className={twMerge(
+            "transition-transform duration-500",
+            isOpen ? "rotate-180" : "rotate-0",
+          )}
         />
       </IconButton>
     </div>

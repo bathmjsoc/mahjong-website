@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
@@ -17,8 +18,8 @@ export function TableSeat({
   table,
   wind,
   gridPosition,
-  tableClassName = "",
-  buttonClassName = "",
+  tableClassName,
+  buttonClassName,
 }: TableSeatProps) {
   const { sortedPlayers, setSeatOccupant } = useTournament();
 
@@ -31,13 +32,13 @@ export function TableSeat({
   }
 
   return (
-    <div className={`flex items-center justify-center ${gridPosition}`}>
+    <div className={twMerge("flex items-center justify-center", gridPosition)}>
       <div
-        className={`
-          bg-(--primary-color) text-(--secondary-color) 
-          flex items-center justify-between space-x-1 rounded-full p-1 w-50 shrink-0
-          ${tableClassName}
-        `}
+        className={twMerge(
+          "bg-(--primary-color) text-(--secondary-color)",
+          "flex items-center justify-between space-x-1 rounded-full p-1 w-50 shrink-0",
+          tableClassName,
+        )}
       >
         {/* Scoring Menu */}
         <WinSelector table={table} className={buttonClassName} />

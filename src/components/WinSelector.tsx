@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import type { Player, Table } from "@/lib/types";
 
@@ -12,7 +13,7 @@ const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 export function WinSelector({
   table,
   placeholder = "[EMPTY]",
-  className = "",
+  className,
 }: WinSelectorProps) {
   const tableMembers = Array.from(table.members.entries());
 
@@ -21,7 +22,10 @@ export function WinSelector({
   }
 
   return (
-    <DropDown title="食" buttonClassName={`rounded-full size-8 ${className}`}>
+    <DropDown
+      title="食"
+      buttonClassName={twMerge("rounded-full size-8", className)}
+    >
       {WIN_TYPES.map((winType) => (
         <DropDown key={winType} title={winType}>
           {tableMembers.map(([wind, player]) => (
