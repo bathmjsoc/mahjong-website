@@ -36,7 +36,7 @@ export function parseSearch(query: string): Record<string, string> {
 }
 
 export function scoreToColor(score: number): string {
-  if (score < 0) return "bg-red-700";
-  if (score > 0) return "bg-green-700";
-  return "bg-yellow-600";
+  if (score < 0) return "bg-(--negative-color)";
+  if (score > 0) return "bg-(--positive-color)";
+  return "bg-(--neutral-color)";
 }

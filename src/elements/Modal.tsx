@@ -42,7 +42,10 @@ export default function Modal({
         >
           <div className="flex items-center justify-between mb-4">
             <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
-            <IconButton onClick={onClose} className="hover:text-red-700">
+            <IconButton
+              onClick={onClose}
+              className="hover:text-(--negative-color)!"
+            >
               <X />
             </IconButton>
           </div>

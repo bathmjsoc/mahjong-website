@@ -48,13 +48,13 @@ export default function TableCard({ table }: TableProps) {
 
       {/* Save/Delete Buttons */}
       <div className="flex items-center justify-center space-x-5 row-start-4 col-start-2 col-span-3">
-        <IconButton className="hover:text-blue-400">
+        <IconButton className="hover:text-(--save-color)!">
           <div className="bg-(--primary-color) flex items-center justify-center rounded-full size-8">
             <Archive className="size-4" />
           </div>
         </IconButton>
 
-        <IconButton className="hover:text-red-400">
+        <IconButton className="hover:text-(--negative-color)!">
           <div className="bg-(--primary-color) flex items-center justify-center rounded-full size-8">
             <Trash2 className="size-4" />
           </div>

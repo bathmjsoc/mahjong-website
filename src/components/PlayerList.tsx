@@ -58,14 +58,14 @@ function PlayerRow({ player }: PlayerRowProps) {
             <LockKeyhole
               className={`
                 absolute transition duration-300 size-4 
-                text-yellow-600 hover:text-(--secondary-color)
+                text-(--neutral-color)! hover:text-(--secondary-color)!
                 ${isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50"}
               `}
             />
             <LockKeyholeOpen
               className={`
                 absolute transition duration-300 size-4
-                text-(--secondary-color) hover:text-yellow-600
+                text-(--secondary-color)! hover:text-(--neutral-color)!
                 ${isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100"}
               `}
             />
@@ -88,7 +88,7 @@ function PlayerRow({ player }: PlayerRowProps) {
       <td>
         <IconButton
           onClick={() => deregisterPlayer(player)}
-          className="flex items-center justify-center w-full hover:text-red-700"
+          className="flex items-center justify-center w-full hover:text-(--negative-color)!"
         >
           <X className="size-5" />
         </IconButton>

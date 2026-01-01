@@ -47,15 +47,15 @@ export default function Sidebar() {
           />
 
           <div className="flex space-x-20">
-            <IconButton className="hover:text-green-700">
+            <IconButton className="hover:text-(--positive-color)!">
               <CirclePlus className="size-7" />
             </IconButton>
 
-            <IconButton className="hover:text-red-700">
+            <IconButton className="hover:text-(--negative-color)!">
               <CircleMinus className="size-7" />
             </IconButton>
 
-            <IconButton className="hover:text-yellow-600">
+            <IconButton className="hover:text-(--neutral-color)!">
               <RefreshCw className="size-7" />
             </IconButton>
           </div>

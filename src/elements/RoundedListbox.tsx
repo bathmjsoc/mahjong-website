@@ -40,7 +40,7 @@ export default function RoundedListbox<T>({
           bg-(--secondary-color) text-(--primary-color)
           w-full text-center truncate rounded-full outline-none cursor-pointer
           transition duration-300 hover:bg-(--secondary-color)/75
-          ${isPlaceholder ? "text-red-500" : ""}
+          ${isPlaceholder ? "text-(--negative-color)!" : ""}
           ${buttonClassName}
         `}
       >
