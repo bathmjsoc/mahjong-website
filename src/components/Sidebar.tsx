@@ -84,10 +84,11 @@ export default function Sidebar() {
           bg-(--primary-color) text-(--secondary-color)
           flex items-center justify-center
           rounded-r-2xl -ml-1 mt-5 h-20 w-10
+          hover:text-(--accent-color)
         "
       >
         <ChevronRight
-          className={`transition duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
+          className={`transition-transform duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
         />
       </IconButton>
     </div>
