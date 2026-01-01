@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Dashboard",
 };
 
-export default async function Dashboard() {
+export default async function DashboardPage() {
   const tournaments = await fetchTournaments();
 
   return (
