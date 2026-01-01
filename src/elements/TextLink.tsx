@@ -1,10 +1,7 @@
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps } from "react";
 
-type ColoredLinkProps = ComponentProps<typeof Link> & {
-  children: ReactNode;
-  className?: string;
-};
+type ColoredLinkProps = ComponentProps<typeof Link>;
 
 export default function TextLink({
   children,

@@ -22,11 +22,7 @@ export function TabMenu({ children, className = "" }: TabMenuProps) {
   );
 }
 
-type TabLinkProps = ComponentProps<typeof Link> & {
-  href: string;
-  children: ReactNode;
-  className?: string;
-};
+type TabLinkProps = ComponentProps<typeof Link>;
 
 export function TabLink({
   children,

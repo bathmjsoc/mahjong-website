@@ -6,10 +6,10 @@ import FilledButton from "@/elements/FilledButton";
 import LabelledInput from "@/elements/LabelledInput";
 import Modal from "@/elements/Modal";
 
-interface CreateTournamentModalProps {
+type CreateTournamentModalProps = {
   isOpen: boolean;
   closeModal: () => void;
-}
+};
 
 export default function CreateTournamentModal({
   isOpen,

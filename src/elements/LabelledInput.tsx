@@ -1,12 +1,12 @@
 import { Field, Input, Label } from "@headlessui/react";
-import type { InputHTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, InputHTMLAttributes } from "react";
 
-// ComponentProps<typeof Input> doesn't work?
-type LabelledInputProps = InputHTMLAttributes<HTMLInputElement> & {
-  children: ReactNode;
-  inputClassName?: string;
-  labelClassName?: string;
-};
+// ComponentProps<typeof Input> doesn't work alone?
+type LabelledInputProps = ComponentProps<typeof Input> &
+  InputHTMLAttributes<HTMLInputElement> & {
+    inputClassName?: string;
+    labelClassName?: string;
+  };
 
 export default function LabelledInput({
   children,

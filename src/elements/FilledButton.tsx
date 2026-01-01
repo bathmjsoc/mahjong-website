@@ -1,10 +1,7 @@
 import { Button } from "@headlessui/react";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps } from "react";
 
-type FilledButtonProps = ComponentProps<typeof Button> & {
-  children: ReactNode;
-  className?: string;
-};
+type FilledButtonProps = ComponentProps<typeof Button>;
 
 export default function FilledButton({
   children,

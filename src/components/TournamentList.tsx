@@ -2,9 +2,9 @@ import TournamentCard from "@/components/TournamentCard";
 import { sortTournamentsNewest } from "@/lib/tournaments";
 import type { Tournament } from "@/lib/types";
 
-interface TournamentListProps {
+type TournamentListProps = {
   tournaments: Tournament[];
-}
+};
 
 export default function TournamentList({ tournaments }: TournamentListProps) {
   if (tournaments.length === 0) {

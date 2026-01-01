@@ -21,11 +21,7 @@ import { sortSessionsNewest } from "@/lib/sessions";
 import { sortTablesAscending } from "@/lib/tables";
 import type { Log, Player, Session, Table, Wind } from "@/lib/types";
 
-const TournamentContext = createContext<TournamentContextType | undefined>(
-  undefined,
-);
-
-interface TournamentContextType {
+type TournamentContextType = {
   uuid: string;
   sessions: Session[];
   players: Player[];
@@ -47,12 +43,13 @@ interface TournamentContextType {
     wind: Wind,
     player: Player | null,
   ) => Promise<void>;
-}
+};
 
-export function TournamentProvider({
-  children,
-  data,
-}: {
+const TournamentContext = createContext<TournamentContextType | undefined>(
+  undefined,
+);
+
+type TournamentProviderProps = {
   children: ReactNode;
   data: {
     uuid: string;
@@ -61,7 +58,12 @@ export function TournamentProvider({
     tables: Table[];
     logs: Log[];
   };
-}) {
+};
+
+export function TournamentProvider({
+  children,
+  data,
+}: TournamentProviderProps) {
   const sortedSessions = useMemo(() => {
     return sortSessionsNewest(data.sessions);
   }, [data.sessions]);
