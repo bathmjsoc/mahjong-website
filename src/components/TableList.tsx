@@ -1,21 +1,17 @@
+"use client";
+
 import { Plus } from "lucide-react";
 import TableCard from "@/components/TableCard";
+import { useTournament } from "@/context/TournamentContext";
 import IconButton from "@/elements/IconButton";
-import { sortTablesId } from "@/lib/tables";
-import type { Player, Table } from "@/lib/types";
 
-type TableListProps = {
-  tables: Table[];
-  players: Player[];
-};
-
-export default function TableList({ tables, players }: TableListProps) {
-  const sortedTables = sortTablesId(tables);
+export default function TableList() {
+  const { sortedTables } = useTournament();
 
   return (
     <section className="grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center">
       {sortedTables.map((table) => (
-        <TableCard key={table.number} table={table} players={players} />
+        <TableCard key={table.number} table={table} />
       ))}
 
       {/* Add New Table Button */}

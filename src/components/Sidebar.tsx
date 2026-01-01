@@ -1,54 +1,30 @@
 "use client";
 
 import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import PlayerList from "@/components/PlayerList";
+import { useTournament } from "@/context/TournamentContext";
 import IconButton from "@/elements/IconButton";
 import RoundedListbox from "@/elements/RoundedListbox";
 import SearchCombobox from "@/elements/SearchCombobox";
-import {
-  registerPlayer,
-  sortAlphabetical,
-  sortPlayersDescending,
-} from "@/lib/players";
-import { sortSessionsNewest } from "@/lib/sessions";
 import type { Player, Session } from "@/lib/types";
 
-type SidebarProps = {
-  tournamentUuid: string;
-  players: Player[];
-  sessions: Session[];
-};
+export default function Sidebar() {
+  const {
+    registerPlayer,
+    selectedSession,
+    setSelectedSession,
+    sortedPlayers,
+    sortedSessions,
+  } = useTournament();
 
-export default async function Sidebar({
-  tournamentUuid,
-  players,
-  sessions,
-}: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
-
-  const sortedPlayers = useMemo(() => sortAlphabetical(players), [players]);
-
-  const sortedSessions = useMemo(() => {
-    const sorted = sortSessionsNewest(sessions);
-    const overall: Session = { number: -1, date: new Date() };
-    return [overall, ...sorted];
-  }, [sessions]);
-
-  const [selectedSession, setSelectedSession] = useState(
-    sortedSessions.length > 1 ? sortedSessions[1] : sortedSessions[0],
-  );
 
   function handleSessionSelect(session: Session | null) {
     if (session) {
       setSelectedSession(session);
     }
   }
-
-  const presentPlayers = await sortPlayersDescending(
-    tournamentUuid,
-    selectedSession,
-  );
 
   return (
     <div className="flex">
@@ -62,7 +38,7 @@ export default async function Sidebar({
         <div className="flex flex-col space-y-5 items-center max-w-md">
           <SearchCombobox<Player>
             options={sortedPlayers}
-            onSelect={(player) => registerPlayer(player.uuid)}
+            onSelect={(player) => registerPlayer(player)}
             getOptionLabel={(player) => player.name}
             getOptionKey={(player) => player.uuid}
             placeholder="Register a member..."
@@ -70,7 +46,19 @@ export default async function Sidebar({
             inputClassName="w-88 h-10"
           />
 
-          <ActionButtons />
+          <div className="flex space-x-20">
+            <IconButton className="hover:text-green-700">
+              <CirclePlus className="size-7" />
+            </IconButton>
+
+            <IconButton className="hover:text-red-700">
+              <CircleMinus className="size-7" />
+            </IconButton>
+
+            <IconButton className="hover:text-yellow-600">
+              <RefreshCw className="size-7" />
+            </IconButton>
+          </div>
 
           <RoundedListbox<Session>
             value={selectedSession}
@@ -85,7 +73,7 @@ export default async function Sidebar({
             buttonClassName="w-88! h-10"
           />
 
-          <PlayerList players={presentPlayers} session={selectedSession} />
+          <PlayerList />
         </div>
       </div>
 
@@ -101,24 +89,6 @@ export default async function Sidebar({
             className={`transition duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
           />
         </div>
-      </IconButton>
-    </div>
-  );
-}
-
-function ActionButtons() {
-  return (
-    <div className="flex space-x-20">
-      <IconButton className="hover:text-green-700">
-        <CirclePlus className="size-7" />
-      </IconButton>
-
-      <IconButton className="hover:text-red-700">
-        <CircleMinus className="size-7" />
-      </IconButton>
-
-      <IconButton className="hover:text-yellow-600">
-        <RefreshCw className="size-7" />
       </IconButton>
     </div>
   );

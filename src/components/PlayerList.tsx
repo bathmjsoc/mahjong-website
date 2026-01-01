@@ -1,21 +1,14 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { useState } from "react";
+import { useTournament } from "@/context/TournamentContext";
 import IconButton from "@/elements/IconButton";
-import { deregisterPlayer } from "@/lib/players";
-import type { Player, Session } from "@/lib/types";
+import { getPlayerScore } from "@/lib/players";
+import type { Player } from "@/lib/types";
+import { scoreToColor } from "@/lib/utils";
 
-type PlayerListProps = {
-  players: Player[];
-  session: Session;
-};
+export default function PlayerList() {
+  const { rankedPlayers } = useTournament();
 
-function scoreToColor(score: number): string {
-  if (score < 0) return "bg-red-700";
-  if (score > 0) return "bg-green-700";
-  return "bg-yellow-600";
-}
-
-export default async function PlayerList({ players, session }: PlayerListProps) {
   return (
     <table className="table-fixed">
       <thead>
@@ -27,13 +20,13 @@ export default async function PlayerList({ players, session }: PlayerListProps) 
         </tr>
       </thead>
       <tbody>
-        {players.length > 0 ? (
-          players.map((player) => (
-            <PlayerRow key={player.uuid} player={player} session={session} />
+        {rankedPlayers.length > 0 ? (
+          rankedPlayers.map((player) => (
+            <PlayerRow key={player.uuid} player={player} />
           ))
         ) : (
-          <tr className="border-(--secondary-color) border-2">
-            <td colSpan={4} className="text-center text-sm p-1 italic">
+          <tr>
+            <td colSpan={4} className="text-center text-sm pt-10 italic">
               No registered players
             </td>
           </tr>
@@ -45,13 +38,14 @@ export default async function PlayerList({ players, session }: PlayerListProps) 
 
 type PlayerRowProps = {
   player: Player;
-  session: Session;
 };
 
-function PlayerRow({ player, session }: PlayerRowProps) {
+function PlayerRow({ player }: PlayerRowProps) {
+  const { selectedSession, deregisterPlayer } = useTournament();
+
   const [isLocked, setIsLocked] = useState(false);
 
-  const score = player.scores.get(session)!;
+  const score = getPlayerScore(player, selectedSession);
 
   return (
     <tr>
@@ -85,7 +79,7 @@ function PlayerRow({ player, session }: PlayerRowProps) {
 
       <td
         className={`border-(--secondary-color) border-2 text-center
-          ${scoreToColor(score)}
+          ${scoreToColor(score ?? 0)}
         `}
       >
         {score}
@@ -93,7 +87,7 @@ function PlayerRow({ player, session }: PlayerRowProps) {
 
       <td>
         <IconButton
-          onClick={() => deregisterPlayer(player.uuid)}
+          onClick={() => deregisterPlayer(player)}
           className="flex items-center justify-center w-full hover:text-red-700"
         >
           <X className="size-5" />

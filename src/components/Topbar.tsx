@@ -1,5 +1,6 @@
 "use client";
 
+import { useTournament } from "@/context/TournamentContext";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
 
 const TABS = [
@@ -8,11 +9,9 @@ const TABS = [
   { label: "Graphs", href: "graphs" },
 ];
 
-type TopbarProps = {
-  uuid: string;
-};
+export default function Topbar() {
+  const { uuid } = useTournament();
 
-export default function Topbar({ uuid }: TopbarProps) {
   return (
     <nav className="bg-(--accent-color) flex items-center w-full h-15 pl-5 z-50">
       <TabMenu>
