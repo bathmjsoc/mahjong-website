@@ -77,18 +77,18 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <IconButton onClick={() => setIsOpen(!isOpen)} className="size-8">
-        <div
-          className="
-            bg-(--primary-color) text-(--secondary-color)
-            flex items-center justify-center rounded-r-xl
-            -ml-1 mt-5 p-2 h-20 w-10
-          "
-        >
-          <ChevronRight
-            className={`transition duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
-          />
-        </div>
+      {/* Collapse/Expand Sidebar Button */}
+      <IconButton
+        onClick={() => setIsOpen(!isOpen)}
+        className="
+          bg-(--primary-color) text-(--secondary-color)
+          flex items-center justify-center
+          rounded-r-2xl -ml-1 mt-5 h-20 w-10
+        "
+      >
+        <ChevronRight
+          className={`transition duration-500 ${isOpen ? "rotate-180" : "rotate-0"}`}
+        />
       </IconButton>
     </div>
   );
