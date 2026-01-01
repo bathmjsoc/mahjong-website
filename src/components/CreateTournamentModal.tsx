@@ -1,10 +1,10 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
+import { createTournament } from "@/actions/tournaments";
 import FilledButton from "@/elements/FilledButton";
 import LabelledInput from "@/elements/LabelledInput";
 import Modal from "@/elements/Modal";
-import { createTournament } from "@/lib/tournaments";
 
 interface CreateTournamentModalProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export default function CreateTournamentModal({
 
     try {
       setLoading(true);
-      await createTournament(tournamentName.trim());
+      await createTournament(tournamentName);
       closeModal();
     } catch (error) {
       alert(error);

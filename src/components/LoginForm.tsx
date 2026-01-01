@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
+import { signIn } from "@/actions/auth";
 import RegisterModal from "@/components/RegisterModal";
 import FilledButton from "@/elements/FilledButton";
 import LabelledInput from "@/elements/LabelledInput";
 import TextButton from "@/elements/TextButton";
-import { signIn } from "@/lib/auth";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -23,7 +23,7 @@ export default function LoginForm() {
 
     try {
       setLoading(true);
-      await signIn(email.trim(), password);
+      await signIn(email, password);
       router.push("/dashboard");
     } catch (error) {
       alert(error);

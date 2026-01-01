@@ -1,3 +1,5 @@
+"use client";
+
 import { Tab, TabGroup, TabList } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

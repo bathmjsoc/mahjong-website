@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { fetchTournaments } from "@/actions/tournaments";
 import CreateTournamentButton from "@/components/CreateTournamentButton";
 import TournamentList from "@/components/TournamentList";
-import { fetchTournaments } from "@/lib/tournaments";
 
 export const metadata: Metadata = {
   title: "Dashboard",
