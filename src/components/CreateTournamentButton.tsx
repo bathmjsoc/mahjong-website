@@ -15,7 +15,7 @@ export default function CreateTournamentButton() {
 
       <CreateTournamentModal
         isOpen={isOpen}
-        closeModal={() => setIsOpen(false)}
+        closeModalAction={() => setIsOpen(false)}
       />
     </>
   );

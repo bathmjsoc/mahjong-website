@@ -72,7 +72,10 @@ export default function LoginForm() {
         </div>
       </form>
 
-      <RegisterModal isOpen={isOpen} closeModal={() => setIsOpen(false)} />
+      <RegisterModal
+        isOpen={isOpen}
+        closeModalAction={() => setIsOpen(false)}
+      />
     </>
   );
 }

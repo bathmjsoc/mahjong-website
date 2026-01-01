@@ -8,12 +8,12 @@ import Modal from "@/elements/Modal";
 
 type RegisterModalProps = {
   isOpen: boolean;
-  closeModal: () => void;
+  closeModalAction: () => void;
 };
 
 export default function RegisterModal({
   isOpen,
-  closeModal,
+  closeModalAction,
 }: RegisterModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +28,7 @@ export default function RegisterModal({
     try {
       setLoading(true);
       await signUp(email, password);
-      closeModal();
+      closeModalAction();
     } catch (error) {
       alert(error);
     } finally {
@@ -37,7 +37,7 @@ export default function RegisterModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal} title="Create Account">
+    <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
         <LabelledInput
           name="email"
