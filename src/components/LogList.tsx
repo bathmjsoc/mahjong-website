@@ -67,7 +67,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td>
-        <IconButton className="flex items-center justify-center w-full text-(--primary-color)! hover:text-(--negative-color)!">
+        <IconButton className="flex items-center justify-center w-full text-(--primary-color) hover:text-(--negative-color)">
           <Trash2 className="size-5" />
         </IconButton>
       </td>

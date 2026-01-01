@@ -52,7 +52,7 @@ export function TableSeat({
           emptyMessage="No players found"
           placeholder="[EMPTY]"
           buttonClassName="h-8 text-xs"
-          optionsClassName="w-auto!"
+          optionsClassName="w-auto"
         />
       </div>
     </div>

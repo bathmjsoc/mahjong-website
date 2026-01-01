@@ -47,15 +47,15 @@ export function Sidebar() {
           />
 
           <div className="flex space-x-20">
-            <IconButton className="hover:text-(--positive-color)!">
+            <IconButton className="hover:text-(--positive-color)">
               <CirclePlus className="size-7" />
             </IconButton>
 
-            <IconButton className="hover:text-(--negative-color)!">
+            <IconButton className="hover:text-(--negative-color)">
               <CircleMinus className="size-7" />
             </IconButton>
 
-            <IconButton className="hover:text-(--neutral-color)!">
+            <IconButton className="hover:text-(--neutral-color)">
               <RefreshCw className="size-7" />
             </IconButton>
           </div>
@@ -70,7 +70,7 @@ export function Sidebar() {
                 : `Session ${session.number} (${session.date.toLocaleDateString()})`
             }
             getOptionKey={(session) => session.number}
-            buttonClassName="w-88! h-10"
+            buttonClassName="w-88 h-10"
           />
 
           <PlayerList />

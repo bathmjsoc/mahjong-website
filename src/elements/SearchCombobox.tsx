@@ -5,6 +5,7 @@ import {
   ComboboxOptions,
 } from "@headlessui/react";
 import { type Key, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 type SearchComboboxProps<T> = {
   options: T[];
@@ -25,9 +26,9 @@ export function SearchCombobox<T>({
   getOptionKey,
   emptyMessage = "No results found",
   placeholder = "Select an item...",
-  inputClassName = "",
-  optionsClassName = "",
-  optionClassName = "",
+  inputClassName,
+  optionsClassName,
+  optionClassName,
 }: SearchComboboxProps<T>) {
   const [query, setQuery] = useState("");
 
@@ -50,21 +51,20 @@ export function SearchCombobox<T>({
       <ComboboxInput
         onChange={(event) => setQuery(event.target.value)}
         placeholder={placeholder}
-        className={`
-          bg-(--secondary-color) text-(--primary-color)
-          w-full text-center rounded-md p-2 outline-none cursor-text
-          ${inputClassName}
-        `}
+        className={twMerge(
+          "bg-(--secondary-color) text-(--primary-color)",
+          "w-full text-center rounded-md p-2 outline-none cursor-text",
+          inputClassName,
+        )}
       />
       <ComboboxOptions
         anchor="bottom"
-        className={`
-          bg-(--secondary-color) text-(--primary-color)
-          max-h-50! w-(--input-width) z-50 mt-2 p-1 outline-none
-          rounded-lg text-sm no-scrollbar
-          empty:invisible
-          ${optionsClassName}
-        `}
+        className={twMerge(
+          "bg-(--secondary-color) text-(--primary-color)",
+          "max-h-50 w-(--input-width) z-50 mt-2 p-1 outline-none",
+          "rounded-lg text-sm no-scrollbar empty:invisible",
+          optionsClassName,
+        )}
       >
         {filteredOptions.length === 0 && query !== "" ? (
           <div className="text-center text-xs p-1 italic">{emptyMessage}</div>
@@ -73,12 +73,12 @@ export function SearchCombobox<T>({
             <ComboboxOption
               key={getOptionKey(item)}
               value={item}
-              className={`
-                flex items-center justify-center 
-                outline-none cursor-pointer truncate rounded-md p-2
-                transition duration-300 hover:bg-(--primary-color)/25
-                ${optionClassName}
-              `}
+              className={twMerge(
+                "flex items-center justify-center",
+                "outline-none cursor-pointer truncate rounded-md p-2",
+                "transition duration-300 hover:bg-(--primary-color)/25",
+                optionClassName,
+              )}
             >
               {getOptionLabel(item)}
             </ComboboxOption>

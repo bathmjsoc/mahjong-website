@@ -39,7 +39,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
             <IconButton
               onClick={onClose}
-              className="hover:text-(--negative-color)!"
+              className="hover:text-(--negative-color)"
             >
               <X />
             </IconButton>

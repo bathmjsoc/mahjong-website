@@ -21,7 +21,7 @@ export function WinSelector({
   }
 
   return (
-    <DropDown title="食" buttonClassName={`rounded-full size-8! ${className}`}>
+    <DropDown title="食" buttonClassName={`rounded-full size-8 ${className}`}>
       {WIN_TYPES.map((winType) => (
         <DropDown key={winType} title={winType}>
           {tableMembers.map(([wind, player]) => (
