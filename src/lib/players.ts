@@ -9,7 +9,6 @@ export function sortPlayersDescending(
   session: Session,
 ): Player[] {
   return players
-    .filter((player) => player.scores.has(session))
     .slice()
     .sort((a, b) => b.scores.get(session)! - a.scores.get(session)!);
 }
