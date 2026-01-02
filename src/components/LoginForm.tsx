@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
-import RegisterModal from "@/components/RegisterModal";
-import FilledButton from "@/elements/FilledButton";
-import LabelledInput from "@/elements/LabelledInput";
-import TextButton from "@/elements/TextButton";
-import { signIn } from "@/lib/auth";
+import { signIn } from "@/actions/auth";
+import { RegisterModal } from "@/components/RegisterModal";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { TextButton } from "@/elements/TextButton";
 
-export default function LoginForm() {
+export function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function LoginForm() {
 
     try {
       setLoading(true);
-      await signIn(email.trim(), password);
+      await signIn(email, password);
       router.push("/dashboard");
     } catch (error) {
       alert(error);
@@ -72,7 +72,10 @@ export default function LoginForm() {
         </div>
       </form>
 
-      <RegisterModal isOpen={isOpen} closeModal={() => setIsOpen(false)} />
+      <RegisterModal
+        isOpen={isOpen}
+        closeModalAction={() => setIsOpen(false)}
+      />
     </>
   );
 }

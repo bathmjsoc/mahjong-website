@@ -1,8 +1,8 @@
 export function formatTimeAgo(date: Date): string {
   const time = date.getTime();
   const now = Date.now();
-  const diffInSeconds = Math.round((time - now) / 1000);
 
+  const diffInSeconds = Math.round((time - now) / 1000);
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
   const cutoffs = [
@@ -21,4 +21,22 @@ export function formatTimeAgo(date: Date): string {
   }
 
   return rtf.format(diffInSeconds, "second");
+}
+
+export function parseSearch(query: string): Record<string, string> {
+  const result: Record<string, string> = {};
+  const regex = /(\w+)=(?:"([^"]*)"|([^\s"]+))/g;
+
+  for (const match of query.matchAll(regex)) {
+    const key = match[1];
+    result[key] = match[2] ?? match[3];
+  }
+
+  return result;
+}
+
+export function scoreToColor(score: number): string {
+  if (score < 0) return "bg-(--negative-color)";
+  if (score > 0) return "bg-(--positive-color)";
+  return "bg-(--neutral-color)";
 }

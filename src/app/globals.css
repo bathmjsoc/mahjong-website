@@ -5,6 +5,11 @@
   --primary-color: #35363a;
   --secondary-color: #ecebea;
   --accent-color: #285d33;
+
+  --save-color: #60a5fa;
+  --positive-color: #15803d;
+  --neutral-color: #ca8a04;
+  --negative-color: #b91c1c;
 }
 
 @layer utilities {

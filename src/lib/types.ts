@@ -1,7 +1,20 @@
+export type Log = {
+  id: string;
+  winner: Player;
+  losers: Player[];
+  points: number;
+  faan: number;
+  type: string;
+  session: Session;
+  date: Date;
+  others: Player[];
+  disabled: boolean;
+};
+
 export type Player = {
   uuid: string;
   name: string;
-  score: number;
+  scores: Map<Session, number>;
 };
 
 export type Session = {
@@ -10,7 +23,7 @@ export type Session = {
 };
 
 export type Table = {
-  id: number;
+  number: number;
   members: Map<Wind, Player | null>;
 };
 

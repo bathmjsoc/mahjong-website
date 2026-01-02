@@ -1,19 +1,19 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import FilledButton from "@/elements/FilledButton";
-import LabelledInput from "@/elements/LabelledInput";
-import Modal from "@/elements/Modal";
-import { createTournament } from "@/lib/tournaments";
+import { createTournament } from "@/actions/tournaments";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { Modal } from "@/elements/Modal";
 
-interface CreateTournamentModalProps {
+type CreateTournamentModalProps = {
   isOpen: boolean;
-  closeModal: () => void;
-}
+  closeModalAction: () => void;
+};
 
-export default function CreateTournamentModal({
+export function CreateTournamentModal({
   isOpen,
-  closeModal,
+  closeModalAction,
 }: CreateTournamentModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -26,8 +26,8 @@ export default function CreateTournamentModal({
 
     try {
       setLoading(true);
-      await createTournament(tournamentName.trim());
-      closeModal();
+      await createTournament(tournamentName);
+      closeModalAction();
     } catch (error) {
       alert(error);
     } finally {
@@ -36,7 +36,7 @@ export default function CreateTournamentModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal} title="Create Tournament">
+    <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
         <LabelledInput name="tournamentName" required disabled={loading}>
           Tournament Name

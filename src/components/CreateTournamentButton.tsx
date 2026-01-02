@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import CreateTournamentModal from "@/components/CreateTournamentModal";
-import FilledButton from "@/elements/FilledButton";
+import { CreateTournamentModal } from "@/components/CreateTournamentModal";
+import { FilledButton } from "@/elements/FilledButton";
 
-export default function CreateTournamentButton() {
+export function CreateTournamentButton() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ export default function CreateTournamentButton() {
 
       <CreateTournamentModal
         isOpen={isOpen}
-        closeModal={() => setIsOpen(false)}
+        closeModalAction={() => setIsOpen(false)}
       />
     </>
   );

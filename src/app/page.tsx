@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import TextLink from "@/elements/TextLink";
+import { TextLink } from "@/elements/TextLink";
 
 export const metadata: Metadata = {
   title: "Home",
 };
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="flex flex-col min-h-dvh items-center justify-center">
       <span>Hello World!</span>

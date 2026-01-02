@@ -7,7 +7,7 @@ type TournamentCardProps = {
   tournament: Tournament;
 };
 
-export default function TournamentCard({ tournament }: TournamentCardProps) {
+export function TournamentCard({ tournament }: TournamentCardProps) {
   return (
     <Link
       href={`/tournament/${tournament.uuid}`}
