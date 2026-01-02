@@ -1,13 +1,12 @@
 import { Field, Input, Label } from "@headlessui/react";
-import type { ComponentProps, InputHTMLAttributes } from "react";
+import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
 // ComponentProps<typeof Input> doesn't work alone?
-type LabelledInputProps = ComponentProps<typeof Input> &
-  InputHTMLAttributes<HTMLInputElement> & {
-    inputClassName?: string;
-    labelClassName?: string;
-  };
+type LabelledInputProps = ComponentProps<"input"> & {
+  inputClassName?: string;
+  labelClassName?: string;
+};
 
 export function LabelledInput({
   children,
