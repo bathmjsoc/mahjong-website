@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase";
+import { createClient } from "@/lib/supabase";
 
 export type ActionState = {
   error?: string;
@@ -10,6 +10,7 @@ export type ActionState = {
 
 export async function signUp(_: ActionState, formData: FormData) {
   const supabase = await createClient();
+
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -21,6 +22,7 @@ export async function signUp(_: ActionState, formData: FormData) {
 
 export async function signIn(_: ActionState, formData: FormData) {
   const supabase = await createClient();
+
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 

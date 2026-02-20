@@ -10,10 +10,11 @@ export async function createClient() {
     {
       cookies: {
         getAll: () => store.getAll(),
-        setAll: (items) =>
-          items.forEach(({ name, value, options }) =>
-            store.set(name, value, options),
-          ),
+        setAll: (items) => {
+          items.forEach(({ name, value, options }) => {
+            store.set(name, value, options);
+          });
+        },
       },
     },
   );
