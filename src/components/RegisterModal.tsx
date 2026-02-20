@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { type ActionState, signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
@@ -19,6 +19,12 @@ export function RegisterModal({
     signUp,
     null,
   );
+
+  useEffect(() => {
+    if (state?.success) {
+      closeModalAction();
+    }
+  }, [state?.success, closeModalAction]);
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
@@ -44,7 +50,9 @@ export function RegisterModal({
         </LabelledInput>
 
         {state?.error && (
-          <p className="text-red-500 text-xs text-center">{state.error}</p>
+          <p className="text-(--negative-color) text-xs text-center">
+            {state.error}
+          </p>
         )}
 
         <FilledButton type="submit" disabled={isPending}>

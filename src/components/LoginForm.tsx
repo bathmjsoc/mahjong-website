@@ -44,7 +44,9 @@ export function LoginForm() {
         </LabelledInput>
 
         {state?.error && (
-          <p className="text-red-500 text-xs text-center">{state.error}</p>
+          <p className="text-(--negative-color) text-xs text-center">
+            {state.error}
+          </p>
         )}
 
         <FilledButton type="submit" disabled={isPending}>
