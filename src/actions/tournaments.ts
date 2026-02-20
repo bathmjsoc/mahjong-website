@@ -1,11 +1,11 @@
 "use server";
 
-import type { Tournament } from "@/lib/types";
-import { createClient } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
+import { supabaseServer } from "@/lib/supabase_server";
+import type { Tournament } from "@/lib/types";
 
 export async function fetchTournaments(): Promise<Tournament[]> {
-  const supabase = await createClient();
+  const supabase = await supabaseServer();
   const { data } = await supabase
     .from("tournaments")
     .select("*")
@@ -14,8 +14,8 @@ export async function fetchTournaments(): Promise<Tournament[]> {
   return data ?? [];
 }
 
-export async function createTournament(tournamentName: string): Promise<void> {
-  const supabase = await createClient();
+export async function createTournament(tournamentName: string) {
+  const supabase = await supabaseServer();
   await supabase.from("tournaments").insert({
     name: tournamentName,
   });
@@ -24,7 +24,7 @@ export async function createTournament(tournamentName: string): Promise<void> {
 }
 
 export async function getTournamentName(tournamentId: string): Promise<string> {
-  const supabase = await createClient();
+  const supabase = await supabaseServer();
   const { data } = await supabase
     .from("tournaments")
     .select("name")

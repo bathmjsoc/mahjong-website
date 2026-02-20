@@ -1,35 +1,13 @@
-import type {
-  Log,
-  Player,
-  Session,
-  Table,
-  Tournament,
-  Wind,
-} from "@/lib/types";
-
-export function generateTables(num: number): Table[] {
-  return Array.from({ length: num }, (_, i) => ({
-    number: i + 1,
-    members: new Map<Wind, Player | null>([
-      ["east", generatePlayers(1)[0]],
-      ["south", generatePlayers(1)[0]],
-      ["west", generatePlayers(1)[0]],
-      ["north", null],
-    ]),
-  }));
-}
+import type { Log, Player, Session } from "@/lib/types";
 
 export function generatePlayers(num: number): Player[] {
   return Array.from(
     { length: num },
     (_, i): Player => ({
-      uuid: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       name: `Player ${i + 1}`,
-      scores: new Map<Session, number>([
-        [generateSessions(3)[0], Math.floor(Math.random() * 1000) - 500],
-        [generateSessions(3)[1], Math.floor(Math.random() * 1000) - 500],
-        [generateSessions(3)[2], Math.floor(Math.random() * 1000) - 500],
-      ]),
+      is_registered: true,
+      is_locked: false,
     }),
   );
 }

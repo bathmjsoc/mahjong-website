@@ -1,8 +1,7 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createTournament } from "@/actions/tournaments";
-import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 
@@ -15,36 +14,22 @@ export function CreateTournamentModal({
   isOpen,
   closeModalAction,
 }: CreateTournamentModalProps) {
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // Prevent page reload
-    if (loading) return;
-
-    const formData = new FormData(e.currentTarget);
+  async function handleSubmit(formData: FormData) {
     const tournamentName = formData.get("tournamentName") as string;
 
-    try {
-      setLoading(true);
-      await createTournament(tournamentName);
-      closeModalAction();
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
+    await createTournament(tournamentName);
+    router.refresh();
+    closeModalAction();
   }
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
-        <LabelledInput name="tournamentName" required disabled={loading}>
+      <form action={handleSubmit} className="flex flex-col space-y-3 w-xs">
+        <LabelledInput name="tournamentName" required>
           Tournament Name
         </LabelledInput>
-
-        <FilledButton type="submit" disabled={loading}>
-          Create Tournament
-        </FilledButton>
       </form>
     </Modal>
   );

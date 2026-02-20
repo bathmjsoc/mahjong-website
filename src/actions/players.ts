@@ -1,43 +1,71 @@
 "use server";
 
-import { generatePlayers } from "@/lib/mock";
-import type { Player, Table, Wind } from "@/lib/types";
+import { supabaseServer } from "@/lib/supabase_server";
+import type { Player } from "@/lib/types";
 
-// TODO: Replace with database fetch
-export async function fetchPlayers(tournamentUuid: string): Promise<Player[]> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`fetchPlayers(tournamentUuid=${tournamentUuid})`);
-  return generatePlayers(50);
+export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
+  const supabase = await supabaseServer();
+  const { data } = await supabase
+    .from("players")
+    .select("*")
+    .eq("tournament_id", tournamentId)
+    .order("name", { ascending: true });
+
+  return data ?? [];
 }
 
-export async function handleSetSeatOccupant(
-  tournamentUuid: string,
-  table: Table,
-  wind: Wind,
-  player: Player | null,
-): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(
-    `setPlayerAt(tournamentUuid=${tournamentUuid}, tableNumber=${table.number}, wind=${wind}, playerUuid=${player?.uuid ?? null})`,
-  );
+export async function registerPlayer(player: Player): Promise<void> {
+  const supabase = await supabaseServer();
+  await supabase
+    .from("players")
+    .update({ is_registered: true })
+    .eq("id", player.id);
 }
 
-export async function handleRegisterPlayer(
-  tournamentUuid: string,
-  player: Player,
-): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(
-    `registerPlayer(tournamentUuid=${tournamentUuid}, playerUuid=${player.uuid})`,
-  );
+export async function deregisterPlayer(player: Player): Promise<void> {
+  const supabase = await supabaseServer();
+  await supabase
+    .from("players")
+    .update({ is_registered: false })
+    .eq("id", player.id);
 }
 
-export async function handleDeregisterPlayer(
-  tournamentUuid: string,
-  player: Player,
+export async function lockPlayer(player: Player): Promise<void> {
+  const supabase = await supabaseServer();
+  await supabase
+    .from("players")
+    .update({ is_locked: true })
+    .eq("id", player.id);
+}
+
+export async function unlockPlayer(player: Player): Promise<void> {
+  const supabase = await supabaseServer();
+  await supabase
+    .from("players")
+    .update({ is_locked: false })
+    .eq("id", player.id);
+}
+
+export async function deregisterAllPlayers(tournamentId: string) {
+  const supabase = await supabaseServer();
+  await supabase
+    .from("players")
+    .update({ is_registered: false })
+    .eq("tournament_id", tournamentId);
+}
+
+export async function createPlayer(
+  tournamentId: string,
+  playerName: string,
 ): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(
-    `deregisterPlayer(tournamentUuid=${tournamentUuid}, playerUuid=${player.uuid})`,
-  );
+  const supabase = await supabaseServer();
+  await supabase.from("players").insert({
+    tournament_id: tournamentId,
+    name: playerName,
+  });
+}
+
+export async function deletePlayer(player: Player): Promise<void> {
+  const supabase = await supabaseServer();
+  await supabase.from("players").delete().eq("id", player.id);
 }

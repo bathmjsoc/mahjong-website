@@ -12,9 +12,10 @@ export type Log = {
 };
 
 export type Player = {
-  uuid: string;
+  id: string;
   name: string;
-  scores: Map<Session, number>;
+  is_registered: boolean;
+  is_locked: boolean;
 };
 
 export type Session = {
@@ -23,8 +24,12 @@ export type Session = {
 };
 
 export type Table = {
-  number: number;
-  members: Map<Wind, Player | null>;
+  id: string;
+  east_id: string;
+  south_id: string;
+  west_id: string;
+  north_id: string;
+  created_at: string;
 };
 
 export type Tournament = {

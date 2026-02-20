@@ -1,15 +1,17 @@
 "use client";
 
 import { Archive, Trash2 } from "lucide-react";
+import { deleteTable } from "@/actions/tables";
 import { TableSeat } from "@/components/TableSeat";
 import { IconButton } from "@/elements/IconButton";
 import type { Table } from "@/lib/types";
 
 type TableProps = {
   table: Table;
+  number: number;
 };
 
-export function TableCard({ table }: TableProps) {
+export function TableCard({ table, number }: TableProps) {
   return (
     <div className="grid grid-cols-5 grid-rows-5 w-70 h-70">
       <TableSeat
@@ -43,7 +45,7 @@ export function TableCard({ table }: TableProps) {
 
       {/* Table Number */}
       <div className="flex items-center justify-center text-(--primary-color) text-7xl row-start-3 col-start-3">
-        {table.number}
+        {number + 1}
       </div>
 
       {/* Save/Delete Buttons */}
@@ -54,7 +56,10 @@ export function TableCard({ table }: TableProps) {
           </div>
         </IconButton>
 
-        <IconButton className="hover:text-(--negative-color)">
+        <IconButton
+          onClick={() => deleteTable(table)}
+          className="hover:text-(--negative-color)"
+        >
           <div className="bg-(--primary-color) flex items-center justify-center rounded-full size-8">
             <Trash2 className="size-4" />
           </div>

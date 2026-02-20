@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { updateOccupant } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { getSeatOccupant } from "@/lib/players";
 import type { Player, Table, Wind } from "@/lib/types";
 
 type TableSeatProps = {
@@ -14,6 +13,13 @@ type TableSeatProps = {
   buttonClassName?: string;
 };
 
+const windToKey = {
+  east: "east_id",
+  south: "south_id",
+  west: "west_id",
+  north: "north_id",
+} as const;
+
 export function TableSeat({
   table,
   wind,
@@ -21,14 +27,15 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { sortedPlayers, setSeatOccupant } = useTournament();
+  const { duplicatePlayers, registeredPlayers } = useTournament();
+  const occupant =
+    registeredPlayers.find((p) => table[windToKey[wind]] === p.id) ?? null;
 
-  const occupant = getSeatOccupant(table, wind);
-  const [selectedPlayer, setSelectedPlayer] = useState(occupant);
+  const isDuplicate = !!occupant && duplicatePlayers.has(occupant.id);
 
   async function handleSelect(player: Player | null) {
-    setSelectedPlayer(player);
-    await setSeatOccupant(table, wind, player);
+    if (!player) return;
+    await updateOccupant(table, wind, player);
   }
 
   return (
@@ -45,13 +52,14 @@ export function TableSeat({
 
         {/* Player Select Menu */}
         <RoundedListbox<Player>
-          value={selectedPlayer}
-          options={sortedPlayers}
+          value={occupant}
+          options={registeredPlayers}
           onChange={handleSelect}
           getOptionLabel={(player) => player.name}
-          getOptionKey={(player) => player.uuid}
+          getOptionKey={(player) => player.id}
           emptyMessage="No players found"
           placeholder="[EMPTY]"
+          highlight={isDuplicate}
           buttonClassName="h-8 text-xs"
           optionsClassName="w-auto"
         />

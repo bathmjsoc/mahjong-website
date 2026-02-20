@@ -1,14 +1,13 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { deregisterPlayer, lockPlayer, unlockPlayer } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
-import { getPlayerScore } from "@/lib/players";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
 
 export function PlayerList() {
-  const { rankedPlayers } = useTournament();
+  const { registeredPlayers } = useTournament();
 
   return (
     <table className="table-fixed">
@@ -21,9 +20,9 @@ export function PlayerList() {
         </tr>
       </thead>
       <tbody>
-        {rankedPlayers.length > 0 ? (
-          rankedPlayers.map((player) => (
-            <PlayerRow key={player.uuid} player={player} />
+        {registeredPlayers.length > 0 ? (
+          registeredPlayers.map((player) => (
+            <PlayerRow key={player.id} player={player} />
           ))
         ) : (
           <tr>
@@ -42,17 +41,17 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
-  const { selectedSession, deregisterPlayer } = useTournament();
+  const score = 0;
 
-  const [isLocked, setIsLocked] = useState(false);
-
-  const score = getPlayerScore(player, selectedSession);
+  function handleSelect() {
+    player.is_locked ? unlockPlayer(player) : lockPlayer(player);
+  }
 
   return (
     <tr>
       <td>
         <IconButton
-          onClick={() => setIsLocked(!isLocked)}
+          onClick={handleSelect}
           className="flex items-center justify-center w-full"
         >
           <div className="relative size-4">
@@ -60,14 +59,18 @@ function PlayerRow({ player }: PlayerRowProps) {
               className={twMerge(
                 "text-(--neutral-color) hover:text-(--secondary-color)",
                 "absolute transition duration-300 size-4",
-                isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
+                player.is_locked
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-50",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
                 "text-(--secondary-color) hover:text-(--neutral-color)",
                 "absolute transition duration-300 size-4",
-                isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
+                player.is_locked
+                  ? "opacity-0 scale-50"
+                  : "opacity-100 scale-100",
               )}
             />
           </div>
