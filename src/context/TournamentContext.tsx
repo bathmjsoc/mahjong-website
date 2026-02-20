@@ -22,7 +22,7 @@ import { sortTablesAscending } from "@/lib/tables";
 import type { Log, Player, Session, Table, Wind } from "@/lib/types";
 
 type TournamentContextType = {
-  uuid: string;
+  tournamentId: string;
   sessions: Session[];
   players: Player[];
   tables: Table[];
@@ -52,7 +52,7 @@ const TournamentContext = createContext<TournamentContextType | undefined>(
 type TournamentProviderProps = {
   children: ReactNode;
   data: {
-    uuid: string;
+    tournamentId: string;
     players: Player[];
     sessions: Session[];
     tables: Table[];
@@ -86,11 +86,11 @@ export function TournamentProvider({
   }, [data.tables]);
 
   async function registerPlayer(player: Player) {
-    await handleRegisterPlayer(data.uuid, player);
+    await handleRegisterPlayer(data.tournamentId, player);
   }
 
   async function deregisterPlayer(player: Player) {
-    await handleDeregisterPlayer(data.uuid, player);
+    await handleDeregisterPlayer(data.tournamentId, player);
   }
 
   async function setSeatOccupant(
@@ -98,7 +98,7 @@ export function TournamentProvider({
     wind: Wind,
     player: Player | null,
   ) {
-    await handleSetSeatOccupant(data.uuid, table, wind, player);
+    await handleSetSeatOccupant(data.tournamentId, table, wind, player);
   }
 
   return (

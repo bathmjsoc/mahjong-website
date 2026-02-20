@@ -16,10 +16,10 @@ type TournamentLayoutProps = {
 export async function generateMetadata({
   params,
 }: TournamentLayoutProps): Promise<Metadata> {
-  const { uuid } = await params;
+  const { uuid: tournamentId } = await params
 
   return {
-    title: await getTournamentName(uuid),
+    title: await getTournamentName(tournamentId),
   };
 }
 
@@ -27,17 +27,17 @@ export default async function TournamentLayout({
   children,
   params,
 }: TournamentLayoutProps) {
-  const { uuid } = await params;
+  const { uuid: tournamentId } = await params
 
   const [players, sessions, tables, logs] = await Promise.all([
-    fetchPlayers(uuid),
-    fetchSessions(uuid),
-    fetchTables(uuid),
-    fetchLogs(uuid),
+    fetchPlayers(tournamentId),
+    fetchSessions(tournamentId),
+    fetchTables(tournamentId),
+    fetchLogs(tournamentId),
   ]);
 
   return (
-    <TournamentProvider data={{ uuid, sessions, players, tables, logs }}>
+    <TournamentProvider data={{ tournamentId, sessions, players, tables, logs }}>
       <div className="min-w-max">
         <Topbar />
         <main>{children}</main>

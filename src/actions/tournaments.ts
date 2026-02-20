@@ -23,12 +23,12 @@ export async function createTournament(tournamentName: string): Promise<void> {
   revalidatePath("/dashboard");
 }
 
-export async function getTournamentName(uuid: string): Promise<string> {
+export async function getTournamentName(tournamentId: string): Promise<string> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("tournaments")
     .select("name")
-    .eq("id", uuid)
+    .eq("id", tournamentId)
     .single();
 
   return data?.name ?? null;
