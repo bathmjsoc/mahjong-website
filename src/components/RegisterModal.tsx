@@ -1,7 +1,7 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
-import { signUp } from "@/actions/auth";
+import { useActionState } from "react";
+import { type ActionState, signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -15,36 +15,20 @@ export function RegisterModal({
   isOpen,
   closeModalAction,
 }: RegisterModalProps) {
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // Prevent page reload
-    if (loading) return;
-
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    try {
-      setLoading(true);
-      await signUp(email, password);
-      closeModalAction();
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+    signUp,
+    null,
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-3 w-xs">
+      <form action={formAction} className="flex flex-col space-y-3 w-xs">
         <LabelledInput
           name="email"
           type="email"
           autoComplete="email"
           required
-          disabled={loading}
+          disabled={isPending}
         >
           Email Address
         </LabelledInput>
@@ -54,12 +38,16 @@ export function RegisterModal({
           type="password"
           autoComplete="new-password"
           required
-          disabled={loading}
+          disabled={isPending}
         >
           Password
         </LabelledInput>
 
-        <FilledButton type="submit" disabled={loading}>
+        {state?.error && (
+          <p className="text-red-500 text-xs text-center">{state.error}</p>
+        )}
+
+        <FilledButton type="submit" disabled={isPending}>
           Create Account
         </FilledButton>
       </form>
