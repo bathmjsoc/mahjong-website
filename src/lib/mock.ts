@@ -19,20 +19,6 @@ export function generateTables(num: number): Table[] {
   }));
 }
 
-export function generateTournaments(num: number): Tournament[] {
-  return Array.from(
-    { length: num },
-    (_, i): Tournament => ({
-      uuid: crypto.randomUUID(),
-      name: `Test Tournament ${i + 1}`,
-      members: Math.floor(Math.random() * 100),
-      last_updated: new Date(
-        Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000),
-      ),
-    }),
-  );
-}
-
 export function generatePlayers(num: number): Player[] {
   return Array.from(
     { length: num },
