@@ -25,8 +25,8 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
           <Users className="size-4" />
           {tournament.members}
         </div>
-        <time dateTime={tournament.lastUpdated.toISOString()}>
-          Updated {formatTimeAgo(tournament.lastUpdated)}
+        <time dateTime={tournament.last_updated}>
+          Updated {formatTimeAgo(tournament.last_updated)}
         </time>
       </div>
     </Link>

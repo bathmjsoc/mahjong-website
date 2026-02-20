@@ -1,5 +1,5 @@
-export function formatTimeAgo(date: Date): string {
-  const time = date.getTime();
+export function formatTimeAgo(date: string): string {
+  const time = new Date(date).getTime();
   const now = Date.now();
 
   const diffInSeconds = Math.round((time - now) / 1000);

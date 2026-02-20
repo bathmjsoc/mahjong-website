@@ -31,7 +31,7 @@ export type Tournament = {
   uuid: string;
   name: string;
   members: number;
-  lastUpdated: Date;
+  last_updated: string;
 };
 
 export type Wind = "east" | "south" | "west" | "north";

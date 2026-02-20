@@ -26,7 +26,7 @@ export function generateTournaments(num: number): Tournament[] {
       uuid: crypto.randomUUID(),
       name: `Test Tournament ${i + 1}`,
       members: Math.floor(Math.random() * 100),
-      lastUpdated: new Date(
+      last_updated: new Date(
         Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000),
       ),
     }),
