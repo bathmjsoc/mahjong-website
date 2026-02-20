@@ -10,7 +10,7 @@ type TournamentCardProps = {
 export function TournamentCard({ tournament }: TournamentCardProps) {
   return (
     <Link
-      href={`/tournament/${tournament.uuid}`}
+      href={`/tournament/${tournament.id}`}
       className="
         bg-(--primary-color) text-(--secondary-color)
         w-full max-w-sm space-y-10 p-3 rounded-lg
@@ -25,9 +25,7 @@ export function TournamentCard({ tournament }: TournamentCardProps) {
           <Users className="size-4" />
           {tournament.members}
         </div>
-        <time dateTime={tournament.last_updated}>
-          Updated {formatTimeAgo(tournament.last_updated)}
-        </time>
+        Updated {formatTimeAgo(tournament.last_updated)}
       </div>
     </Link>
   );

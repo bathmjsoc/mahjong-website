@@ -20,7 +20,7 @@ export function TournamentList({ tournaments }: TournamentListProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
       {sortedTournaments.map((tournament) => (
-        <TournamentCard key={tournament.uuid} tournament={tournament} />
+        <TournamentCard key={tournament.id} tournament={tournament} />
       ))}
     </div>
   );

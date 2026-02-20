@@ -28,7 +28,7 @@ export type Table = {
 };
 
 export type Tournament = {
-  uuid: string;
+  id: string;
   name: string;
   members: number;
   last_updated: string;
