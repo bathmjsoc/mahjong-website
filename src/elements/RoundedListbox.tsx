@@ -35,16 +35,14 @@ export function RoundedListbox<T>({
   optionClassName,
 }: RoundedListboxProps<T>) {
   const isPlaceholder = value === null;
-  const shouldHighlight = isPlaceholder || highlight;
 
   return (
     <Listbox value={value} onChange={onChange}>
       <ListboxButton
         className={twMerge(
-          "bg-(--secondary-color)",
-          shouldHighlight
-            ? "text-(--negative-color)"
-            : "text-(--primary-color)",
+          highlight || isPlaceholder
+            ? "bg-(--secondary-color) text-(--negative-color)"
+            : "bg-(--secondary-color) text-(--primary-color)",
           "w-full text-center font-bold truncate rounded-full outline-none cursor-pointer",
           "transition duration-300 hover:bg-(--secondary-color)/75",
           buttonClassName,
