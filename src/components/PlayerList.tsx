@@ -1,14 +1,15 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { deregisterPlayer, lockPlayer, unlockPlayer } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
 
-export function PlayerList() {
-  const { registeredPlayers } = useTournament();
+type PlayerListProps = {
+  players: Player[];
+};
 
+export function PlayerList({ players }: PlayerListProps) {
   return (
     <table className="table-fixed">
       <thead>
@@ -20,17 +21,9 @@ export function PlayerList() {
         </tr>
       </thead>
       <tbody>
-        {registeredPlayers.length > 0 ? (
-          registeredPlayers.map((player) => (
-            <PlayerRow key={player.id} player={player} />
-          ))
-        ) : (
-          <tr>
-            <td colSpan={4} className="text-center text-sm pt-10 italic">
-              No registered players
-            </td>
-          </tr>
-        )}
+        {players.map((player) => (
+          <PlayerRow key={player.id} player={player} />
+        ))}
       </tbody>
     </table>
   );
@@ -44,7 +37,7 @@ function PlayerRow({ player }: PlayerRowProps) {
   const score = 0;
 
   function handleSelect() {
-    player.is_locked ? unlockPlayer(player) : lockPlayer(player);
+    player.locked ? unlockPlayer(player) : lockPlayer(player);
   }
 
   return (
@@ -59,32 +52,34 @@ function PlayerRow({ player }: PlayerRowProps) {
               className={twMerge(
                 "text-(--neutral-color) hover:text-(--secondary-color)",
                 "absolute transition duration-300 size-4",
-                player.is_locked
-                  ? "opacity-100 scale-100"
-                  : "opacity-0 scale-50",
+                player.locked ? "opacity-100 scale-100" : "opacity-0 scale-50",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
                 "text-(--secondary-color) hover:text-(--neutral-color)",
                 "absolute transition duration-300 size-4",
-                player.is_locked
-                  ? "opacity-0 scale-50"
-                  : "opacity-100 scale-100",
+                player.locked ? "opacity-0 scale-50" : "opacity-100 scale-100",
               )}
             />
           </div>
         </IconButton>
       </td>
 
-      <td className="border-(--secondary-color) border-2 text-left p-2 truncate">
+      <td
+        className={twMerge(
+          "border-(--secondary-color) border-2 text-left p-2 truncate",
+          "transition duration-300",
+          player.locked ? "text-(--neutral-color)" : "text-(--secondary-color)",
+        )}
+      >
         {player.name}
       </td>
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-center",
-          scoreToColor(score ?? 0),
+          "border-(--secondary-color) border-2 text-center p-2",
+          scoreToColor(score),
         )}
       >
         {score}

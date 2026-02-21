@@ -2,7 +2,7 @@ import { Field, Input, Label } from "@headlessui/react";
 import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-// ComponentProps<typeof Input> doesn't work alone?
+// ComponentProps<typeof Input> doesn't work
 type LabelledInputProps = ComponentProps<"input"> & {
   inputClassName?: string;
   labelClassName?: string;

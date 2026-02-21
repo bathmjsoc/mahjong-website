@@ -4,20 +4,26 @@ import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { deregisterAllPlayers, registerPlayer } from "@/actions/players";
-import { CreatePlayerModal } from "@/components/CreatePlayerModal";
-import { DeletePlayerModal } from "@/components/DeletePlayerModal";
+import { createSession } from "@/actions/sessions";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
+import { CreatePlayerModal } from "@/modals/CreatePlayerModal";
+import { DeletePlayerModal } from "@/modals/DeletePlayerModal";
 
 export function Sidebar() {
-  const { players, tournamentId } = useTournament();
+  const { players, registeredPlayers, tournamentId } = useTournament();
 
   const [isOpen, setIsOpen] = useState(true);
   const [isCreatePlayerModalOpen, setIsCreatePlayerModalOpen] = useState(false);
   const [isDeletePlayerModalOpen, setIsDeletePlayerModalOpen] = useState(false);
+
+  async function handleRefresh() {
+    await deregisterAllPlayers(tournamentId);
+    await createSession(tournamentId);
+  }
 
   return (
     <>
@@ -29,7 +35,7 @@ export function Sidebar() {
             isOpen ? "w-md px-5" : "w-0 px-0",
           )}
         >
-          <div className="flex flex-col space-y-5 items-center max-w-md">
+          <div className="flex flex-col space-y-5 items-center max-w-md min-w-max">
             <SearchCombobox<Player>
               options={players}
               onSelect={(player) => registerPlayer(player)}
@@ -56,14 +62,21 @@ export function Sidebar() {
               </IconButton>
 
               <IconButton
-                onClick={() => deregisterAllPlayers(tournamentId)}
+                onClick={handleRefresh}
                 className="hover:text-(--neutral-color)"
               >
                 <RefreshCw className="size-7" />
               </IconButton>
             </div>
 
-            <PlayerList />
+            {registeredPlayers.length > 0 && (
+              <>
+                <span className="text-xs">
+                  {registeredPlayers.length} Player(s) Registered
+                </span>
+                <PlayerList players={registeredPlayers} />
+              </>
+            )}
           </div>
         </div>
 

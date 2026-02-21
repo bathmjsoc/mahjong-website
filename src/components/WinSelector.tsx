@@ -5,18 +5,13 @@ import type { Player, Table } from "@/lib/types";
 
 type WinSelectorProps = {
   table: Table;
-  placeholder?: string;
   className?: string;
 };
 
 const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 
-export function WinSelector({
-  table,
-  placeholder = "[EMPTY]",
-  className,
-}: WinSelectorProps) {
+export function WinSelector({ table, className }: WinSelectorProps) {
   const { players } = useTournament();
 
   const tableIds = [
@@ -41,7 +36,7 @@ export function WinSelector({
       {WIN_TYPES.map((winType) => (
         <DropDown key={winType} title={winType}>
           {tableMembers.map((player) => (
-            <DropDown key={player?.id} title={player?.name ?? placeholder}>
+            <DropDown key={player?.id} title={player?.name ?? "[EMPTY]"}>
               {FAAN_OPTIONS.map((faan) => (
                 <DropDown.Item
                   key={faan}

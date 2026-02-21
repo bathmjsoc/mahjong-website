@@ -14,13 +14,13 @@ export type Log = {
 export type Player = {
   id: string;
   name: string;
-  is_registered: boolean;
-  is_locked: boolean;
+  registered: boolean;
+  locked: boolean;
 };
 
 export type Session = {
+  id: string;
   number: number;
-  date: string;
 };
 
 export type Table = {
@@ -29,14 +29,14 @@ export type Table = {
   south_id: string;
   west_id: string;
   north_id: string;
-  created_at: string;
 };
 
 export type Tournament = {
   id: string;
   name: string;
   members: number;
-  last_updated: string;
+  last_updated: Date;
 };
 
 export type Wind = "east" | "south" | "west" | "north";
+export type WindKey = `${Wind}_id`;

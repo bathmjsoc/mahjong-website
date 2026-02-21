@@ -2,10 +2,10 @@
 
 import { useActionState, useState } from "react";
 import { type ActionState, signIn } from "@/actions/auth";
-import { RegisterModal } from "@/components/RegisterModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
+import { RegisterModal } from "@/modals/RegisterModal";
 
 export function LoginForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
@@ -27,6 +27,7 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="email"
+          autoFocus={true}
           required
           disabled={isPending}
         >

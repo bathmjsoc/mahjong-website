@@ -3,7 +3,7 @@ import { updateOccupant } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import type { Player, Table, Wind } from "@/lib/types";
+import type { Player, Table, Wind, WindKey } from "@/lib/types";
 
 type TableSeatProps = {
   table: Table;
@@ -12,13 +12,6 @@ type TableSeatProps = {
   tableClassName?: string;
   buttonClassName?: string;
 };
-
-const windToKey = {
-  east: "east_id",
-  south: "south_id",
-  west: "west_id",
-  north: "north_id",
-} as const;
 
 export function TableSeat({
   table,
@@ -29,9 +22,10 @@ export function TableSeat({
 }: TableSeatProps) {
   const { duplicatePlayers, registeredPlayers } = useTournament();
   const occupant =
-    registeredPlayers.find((p) => table[windToKey[wind]] === p.id) ?? null;
-
-  const isDuplicate = !!occupant && duplicatePlayers.has(occupant.id);
+    registeredPlayers.find(
+      (player) => table[`${wind}_id` as WindKey] === player.id,
+    ) ?? null;
+  const isDuplicate = occupant ? duplicatePlayers.has(occupant.id) : false;
 
   async function handleSelect(player: Player | null) {
     if (!player) return;

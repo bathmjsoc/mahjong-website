@@ -1,5 +1,4 @@
 import { TournamentCard } from "@/components/TournamentCard";
-import { sortTournamentsNewest } from "@/lib/tournaments";
 import type { Tournament } from "@/lib/types";
 
 type TournamentListProps = {
@@ -15,11 +14,9 @@ export function TournamentList({ tournaments }: TournamentListProps) {
     );
   }
 
-  const sortedTournaments = sortTournamentsNewest(tournaments);
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
-      {sortedTournaments.map((tournament) => (
+      {tournaments.map((tournament) => (
         <TournamentCard key={tournament.id} tournament={tournament} />
       ))}
     </div>
