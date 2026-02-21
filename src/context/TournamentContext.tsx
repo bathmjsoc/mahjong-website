@@ -10,11 +10,10 @@ import {
 } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
+import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { supabaseBrowser } from "@/lib/supabase_client";
-import type { Log, Player, Table } from "@/lib/types";
-import { fetchSessions } from "@/actions/sessions";
-import { Session } from "node:inspector";
+import type { Log, Player, Session, Table } from "@/lib/types";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -76,6 +75,16 @@ export function TournamentProvider({
         },
         () => fetchTables(tournamentId).then(setTables),
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sessions",
+          filter: `tournament_id=eq.${tournamentId}`,
+        },
+        () => fetchSessions(tournamentId).then(setSessions),
+      )
       .subscribe();
 
     return () => {
@@ -84,7 +93,7 @@ export function TournamentProvider({
   }, [tournamentId, supabase]);
 
   const registeredPlayers = useMemo(
-    () => players.filter((player) => player.is_registered),
+    () => players.filter((player) => player.registered),
     [players],
   );
 
