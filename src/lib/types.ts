@@ -20,7 +20,7 @@ export type Player = {
 
 export type Session = {
   number: number;
-  date: Date;
+  date: string;
 };
 
 export type Table = {

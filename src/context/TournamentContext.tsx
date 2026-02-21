@@ -13,6 +13,8 @@ import { fetchPlayers } from "@/actions/players";
 import { fetchTables } from "@/actions/tables";
 import { supabaseBrowser } from "@/lib/supabase_client";
 import type { Log, Player, Table } from "@/lib/types";
+import { fetchSessions } from "@/actions/sessions";
+import { Session } from "node:inspector";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -20,6 +22,7 @@ type TournamentContextType = {
   registeredPlayers: Player[];
   duplicatePlayers: Set<string>;
   logs: Log[];
+  sessions: Session[];
   tables: Table[];
 };
 
@@ -40,11 +43,13 @@ export function TournamentProvider({
 
   const [players, setPlayers] = useState<Player[]>([]);
   const [logs, setLogs] = useState<Log[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
 
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
     fetchLogs(tournamentId).then(setLogs);
+    fetchSessions(tournamentId).then(setSessions);
     fetchTables(tournamentId).then(setTables);
 
     const channel = supabase
@@ -115,6 +120,7 @@ export function TournamentProvider({
         registeredPlayers,
         duplicatePlayers,
         logs,
+        sessions,
         tables,
       }}
     >
