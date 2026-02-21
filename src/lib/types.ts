@@ -12,26 +12,31 @@ export type Log = {
 };
 
 export type Player = {
-  uuid: string;
+  id: string;
   name: string;
-  scores: Map<Session, number>;
+  registered: boolean;
+  locked: boolean;
 };
 
 export type Session = {
+  id: string;
   number: number;
-  date: Date;
 };
 
 export type Table = {
-  number: number;
-  members: Map<Wind, Player | null>;
+  id: string;
+  east_id: string;
+  south_id: string;
+  west_id: string;
+  north_id: string;
 };
 
 export type Tournament = {
-  uuid: string;
+  id: string;
   name: string;
   members: number;
-  lastUpdated: Date;
+  last_updated: Date;
 };
 
 export type Wind = "east" | "south" | "west" | "north";
+export type WindKey = `${Wind}_id`;

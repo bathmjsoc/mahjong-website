@@ -4,45 +4,25 @@ import {
   createContext,
   type ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
-import {
-  handleDeregisterPlayer,
-  handleRegisterPlayer,
-  handleSetSeatOccupant,
-} from "@/actions/players";
-import {
-  getActivePlayers,
-  sortPlayersAlphabetical,
-  sortPlayersDescending,
-} from "@/lib/players";
-import { sortSessionsNewest } from "@/lib/sessions";
-import { sortTablesAscending } from "@/lib/tables";
-import type { Log, Player, Session, Table, Wind } from "@/lib/types";
+import { fetchLogs } from "@/actions/logs";
+import { fetchPlayers } from "@/actions/players";
+import { fetchSessions } from "@/actions/sessions";
+import { fetchTables } from "@/actions/tables";
+import { supabaseBrowser } from "@/lib/supabase_client";
+import type { Log, Player, Session, Table } from "@/lib/types";
 
 type TournamentContextType = {
-  uuid: string;
-  sessions: Session[];
+  tournamentId: string;
   players: Player[];
-  tables: Table[];
+  registeredPlayers: Player[];
+  duplicatePlayers: Set<string>;
   logs: Log[];
-
-  selectedSession: Session;
-  setSelectedSession: (session: Session) => void;
-
-  sortedSessions: Session[];
-  sortedPlayers: Player[];
-  rankedPlayers: Player[];
-  sortedTables: Table[];
-
-  registerPlayer: (player: Player) => Promise<void>;
-  deregisterPlayer: (player: Player) => Promise<void>;
-  setSeatOccupant: (
-    table: Table,
-    wind: Wind,
-    player: Player | null,
-  ) => Promise<void>;
+  sessions: Session[];
+  tables: Table[];
 };
 
 const TournamentContext = createContext<TournamentContextType | undefined>(
@@ -51,69 +31,106 @@ const TournamentContext = createContext<TournamentContextType | undefined>(
 
 type TournamentProviderProps = {
   children: ReactNode;
-  data: {
-    uuid: string;
-    players: Player[];
-    sessions: Session[];
-    tables: Table[];
-    logs: Log[];
-  };
+  tournamentId: string;
 };
 
 export function TournamentProvider({
   children,
-  data,
+  tournamentId,
 }: TournamentProviderProps) {
-  const sortedSessions = useMemo(() => {
-    return sortSessionsNewest(data.sessions);
-  }, [data.sessions]);
+  const supabase = supabaseBrowser();
 
-  const [selectedSession, setSelectedSession] = useState(() =>
-    data.sessions.length > 1 ? sortedSessions[1] : data.sessions[0],
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [logs, setLogs] = useState<Log[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [tables, setTables] = useState<Table[]>([]);
+
+  useEffect(() => {
+    fetchPlayers(tournamentId).then(setPlayers);
+    fetchLogs(tournamentId).then(setLogs);
+    fetchSessions(tournamentId).then(setSessions);
+    fetchTables(tournamentId).then(setTables);
+
+    const channel = supabase
+      .channel(`tournament_${tournamentId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "players",
+          filter: `tournament_id=eq.${tournamentId}`,
+        },
+        () => {
+          fetchPlayers(tournamentId).then(setPlayers);
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "tables",
+          filter: `tournament_id=eq.${tournamentId}`,
+        },
+        () => fetchTables(tournamentId).then(setTables),
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sessions",
+          filter: `tournament_id=eq.${tournamentId}`,
+        },
+        () => fetchSessions(tournamentId).then(setSessions),
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel).then();
+    };
+  }, [tournamentId, supabase]);
+
+  const registeredPlayers = useMemo(
+    () => players.filter((player) => player.registered),
+    [players],
   );
 
-  const sortedPlayers = useMemo(() => {
-    return sortPlayersAlphabetical(data.players);
-  }, [data.players]);
+  const duplicatePlayers = useMemo(() => {
+    const seen = new Set<string>();
+    const duplicates = new Set<string>();
 
-  const rankedPlayers = useMemo(() => {
-    const sessionPlayers = getActivePlayers(data.players, selectedSession);
-    return sortPlayersDescending(sessionPlayers, selectedSession);
-  }, [data.players, selectedSession]);
+    for (const table of tables) {
+      const ids = [
+        table.east_id,
+        table.south_id,
+        table.west_id,
+        table.north_id,
+      ];
 
-  const sortedTables = useMemo(() => {
-    return sortTablesAscending(data.tables);
-  }, [data.tables]);
+      for (const id of ids) {
+        if (seen.has(id)) {
+          duplicates.add(id);
+        } else {
+          seen.add(id);
+        }
+      }
+    }
 
-  async function registerPlayer(player: Player) {
-    await handleRegisterPlayer(data.uuid, player);
-  }
-
-  async function deregisterPlayer(player: Player) {
-    await handleDeregisterPlayer(data.uuid, player);
-  }
-
-  async function setSeatOccupant(
-    table: Table,
-    wind: Wind,
-    player: Player | null,
-  ) {
-    await handleSetSeatOccupant(data.uuid, table, wind, player);
-  }
+    return duplicates;
+  }, [tables]);
 
   return (
     <TournamentContext.Provider
       value={{
-        ...data,
-        selectedSession,
-        setSelectedSession,
-        sortedSessions,
-        sortedPlayers,
-        rankedPlayers,
-        sortedTables,
-        registerPlayer,
-        deregisterPlayer,
-        setSeatOccupant,
+        tournamentId,
+        players,
+        registeredPlayers,
+        duplicatePlayers,
+        logs,
+        sessions,
+        tables,
       }}
     >
       {children}

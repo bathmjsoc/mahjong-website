@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CreateTournamentModal } from "@/components/CreateTournamentModal";
+import { CreateTournamentModal } from "@/modals/CreateTournamentModal";
 import { FilledButton } from "@/elements/FilledButton";
 
 export function CreateTournamentButton() {

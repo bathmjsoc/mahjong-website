@@ -1,8 +1,5 @@
 export function formatTimeAgo(date: Date): string {
-  const time = date.getTime();
-  const now = Date.now();
-
-  const diffInSeconds = Math.round((time - now) / 1000);
+  const diffInSeconds = Math.round((date.getTime() - Date.now()) / 1000);
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
   const cutoffs = [
@@ -39,4 +36,10 @@ export function scoreToColor(score: number): string {
   if (score < 0) return "bg-(--negative-color)";
   if (score > 0) return "bg-(--positive-color)";
   return "bg-(--neutral-color)";
+}
+
+export function formatPosition(number: number): string {
+  const suffixes = ["th", "st", "nd", "rd"];
+  const v = number % 100;
+  return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
 }

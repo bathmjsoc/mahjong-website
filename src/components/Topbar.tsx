@@ -6,11 +6,13 @@ import { TabLink, TabMenu } from "@/elements/TabMenu";
 const TABS = [
   { label: "Tables", href: "" },
   { label: "Logs", href: "logs" },
+  { label: "Sessions", href: "sessions" },
   { label: "Graphs", href: "graphs" },
+  { label: "Analytics", href: "analytics" },
 ];
 
 export function Topbar() {
-  const { uuid } = useTournament();
+  const { tournamentId } = useTournament();
 
   return (
     <nav className="bg-(--accent-color) flex items-center w-full h-15 pl-5 z-50">
@@ -18,7 +20,7 @@ export function Topbar() {
         {TABS.map(({ label, href }) => (
           <TabLink
             key={label}
-            href={`/tournament/${uuid}${href ? `/${href}` : ""}`}
+            href={`/tournament/${tournamentId}${href ? `/${href}` : ""}`}
             className="w-30"
           >
             {label}

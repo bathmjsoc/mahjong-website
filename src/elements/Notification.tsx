@@ -14,7 +14,7 @@ export function Notification({
   close,
   title,
   children,
-  duration = 3000,
+  duration = 5000,
 }: NotificationProps) {
   useEffect(() => {
     if (!isOpen) return;

@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { fetchLogs } from "@/actions/logs";
-import { fetchPlayers } from "@/actions/players";
-import { fetchSessions } from "@/actions/sessions";
-import { fetchTables } from "@/actions/tables";
 import { getTournamentName } from "@/actions/tournaments";
 import { Topbar } from "@/components/Topbar";
 import { TournamentProvider } from "@/context/TournamentContext";
@@ -16,10 +12,10 @@ type TournamentLayoutProps = {
 export async function generateMetadata({
   params,
 }: TournamentLayoutProps): Promise<Metadata> {
-  const { uuid } = await params;
+  const { uuid: tournamentId } = await params;
 
   return {
-    title: await getTournamentName(uuid),
+    title: await getTournamentName(tournamentId),
   };
 }
 
@@ -27,17 +23,10 @@ export default async function TournamentLayout({
   children,
   params,
 }: TournamentLayoutProps) {
-  const { uuid } = await params;
-
-  const [players, sessions, tables, logs] = await Promise.all([
-    fetchPlayers(uuid),
-    fetchSessions(uuid),
-    fetchTables(uuid),
-    fetchLogs(uuid),
-  ]);
+  const { uuid: tournamentId } = await params;
 
   return (
-    <TournamentProvider data={{ uuid, sessions, players, tables, logs }}>
+    <TournamentProvider tournamentId={tournamentId}>
       <div className="min-w-max">
         <Topbar />
         <main>{children}</main>

@@ -1,17 +1,34 @@
 "use server";
 
-import { generateSessions } from "@/lib/mock";
+import { supabaseServer } from "@/lib/supabase_server";
 import type { Session } from "@/lib/types";
 
-// TODO: Replace with database fetch
-export async function fetchSessions(
-  tournamentUuid: string,
-): Promise<Session[]> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`fetchSessions(tournamentUuid=${tournamentUuid})`);
+export async function createSession(tournamentId: string): Promise<void> {
+  const supabase = await supabaseServer();
 
-  const sessions = generateSessions(10);
-  const overall: Session = { number: -1, date: new Date() };
+  const { data } = await supabase
+    .from("sessions")
+    .select("number")
+    .eq("tournament_id", tournamentId)
+    .order("number", { ascending: false })
+    .limit(1)
+    .single();
 
-  return [overall, ...sessions];
+  const nextNumber = data ? data.number + 1 : 1; // Autoincrement number
+
+  await supabase.from("sessions").insert({
+    tournament_id: tournamentId,
+    number: nextNumber,
+  });
+}
+
+export async function fetchSessions(tournamentId: string): Promise<Session[]> {
+  const supabase = await supabaseServer();
+  const { data } = await supabase
+    .from("sessions")
+    .select("*")
+    .eq("tournament_id", tournamentId)
+    .order("number", { ascending: true });
+
+  return data ?? [];
 }

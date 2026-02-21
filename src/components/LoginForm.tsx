@@ -1,41 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
-import { signIn } from "@/actions/auth";
-import { RegisterModal } from "@/components/RegisterModal";
+import { useActionState, useState } from "react";
+import { type ActionState, signIn } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
+import { RegisterModal } from "@/modals/RegisterModal";
 
 export function LoginForm() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+    signIn,
+    null,
+  );
   const [isOpen, setIsOpen] = useState(false);
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // Prevent page reload
-    if (loading) return;
-
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
-    try {
-      setLoading(true);
-      await signIn(email, password);
-      router.push("/dashboard");
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <>
       <form
-        onSubmit={handleSubmit}
+        action={formAction}
         className="
             bg-(--primary-color) text-(--secondary-color)
             flex flex-col space-y-3 border-none rounded-lg w-sm p-5
@@ -45,8 +27,9 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="email"
+          autoFocus={true}
           required
-          disabled={loading}
+          disabled={isPending}
         >
           Email Address
         </LabelledInput>
@@ -56,12 +39,18 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          disabled={loading}
+          disabled={isPending}
         >
           Password
         </LabelledInput>
 
-        <FilledButton type="submit" disabled={loading}>
+        {state?.error && (
+          <p className="text-(--negative-color) text-xs text-center">
+            {state.error}
+          </p>
+        )}
+
+        <FilledButton type="submit" disabled={isPending}>
           Sign In
         </FilledButton>
 

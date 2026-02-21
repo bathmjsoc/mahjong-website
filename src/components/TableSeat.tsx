@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { updateOccupant } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { getSeatOccupant } from "@/lib/players";
-import type { Player, Table, Wind } from "@/lib/types";
+import type { Player, Table, Wind, WindKey } from "@/lib/types";
 
 type TableSeatProps = {
   table: Table;
@@ -21,14 +20,16 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { sortedPlayers, setSeatOccupant } = useTournament();
-
-  const occupant = getSeatOccupant(table, wind);
-  const [selectedPlayer, setSelectedPlayer] = useState(occupant);
+  const { duplicatePlayers, registeredPlayers } = useTournament();
+  const occupant =
+    registeredPlayers.find(
+      (player) => table[`${wind}_id` as WindKey] === player.id,
+    ) ?? null;
+  const isDuplicate = occupant ? duplicatePlayers.has(occupant.id) : false;
 
   async function handleSelect(player: Player | null) {
-    setSelectedPlayer(player);
-    await setSeatOccupant(table, wind, player);
+    if (!player) return;
+    await updateOccupant(table, wind, player);
   }
 
   return (
@@ -45,13 +46,14 @@ export function TableSeat({
 
         {/* Player Select Menu */}
         <RoundedListbox<Player>
-          value={selectedPlayer}
-          options={sortedPlayers}
+          value={occupant}
+          options={registeredPlayers}
           onChange={handleSelect}
           getOptionLabel={(player) => player.name}
-          getOptionKey={(player) => player.uuid}
+          getOptionKey={(player) => player.id}
           emptyMessage="No players found"
           placeholder="[EMPTY]"
+          highlight={isDuplicate}
           buttonClassName="h-8 text-xs"
           optionsClassName="w-auto"
         />

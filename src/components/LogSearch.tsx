@@ -23,6 +23,7 @@ export function LogSearch() {
           outline-none rounded-lg w-sm p-2 text-center
         "
       placeholder="Enter a query..."
+      autoFocus={true}
     />
   );
 }

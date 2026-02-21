@@ -1,24 +1,48 @@
 "use server";
 
-import { generateTournaments } from "@/lib/mock";
+import { supabaseServer } from "@/lib/supabase_server";
 import type { Tournament } from "@/lib/types";
 
-// TODO: Replace with database fetch
-export async function fetchTournaments(): Promise<Tournament[]> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`fetchTournaments()`);
-  return generateTournaments(10);
-}
-
 export async function createTournament(tournamentName: string): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`createTournament(tournamentName=${tournamentName})`);
+  const supabase = await supabaseServer();
+  await supabase.from("tournaments").insert({
+    name: tournamentName,
+  });
 }
 
-export async function getTournamentName(
-  tournamentUuid: string,
-): Promise<string> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`getTournamentName(tournamentUuid=${tournamentUuid})`);
-  return "Test Tournament";
+export async function fetchTournaments(): Promise<Tournament[]> {
+  const supabase = await supabaseServer();
+  const { data } = await supabase
+    .from("tournaments")
+    .select("*")
+    .order("last_updated", { ascending: false });
+
+  if (!data) return [];
+
+  // Convert last_updated field to Date object
+  return data.map((tournament) => ({
+    ...tournament,
+    last_updated: new Date(tournament.last_updated),
+  }));
+}
+
+export async function getTournamentName(tournamentId: string): Promise<string> {
+  const supabase = await supabaseServer();
+  const { data } = await supabase
+    .from("tournaments")
+    .select("name")
+    .eq("id", tournamentId)
+    .single();
+
+  return data?.name ?? null;
+}
+
+export async function getPlayerCount(tournamentId: string): Promise<number> {
+  const supabase = await supabaseServer();
+  const { count } = await supabase
+    .from("players")
+    .select("*", { count: "exact", head: true })
+    .eq("tournament_id", tournamentId);
+
+  return count ?? 0;
 }
