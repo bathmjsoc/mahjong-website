@@ -8,7 +8,10 @@ export type ActionState = {
   success?: boolean;
 } | null;
 
-export async function signUp(_: ActionState, formData: FormData) {
+export async function signUp(
+  _: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const supabase = await supabaseServer();
 
   const email = formData.get("email") as string;
@@ -20,7 +23,10 @@ export async function signUp(_: ActionState, formData: FormData) {
   return { success: true };
 }
 
-export async function signIn(_: ActionState, formData: FormData) {
+export async function signIn(
+  _: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const supabase = await supabaseServer();
 
   const email = formData.get("email") as string;
