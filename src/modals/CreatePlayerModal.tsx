@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { createPlayer } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 
-type AddPlayerModalProps = {
+type CreatePlayerModalProps = {
   isOpen: boolean;
   closeModalAction: () => void;
 };
@@ -14,15 +13,13 @@ type AddPlayerModalProps = {
 export function CreatePlayerModal({
   isOpen,
   closeModalAction,
-}: AddPlayerModalProps) {
-  const router = useRouter();
+}: CreatePlayerModalProps) {
   const { tournamentId } = useTournament();
 
   async function handleSubmit(formData: FormData) {
     const playerName = formData.get("playerName") as string;
 
     await createPlayer(tournamentId, playerName);
-    router.refresh();
     closeModalAction();
   }
 
@@ -33,6 +30,7 @@ export function CreatePlayerModal({
           name="playerName"
           type="text"
           autoComplete="off"
+          autoFocus={true}
           required
         >
           Player Name

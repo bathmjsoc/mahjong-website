@@ -1,13 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { deletePlayer } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
 import { Modal } from "@/elements/Modal";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
 
-type AddPlayerModalProps = {
+type DeletePlayerModalProps = {
   isOpen: boolean;
   closeModalAction: () => void;
 };
@@ -15,14 +14,11 @@ type AddPlayerModalProps = {
 export function DeletePlayerModal({
   isOpen,
   closeModalAction,
-}: AddPlayerModalProps) {
-  const router = useRouter();
+}: DeletePlayerModalProps) {
   const { players } = useTournament();
 
   async function handleSubmit(player: Player) {
     await deletePlayer(player);
-    players;
-    router.refresh();
     closeModalAction();
   }
 
