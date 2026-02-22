@@ -48,7 +48,11 @@ export function TableSeat({
         )}
       >
         {/* Scoring Menu */}
-        <WinSelector table={table} className={buttonClassName} />
+        <WinSelector
+          table={table}
+          className={buttonClassName}
+          occupant={occupant}
+        />
 
         {/* Player Select Menu */}
         <RoundedListbox<Player>
