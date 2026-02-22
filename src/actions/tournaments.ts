@@ -2,25 +2,36 @@
 
 import { supabaseServer } from "@/lib/supabase_server";
 import type { Tournament } from "@/lib/types";
+import { createSession } from "@/actions/sessions";
 
 export async function createTournament(tournamentName: string): Promise<void> {
   const supabase = await supabaseServer();
-  await supabase.from("tournaments").insert({
-    name: tournamentName,
-  });
+
+  const { data, error } = await supabase
+    .from("tournaments")
+    .insert({ name: tournamentName })
+    .select("id")
+    .single();
+
+  if (!data || error)
+    throw new Error(`createTournament encountered an error: ${error?.message}`);
+
+  await createSession(data.id);
 }
 
 export async function fetchTournaments(): Promise<Tournament[]> {
   const supabase = await supabaseServer();
-  const { data } = await supabase
+
+  const { data, error } = await supabase
     .from("tournaments")
     .select("*")
     .order("last_updated", { ascending: false });
 
-  if (!data) return [];
+  if (error)
+    throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
 
   // Convert last_updated field to Date object
-  return data.map((tournament) => ({
+  return (data ?? []).map((tournament) => ({
     ...tournament,
     last_updated: new Date(tournament.last_updated),
   }));
@@ -28,21 +39,17 @@ export async function fetchTournaments(): Promise<Tournament[]> {
 
 export async function getTournamentName(tournamentId: string): Promise<string> {
   const supabase = await supabaseServer();
-  const { data } = await supabase
+
+  const { data, error } = await supabase
     .from("tournaments")
     .select("name")
     .eq("id", tournamentId)
     .single();
 
-  return data?.name ?? null;
-}
+  if (!data || error)
+    throw new Error(
+      `getTournamentName encountered an error: ${error?.message}`,
+    );
 
-export async function getPlayerCount(tournamentId: string): Promise<number> {
-  const supabase = await supabaseServer();
-  const { count } = await supabase
-    .from("players")
-    .select("*", { count: "exact", head: true })
-    .eq("tournament_id", tournamentId);
-
-  return count ?? 0;
+  return data.name;
 }
