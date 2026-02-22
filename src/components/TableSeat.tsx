@@ -4,6 +4,7 @@ import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Table, Wind, WindKey } from "@/lib/types";
+import { useMemo } from "react";
 
 type TableSeatProps = {
   table: Table;
@@ -20,12 +21,17 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { duplicatePlayers, registeredPlayers } = useTournament();
-  const occupant =
-    registeredPlayers.find(
-      (player) => table[`${wind}_id` as WindKey] === player.id,
-    ) ?? null;
-  const isDuplicate = occupant ? duplicatePlayers.has(occupant.id) : false;
+  const { registeredPlayers, duplicatePlayers } = useTournament();
+
+  const seatKey: WindKey = `${wind}_id`;
+  const occupantId = table[seatKey];
+
+  const occupant = useMemo(
+    () => registeredPlayers.find((player) => player.id === occupantId) ?? null,
+    [registeredPlayers, occupantId],
+  );
+
+  const isDuplicate = occupantId ? duplicatePlayers.has(occupantId) : false;
 
   async function handleSelect(player: Player | null) {
     if (!player) return;

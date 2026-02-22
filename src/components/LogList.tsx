@@ -3,7 +3,7 @@
 import { Trash2 } from "lucide-react";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
-import type { Log, Player } from "@/lib/types";
+import type { Log } from "@/lib/types";
 
 export function LogList() {
   const { logs } = useTournament();
@@ -40,14 +40,10 @@ type LogRowProps = {
 };
 
 function LogRow({ log }: LogRowProps) {
-  function playersToString(players: Player[]) {
-    return players.map((player) => player.name).join(", ");
-  }
-
   return (
     <tr>
       <td className="border-(--primary-color) border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
-        {log.session.number}
+        {log.session_id}
       </td>
 
       <td className="border-(--primary-color) border-x-0 border-y text-center p-2 truncate">
@@ -59,11 +55,11 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td className="border-(--primary-color) border-x-0 border-y text-center p-2 truncate">
-        {log.winner.name}
+        {log.winner_ids}
       </td>
 
       <td className="border-(--primary-color) border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
-        {playersToString(log.losers)}
+        {log.loser_ids}
       </td>
 
       <td>
