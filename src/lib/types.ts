@@ -1,21 +1,17 @@
 export type Log = {
   id: string;
-  winner: Player;
-  losers: Player[];
-  points: number;
-  faan: number;
   type: string;
-  session: Session;
-  date: Date;
-  others: Player[];
+  winner_ids: string[];
+  loser_ids: string[];
+  other_ids: string[];
+  faan: number;
+  session_id: string;
   disabled: boolean;
 };
 
 export type Player = {
   id: string;
   name: string;
-  registered: boolean;
-  locked: boolean;
 };
 
 export type Session = {
@@ -39,4 +35,4 @@ export type Tournament = {
 };
 
 export type Wind = "east" | "south" | "west" | "north";
-export type WindKey = `${Wind}_id`;
+export type WindKey = keyof Table & `${Wind}_id`;
