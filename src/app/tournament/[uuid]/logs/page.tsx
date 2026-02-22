@@ -3,8 +3,10 @@
 import { LogList } from "@/components/LogList";
 import { type ChangeEvent, useState } from "react";
 import { Input } from "@headlessui/react";
+import { useTournament } from "@/context/TournamentContext";
 
 export default function LogsPage() {
+  const { logs } = useTournament();
   const [query, setQuery] = useState("");
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -25,7 +27,11 @@ export default function LogsPage() {
         autoFocus={true}
       />
 
-      <LogList />
+      {logs.length > 0 ? (
+        <LogList logs={logs} />
+      ) : (
+        <span className="text-xs italic">No logs found.</span>
+      )}
     </div>
   );
 }

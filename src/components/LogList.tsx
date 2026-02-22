@@ -1,13 +1,12 @@
-"use client";
-
 import { Trash2 } from "lucide-react";
-import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
 
-export function LogList() {
-  const { logs } = useTournament();
+type LogListProps = {
+  logs: Log[];
+};
 
+export function LogList({ logs }: LogListProps) {
   return (
     <table className="text-(--primary-color) text-sm w-full border-separate border-spacing-y-2">
       <thead>
@@ -21,15 +20,9 @@ export function LogList() {
         </tr>
       </thead>
       <tbody>
-        {logs.length > 0 ? (
-          logs.map((log) => <LogRow key={log.id} log={log} />)
-        ) : (
-          <tr>
-            <td colSpan={6} className="text-center text-sm pt-10 italic">
-              No logs found
-            </td>
-          </tr>
-        )}
+        {logs.map((log) => (
+          <LogRow key={log.id} log={log} />
+        ))}
       </tbody>
     </table>
   );

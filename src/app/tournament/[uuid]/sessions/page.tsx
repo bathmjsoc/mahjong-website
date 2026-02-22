@@ -42,7 +42,11 @@ export default function SessionsPage() {
         buttonClassName="border-(--primary-color) border-2 rounded-lg w-sm p-2"
       />
 
-      {activePlayers.length > 0 && <Leaderboard players={activePlayers} />}
+      {activePlayers.length > 0 ? (
+        <Leaderboard players={activePlayers} />
+      ) : (
+        <span className="text-xs italic">No players found.</span>
+      )}
     </div>
   );
 }
