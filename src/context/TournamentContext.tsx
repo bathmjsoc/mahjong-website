@@ -22,6 +22,7 @@ type TournamentContextType = {
   duplicatePlayers: Set<string>;
   logs: Log[];
   sessions: Session[];
+  currentSession: Session;
   tables: Table[];
 };
 
@@ -92,6 +93,11 @@ export function TournamentProvider({
     };
   }, [tournamentId, supabase]);
 
+  const currentSession = useMemo(
+    () => sessions[sessions.length - 1],
+    [sessions],
+  );
+
   const registeredPlayers = useMemo(
     () => players.filter((player) => player.registered),
     [players],
@@ -130,6 +136,7 @@ export function TournamentProvider({
         duplicatePlayers,
         logs,
         sessions,
+        currentSession,
         tables,
       }}
     >

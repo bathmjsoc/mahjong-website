@@ -3,25 +3,25 @@
 import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { deregisterAllPlayers, registerPlayer } from "@/actions/players";
+import { registerPlayer } from "@/actions/players";
 import { createSession } from "@/actions/sessions";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
-import { CreatePlayerModal } from "@/modals/CreatePlayerModal";
-import { DeletePlayerModal } from "@/modals/DeletePlayerModal";
+import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
+import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
 
 export function Sidebar() {
-  const { players, registeredPlayers, tournamentId } = useTournament();
+  const { players, tournamentId, currentSession, registeredPlayers } =
+    useTournament();
 
   const [isOpen, setIsOpen] = useState(true);
   const [isCreatePlayerModalOpen, setIsCreatePlayerModalOpen] = useState(false);
   const [isDeletePlayerModalOpen, setIsDeletePlayerModalOpen] = useState(false);
 
   async function handleRefresh() {
-    await deregisterAllPlayers(tournamentId);
     await createSession(tournamentId);
   }
 
@@ -38,7 +38,7 @@ export function Sidebar() {
           <div className="flex flex-col space-y-5 items-center max-w-md min-w-max">
             <SearchCombobox<Player>
               options={players}
-              onSelect={(player) => registerPlayer(player)}
+              onSelect={(player) => registerPlayer(currentSession, player)}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}
               placeholder="Register a member..."

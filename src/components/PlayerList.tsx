@@ -4,6 +4,7 @@ import { deregisterPlayer, lockPlayer, unlockPlayer } from "@/actions/players";
 import { IconButton } from "@/elements/IconButton";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
+import { useTournament } from "@/context/TournamentContext";
 
 type PlayerListProps = {
   players: Player[];
@@ -34,10 +35,14 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
+  const { currentSession } = useTournament();
+
   const score = 0;
 
   function handleSelect() {
-    player.locked ? unlockPlayer(player) : lockPlayer(player);
+    player.locked
+      ? unlockPlayer(currentSession, player)
+      : lockPlayer(currentSession, player);
   }
 
   return (
@@ -87,7 +92,7 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td>
         <IconButton
-          onClick={() => deregisterPlayer(player)}
+          onClick={() => deregisterPlayer(currentSession, player)}
           className="flex items-center justify-center w-full hover:text-(--negative-color)"
         >
           <X className="size-5" />

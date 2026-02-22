@@ -1,21 +1,12 @@
 import { twMerge } from "tailwind-merge";
-import type { Player, Session } from "@/lib/types";
+import type { Player } from "@/lib/types";
 import { formatPosition, scoreToColor } from "@/lib/utils";
 
 type LeaderboardProps = {
-  session: Session;
+  players: Player[];
 };
 
-export function Leaderboard({ session }: LeaderboardProps) {
-  const dummy: Player = {
-    id: "some_uuid",
-    name: "some_very_long_name_to_test",
-    registered: false,
-    locked: false,
-  };
-  const players: Player[] = Array(100).fill(dummy);
-  // const players = getPlayersFromSession(session)
-
+export function Leaderboard({ players }: LeaderboardProps) {
   return (
     <table className="table-fixed">
       <thead className="bg-(--primary-color) text-(--secondary-color) border-(--primary-color) border">
@@ -26,22 +17,9 @@ export function Leaderboard({ session }: LeaderboardProps) {
         </tr>
       </thead>
       <tbody>
-        {players.length > 0 ? (
-          players.map((player, index) => (
-            <PlayerRow
-              key={player.id}
-              player={player}
-              position={index + 1}
-              session={session}
-            />
-          ))
-        ) : (
-          <tr>
-            <td colSpan={4} className="text-center text-sm pt-10 italic">
-              No players found for the selected session.
-            </td>
-          </tr>
-        )}
+        {players.map((player, index) => (
+          <PlayerRow key={player.id} player={player} position={index + 1} />
+        ))}
       </tbody>
     </table>
   );
@@ -50,17 +28,10 @@ export function Leaderboard({ session }: LeaderboardProps) {
 type PlayerRowProps = {
   player: Player;
   position: number;
-  session: Session;
 };
 
-function PlayerRow({ player, position, session }: PlayerRowProps) {
+function PlayerRow({ player, position }: PlayerRowProps) {
   const score = 0;
-
-  if (session.number === -1) {
-    // Caclulate total score
-  } else {
-    // Calculate score in session.number
-  }
 
   return (
     <tr>
