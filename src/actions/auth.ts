@@ -37,3 +37,14 @@ export async function signIn(
 
   redirect("/dashboard");
 }
+
+export async function signOut(): Promise<ActionState> {
+  const supabase = await supabaseServer();
+
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    return { error: error.message };
+  }
+
+  redirect("/");
+}
