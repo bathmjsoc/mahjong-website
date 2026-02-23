@@ -1,7 +1,7 @@
 "use server";
 
-import type { Attendance, Player, Session } from "@/lib/types";
 import { supabaseServer } from "@/lib/supabase_server";
+import type { Attendance, Player, Session } from "@/lib/types";
 
 export async function registerPlayer(
   session: Session,

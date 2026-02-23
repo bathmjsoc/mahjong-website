@@ -1,6 +1,6 @@
-import type { Tournament } from "@/lib/types";
-import Link from "next/link";
 import { Users } from "lucide-react";
+import Link from "next/link";
+import type { Tournament } from "@/lib/types";
 import { formatTimeAgo } from "@/lib/utils";
 
 type TournamentListProps = {

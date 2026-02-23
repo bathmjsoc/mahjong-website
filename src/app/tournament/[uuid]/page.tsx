@@ -1,9 +1,9 @@
 "use client";
 
+import { Shuffle } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { IconButton } from "@/elements/IconButton";
-import { Shuffle } from "lucide-react";
 
 export default function TournamentPage() {
   return (

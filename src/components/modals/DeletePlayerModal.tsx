@@ -1,13 +1,13 @@
 "use client";
 
-import { useTournament } from "@/context/TournamentContext";
-import { Modal } from "@/elements/Modal";
-import type { Player } from "@/lib/types";
-import { FilledButton } from "@/elements/FilledButton";
-import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useState } from "react";
 import { deletePlayer } from "@/actions/players";
+import { useTournament } from "@/context/TournamentContext";
+import { FilledButton } from "@/elements/FilledButton";
+import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
+import { RoundedListbox } from "@/elements/RoundedListbox";
+import type { Player } from "@/lib/types";
 
 type DeletePlayerModalProps = {
   isOpen: boolean;

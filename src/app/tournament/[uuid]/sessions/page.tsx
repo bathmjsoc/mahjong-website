@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { getPlayersFromSession } from "@/actions/sessions";
 import { Leaderboard } from "@/components/Leaderboard";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Session } from "@/lib/types";
-import { getPlayersFromSession } from "@/actions/sessions";
 
 export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();

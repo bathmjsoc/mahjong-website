@@ -4,8 +4,8 @@ import { useActionState, useEffect, useState } from "react";
 import { type ActionState, signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
-import { Notification } from "@/elements/Notification";
 import { Modal } from "@/elements/Modal";
+import { Notification } from "@/elements/Notification";
 
 type RegisterModalProps = {
   isOpen: boolean;

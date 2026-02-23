@@ -2,10 +2,10 @@
 
 import { Archive, Plus, Trash2 } from "lucide-react";
 import { createTable, deleteTable } from "@/actions/tables";
+import { TableSeat } from "@/components/TableSeat";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Table } from "@/lib/types";
-import { TableSeat } from "@/components/TableSeat";
 
 export function TableList() {
   const { tables, tournamentId } = useTournament();

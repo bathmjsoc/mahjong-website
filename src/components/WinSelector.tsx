@@ -1,8 +1,8 @@
+import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { useTournament } from "@/context/TournamentContext";
 import { DropDown } from "@/elements/DropDown";
 import type { Player, Table } from "@/lib/types";
-import { useMemo } from "react";
 
 type WinSelectorProps = {
   table: Table;
@@ -21,7 +21,7 @@ export function WinSelector({ table, className, occupant }: WinSelectorProps) {
     return ids
       .map((id) => players.find((player) => player.id === id) ?? null)
       .filter((player) => player?.id !== occupant?.id);
-  }, [table, players]);
+  }, [table, players, occupant?.id]);
 
   function handleSelect(winType: string, faan: number, player: Player | null) {
     console.log(`winType=${winType}, faan=${faan}, target=${player?.name}`);

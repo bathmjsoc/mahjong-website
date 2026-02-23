@@ -1,6 +1,6 @@
 /*
-* Formats a date object as a relative string (e.g., "5 minutes ago")
-* */
+ * Formats a date object as a relative string (e.g., "5 minutes ago")
+ * */
 export function formatTimeAgo(date: Date): string {
   const seconds = Math.round((date.getTime() - Date.now()) / 1000);
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -24,8 +24,8 @@ export function formatTimeAgo(date: Date): string {
 }
 
 /*
-* Maps a score to a Tailwind background color class
-* */
+ * Maps a score to a Tailwind background color class
+ * */
 export function scoreToColor(score: number): string {
   if (score < 0) return "bg-(--negative-color)";
   if (score > 0) return "bg-(--positive-color)";
@@ -33,8 +33,8 @@ export function scoreToColor(score: number): string {
 }
 
 /*
-* Formats a number as an ordinal (e.g., 1 -> 1st)
-* */
+ * Formats a number as an ordinal (e.g., 1 -> 1st)
+ * */
 export function formatPosition(number: number): string {
   const suffixes = ["th", "st", "nd", "rd"];
   const v = number % 100;

@@ -2,10 +2,10 @@
 
 import { useActionState, useState } from "react";
 import { type ActionState, signIn } from "@/actions/auth";
+import { RegisterModal } from "@/components/modals/RegisterModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
-import { RegisterModal } from "@/components/modals/RegisterModal";
 
 export function LoginForm() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(

@@ -3,22 +3,22 @@
 import {
   ChevronRight,
   RefreshCw,
-  UserPlus,
   UserMinus,
   UserPen,
+  UserPlus,
 } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { registerPlayer } from "@/actions/attendance";
+import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
+import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
+import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
+import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
-import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
-import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
-import { registerPlayer } from "@/actions/attendance";
-import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
-import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 
 export function Sidebar() {
   const { currentSession, players, registeredPlayers } = useTournament();

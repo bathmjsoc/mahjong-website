@@ -1,8 +1,8 @@
 "use client";
 
-import { LogList } from "@/components/LogList";
-import { useState } from "react";
 import { Input } from "@headlessui/react";
+import { useState } from "react";
+import { LogList } from "@/components/LogList";
 import { useTournament } from "@/context/TournamentContext";
 
 export default function LogsPage() {

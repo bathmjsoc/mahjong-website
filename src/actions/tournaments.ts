@@ -1,8 +1,8 @@
 "use server";
 
+import { createSession } from "@/actions/sessions";
 import { supabaseServer } from "@/lib/supabase_server";
 import type { Tournament } from "@/lib/types";
-import { createSession } from "@/actions/sessions";
 
 export async function createTournament(tournamentName: string): Promise<void> {
   const supabase = await supabaseServer();

@@ -1,14 +1,14 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { IconButton } from "@/elements/IconButton";
-import type { Player } from "@/lib/types";
-import { scoreToColor } from "@/lib/utils";
-import { useTournament } from "@/context/TournamentContext";
 import {
   deregisterPlayer,
   lockPlayer,
   unlockPlayer,
 } from "@/actions/attendance";
+import { useTournament } from "@/context/TournamentContext";
+import { IconButton } from "@/elements/IconButton";
+import type { Player } from "@/lib/types";
+import { scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
   players: Player[];

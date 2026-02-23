@@ -1,14 +1,14 @@
 "use client";
 
-import { useTournament } from "@/context/TournamentContext";
-import { Modal } from "@/elements/Modal";
-import type { Player } from "@/lib/types";
-import { FilledButton } from "@/elements/FilledButton";
-import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useState } from "react";
-import { Notification } from "@/elements/Notification";
-import { LabelledInput } from "@/elements/LabelledInput";
 import { updatePlayer } from "@/actions/players";
+import { useTournament } from "@/context/TournamentContext";
+import { FilledButton } from "@/elements/FilledButton";
+import { LabelledInput } from "@/elements/LabelledInput";
+import { Modal } from "@/elements/Modal";
+import { Notification } from "@/elements/Notification";
+import { RoundedListbox } from "@/elements/RoundedListbox";
+import type { Player } from "@/lib/types";
 
 type EditPlayerModalProps = {
   isOpen: boolean;

@@ -1,7 +1,7 @@
-import { supabaseServer } from "@/lib/supabase_server";
 import { LogOut } from "lucide-react";
-import { IconButton } from "@/elements/IconButton";
 import { signOut } from "@/actions/auth";
+import { IconButton } from "@/elements/IconButton";
+import { supabaseServer } from "@/lib/supabase_server";
 
 export async function LogoutButton() {
   const supabase = await supabaseServer();
