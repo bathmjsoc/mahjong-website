@@ -21,6 +21,7 @@ export function DeletePlayerModal({
   const { players } = useTournament();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   function handleSelect(player: Player | null) {
     if (!player) return;
@@ -30,14 +31,20 @@ export function DeletePlayerModal({
   async function handleDelete() {
     if (!selectedPlayer) return;
     await deletePlayer(selectedPlayer);
+
+    setSuccessMessage(
+      `"${selectedPlayer?.name}" has been removed from the tournament.`,
+    );
+
     setShowSuccess(true);
+    setSelectedPlayer(null);
     closeModalAction();
   }
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Delete Player">
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-3 w-xs">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}
@@ -49,9 +56,17 @@ export function DeletePlayerModal({
             buttonClassName="text-(--primary-color) rounded-lg w-xs p-2"
           />
 
+          {selectedPlayer && (
+            <span className="text-xs">
+              {`Are you sure you want to remove "${selectedPlayer.name}" from the tournament? This cannot be
+              undone!`}
+            </span>
+          )}
+
           <FilledButton
             className="bg-(--negative-color)"
             onClick={handleDelete}
+            disabled={!selectedPlayer}
           >
             DELETE PLAYER
           </FilledButton>
@@ -63,7 +78,7 @@ export function DeletePlayerModal({
         close={() => setShowSuccess(false)}
         title="Player Deleted"
       >
-        {`"${selectedPlayer?.name}" has been removed from the tournament.`}
+        {successMessage}
       </Notification>
     </>
   );

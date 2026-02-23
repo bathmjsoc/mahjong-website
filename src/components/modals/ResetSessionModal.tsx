@@ -30,7 +30,7 @@ export function ResetSessionModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={closeModalAction} title="Reset Session?">
+      <Modal isOpen={isOpen} onClose={closeModalAction} title="Reset Session">
         <div className="flex flex-col space-y-3 w-xs">
           <span className="text-xs">
             Are you sure you want to reset the session and deregister all

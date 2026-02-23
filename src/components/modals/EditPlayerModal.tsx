@@ -23,6 +23,7 @@ export function EditPlayerModal({
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [newName, setNewName] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   function handleSelect(player: Player | null) {
     if (!player) return;
@@ -31,16 +32,23 @@ export function EditPlayerModal({
   }
 
   async function handleEdit() {
-    if (!selectedPlayer) return;
+    if (!selectedPlayer || !newName) return;
     await updatePlayer(selectedPlayer, newName);
+
+    setSuccessMessage(
+      `"${selectedPlayer.name}" successfully renamed to "${newName}".`,
+    );
+
     setShowSuccess(true);
+    setSelectedPlayer(null);
+    setNewName("");
     closeModalAction();
   }
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Modify Player">
-        <div className="flex flex-col space-y-5">
+        <form action={handleEdit} className="flex flex-col space-y-5">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}
@@ -52,20 +60,19 @@ export function EditPlayerModal({
             buttonClassName="text-(--primary-color) rounded-lg w-xs p-2"
           />
 
-          <LabelledInput
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-          >
-            Player Name
-          </LabelledInput>
+          {selectedPlayer && (
+            <LabelledInput
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            >
+              Player Name
+            </LabelledInput>
+          )}
 
-          <FilledButton
-            onClick={handleEdit}
-            disabled={!selectedPlayer || !newName}
-          >
+          <FilledButton type="submit" disabled={!selectedPlayer || !newName}>
             Modify Player Name
           </FilledButton>
-        </div>
+        </form>
       </Modal>
 
       <Notification
@@ -73,7 +80,7 @@ export function EditPlayerModal({
         close={() => setShowSuccess(false)}
         title="Player Modified"
       >
-        {`"${selectedPlayer?.name}" successfully renamed to "${newName}".`}
+        {successMessage}
       </Notification>
     </>
   );
