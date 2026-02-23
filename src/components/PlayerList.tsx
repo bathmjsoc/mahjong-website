@@ -1,10 +1,14 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { deregisterPlayer, lockPlayer, unlockPlayer } from "@/actions/players";
 import { IconButton } from "@/elements/IconButton";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
 import { useTournament } from "@/context/TournamentContext";
+import {
+  deregisterPlayer,
+  lockPlayer,
+  unlockPlayer,
+} from "@/actions/attendance";
 
 type PlayerListProps = {
   players: Player[];
@@ -35,12 +39,14 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
-  const { currentSession } = useTournament();
+  const { currentSession, lockedPlayerIds } = useTournament();
+
+  const isLocked = lockedPlayerIds.has(player.id);
 
   const score = 0;
 
   function handleSelect() {
-    player.locked
+    isLocked
       ? unlockPlayer(currentSession, player)
       : lockPlayer(currentSession, player);
   }
@@ -57,14 +63,14 @@ function PlayerRow({ player }: PlayerRowProps) {
               className={twMerge(
                 "text-(--neutral-color) hover:text-(--secondary-color)",
                 "absolute transition duration-300 size-4",
-                player.locked ? "opacity-100 scale-100" : "opacity-0 scale-50",
+                isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
                 "text-(--secondary-color) hover:text-(--neutral-color)",
                 "absolute transition duration-300 size-4",
-                player.locked ? "opacity-0 scale-50" : "opacity-100 scale-100",
+                isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
               )}
             />
           </div>
@@ -75,7 +81,7 @@ function PlayerRow({ player }: PlayerRowProps) {
         className={twMerge(
           "border-(--secondary-color) border-2 text-left p-2 truncate",
           "transition duration-300",
-          player.locked ? "text-(--neutral-color)" : "text-(--secondary-color)",
+          isLocked ? "text-(--neutral-color)" : "text-(--secondary-color)",
         )}
       >
         {player.name}

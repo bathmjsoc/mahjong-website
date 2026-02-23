@@ -1,10 +1,14 @@
 "use client";
 
-import { ChevronRight, CircleMinus, CirclePlus, RefreshCw } from "lucide-react";
+import {
+  ChevronRight,
+  CircleMinus,
+  CirclePlus,
+  RefreshCw,
+  SquarePen,
+} from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { registerPlayer } from "@/actions/players";
-import { createSession } from "@/actions/sessions";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
@@ -12,18 +16,18 @@ import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
 import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
 import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
+import { registerPlayer } from "@/actions/attendance";
+import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
+import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 
 export function Sidebar() {
-  const { players, tournamentId, currentSession, registeredPlayers } =
-    useTournament();
+  const { currentSession, players, registeredPlayers } = useTournament();
 
   const [isOpen, setIsOpen] = useState(true);
-  const [isCreatePlayerModalOpen, setIsCreatePlayerModalOpen] = useState(false);
-  const [isDeletePlayerModalOpen, setIsDeletePlayerModalOpen] = useState(false);
-
-  async function handleRefresh() {
-    await createSession(tournamentId);
-  }
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
     <>
@@ -46,26 +50,33 @@ export function Sidebar() {
               inputClassName="w-88 h-10"
             />
 
-            <div className="flex space-x-20">
+            <div className="flex space-x-15">
               <IconButton
-                onClick={() => setIsCreatePlayerModalOpen(true)}
+                onClick={() => setIsCreateModalOpen(true)}
                 className="hover:text-(--positive-color)"
               >
                 <CirclePlus className="size-7" />
               </IconButton>
 
               <IconButton
-                onClick={() => setIsDeletePlayerModalOpen(true)}
+                onClick={() => setIsDeleteModalOpen(true)}
                 className="hover:text-(--negative-color)"
               >
                 <CircleMinus className="size-7" />
               </IconButton>
 
               <IconButton
-                onClick={handleRefresh}
+                onClick={() => setIsResetModalOpen(true)}
                 className="hover:text-(--neutral-color)"
               >
                 <RefreshCw className="size-7" />
+              </IconButton>
+
+              <IconButton
+                onClick={() => setIsEditModalOpen(true)}
+                className="hover:text-(--save-color)"
+              >
+                <SquarePen className="size-7" />
               </IconButton>
             </div>
 
@@ -100,13 +111,23 @@ export function Sidebar() {
       </div>
 
       <CreatePlayerModal
-        isOpen={isCreatePlayerModalOpen}
-        closeModalAction={() => setIsCreatePlayerModalOpen(false)}
+        isOpen={isCreateModalOpen}
+        closeModalAction={() => setIsCreateModalOpen(false)}
       />
 
       <DeletePlayerModal
-        isOpen={isDeletePlayerModalOpen}
-        closeModalAction={() => setIsDeletePlayerModalOpen(false)}
+        isOpen={isDeleteModalOpen}
+        closeModalAction={() => setIsDeleteModalOpen(false)}
+      />
+
+      <ResetSessionModal
+        isOpen={isResetModalOpen}
+        closeModalAction={() => setIsResetModalOpen(false)}
+      />
+
+      <EditPlayerModal
+        isOpen={isEditModalOpen}
+        closeModalAction={() => setIsEditModalOpen(false)}
       />
     </>
   );
