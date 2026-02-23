@@ -2,10 +2,10 @@
 
 import {
   ChevronRight,
-  CircleMinus,
-  CirclePlus,
   RefreshCw,
-  SquarePen,
+  UserPlus,
+  UserMinus,
+  UserPen,
 } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -55,28 +55,28 @@ export function Sidebar() {
                 onClick={() => setIsCreateModalOpen(true)}
                 className="hover:text-(--positive-color)"
               >
-                <CirclePlus className="size-7" />
+                <UserPlus className="size-6" />
+              </IconButton>
+
+              <IconButton
+                onClick={() => setIsEditModalOpen(true)}
+                className="hover:text-(--neutral-color)"
+              >
+                <UserPen className="size-6" />
               </IconButton>
 
               <IconButton
                 onClick={() => setIsDeleteModalOpen(true)}
                 className="hover:text-(--negative-color)"
               >
-                <CircleMinus className="size-7" />
+                <UserMinus className="size-6" />
               </IconButton>
 
               <IconButton
                 onClick={() => setIsResetModalOpen(true)}
-                className="hover:text-(--neutral-color)"
-              >
-                <RefreshCw className="size-7" />
-              </IconButton>
-
-              <IconButton
-                onClick={() => setIsEditModalOpen(true)}
                 className="hover:text-(--save-color)"
               >
-                <SquarePen className="size-7" />
+                <RefreshCw className="size-6" />
               </IconButton>
             </div>
 
