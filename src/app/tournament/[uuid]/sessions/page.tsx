@@ -38,8 +38,8 @@ export default function SessionsPage() {
             ? "Overall Standings"
             : `Session ${session.number}`
         }
-        getOptionKey={(session) => session.number}
-        buttonClassName="border-(--primary-color) border-2 rounded-lg w-sm p-2"
+        getOptionKey={(session) => session.id}
+        buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
       />
 
       {players.length > 0 ? (

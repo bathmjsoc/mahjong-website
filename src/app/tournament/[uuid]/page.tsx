@@ -3,13 +3,14 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { IconButton } from "@/elements/IconButton";
-import { PaintBucket, Shuffle } from "lucide-react";
+import { Shuffle } from "lucide-react";
 
 export default function TournamentPage() {
   return (
-    <main className="flex min-h-dvh">
+    <div className="flex min-h-dvh">
       <Sidebar />
-      <section className="flex flex-col items-center w-full h-min pt-5 pr-10">
+
+      <div className="flex flex-col items-center w-full h-min pt-5 pr-10">
         <IconButton
           className="
             bg-(--primary-color) rounded-l-full w-10 h-15 p-3
@@ -18,8 +19,9 @@ export default function TournamentPage() {
         >
           <Shuffle className="size-5" />
         </IconButton>
+
         <TableList />
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
