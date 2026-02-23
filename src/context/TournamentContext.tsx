@@ -8,13 +8,13 @@ import {
   useMemo,
   useState,
 } from "react";
+import { fetchAttendance } from "@/actions/attendance";
 import { fetchLogs } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { supabaseBrowser } from "@/lib/supabase_client";
 import type { Attendance, Log, Player, Session, Table } from "@/lib/types";
-import { fetchAttendance } from "@/actions/attendance";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -50,19 +50,20 @@ export function TournamentProvider({
   const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
 
+  // The current session is the last one in sessions
   const currentSession = useMemo(
     () => sessions[sessions.length - 1],
     [sessions],
   );
 
   const registeredPlayers = useMemo(() => {
-    const registeredIds = new Set(
+    const registeredPlayerIds = new Set(
       attendance
         .filter((a) => a.session_id === currentSession.id && a.registered)
         .map((a) => a.player_id),
     );
 
-    return players.filter((p) => registeredIds.has(p.id));
+    return players.filter((player) => registeredPlayerIds.has(player.id));
   }, [attendance, currentSession, players]);
 
   const lockedPlayerIds = useMemo(() => {
@@ -85,12 +86,8 @@ export function TournamentProvider({
     ]);
 
     for (const id of ids) {
-      if (!id) continue;
-      if (seen.has(id)) {
-        duplicates.add(id);
-      } else {
-        seen.add(id);
-      }
+      if (seen.has(id)) duplicates.add(id);
+      else seen.add(id);
     }
 
     return duplicates;
@@ -111,7 +108,7 @@ export function TournamentProvider({
 
   useEffect(() => {
     const channel = supabase
-      .channel(`tournament_${tournamentId}`)
+      .channel(`tournament:${tournamentId}`)
       .on(
         "postgres_changes",
         {
@@ -156,7 +153,7 @@ export function TournamentProvider({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel).then();
+      supabase.removeChannel(channel);
     };
   }, [tournamentId, currentSession, supabase]);
 
@@ -183,6 +180,6 @@ export function TournamentProvider({
 export const useTournament = () => {
   const context = useContext(TournamentContext);
   if (!context)
-    throw new Error("useTournament must be used within TournamentProvider");
+    throw new Error("useTournament must be used within TournamentProvider!");
   return context;
 };
