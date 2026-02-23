@@ -15,7 +15,7 @@ export function Topbar() {
   const { tournamentId } = useTournament();
 
   return (
-    <nav className="bg-(--accent-color) flex items-center w-full h-15 pl-5 z-50">
+    <nav className="bg-(--accent-color) flex items-center h-15 pl-5 z-50">
       <TabMenu>
         {TABS.map(({ label, href }) => (
           <TabLink

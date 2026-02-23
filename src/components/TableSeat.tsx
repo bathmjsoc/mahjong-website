@@ -1,10 +1,10 @@
+import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateOccupant } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Table, Wind, WindKey } from "@/lib/types";
-import { useMemo } from "react";
 
 type TableSeatProps = {
   table: Table;
@@ -64,7 +64,7 @@ export function TableSeat({
           emptyMessage="No players found"
           placeholder="[EMPTY]"
           highlight={isDuplicate}
-          buttonClassName="h-8 text-xs"
+          buttonClassName="h-8 text-xs rounded-full"
           optionsClassName="w-auto"
         />
       </div>
