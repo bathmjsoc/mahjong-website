@@ -16,7 +16,7 @@ export function RegisterModal({
   isOpen,
   closeModalAction,
 }: RegisterModalProps) {
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     signUp,
     null,
@@ -24,7 +24,7 @@ export function RegisterModal({
 
   useEffect(() => {
     if (state?.success) {
-      setIsNotificationOpen(true);
+      setShowSuccess(true);
       closeModalAction();
     }
   }, [state?.success, closeModalAction]);
@@ -67,8 +67,8 @@ export function RegisterModal({
       </Modal>
 
       <Notification
-        isOpen={isNotificationOpen}
-        close={() => setIsNotificationOpen(false)}
+        isOpen={showSuccess}
+        close={() => setShowSuccess(false)}
         title="Account created successfully!"
       >
         Please check your email to verify your account.
