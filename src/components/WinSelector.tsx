@@ -14,14 +14,14 @@ const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 
 export function WinSelector({ table, className, occupant }: WinSelectorProps) {
-  const { registeredPlayers } = useTournament();
+  const { players } = useTournament();
 
   const opponents = useMemo(() => {
     const ids = [table.east_id, table.south_id, table.west_id, table.north_id];
     return ids
-      .map((id) => registeredPlayers.find((player) => player.id === id) ?? null)
+      .map((id) => players.find((player) => player.id === id) ?? null)
       .filter((player) => player?.id !== occupant?.id);
-  }, [table, registeredPlayers]);
+  }, [table, players]);
 
   function handleSelect(winType: string, faan: number, player: Player | null) {
     console.log(`winType=${winType}, faan=${faan}, target=${player?.name}`);

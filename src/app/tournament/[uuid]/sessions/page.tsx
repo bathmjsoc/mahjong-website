@@ -17,10 +17,10 @@ export default function SessionsPage() {
   }, [sessions]);
 
   const [session, setSession] = useState<Session>(sessionOptions[0]);
-  const [activePlayers, setActivePlayers] = useState<Player[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
-    getPlayersFromSession(session, tournamentId).then(setActivePlayers);
+    getPlayersFromSession(session, tournamentId).then(setPlayers);
   }, [session, tournamentId]);
 
   function handleSessionSelect(session: Session | null) {
@@ -42,8 +42,8 @@ export default function SessionsPage() {
         buttonClassName="border-(--primary-color) border-2 rounded-lg w-sm p-2"
       />
 
-      {activePlayers.length > 0 ? (
-        <Leaderboard players={activePlayers} />
+      {players.length > 0 ? (
+        <Leaderboard players={players} />
       ) : (
         <span className="text-xs italic">No players found.</span>
       )}

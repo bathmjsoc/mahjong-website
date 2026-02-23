@@ -21,17 +21,17 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { registeredPlayers, duplicatePlayers } = useTournament();
+  const { duplicatePlayerIds, players, registeredPlayers } = useTournament();
 
   const seatKey: WindKey = `${wind}_id`;
   const occupantId = table[seatKey];
 
   const occupant = useMemo(
-    () => registeredPlayers.find((player) => player.id === occupantId) ?? null,
-    [registeredPlayers, occupantId],
+    () => players.find((p) => p.id === occupantId) ?? null,
+    [players, occupantId],
   );
 
-  const isDuplicate = occupantId ? duplicatePlayers.has(occupantId) : false;
+  const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
