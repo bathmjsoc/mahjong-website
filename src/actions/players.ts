@@ -33,69 +33,19 @@ export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   return data ?? [];
 }
 
-export async function registerPlayer(
-  session: Session,
+export async function updatePlayer(
   player: Player,
-): Promise<void> {
-  const supabase = await supabaseServer();
-
-  const { error } = await supabase.from("attendance").upsert(
-    {
-      session_id: session.id,
-      player_id: player.id,
-      registered: true,
-      locked: false,
-    },
-    { onConflict: "session_id, player_id" },
-  );
-
-  if (error)
-    throw new Error(`registerPlayer encountered an error: ${error.message}`);
-}
-
-export async function deregisterPlayer(
-  session: Session,
-  player: Player,
+  newName: string,
 ): Promise<void> {
   const supabase = await supabaseServer();
 
   const { error } = await supabase
-    .from("attendance")
-    .update({ registered: false })
-    .match({ session_id: session.id, player_id: player.id });
+    .from("players")
+    .update({ name: newName })
+    .eq("id", player.id);
 
   if (error)
-    throw new Error(`deregisterPlayer encountered an error: ${error.message}`);
-}
-
-export async function lockPlayer(
-  session: Session,
-  player: Player,
-): Promise<void> {
-  const supabase = await supabaseServer();
-
-  const { error } = await supabase
-    .from("attendance")
-    .update({ locked: true })
-    .match({ session_id: session.id, player_id: player.id });
-
-  if (error)
-    throw new Error(`lockPlayer encountered an error: ${error.message}`);
-}
-
-export async function unlockPlayer(
-  session: Session,
-  player: Player,
-): Promise<void> {
-  const supabase = await supabaseServer();
-
-  const { error } = await supabase
-    .from("attendance")
-    .update({ locked: false })
-    .match({ session_id: session.id, player_id: player.id });
-
-  if (error)
-    throw new Error(`unlockPlayer encountered an error: ${error.message}`);
+    throw new Error(`updatePlayer encountered an error: ${error.message}`);
 }
 
 export async function deletePlayer(player: Player): Promise<void> {

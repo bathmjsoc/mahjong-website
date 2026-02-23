@@ -13,13 +13,16 @@ import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { supabaseBrowser } from "@/lib/supabase_client";
-import type { Log, Player, Session, Table } from "@/lib/types";
+import type { Attendance, Log, Player, Session, Table } from "@/lib/types";
+import { fetchAttendance } from "@/actions/attendance";
 
 type TournamentContextType = {
   tournamentId: string;
+  attendance: Attendance[];
   players: Player[];
   registeredPlayers: Player[];
-  duplicatePlayers: Set<string>;
+  duplicatePlayerIds: Set<string>;
+  lockedPlayerIds: Set<string>;
   logs: Log[];
   sessions: Session[];
   currentSession: Session;
@@ -41,19 +44,83 @@ export function TournamentProvider({
 }: TournamentProviderProps) {
   const supabase = supabaseBrowser();
 
+  const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [logs, setLogs] = useState<Log[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
+
+  const currentSession = useMemo(
+    () => sessions[sessions.length - 1],
+    [sessions],
+  );
+
+  const registeredPlayers = useMemo(() => {
+    const registeredIds = new Set(
+      attendance
+        .filter((a) => a.session_id === currentSession.id && a.registered)
+        .map((a) => a.player_id),
+    );
+
+    return players.filter((p) => registeredIds.has(p.id));
+  }, [attendance, currentSession, players]);
+
+  const lockedPlayerIds = useMemo(() => {
+    return new Set(
+      attendance
+        .filter((a) => a.session_id === currentSession.id && a.locked)
+        .map((a) => a.player_id),
+    );
+  }, [attendance, currentSession]);
+
+  const duplicatePlayerIds = useMemo(() => {
+    const seen = new Set<string>();
+    const duplicates = new Set<string>();
+
+    const ids = tables.flatMap((table) => [
+      table.east_id,
+      table.south_id,
+      table.west_id,
+      table.north_id,
+    ]);
+
+    for (const id of ids) {
+      if (!id) continue;
+      if (seen.has(id)) {
+        duplicates.add(id);
+      } else {
+        seen.add(id);
+      }
+    }
+
+    return duplicates;
+  }, [tables]);
 
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
     fetchLogs(tournamentId).then(setLogs);
     fetchSessions(tournamentId).then(setSessions);
     fetchTables(tournamentId).then(setTables);
+  }, [tournamentId]);
 
+  useEffect(() => {
+    if (currentSession) {
+      fetchAttendance(currentSession).then(setAttendance);
+    }
+  }, [currentSession]);
+
+  useEffect(() => {
     const channel = supabase
       .channel(`tournament_${tournamentId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "attendance",
+        },
+        () => fetchAttendance(currentSession).then(setAttendance),
+      )
       .on(
         "postgres_changes",
         {
@@ -91,49 +158,17 @@ export function TournamentProvider({
     return () => {
       supabase.removeChannel(channel).then();
     };
-  }, [tournamentId, supabase]);
-
-  const currentSession = useMemo(
-    () => sessions[sessions.length - 1],
-    [sessions],
-  );
-
-  const registeredPlayers = useMemo(
-    () => players.filter((player) => player.registered),
-    [players],
-  );
-
-  const duplicatePlayers = useMemo(() => {
-    const seen = new Set<string>();
-    const duplicates = new Set<string>();
-
-    for (const table of tables) {
-      const ids = [
-        table.east_id,
-        table.south_id,
-        table.west_id,
-        table.north_id,
-      ];
-
-      for (const id of ids) {
-        if (seen.has(id)) {
-          duplicates.add(id);
-        } else {
-          seen.add(id);
-        }
-      }
-    }
-
-    return duplicates;
-  }, [tables]);
+  }, [tournamentId, currentSession, supabase]);
 
   return (
     <TournamentContext.Provider
       value={{
         tournamentId,
+        attendance,
         players,
         registeredPlayers,
-        duplicatePlayers,
+        duplicatePlayerIds,
+        lockedPlayerIds,
         logs,
         sessions,
         currentSession,
