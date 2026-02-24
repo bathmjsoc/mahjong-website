@@ -117,6 +117,7 @@ export function TournamentProvider({
           event: "*",
           schema: "public",
           table: "attendance",
+          filter: `session_id=eq.${currentSession.id}`,
         },
         () => fetchAttendance(currentSession).then(setAttendance),
       )
