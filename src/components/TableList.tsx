@@ -8,8 +8,12 @@ import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Table } from "@/lib/types";
 
-export function TableList() {
-  const { tables, tournamentId } = useTournament();
+type TableListProps = {
+  tables: Table[];
+};
+
+export function TableList({ tables }: TableListProps) {
+  const { tournamentId } = useTournament();
 
   return (
     <div className="grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center">

@@ -48,7 +48,7 @@ export default function TournamentPage() {
         </div>
 
         <div className={twMerge("w-full", isShaking && "animate-shake")}>
-          <TableList />
+          <TableList tables={tables} />
         </div>
       </div>
     </div>

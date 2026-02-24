@@ -43,7 +43,7 @@ export default function SessionsPage() {
         getOptionKey={(session) => session.id}
         buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
       />
-      <IconButton className="bg-(--primary-color) rounded-lg p-2 hover:text-(--save-color)">
+      <IconButton className="bg-(--primary-color) rounded-xl p-2 hover:text-(--save-color)">
         <ChartColumn className="size-5" />
       </IconButton>
 
