@@ -1,3 +1,3 @@
 export default function AnalyticsPage() {
-  return <p>This is the analytics page.</p>;
+  return <p>TODO: Implement the analytics page</p>;
 }

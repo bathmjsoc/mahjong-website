@@ -22,7 +22,7 @@ export function PlayerList({ players }: PlayerListProps) {
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
-          <th className="w-7" />
+          <th className="w-7 text-[10px] opacity-66">[{players.length}]</th>
         </tr>
       </thead>
       <tbody>
@@ -39,8 +39,10 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
-  const { currentSession, lockedPlayerIds } = useTournament();
+  const { currentSession, lockedPlayerIds, unseatedPlayerIds } =
+    useTournament();
   const isLocked = lockedPlayerIds.has(player.id);
+  const isUnseated = unseatedPlayerIds.has(player.id);
   const score = 0;
 
   function handleSelect() {
@@ -78,9 +80,10 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-left p-1",
+          "text-(--secondary-color) border-(--secondary-color) border-2 text-left px-2 py-1",
           "transition duration-300",
-          isLocked ? "text-(--neutral-color)" : "text-(--secondary-color)",
+          isUnseated && "text-(--negative-color)",
+          isLocked && "text-(--neutral-color)",
         )}
       >
         {player.name}

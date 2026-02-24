@@ -45,7 +45,7 @@ export function ResetSessionModal({
         close={() => setShowSuccess(false)}
         title="Session Reset"
       >
-        A new session has started and the player list is now empty.
+        A new session has started. All players and tables have been cleared.
       </Notification>
     </>
   );

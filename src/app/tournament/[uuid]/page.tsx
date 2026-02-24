@@ -1,26 +1,50 @@
 "use client";
 
 import { Shuffle } from "lucide-react";
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
+import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
+import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 
 export default function TournamentPage() {
+  const { currentSession, lockedPlayerIds, registeredPlayers, tables } =
+    useTournament();
+  const [isShaking, setIsShaking] = useState(false);
+
+  async function handleShuffle() {
+    setIsShaking(true);
+
+    const availableTables = tables.filter((table) => !table.is_saved);
+    const availablePlayers = registeredPlayers.filter(
+      (player) => !lockedPlayerIds.has(player.id),
+    );
+
+    await shuffleTables(currentSession, availableTables, availablePlayers);
+
+    setIsShaking(false);
+  }
+
   return (
     <div className="flex min-h-dvh">
       <Sidebar />
 
-      <div className="flex flex-col items-center w-full h-min pt-5 pr-10">
-        <IconButton
-          className="
-            bg-(--primary-color) rounded-l-full w-10 h-15 p-3
-            fixed right-0 top-1/2 -translate-y-1/2 -mr-1
-          "
-        >
-          <Shuffle className="size-5" />
-        </IconButton>
+      <div className="flex flex-col items-center w-full overflow-hidden">
+        <div className="py-5">
+          <IconButton
+            onClick={handleShuffle}
+            disabled={isShaking}
+            className="bg-(--primary-color) rounded-2xl p-3 hover:text-(--save-color)"
+          >
+            <Shuffle className="size-7" />
+          </IconButton>
+        </div>
 
-        <TableList />
+        <div className={twMerge("w-full", isShaking && "animate-shake")}>
+          <TableList tables={tables} />
+        </div>
       </div>
     </div>
   );

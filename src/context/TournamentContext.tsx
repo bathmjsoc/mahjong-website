@@ -21,8 +21,9 @@ type TournamentContextType = {
   attendance: Attendance[];
   players: Player[];
   registeredPlayers: Player[];
-  duplicatePlayerIds: Set<string>;
   lockedPlayerIds: Set<string>;
+  duplicatePlayerIds: Set<string>;
+  unseatedPlayerIds: Set<string>;
   logs: Log[];
   sessions: Session[];
   currentSession: Session;
@@ -95,16 +96,36 @@ export function TournamentProvider({
     return duplicates;
   }, [tables]);
 
+  const unseatedPlayerIds = useMemo(() => {
+    const seatedPlayerIds = new Set(
+      tables
+        .filter((table) => !table.is_saved)
+        .flatMap((table) => [
+          table.east_id,
+          table.south_id,
+          table.west_id,
+          table.north_id,
+        ]),
+    );
+
+    return new Set(
+      registeredPlayers
+        .filter((player) => !seatedPlayerIds.has(player.id))
+        .filter((player) => !lockedPlayerIds.has(player.id))
+        .map((player) => player.id),
+    );
+  }, [tables, registeredPlayers, lockedPlayerIds]);
+
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
     fetchLogs(tournamentId).then(setLogs);
     fetchSessions(tournamentId).then(setSessions);
-    fetchTables(tournamentId).then(setTables);
   }, [tournamentId]);
 
   useEffect(() => {
     if (currentSession) {
       fetchAttendance(currentSession).then(setAttendance);
+      fetchTables(currentSession).then(setTables);
     }
   }, [currentSession]);
 
@@ -138,9 +159,8 @@ export function TournamentProvider({
           event: "*",
           schema: "public",
           table: "tables",
-          filter: `tournament_id=eq.${tournamentId}`,
         },
-        () => fetchTables(tournamentId).then(setTables),
+        () => fetchTables(currentSession).then(setTables),
       )
       .on(
         "postgres_changes",
@@ -166,8 +186,9 @@ export function TournamentProvider({
         attendance,
         players,
         registeredPlayers,
-        duplicatePlayerIds,
         lockedPlayerIds,
+        duplicatePlayerIds,
+        unseatedPlayerIds,
         logs,
         sessions,
         currentSession,

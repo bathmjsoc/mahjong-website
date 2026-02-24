@@ -79,12 +79,7 @@ export function Sidebar() {
             </div>
 
             {registeredPlayers.length > 0 ? (
-              <>
-                <span className="text-xs">
-                  Player(s) Registered: {registeredPlayers.length}
-                </span>
-                <PlayerList players={registeredPlayers} />
-              </>
+              <PlayerList players={registeredPlayers} />
             ) : (
               <span className="text-xs italic">No players registered.</span>
             )}
@@ -98,6 +93,7 @@ export function Sidebar() {
             bg-(--primary-color) text-(--secondary-color)
             flex items-center justify-center
             rounded-r-2xl -ml-1 mt-5 h-20 w-10
+            hover:text-(--save-color)
           "
         >
           <ChevronRight

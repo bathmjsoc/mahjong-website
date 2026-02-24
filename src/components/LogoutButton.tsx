@@ -10,14 +10,15 @@ export async function LogoutButton() {
   if (!data.user) return null;
 
   return (
-    <form
-      action={signOut}
-      className="
-        bg-(--primary-color) flex items-center justify-center
-        absolute top-3 right-3 z-50 size-9 rounded-full
-      "
-    >
-      <IconButton onClick={signOut}>
+    <form action={signOut}>
+      <IconButton
+        onClick={signOut}
+        className="
+          bg-(--primary-color) flex items-center justify-center
+          absolute top-3 right-3 z-50 size-9 rounded-xl
+          hover:text-(--negative-color)
+        "
+      >
         <LogOut className="size-5" />
       </IconButton>
     </form>
