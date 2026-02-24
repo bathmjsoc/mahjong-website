@@ -30,7 +30,7 @@ export default function SessionsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-5 items-center py-10">
+    <div className="flex flex-col gap-7 items-center py-10">
       <RoundedListbox<Session>
         value={session}
         options={sessionOptions}
@@ -43,8 +43,10 @@ export default function SessionsPage() {
         getOptionKey={(session) => session.id}
         buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
       />
-      <IconButton className="bg-(--primary-color) rounded-xl p-2 hover:text-(--save-color)">
+
+      <IconButton className="bg-(--accent-color) flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm">
         <ChartColumn className="size-5" />
+        Download Graphs
       </IconButton>
 
       {players.length > 0 ? (
