@@ -78,12 +78,14 @@ export function TournamentProvider({
     const seen = new Set<string>();
     const duplicates = new Set<string>();
 
-    const ids = tables.flatMap((table) => [
-      table.east_id,
-      table.south_id,
-      table.west_id,
-      table.north_id,
-    ]);
+    const ids = tables
+      .filter((table) => !table.is_saved)
+      .flatMap((table) => [
+        table.east_id,
+        table.south_id,
+        table.west_id,
+        table.north_id,
+      ]);
 
     for (const id of ids) {
       if (seen.has(id)) duplicates.add(id);
