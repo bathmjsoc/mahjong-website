@@ -1,26 +1,26 @@
 "use server";
 
 import { supabaseServer } from "@/lib/supabase_server";
-import type { Player, Table, Wind, WindKey } from "@/lib/types";
+import type { Player, Session, Table, Wind, WindKey } from "@/lib/types";
 
-export async function createTable(tournamentId: string): Promise<void> {
+export async function createTable(session: Session): Promise<void> {
   const supabase = await supabaseServer();
 
   const { error } = await supabase.from("tables").insert({
-    tournament_id: tournamentId,
+    session_id: session.id,
   });
 
   if (error)
     throw new Error(`createTable encountered an error: ${error.message}`);
 }
 
-export async function fetchTables(tournamentId: string): Promise<Table[]> {
+export async function fetchTables(session: Session): Promise<Table[]> {
   const supabase = await supabaseServer();
 
   const { data, error } = await supabase
     .from("tables")
     .select("*")
-    .eq("tournament_id", tournamentId)
+    .eq("session_id", session.id)
     .order("created_at", { ascending: true });
 
   if (error)

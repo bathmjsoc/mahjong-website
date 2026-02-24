@@ -120,12 +120,12 @@ export function TournamentProvider({
     fetchPlayers(tournamentId).then(setPlayers);
     fetchLogs(tournamentId).then(setLogs);
     fetchSessions(tournamentId).then(setSessions);
-    fetchTables(tournamentId).then(setTables);
   }, [tournamentId]);
 
   useEffect(() => {
     if (currentSession) {
       fetchAttendance(currentSession).then(setAttendance);
+      fetchTables(currentSession).then(setTables);
     }
   }, [currentSession]);
 
@@ -159,9 +159,8 @@ export function TournamentProvider({
           event: "*",
           schema: "public",
           table: "tables",
-          filter: `tournament_id=eq.${tournamentId}`,
         },
-        () => fetchTables(tournamentId).then(setTables),
+        () => fetchTables(currentSession).then(setTables),
       )
       .on(
         "postgres_changes",
