@@ -17,7 +17,7 @@ export function TournamentList({ tournaments }: TournamentListProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+    <div className="grid grid-cols-[repeat(auto-fit,300px)] gap-5 w-full justify-center">
       {tournaments.map((tournament) => (
         <TournamentCard key={tournament.id} tournament={tournament} />
       ))}
