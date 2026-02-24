@@ -3,31 +3,26 @@
 import { Shuffle } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { updateTable } from "@/actions/tables";
+import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
-import { shuffle } from "@/lib/utils";
 
 export default function TournamentPage() {
-  const { players, lockedPlayerIds, tables } = useTournament();
+  const { currentSession, lockedPlayerIds, registeredPlayers, tables } =
+    useTournament();
   const [isShaking, setIsShaking] = useState(false);
 
   async function handleShuffle() {
     setIsShaking(true);
 
     const availableTables = tables.filter((table) => !table.is_saved);
-    const availablePlayers = shuffle(
-      players.filter((player) => !lockedPlayerIds.has(player.id)),
+    const availablePlayers = registeredPlayers.filter(
+      (player) => !lockedPlayerIds.has(player.id),
     );
 
-    for (const table of availableTables) {
-      const [east = null, south = null, west = null, north = null] =
-        availablePlayers.splice(0, 4);
-
-      await updateTable(table, { east, south, west, north });
-    }
+    await shuffleTables(currentSession, availableTables, availablePlayers);
 
     setIsShaking(false);
   }

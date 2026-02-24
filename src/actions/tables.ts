@@ -2,16 +2,23 @@
 
 import { supabaseServer } from "@/lib/supabase_server";
 import type { Player, Session, Table, Wind, WindKey } from "@/lib/types";
+import { shuffle } from "@/lib/utils";
 
-export async function createTable(session: Session): Promise<void> {
+export async function createTable(session: Session): Promise<Table> {
   const supabase = await supabaseServer();
 
-  const { error } = await supabase.from("tables").insert({
-    session_id: session.id,
-  });
+  const { data, error } = await supabase
+    .from("tables")
+    .insert({
+      session_id: session.id,
+    })
+    .select()
+    .single();
 
   if (error)
     throw new Error(`createTable encountered an error: ${error.message}`);
+
+  return data;
 }
 
 export async function fetchTables(session: Session): Promise<Table[]> {
@@ -61,6 +68,32 @@ export async function saveTable(table: Table): Promise<void> {
 
   if (error)
     throw new Error(`saveTable encountered an error: ${error.message}`);
+}
+
+export async function shuffleTables(
+  session: Session,
+  availableTables: Table[],
+  availablePlayers: Player[],
+): Promise<void> {
+  const shuffledPlayers = shuffle(availablePlayers);
+  const neededTables = Math.ceil(availablePlayers.length / 4);
+
+  while (availableTables.length > neededTables) {
+    const tableToDelete = availableTables.pop();
+    if (tableToDelete) await deleteTable(tableToDelete);
+  }
+
+  while (availableTables.length < neededTables) {
+    const newTable = await createTable(session);
+    availableTables.push(newTable);
+  }
+
+  for (const table of availableTables) {
+    const [east = null, south = null, west = null, north = null] =
+      shuffledPlayers.splice(0, 4);
+
+    await updateTable(table, { east, south, west, north });
+  }
 }
 
 export async function deleteTable(table: Table): Promise<void> {
