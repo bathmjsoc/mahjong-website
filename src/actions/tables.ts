@@ -29,21 +29,25 @@ export async function fetchTables(tournamentId: string): Promise<Table[]> {
   return data ?? [];
 }
 
-export async function updateOccupant(
+export async function updateTable(
   table: Table,
-  wind: Wind,
-  player: Player,
+  players: Partial<Record<Wind, Player | null>>,
 ): Promise<void> {
   const supabase = await supabaseServer();
 
-  const seatKey: WindKey = `${wind}_id`;
+  const payload: Partial<Record<WindKey, string | null>> = {};
+  for (const wind in players) {
+    const w = wind as Wind;
+    payload[`${w}_id`] = players[w]?.id ?? null;
+  }
+
   const { error } = await supabase
     .from("tables")
-    .update({ [seatKey]: player.id })
+    .update(payload)
     .eq("id", table.id);
 
   if (error)
-    throw new Error(`updateOccupant encountered an error: ${error.message}`);
+    throw new Error(`updateTable encountered an error: ${error.message}`);
 }
 
 export async function saveTable(table: Table): Promise<void> {

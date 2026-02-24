@@ -40,3 +40,17 @@ export function formatPosition(number: number): string {
   const v = number % 100;
   return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
 }
+
+/*
+ * Returns shuffled copy of an array
+ * */
+export function shuffle<T>(items: T[]): T[] {
+  const result = [...items];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}

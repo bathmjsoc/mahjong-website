@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
-import { updateOccupant } from "@/actions/tables";
+import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
@@ -32,7 +32,10 @@ export function TableSeat({
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
-    await updateOccupant(table, wind, player);
+
+    await updateTable(table, {
+      [wind]: player,
+    });
   }
 
   return (
