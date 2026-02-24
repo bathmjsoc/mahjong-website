@@ -41,7 +41,7 @@ export default function TournamentPage() {
           <IconButton
             onClick={handleShuffle}
             disabled={isShaking}
-            className="bg-(--primary-color) rounded-2xl p-3"
+            className="bg-(--primary-color) rounded-2xl p-3 hover:text-(--save-color)"
           >
             <Shuffle className="size-7" />
           </IconButton>
