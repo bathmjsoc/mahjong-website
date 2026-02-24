@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { type ActionState, signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
-import { Notification } from "@/elements/Notification";
 import { Modal } from "@/elements/Modal";
+import { Notification } from "@/elements/Notification";
 
 type RegisterModalProps = {
   isOpen: boolean;
@@ -16,28 +16,33 @@ export function RegisterModal({
   isOpen,
   closeModalAction,
 }: RegisterModalProps) {
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    signUp,
-    null,
-  );
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  useEffect(() => {
-    if (state?.success) {
-      setIsNotificationOpen(true);
+  async function handleSignUp(prevState: ActionState, formData: FormData) {
+    const result = await signUp(prevState, formData);
+
+    if (result?.success) {
+      setShowSuccess(true);
       closeModalAction();
     }
-  }, [state?.success, closeModalAction]);
+
+    return result;
+  }
+
+  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+    handleSignUp,
+    null,
+  );
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
-        <form action={formAction} className="flex flex-col space-y-3 w-xs">
+        <form action={formAction} className="flex flex-col gap-3 w-xs">
           <LabelledInput
             name="email"
             type="email"
             autoComplete="email"
-            autoFocus={true}
+            autoFocus
             required
             disabled={isPending}
           >
@@ -67,9 +72,9 @@ export function RegisterModal({
       </Modal>
 
       <Notification
-        isOpen={isNotificationOpen}
-        close={() => setIsNotificationOpen(false)}
-        title="Account created successfully!"
+        isOpen={showSuccess}
+        close={() => setShowSuccess(false)}
+        title="Account created!"
       >
         Please check your email to verify your account.
       </Notification>

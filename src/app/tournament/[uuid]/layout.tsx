@@ -27,10 +27,8 @@ export default async function TournamentLayout({
 
   return (
     <TournamentProvider tournamentId={tournamentId}>
-      <div className="min-w-max">
-        <Topbar />
-        <main>{children}</main>
-      </div>
+      <Topbar />
+      {children}
     </TournamentProvider>
   );
 }

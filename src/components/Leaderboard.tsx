@@ -1,47 +1,25 @@
 import { twMerge } from "tailwind-merge";
-import type { Player, Session } from "@/lib/types";
+import type { Player } from "@/lib/types";
 import { formatPosition, scoreToColor } from "@/lib/utils";
 
 type LeaderboardProps = {
-  session: Session;
+  players: Player[];
 };
 
-export function Leaderboard({ session }: LeaderboardProps) {
-  const dummy: Player = {
-    id: "some_uuid",
-    name: "some_very_long_name_to_test",
-    registered: false,
-    locked: false,
-  };
-  const players: Player[] = Array(100).fill(dummy);
-  // const players = getPlayersFromSession(session)
-
+export function Leaderboard({ players }: LeaderboardProps) {
   return (
-    <table className="table-fixed">
-      <thead className="bg-(--primary-color) text-(--secondary-color) border-(--primary-color) border">
+    <table className="table-fixed border-(--primary-color) border">
+      <thead className="bg-(--primary-color) text-(--secondary-color)">
         <tr>
           <th className="w-25">Rank</th>
           <th className="w-75">Name</th>
           <th className="w-25">Score</th>
         </tr>
       </thead>
-      <tbody>
-        {players.length > 0 ? (
-          players.map((player, index) => (
-            <PlayerRow
-              key={player.id}
-              player={player}
-              position={index + 1}
-              session={session}
-            />
-          ))
-        ) : (
-          <tr>
-            <td colSpan={4} className="text-center text-sm pt-10 italic">
-              No players found for the selected session.
-            </td>
-          </tr>
-        )}
+      <tbody className="divide-y divide-(--primary-color)">
+        {players.map((player, index) => (
+          <PlayerRow key={player.id} player={player} position={index + 1} />
+        ))}
       </tbody>
     </table>
   );
@@ -50,36 +28,18 @@ export function Leaderboard({ session }: LeaderboardProps) {
 type PlayerRowProps = {
   player: Player;
   position: number;
-  session: Session;
 };
 
-function PlayerRow({ player, position, session }: PlayerRowProps) {
+function PlayerRow({ player, position }: PlayerRowProps) {
   const score = 0;
 
-  if (session.number === -1) {
-    // Caclulate total score
-  } else {
-    // Calculate score in session.number
-  }
-
   return (
-    <tr>
-      <td className="border-(--primary-color) border-y border-l text-center px-2 text-xs">
-        {formatPosition(position)}
-      </td>
+    <tr className="text-center text-sm">
+      <td className="border-l">{formatPosition(position)}</td>
 
-      <td className="border-(--primary-color) border-y text-center">
-        {player.name}
-      </td>
+      <td>{player.name}</td>
 
-      <td
-        className={twMerge(
-          "border-(--primary-color-color) border-y border-r text-center",
-          scoreToColor(score),
-        )}
-      >
-        {score}
-      </td>
+      <td className={twMerge("border-r", scoreToColor(score))}>{score}</td>
     </tr>
   );
 }

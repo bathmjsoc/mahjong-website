@@ -29,7 +29,6 @@ export function RoundedListbox<T>({
   getOptionKey,
   emptyMessage = "No options available",
   placeholder = "No option selected",
-  highlight = false,
   buttonClassName,
   optionsClassName,
   optionClassName,
@@ -40,10 +39,10 @@ export function RoundedListbox<T>({
     <Listbox value={value} onChange={onChange}>
       <ListboxButton
         className={twMerge(
-          highlight || isPlaceholder
+          isPlaceholder
             ? "bg-(--secondary-color) text-(--negative-color)"
             : "bg-(--secondary-color) text-(--primary-color)",
-          "w-full text-center font-bold truncate rounded-full outline-none cursor-pointer",
+          "w-full text-center font-bold truncate outline-none cursor-pointer",
           "transition duration-300 hover:bg-(--secondary-color)/75",
           buttonClassName,
         )}

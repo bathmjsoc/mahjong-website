@@ -2,17 +2,17 @@
 
 import { useActionState, useState } from "react";
 import { type ActionState, signIn } from "@/actions/auth";
+import { RegisterModal } from "@/components/modals/RegisterModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
-import { RegisterModal } from "@/modals/RegisterModal";
 
 export function LoginForm() {
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     signIn,
     null,
   );
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -20,14 +20,14 @@ export function LoginForm() {
         action={formAction}
         className="
             bg-(--primary-color) text-(--secondary-color)
-            flex flex-col space-y-3 border-none rounded-lg w-sm p-5
+            flex flex-col gap-3 rounded-lg w-sm p-5
           "
       >
         <LabelledInput
           name="email"
           type="email"
           autoComplete="email"
-          autoFocus={true}
+          autoFocus
           required
           disabled={isPending}
         >
@@ -54,16 +54,19 @@ export function LoginForm() {
           Sign In
         </FilledButton>
 
-        <div className="flex justify-center -mb-1">
-          <TextButton onClick={() => setIsOpen(true)} className="text-xs">
+        <div className="flex items-center justify-center -mb-1">
+          <TextButton
+            onClick={() => setIsRegisterOpen(true)}
+            className="text-xs"
+          >
             Register
           </TextButton>
         </div>
       </form>
 
       <RegisterModal
-        isOpen={isOpen}
-        closeModalAction={() => setIsOpen(false)}
+        isOpen={isRegisterOpen}
+        closeModalAction={() => setIsRegisterOpen(false)}
       />
     </>
   );

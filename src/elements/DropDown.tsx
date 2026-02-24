@@ -18,6 +18,7 @@ type DropDownProps = {
   children: ReactNode;
   buttonClassName?: string;
   panelClassName?: string;
+  disabled?: boolean;
 };
 
 const RootContext = createContext<(() => void) | null>(null);
@@ -27,6 +28,7 @@ export function DropDown({
   children,
   buttonClassName,
   panelClassName,
+  disabled = false,
 }: DropDownProps) {
   const parentClose = useContext(RootContext);
   const isNested = parentClose !== null;
@@ -39,29 +41,37 @@ export function DropDown({
         return (
           <RootContext.Provider value={rootClose}>
             <PopoverButton
+              disabled={disabled}
               className={twMerge(
-                "w-full text-center outline-none rounded cursor-pointer transition",
-                isNested
-                  ? "hover:bg-(--primary-color)/25 p-1"
-                  : "bg-(--accent-color) hover:scale-93 active:scale-87",
+                "w-full text-center outline-none rounded transition",
+                isNested ? "p-1" : "bg-(--accent-color)",
+                !disabled
+                  ? [
+                      "cursor-pointer",
+                      isNested
+                        ? "hover:bg-(--primary-color)/25"
+                        : "hover:scale-93 active:scale-87",
+                    ]
+                  : "opacity-50 cursor-not-allowed",
                 buttonClassName,
               )}
             >
               {title}
             </PopoverButton>
-
-            <PopoverPanel
-              anchor={`${isNested ? "right start" : "bottom"}`}
-              className={twMerge(
-                "bg-(--secondary-color) text-(--primary-color)",
-                "border-(--primary-color) border-2 outline-none",
-                "flex flex-col rounded-xl text-sm p-1 z-50",
-                isNested ? "ml-2" : "mt-2",
-                panelClassName,
-              )}
-            >
-              {children}
-            </PopoverPanel>
+            {!disabled && (
+              <PopoverPanel
+                anchor={`${isNested ? "right start" : "bottom"}`}
+                className={twMerge(
+                  "bg-(--secondary-color) text-(--primary-color)",
+                  "border-(--primary-color) border-2 outline-none",
+                  "flex flex-col rounded-xl text-sm p-1 z-50",
+                  isNested ? "ml-2" : "mt-2",
+                  panelClassName,
+                )}
+              >
+                {children}
+              </PopoverPanel>
+            )}
           </RootContext.Provider>
         );
       }}
@@ -71,7 +81,7 @@ export function DropDown({
 
 type ItemProps = ComponentProps<typeof Button>;
 
-function Item({ onClick, children, className, ...props }: ItemProps) {
+function Item({ onClick, children, className, disabled, ...props }: ItemProps) {
   const closeRoot = useContext(RootContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
@@ -82,6 +92,7 @@ function Item({ onClick, children, className, ...props }: ItemProps) {
   return (
     <Button
       {...props}
+      disabled={disabled}
       onClick={handleClick}
       className={twMerge(
         "w-full text-center outline-none rounded cursor-pointer p-1",

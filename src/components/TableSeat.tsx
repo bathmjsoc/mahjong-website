@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateOccupant } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
@@ -20,12 +21,14 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { duplicatePlayers, registeredPlayers } = useTournament();
-  const occupant =
-    registeredPlayers.find(
-      (player) => table[`${wind}_id` as WindKey] === player.id,
-    ) ?? null;
-  const isDuplicate = occupant ? duplicatePlayers.has(occupant.id) : false;
+  const { duplicatePlayerIds, players, registeredPlayers } = useTournament();
+  const occupantId = table[`${wind}_id` as WindKey];
+  const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
+
+  const occupant = useMemo(
+    () => players.find((p) => p.id === occupantId) ?? null,
+    [players, occupantId],
+  );
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
@@ -37,12 +40,17 @@ export function TableSeat({
       <div
         className={twMerge(
           "bg-(--primary-color) text-(--secondary-color)",
-          "flex items-center justify-between space-x-1 rounded-full p-1 w-50 shrink-0",
+          "flex items-center justify-between gap-1 rounded-full p-1 w-50 shrink-0",
+          isDuplicate && "ring-2 ring-(--negative-color)",
           tableClassName,
         )}
       >
         {/* Scoring Menu */}
-        <WinSelector table={table} className={buttonClassName} />
+        <WinSelector
+          table={table}
+          className={buttonClassName}
+          occupant={occupant}
+        />
 
         {/* Player Select Menu */}
         <RoundedListbox<Player>
@@ -53,8 +61,7 @@ export function TableSeat({
           getOptionKey={(player) => player.id}
           emptyMessage="No players found"
           placeholder="[EMPTY]"
-          highlight={isDuplicate}
-          buttonClassName="h-8 text-xs"
+          buttonClassName="h-8 text-xs tracking-tighter rounded-full"
           optionsClassName="w-auto"
         />
       </div>

@@ -1,6 +1,11 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { deregisterPlayer, lockPlayer, unlockPlayer } from "@/actions/players";
+import {
+  deregisterPlayer,
+  lockPlayer,
+  unlockPlayer,
+} from "@/actions/attendance";
+import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Player } from "@/lib/types";
 import { scoreToColor } from "@/lib/utils";
@@ -11,7 +16,7 @@ type PlayerListProps = {
 
 export function PlayerList({ players }: PlayerListProps) {
   return (
-    <table className="table-fixed">
+    <table>
       <thead>
         <tr>
           <th className="w-7" />
@@ -34,14 +39,19 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
+  const { currentSession, lockedPlayerIds } = useTournament();
+  const isLocked = lockedPlayerIds.has(player.id);
   const score = 0;
 
   function handleSelect() {
-    player.locked ? unlockPlayer(player) : lockPlayer(player);
+    isLocked
+      ? unlockPlayer(currentSession, player)
+      : lockPlayer(currentSession, player);
   }
 
   return (
     <tr>
+      {/* Lock/Unlock Player Icon */}
       <td>
         <IconButton
           onClick={handleSelect}
@@ -51,15 +61,15 @@ function PlayerRow({ player }: PlayerRowProps) {
             <LockKeyhole
               className={twMerge(
                 "text-(--neutral-color) hover:text-(--secondary-color)",
-                "absolute transition duration-300 size-4",
-                player.locked ? "opacity-100 scale-100" : "opacity-0 scale-50",
+                "absolute size-4 transition duration-300",
+                isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
                 "text-(--secondary-color) hover:text-(--neutral-color)",
-                "absolute transition duration-300 size-4",
-                player.locked ? "opacity-0 scale-50" : "opacity-100 scale-100",
+                "absolute size-4 transition duration-300",
+                isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
               )}
             />
           </div>
@@ -68,9 +78,9 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-left p-2 truncate",
+          "border-(--secondary-color) border-2 text-left p-1",
           "transition duration-300",
-          player.locked ? "text-(--neutral-color)" : "text-(--secondary-color)",
+          isLocked ? "text-(--neutral-color)" : "text-(--secondary-color)",
         )}
       >
         {player.name}
@@ -78,16 +88,17 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-center p-2",
+          "border-(--secondary-color) border-2 text-center",
           scoreToColor(score),
         )}
       >
         {score}
       </td>
 
+      {/* Deregister Player Icon */}
       <td>
         <IconButton
-          onClick={() => deregisterPlayer(player)}
+          onClick={() => deregisterPlayer(currentSession, player)}
           className="flex items-center justify-center w-full hover:text-(--negative-color)"
         >
           <X className="size-5" />
