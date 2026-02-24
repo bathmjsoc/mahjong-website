@@ -1,9 +1,11 @@
 "use client";
 
+import { ChartColumn } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { getPlayersFromSession } from "@/actions/sessions";
 import { Leaderboard } from "@/components/Leaderboard";
 import { useTournament } from "@/context/TournamentContext";
+import { IconButton } from "@/elements/IconButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Session } from "@/lib/types";
 
@@ -28,7 +30,7 @@ export default function SessionsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-10 items-center py-10">
+    <div className="flex flex-col gap-5 items-center py-10">
       <RoundedListbox<Session>
         value={session}
         options={sessionOptions}
@@ -41,6 +43,9 @@ export default function SessionsPage() {
         getOptionKey={(session) => session.id}
         buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
       />
+      <IconButton className="bg-(--primary-color) rounded-lg p-2 hover:text-(--save-color)">
+        <ChartColumn className="size-5" />
+      </IconButton>
 
       {players.length > 0 ? (
         <Leaderboard players={players} />
