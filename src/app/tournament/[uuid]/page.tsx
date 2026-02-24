@@ -36,9 +36,10 @@ export default function TournamentPage() {
           <IconButton
             onClick={handleShuffle}
             disabled={isShaking}
-            className="bg-(--primary-color) rounded-2xl p-3 hover:text-(--save-color)"
+            className="bg-(--primary-color) flex gap-2 items-center justify-center px-4 py-2 rounded-lg hover:text-(--save-color)"
           >
-            <Shuffle className="size-7" />
+            <Shuffle className="size-5" />
+            Shuffle Tables
           </IconButton>
         </div>
 
