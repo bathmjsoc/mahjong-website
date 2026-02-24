@@ -23,7 +23,7 @@ export function TableList() {
           onClick={() => createTable(tournamentId)}
           className="bg-(--accent-color) rounded-full p-3"
         >
-          <Plus className="size-8" />
+          <Plus className="size-7" />
         </IconButton>
       </div>
     </div>
