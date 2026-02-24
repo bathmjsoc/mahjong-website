@@ -4,7 +4,7 @@ import { LoginForm } from "@/components/LoginForm";
 import { supabaseServer } from "@/lib/supabase_server";
 
 export const metadata: Metadata = {
-  title: "Mahjong Website",
+  title: "mahjong-website",
 };
 
 export default async function LoginPage() {
