@@ -15,7 +15,7 @@ export async function LogoutButton() {
         onClick={signOut}
         className="
           bg-(--primary-color) flex items-center justify-center
-          absolute top-3 right-3 z-50 size-9 rounded-full
+          absolute top-3 right-3 z-50 size-9 rounded-xl
           hover:text-(--negative-color)
         "
       >
