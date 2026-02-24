@@ -18,15 +18,18 @@ export default function SessionsPage() {
     return [overallSession, ...sessions];
   }, [sessions]);
 
-  const [session, setSession] = useState<Session>(sessionOptions[0]);
+  const [session, setSession] = useState<Session | null>(sessionOptions[0]);
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
+    if (!session) return;
     getPlayersFromSession(session, tournamentId).then(setPlayers);
   }, [session, tournamentId]);
 
-  function handleSessionSelect(session: Session | null) {
-    if (session) setSession(session);
+  function handleGraphRequest() {
+    console.log(
+      `TODO: Create and output graphs for Session ${session?.number}`,
+    );
   }
 
   return (
@@ -34,7 +37,7 @@ export default function SessionsPage() {
       <RoundedListbox<Session>
         value={session}
         options={sessionOptions}
-        onChange={handleSessionSelect}
+        onChange={setSession}
         getOptionLabel={(session) =>
           session.number === -1
             ? "Overall Standings"
@@ -44,7 +47,10 @@ export default function SessionsPage() {
         buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
       />
 
-      <IconButton className="bg-(--accent-color) flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm">
+      <IconButton
+        onClick={handleGraphRequest}
+        className="bg-(--accent-color) flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm"
+      >
         <ChartColumn className="size-5" />
         Download Graphs
       </IconButton>
