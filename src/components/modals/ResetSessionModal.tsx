@@ -19,7 +19,7 @@ export function ResetSessionModal({
   const { tournamentId } = useTournament();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  async function handleSubmit() {
+  async function handleReset() {
     await createSession(tournamentId);
     setShowSuccess(true);
     closeModalAction();
@@ -34,10 +34,7 @@ export function ResetSessionModal({
             players? This cannot be undone!
           </span>
 
-          <FilledButton
-            className="bg-(--negative-color)"
-            onClick={handleSubmit}
-          >
+          <FilledButton className="bg-(--negative-color)" onClick={handleReset}>
             RESET SESSION
           </FilledButton>
         </div>
@@ -46,9 +43,9 @@ export function ResetSessionModal({
       <Notification
         isOpen={showSuccess}
         close={() => setShowSuccess(false)}
-        title="New Session Started"
+        title="Session Reset"
       >
-        {`The session has been reset and all players have been deregistered.`}
+        A new session has started and the player list is now empty.
       </Notification>
     </>
   );

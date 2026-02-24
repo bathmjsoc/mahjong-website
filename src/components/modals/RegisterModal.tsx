@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { type ActionState, signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
@@ -17,17 +17,22 @@ export function RegisterModal({
   closeModalAction,
 }: RegisterModalProps) {
   const [showSuccess, setShowSuccess] = useState(false);
-  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    signUp,
-    null,
-  );
 
-  useEffect(() => {
-    if (state?.success) {
+  async function handleSignUp(prevState: ActionState, formData: FormData) {
+    const result = await signUp(prevState, formData);
+
+    if (result?.success) {
       setShowSuccess(true);
       closeModalAction();
     }
-  }, [state?.success, closeModalAction]);
+
+    return result;
+  }
+
+  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+    handleSignUp,
+    null,
+  );
 
   return (
     <>
@@ -37,7 +42,7 @@ export function RegisterModal({
             name="email"
             type="email"
             autoComplete="email"
-            autoFocus={true}
+            autoFocus
             required
             disabled={isPending}
           >
@@ -69,7 +74,7 @@ export function RegisterModal({
       <Notification
         isOpen={showSuccess}
         close={() => setShowSuccess(false)}
-        title="Account created successfully!"
+        title="Account created!"
       >
         Please check your email to verify your account.
       </Notification>

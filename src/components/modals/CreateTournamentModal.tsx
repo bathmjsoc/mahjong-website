@@ -27,7 +27,13 @@ export function CreateTournamentModal({
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
       <form action={handleSubmit} className="flex flex-col space-y-3 w-xs">
-        <LabelledInput name="tournamentName" autoFocus={true} required>
+        <LabelledInput
+          name="tournamentName"
+          type="text"
+          autoComplete="off"
+          autoFocus
+          required
+        >
           Tournament Name
         </LabelledInput>
       </form>

@@ -22,32 +22,33 @@ export function EditPlayerModal({
   const { players } = useTournament();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [newName, setNewName] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [notification, setNotification] = useState("");
 
-  function handleSelect(player: Player | null) {
-    if (!player) return;
-    setSelectedPlayer(player);
-    setNewName(player.name);
-  }
+  const isInvalid =
+    !selectedPlayer || !newName.trim() || newName === selectedPlayer.name;
 
-  async function handleEdit() {
-    if (!selectedPlayer || !newName) return;
-    await updatePlayer(selectedPlayer, newName);
-
-    setSuccessMessage(
-      `"${selectedPlayer.name}" successfully renamed to "${newName}".`,
-    );
-
-    setShowSuccess(true);
+  function handleClose() {
     setSelectedPlayer(null);
     setNewName("");
     closeModalAction();
   }
 
+  function handleSelect(player: Player | null) {
+    setSelectedPlayer(player);
+    setNewName(player?.name ?? "");
+  }
+
+  async function handleEdit() {
+    if (isInvalid) return;
+
+    await updatePlayer(selectedPlayer, newName);
+    setNotification(`"${selectedPlayer.name}" renamed to "${newName}".`);
+    handleClose();
+  }
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={closeModalAction} title="Modify Player">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
         <form action={handleEdit} className="flex flex-col space-y-5">
           <RoundedListbox<Player>
             value={selectedPlayer}
@@ -64,23 +65,25 @@ export function EditPlayerModal({
             <LabelledInput
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
+              type="text"
+              autoComplete="off"
             >
               Player Name
             </LabelledInput>
           )}
 
-          <FilledButton type="submit" disabled={!selectedPlayer || !newName}>
-            Modify Player Name
+          <FilledButton type="submit" disabled={isInvalid}>
+            Update Player
           </FilledButton>
         </form>
       </Modal>
 
       <Notification
-        isOpen={showSuccess}
-        close={() => setShowSuccess(false)}
+        isOpen={!!notification}
+        close={() => setNotification("")}
         title="Player Modified"
       >
-        {successMessage}
+        {notification}
       </Notification>
     </>
   );

@@ -20,35 +20,29 @@ export function DeletePlayerModal({
 }: DeletePlayerModalProps) {
   const { players } = useTournament();
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [deletedName, setDeletedName] = useState("");
 
-  function handleSelect(player: Player | null) {
-    if (!player) return;
-    setSelectedPlayer(player);
-  }
-
-  async function handleDelete() {
-    if (!selectedPlayer) return;
-    await deletePlayer(selectedPlayer);
-
-    setSuccessMessage(
-      `"${selectedPlayer?.name}" has been removed from the tournament.`,
-    );
-
-    setShowSuccess(true);
+  function handleClose() {
     setSelectedPlayer(null);
     closeModalAction();
   }
 
+  async function handleDelete() {
+    if (!selectedPlayer) return;
+
+    await deletePlayer(selectedPlayer);
+    setDeletedName(selectedPlayer.name);
+    handleClose();
+  }
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={closeModalAction} title="Delete Player">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Delete Player">
         <div className="flex flex-col space-y-3 w-xs">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}
-            onChange={handleSelect}
+            onChange={setSelectedPlayer}
             getOptionLabel={(player) => player.name}
             getOptionKey={(player) => player.id}
             emptyMessage="No players found"
@@ -58,8 +52,8 @@ export function DeletePlayerModal({
 
           {selectedPlayer && (
             <span className="text-xs">
-              {`Are you sure you want to remove "${selectedPlayer.name}" from the tournament? This cannot be
-              undone!`}
+              Are you sure you want to remove "<b>{selectedPlayer.name}</b>"?
+              This cannot be undone!
             </span>
           )}
 
@@ -74,11 +68,11 @@ export function DeletePlayerModal({
       </Modal>
 
       <Notification
-        isOpen={showSuccess}
-        close={() => setShowSuccess(false)}
+        isOpen={!!deletedName}
+        close={() => setDeletedName("")}
         title="Player Deleted"
       >
-        {successMessage}
+        {deletedName} has been removed from the tournament.
       </Notification>
     </>
   );

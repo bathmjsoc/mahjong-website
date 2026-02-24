@@ -30,7 +30,7 @@ export function CreatePlayerModal({
           name="playerName"
           type="text"
           autoComplete="off"
-          autoFocus={true}
+          autoFocus
           required
         >
           Player Name
