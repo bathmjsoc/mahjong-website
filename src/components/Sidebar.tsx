@@ -79,12 +79,7 @@ export function Sidebar() {
             </div>
 
             {registeredPlayers.length > 0 ? (
-              <>
-                <span className="text-xs">
-                  Player(s) Registered: {registeredPlayers.length}
-                </span>
-                <PlayerList players={registeredPlayers} />
-              </>
+              <PlayerList players={registeredPlayers} />
             ) : (
               <span className="text-xs italic">No players registered.</span>
             )}

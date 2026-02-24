@@ -22,7 +22,7 @@ export function PlayerList({ players }: PlayerListProps) {
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
-          <th className="w-7" />
+          <th className="w-7 text-[10px] opacity-66">[{players.length}]</th>
         </tr>
       </thead>
       <tbody>
@@ -80,7 +80,7 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "text-(--secondary-color) border-(--secondary-color) border-2 text-left p-1",
+          "text-(--secondary-color) border-(--secondary-color) border-2 text-left px-2 py-1",
           "transition duration-300",
           isUnseated && "text-(--negative-color)",
           isLocked && "text-(--neutral-color)",
