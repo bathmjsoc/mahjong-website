@@ -39,8 +39,10 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player }: PlayerRowProps) {
-  const { currentSession, lockedPlayerIds } = useTournament();
+  const { currentSession, lockedPlayerIds, unseatedPlayerIds } =
+    useTournament();
   const isLocked = lockedPlayerIds.has(player.id);
+  const isUnseated = unseatedPlayerIds.has(player.id);
   const score = 0;
 
   function handleSelect() {
@@ -78,9 +80,10 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-left p-1",
+          "text-(--secondary-color) border-(--secondary-color) border-2 text-left p-1",
           "transition duration-300",
-          isLocked ? "text-(--neutral-color)" : "text-(--secondary-color)",
+          isUnseated && "text-(--negative-color)",
+          isLocked && "text-(--neutral-color)",
         )}
       >
         {player.name}
