@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { useTournament } from "@/context/TournamentContext";
@@ -11,19 +13,27 @@ type WinSelectorProps = {
 };
 
 const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
-const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 
 export function WinSelector({ table, className, occupant }: WinSelectorProps) {
   const { players } = useTournament();
 
   const opponents = useMemo(() => {
-    const ids = [table.east_id, table.south_id, table.west_id, table.north_id];
+    const ids = [
+      table.east_id,
+      table.south_id,
+      table.west_id,
+      table.north_id,
+    ] as const;
     return ids
       .map((id) => players.find((player) => player.id === id) ?? null)
       .filter((player) => player?.id !== occupant?.id);
   }, [table, players, occupant?.id]);
 
-  function handleSelect(winType: string, faan: number, player: Player | null) {
+  function handleSelect(
+    winType: string,
+    faan: number | null,
+    player: Player | null,
+  ) {
     console.log(`winType=${winType}, faan=${faan}, target=${player?.name}`);
   }
 
@@ -31,44 +41,65 @@ export function WinSelector({ table, className, occupant }: WinSelectorProps) {
     <DropDown
       title="食"
       buttonClassName={twMerge("rounded-full size-8", className)}
+      disabled={!occupant}
     >
-      {WIN_TYPES.map((type) => {
-        if (type === "自摸") {
-          return (
-            <DropDown key={type} title={type}>
-              {FAAN_OPTIONS.map((faan) => (
-                <DropDown.Item
-                  key={faan}
-                  onClick={() => handleSelect(type, faan, null)}
-                >
-                  {faan}
-                </DropDown.Item>
-              ))}
-            </DropDown>
-          );
-        }
-
-        return (
-          <DropDown key={type} title={type}>
-            {opponents.map((player) => (
-              <DropDown
-                key={player?.id}
-                title={player?.name ?? "[EMPTY]"}
-                disabled={!player}
+      <DropDown title="打出">
+        {opponents.map((player) => (
+          <DropDown
+            key={player?.id}
+            title={player?.name ?? "[EMPTY]"}
+            disabled={!player}
+          >
+            {FAAN_OPTIONS.map((faan) => (
+              <DropDown.Item
+                key={faan}
+                onClick={() => handleSelect("打出", faan, player)}
               >
-                {FAAN_OPTIONS.map((faan) => (
-                  <DropDown.Item
-                    key={faan}
-                    onClick={() => handleSelect(type, faan, player)}
-                  >
-                    {faan}
-                  </DropDown.Item>
-                ))}
-              </DropDown>
+                {faan}
+              </DropDown.Item>
             ))}
           </DropDown>
-        );
-      })}
+        ))}
+      </DropDown>
+
+      <DropDown title="自摸">
+        {FAAN_OPTIONS.map((faan) => (
+          <DropDown.Item
+            key={faan}
+            onClick={() => handleSelect("自摸", faan, null)}
+          >
+            {faan}
+          </DropDown.Item>
+        ))}
+      </DropDown>
+
+      <DropDown title="包自摸">
+        {opponents.map((player) => (
+          <DropDown
+            key={player?.id}
+            title={player?.name ?? "[EMPTY]"}
+            disabled={!player}
+          >
+            {FAAN_OPTIONS.map((faan) => (
+              <DropDown.Item
+                key={faan}
+                onClick={() => handleSelect("包自摸", faan, player)}
+              >
+                {faan}
+              </DropDown.Item>
+            ))}
+          </DropDown>
+        ))}
+      </DropDown>
+
+      <div className="border-(--primary-color) border-t">
+        <DropDown.Item
+          onClick={() => handleSelect("詐糊", null, occupant)}
+          className="text-(--negative-color)"
+        >
+          詐糊
+        </DropDown.Item>
+      </div>
     </DropDown>
   );
 }

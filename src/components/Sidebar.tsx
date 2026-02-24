@@ -20,14 +20,12 @@ import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
 
+type ModalType = "create" | "edit" | "delete" | "reset" | null;
+
 export function Sidebar() {
   const { currentSession, players, registeredPlayers } = useTournament();
-
   const [isOpen, setIsOpen] = useState(true);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   return (
     <>
@@ -35,11 +33,11 @@ export function Sidebar() {
         <div
           className={twMerge(
             "bg-(--primary-color) text-(--secondary-color)",
-            "transition-all duration-500 overflow-hidden py-10",
+            "transition-all duration-500 overflow-hidden",
             isOpen ? "w-md px-5" : "w-0 px-0",
           )}
         >
-          <div className="flex flex-col space-y-5 items-center max-w-md min-w-max">
+          <div className="flex flex-col gap-5 items-center max-w-md min-w-max py-10">
             <SearchCombobox<Player>
               options={players}
               onSelect={(player) => registerPlayer(currentSession, player)}
@@ -50,43 +48,45 @@ export function Sidebar() {
               inputClassName="w-88 h-10"
             />
 
-            <div className="flex space-x-15">
+            <div className="flex gap-15">
               <IconButton
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={() => setActiveModal("create")}
                 className="hover:text-(--positive-color)"
               >
                 <UserPlus className="size-6" />
               </IconButton>
 
               <IconButton
-                onClick={() => setIsEditModalOpen(true)}
+                onClick={() => setActiveModal("edit")}
                 className="hover:text-(--neutral-color)"
               >
                 <UserPen className="size-6" />
               </IconButton>
 
               <IconButton
-                onClick={() => setIsDeleteModalOpen(true)}
+                onClick={() => setActiveModal("delete")}
                 className="hover:text-(--negative-color)"
               >
                 <UserMinus className="size-6" />
               </IconButton>
 
               <IconButton
-                onClick={() => setIsResetModalOpen(true)}
+                onClick={() => setActiveModal("reset")}
                 className="hover:text-(--save-color)"
               >
                 <RefreshCw className="size-6" />
               </IconButton>
             </div>
 
-            {registeredPlayers.length > 0 && (
+            {registeredPlayers.length > 0 ? (
               <>
                 <span className="text-xs">
-                  {registeredPlayers.length} Player(s) Registered
+                  Player(s) Registered: {registeredPlayers.length}
                 </span>
                 <PlayerList players={registeredPlayers} />
               </>
+            ) : (
+              <span className="text-xs italic">No players registered.</span>
             )}
           </div>
         </div>
@@ -95,15 +95,14 @@ export function Sidebar() {
         <IconButton
           onClick={() => setIsOpen(!isOpen)}
           className="
-          bg-(--primary-color) text-(--secondary-color)
-          flex items-center justify-center
-          rounded-r-2xl -ml-1 mt-5 h-20 w-10
-          hover:text-(--accent-color)
-        "
+            bg-(--primary-color) text-(--secondary-color)
+            flex items-center justify-center
+            rounded-r-2xl -ml-1 mt-5 h-20 w-10
+          "
         >
           <ChevronRight
             className={twMerge(
-              "transition-transform duration-500",
+              "transition duration-500",
               isOpen ? "rotate-180" : "rotate-0",
             )}
           />
@@ -111,23 +110,23 @@ export function Sidebar() {
       </div>
 
       <CreatePlayerModal
-        isOpen={isCreateModalOpen}
-        closeModalAction={() => setIsCreateModalOpen(false)}
+        isOpen={activeModal === "create"}
+        closeModalAction={() => setActiveModal(null)}
       />
 
       <DeletePlayerModal
-        isOpen={isDeleteModalOpen}
-        closeModalAction={() => setIsDeleteModalOpen(false)}
+        isOpen={activeModal === "delete"}
+        closeModalAction={() => setActiveModal(null)}
       />
 
       <ResetSessionModal
-        isOpen={isResetModalOpen}
-        closeModalAction={() => setIsResetModalOpen(false)}
+        isOpen={activeModal === "reset"}
+        closeModalAction={() => setActiveModal(null)}
       />
 
       <EditPlayerModal
-        isOpen={isEditModalOpen}
-        closeModalAction={() => setIsEditModalOpen(false)}
+        isOpen={activeModal === "edit"}
+        closeModalAction={() => setActiveModal(null)}
       />
     </>
   );

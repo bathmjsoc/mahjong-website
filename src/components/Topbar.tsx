@@ -5,11 +5,11 @@ import { TabLink, TabMenu } from "@/elements/TabMenu";
 
 const TABS = [
   { label: "Tables", href: "" },
-  { label: "Logs", href: "logs" },
-  { label: "Sessions", href: "sessions" },
-  { label: "Graphs", href: "graphs" },
-  { label: "Analytics", href: "analytics" },
-];
+  { label: "Logs", href: "/logs" },
+  { label: "Sessions", href: "/sessions" },
+  { label: "Graphs", href: "/graphs" },
+  { label: "Analytics", href: "/analytics" },
+] as const;
 
 export function Topbar() {
   const { tournamentId } = useTournament();
@@ -20,7 +20,7 @@ export function Topbar() {
         {TABS.map(({ label, href }) => (
           <TabLink
             key={label}
-            href={`/tournament/${tournamentId}${href ? `/${href}` : ""}`}
+            href={`/tournament/${tournamentId}${href}`}
             className="w-30"
           >
             {label}

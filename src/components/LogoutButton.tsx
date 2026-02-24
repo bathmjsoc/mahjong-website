@@ -5,20 +5,21 @@ import { supabaseServer } from "@/lib/supabase_server";
 
 export async function LogoutButton() {
   const supabase = await supabaseServer();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
+
+  if (!data.user) return null;
 
   return (
-    <>
-      {user && (
-        <IconButton
-          className="bg-(--primary-color) absolute flex items-center justify-center z-500 size-9 right-3 top-3 rounded-full"
-          onClick={signOut}
-        >
-          <LogOut className="size-5" />
-        </IconButton>
-      )}
-    </>
+    <form
+      action={signOut}
+      className="
+        bg-(--primary-color) flex items-center justify-center
+        absolute top-3 right-3 z-50 size-9 rounded-full
+      "
+    >
+      <IconButton onClick={signOut}>
+        <LogOut className="size-5" />
+      </IconButton>
+    </form>
   );
 }

@@ -49,7 +49,7 @@ export function EditPlayerModal({
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
-        <form action={handleEdit} className="flex flex-col space-y-5">
+        <form action={handleEdit} className="flex flex-col gap-5">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}

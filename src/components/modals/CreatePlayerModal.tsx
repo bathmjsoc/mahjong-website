@@ -25,7 +25,7 @@ export function CreatePlayerModal({
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Player">
-      <form action={handleSubmit} className="flex flex-col space-y-3 w-xs">
+      <form action={handleSubmit} className="flex flex-col gap-3 w-xs">
         <LabelledInput
           name="playerName"
           type="text"

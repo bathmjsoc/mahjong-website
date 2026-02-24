@@ -8,14 +8,6 @@ type TournamentListProps = {
 };
 
 export function TournamentList({ tournaments }: TournamentListProps) {
-  if (tournaments.length === 0) {
-    return (
-      <div className="text-(--primary-color) text-sm">
-        No tournaments found!
-      </div>
-    );
-  }
-
   return (
     <div className="grid grid-cols-[repeat(auto-fit,300px)] gap-5 w-full justify-center">
       {tournaments.map((tournament) => (
@@ -35,13 +27,16 @@ function TournamentCard({ tournament }: TournamentCardProps) {
       href={`/tournament/${tournament.id}`}
       className="
         bg-(--primary-color) text-(--secondary-color)
-        w-full max-w-sm space-y-10 p-3 rounded-lg
+        flex flex-col gap-10 p-3 rounded-lg
         transition duration-300 hover:scale-97 active:scale-95
       "
     >
-      <h3 title={tournament.name} className="text-lg truncate">
+      {/* Tournament Name */}
+      <span title={tournament.name} className="text-lg">
         {tournament.name}
-      </h3>
+      </span>
+
+      {/* Tournament Information */}
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center justify-center gap-1">
           <Users className="size-4" />

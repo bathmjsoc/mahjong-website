@@ -37,7 +37,7 @@ export function RegisterModal({
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
-        <form action={formAction} className="flex flex-col space-y-3 w-xs">
+        <form action={formAction} className="flex flex-col gap-3 w-xs">
           <LabelledInput
             name="email"
             type="email"

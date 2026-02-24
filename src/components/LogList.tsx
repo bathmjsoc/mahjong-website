@@ -1,3 +1,4 @@
+// TODO: Refactor after logs have been implemented on DB
 import { Trash2 } from "lucide-react";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
