@@ -38,13 +38,10 @@ export async function signIn(
   redirect("/dashboard");
 }
 
-export async function signOut(): Promise<ActionState> {
+export async function signOut(): Promise<void> {
   const supabase = await supabaseServer();
 
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    return { error: error.message };
-  }
+  await supabase.auth.signOut();
 
   redirect("/");
 }

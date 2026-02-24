@@ -11,9 +11,14 @@ export default async function DashboardPage() {
   const tournaments = await fetchTournaments();
 
   return (
-    <div className="flex flex-col items-center p-10 space-y-10">
+    <div className="flex flex-col items-center p-10 gap-10">
       <CreateTournamentButton />
-      <TournamentList tournaments={tournaments} />
+
+      {tournaments.length > 0 ? (
+        <TournamentList tournaments={tournaments} />
+      ) : (
+        <div className="text-xs italic">No tournaments found!</div>
+      )}
     </div>
   );
 }

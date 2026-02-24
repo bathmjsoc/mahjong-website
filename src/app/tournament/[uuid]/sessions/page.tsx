@@ -28,7 +28,7 @@ export default function SessionsPage() {
   }
 
   return (
-    <div className="flex flex-col space-y-10 items-center py-10">
+    <div className="flex flex-col gap-10 items-center py-10">
       <RoundedListbox<Session>
         value={session}
         options={sessionOptions}

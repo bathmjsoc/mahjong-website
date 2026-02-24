@@ -36,7 +36,7 @@ export function scoreToColor(score: number): string {
  * Formats a number as an ordinal (e.g., 1 -> 1st)
  * */
 export function formatPosition(number: number): string {
-  const suffixes = ["th", "st", "nd", "rd"];
+  const suffixes = ["th", "st", "nd", "rd"] as const;
   const v = number % 100;
   return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
 }

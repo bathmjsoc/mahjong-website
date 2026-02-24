@@ -15,10 +15,7 @@ export function TabMenu({ children, className }: TabMenuProps) {
   return (
     <TabGroup>
       <TabList
-        className={twMerge(
-          "flex space-x-5 items-center justify-center",
-          className,
-        )}
+        className={twMerge("flex gap-5 items-center justify-center", className)}
       >
         {children}
       </TabList>
