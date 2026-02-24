@@ -46,6 +46,19 @@ export async function updateOccupant(
     throw new Error(`updateOccupant encountered an error: ${error.message}`);
 }
 
+export async function saveTable(table: Table): Promise<void> {
+  const supabase = await supabaseServer();
+
+  const { id, created_at, ...tableData } = table;
+  const { error } = await supabase.from("tables").insert({
+    ...tableData,
+    is_saved: true,
+  });
+
+  if (error)
+    throw new Error(`saveTable encountered an error: ${error.message}`);
+}
+
 export async function deleteTable(table: Table): Promise<void> {
   const supabase = await supabaseServer();
 

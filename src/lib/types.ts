@@ -25,6 +25,8 @@ export type Table = {
   south_id: string;
   west_id: string;
   north_id: string;
+  created_at: string;
+  is_saved: boolean;
 };
 
 export type Tournament = {
