@@ -1,3 +1,10 @@
+export type Attendance = {
+  session_id: string;
+  player_id: string;
+  registered: boolean;
+  locked: boolean;
+};
+
 export type Log = {
   id: string;
   type: string;
@@ -38,10 +45,3 @@ export type Tournament = {
 
 export type Wind = "east" | "south" | "west" | "north";
 export type WindKey = keyof Table & `${Wind}_id`;
-
-export type Attendance = {
-  session_id: string;
-  player_id: string;
-  registered: boolean;
-  locked: boolean;
-};
