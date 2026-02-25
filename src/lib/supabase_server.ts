@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export async function supabaseServer() {
-  const store = await cookies();
+  const cookieStore = await cookies();
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_KEY;
@@ -13,11 +13,15 @@ export async function supabaseServer() {
 
   return createServerClient(url, key, {
     cookies: {
-      getAll: () => store.getAll(),
+      getAll: () => cookieStore.getAll(),
       setAll: (items) => {
-        items.forEach(({ name, value, options }) => {
-          store.set(name, value, options);
-        });
+        try {
+          items.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Avoid crashing when token is expired
+        }
       },
     },
   });
