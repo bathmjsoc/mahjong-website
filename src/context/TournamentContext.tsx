@@ -9,20 +9,11 @@ import {
   useState,
 } from "react";
 import { fetchAttendance } from "@/actions/attendance";
-import { fetchLogEntries, fetchLogParticipants } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { createClient } from "@/lib/supabase/browser";
-import type {
-  Attendance,
-  Log,
-  LogEntry,
-  LogParticipant,
-  Player,
-  Session,
-  Table,
-} from "@/lib/types";
+import type { Attendance, Player, Session, Table } from "@/lib/types";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -31,7 +22,6 @@ type TournamentContextType = {
   lockedPlayerIds: Set<string>;
   duplicatePlayerIds: Set<string>;
   unseatedPlayerIds: Set<string>;
-  logs: Log[];
   sessions: Session[];
   currentSession: Session;
   tables: Table[];
@@ -54,8 +44,6 @@ export function TournamentProvider({
 
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
-  const [logParticipants, setLogParticipants] = useState<LogParticipant[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
 
@@ -65,29 +53,6 @@ export function TournamentProvider({
   const playerMap = useMemo(() => {
     return new Map(players.map((player) => [player.id, player]));
   }, [players]);
-
-  const logs = useMemo(() => {
-    return logEntries.map((entry) => {
-      const participants = logParticipants.filter((p) => p.log_id === entry.id);
-
-      const winners = [];
-      const losers = [];
-
-      for (const participant of participants) {
-        const player = playerMap.get(participant.player_id);
-        if (!player) continue;
-
-        if (participant.role === "winner") winners.push(player);
-        if (participant.role === "loser") losers.push(player);
-      }
-
-      return {
-        ...entry,
-        winners,
-        losers,
-      };
-    });
-  }, [logEntries, logParticipants, playerMap]);
 
   const { seatedPlayerIds, duplicatePlayerIds } = useMemo(() => {
     const seatedPlayerIds = new Set<string>();
@@ -151,8 +116,6 @@ export function TournamentProvider({
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
     fetchSessions(tournamentId).then(setSessions);
-    fetchLogEntries(tournamentId).then(setLogEntries);
-    fetchLogParticipants(tournamentId).then(setLogParticipants);
   }, [tournamentId]);
 
   useEffect(() => {
@@ -163,6 +126,8 @@ export function TournamentProvider({
   }, [currentSession]);
 
   useEffect(() => {
+    if (!currentSession) return;
+
     const channel = supabase
       .channel(`tournament:${tournamentId}`)
       .on(
@@ -171,6 +136,7 @@ export function TournamentProvider({
           event: "*",
           schema: "public",
           table: "attendance",
+          filter: `session_id=eq.${currentSession.id}`,
         },
         () => fetchAttendance(currentSession).then(setAttendance),
       )
@@ -192,6 +158,7 @@ export function TournamentProvider({
           event: "*",
           schema: "public",
           table: "tables",
+          filter: `session_id=eq.${currentSession.id}`,
         },
         () => fetchTables(currentSession).then(setTables),
       )
@@ -221,7 +188,6 @@ export function TournamentProvider({
         lockedPlayerIds,
         duplicatePlayerIds,
         unseatedPlayerIds,
-        logs,
         sessions,
         currentSession,
         tables,
