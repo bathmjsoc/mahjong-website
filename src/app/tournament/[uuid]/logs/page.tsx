@@ -25,7 +25,7 @@ export default function LogsPage() {
       {logs.length > 0 ? (
         <LogList logs={logs} />
       ) : (
-        <span className="text-xs italic">No logs found.</span>
+        <span className="text-primary text-xs italic">No logs found.</span>
       )}
     </div>
   );

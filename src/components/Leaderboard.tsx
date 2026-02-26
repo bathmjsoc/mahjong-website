@@ -34,7 +34,7 @@ function PlayerRow({ player, position }: PlayerRowProps) {
   const score = 0;
 
   return (
-    <tr className="text-center text-sm">
+    <tr className="text-primary text-center text-sm">
       <td className="border-l">{formatPosition(position)}</td>
 
       <td>{player.name}</td>

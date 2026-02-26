@@ -58,7 +58,7 @@ export default function SessionsPage() {
       {players.length > 0 ? (
         <Leaderboard players={players} />
       ) : (
-        <span className="text-xs italic">No players found.</span>
+        <span className="text-primary text-xs italic">No players found.</span>
       )}
     </div>
   );
