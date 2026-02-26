@@ -73,7 +73,9 @@ export function TournamentProvider({
 
         if (seatedPlayerIds.has(id)) {
           duplicatePlayerIds.add(id);
-        } else seatedPlayerIds.add(id);
+        } else {
+          seatedPlayerIds.add(id);
+        }
       }
     }
 
@@ -86,27 +88,22 @@ export function TournamentProvider({
       const lockedPlayerIds = new Set<string>();
       const unseatedPlayerIds = new Set<string>();
 
-      const currentSessionAttendance = attendance.filter(
-        (entry) => entry.session_id === currentSession.id,
-      );
+      for (const entry of attendance) {
+        if (entry.session_id !== currentSession.id) continue;
 
-      for (const entry of currentSessionAttendance) {
         const player = playerMap.get(entry.player_id);
         if (!player) continue;
 
-        // Collect players who are registered
         if (entry.registered) {
           registeredPlayers.push(player);
 
-          // Collect players who are not locked and not seated
+          if (entry.locked) {
+            lockedPlayerIds.add(player.id);
+          }
+
           if (!entry.locked && !seatedPlayerIds.has(player.id)) {
             unseatedPlayerIds.add(player.id);
           }
-        }
-
-        // Collect players who are locked
-        if (entry.locked) {
-          lockedPlayerIds.add(player.id);
         }
       }
 
@@ -119,10 +116,9 @@ export function TournamentProvider({
   }, [tournamentId]);
 
   useEffect(() => {
-    if (currentSession) {
-      fetchAttendance(currentSession).then(setAttendance);
-      fetchTables(currentSession).then(setTables);
-    }
+    if (!currentSession) return;
+    fetchAttendance(currentSession).then(setAttendance);
+    fetchTables(currentSession).then(setTables);
   }, [currentSession]);
 
   useEffect(() => {
@@ -177,7 +173,7 @@ export function TournamentProvider({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [tournamentId, currentSession, supabase]);
+  }, [currentSession, supabase, tournamentId]);
 
   return (
     <TournamentContext.Provider
