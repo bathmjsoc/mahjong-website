@@ -62,14 +62,14 @@ function PlayerRow({ player }: PlayerRowProps) {
           <div className="relative size-4">
             <LockKeyhole
               className={twMerge(
-                "text-(--neutral-color) hover:text-(--secondary-color)",
+                "text-neutral hover:text-secondary",
                 "absolute size-4 transition duration-300",
                 isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
-                "text-(--secondary-color) hover:text-(--neutral-color)",
+                "text-secondary hover:text-neutral",
                 "absolute size-4 transition duration-300",
                 isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
               )}
@@ -80,10 +80,10 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "text-(--secondary-color) border-(--secondary-color) border-2 text-left px-2 py-1",
+          "text-secondary border-secondary border-2 text-left px-2 py-1",
           "transition duration-300",
-          isUnseated && "text-(--negative-color)",
-          isLocked && "text-(--neutral-color)",
+          isUnseated && "text-negative",
+          isLocked && "text-neutral",
         )}
       >
         {player.name}
@@ -91,7 +91,7 @@ function PlayerRow({ player }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-(--secondary-color) border-2 text-center",
+          "border-secondary border-2 text-center",
           scoreToColor(score),
         )}
       >
@@ -102,7 +102,7 @@ function PlayerRow({ player }: PlayerRowProps) {
       <td>
         <IconButton
           onClick={() => deregisterPlayer(currentSession, player)}
-          className="flex items-center justify-center w-full hover:text-(--negative-color)"
+          className="flex items-center justify-center w-full hover:text-negative"
         >
           <X className="size-5" />
         </IconButton>

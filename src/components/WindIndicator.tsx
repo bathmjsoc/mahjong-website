@@ -14,7 +14,7 @@ export function WindIndicator() {
         onChange={setWind}
         getOptionLabel={(wind) => wind}
         getOptionKey={(wind) => wind}
-        buttonClassName="border-(--primary-color) border-2 size-20 text-5xl font-normal rounded-2xl"
+        buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
         optionsClassName="w-auto"
       />
     </div>

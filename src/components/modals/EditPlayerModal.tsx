@@ -58,7 +58,7 @@ export function EditPlayerModal({
             getOptionKey={(player) => player.id}
             emptyMessage="No players found"
             placeholder="Select a player..."
-            buttonClassName="text-(--primary-color) rounded-lg w-xs p-2"
+            buttonClassName="text-primary rounded-lg w-xs p-2"
           />
 
           {selectedPlayer && (

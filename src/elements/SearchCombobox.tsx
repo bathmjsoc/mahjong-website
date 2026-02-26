@@ -52,7 +52,7 @@ export function SearchCombobox<T>({
         onChange={(event) => setQuery(event.target.value)}
         placeholder={placeholder}
         className={twMerge(
-          "bg-(--secondary-color) text-(--primary-color)",
+          "bg-secondary text-primary",
           "w-full text-center rounded-md p-2 outline-none cursor-text",
           inputClassName,
         )}
@@ -60,7 +60,7 @@ export function SearchCombobox<T>({
       <ComboboxOptions
         anchor="bottom"
         className={twMerge(
-          "bg-(--secondary-color) text-(--primary-color)",
+          "bg-secondary text-primary",
           "max-h-50 w-(--input-width) z-50 mt-2 p-1 outline-none",
           "rounded-lg text-sm no-scrollbar empty:invisible",
           optionsClassName,
@@ -76,7 +76,7 @@ export function SearchCombobox<T>({
               className={twMerge(
                 "flex items-center justify-center",
                 "outline-none cursor-pointer truncate rounded-md p-2",
-                "transition duration-300 hover:bg-(--primary-color)/25",
+                "transition duration-300 hover:bg-primary/25",
                 optionClassName,
               )}
             >

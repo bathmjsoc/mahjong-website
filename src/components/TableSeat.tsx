@@ -42,9 +42,9 @@ export function TableSeat({
     <div className={twMerge("flex items-center justify-center", gridPosition)}>
       <div
         className={twMerge(
-          "bg-(--primary-color) text-(--secondary-color)",
+          "bg-primary text-secondary",
           "flex items-center justify-between gap-1 rounded-full p-1 w-50 shrink-0",
-          isDuplicate && "ring-2 ring-(--negative-color)",
+          isDuplicate && "ring-2 ring-negative",
           tableClassName,
         )}
       >

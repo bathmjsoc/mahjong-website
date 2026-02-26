@@ -44,12 +44,12 @@ export default function SessionsPage() {
             : `Session ${session.number}`
         }
         getOptionKey={(session) => session.id}
-        buttonClassName="border-(--primary-color) border-2 h-10 rounded-lg w-sm"
+        buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
       />
 
       <IconButton
         onClick={handleGraphRequest}
-        className="bg-(--accent-color) flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm"
+        className="bg-accent flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm"
       >
         <ChartColumn className="size-5" />
         Download Graphs

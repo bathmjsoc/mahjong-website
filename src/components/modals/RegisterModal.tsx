@@ -60,9 +60,7 @@ export function RegisterModal({
           </LabelledInput>
 
           {state?.error && (
-            <p className="text-(--negative-color) text-xs text-center">
-              {state.error}
-            </p>
+            <p className="text-negative text-xs text-center">{state.error}</p>
           )}
 
           <FilledButton type="submit" disabled={isPending}>

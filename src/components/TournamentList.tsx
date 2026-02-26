@@ -26,7 +26,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
     <Link
       href={`/tournament/${tournament.id}`}
       className="
-        bg-(--primary-color) text-(--secondary-color)
+        bg-primary text-secondary
         flex flex-col gap-10 p-3 rounded-lg
         transition duration-300 hover:scale-97 active:scale-95
       "

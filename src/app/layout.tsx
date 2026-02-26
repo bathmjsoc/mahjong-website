@@ -11,7 +11,7 @@ const font = Oxygen_Mono({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`bg-(--bg-color) ${font.className}`}>
+      <body className={font.className}>
         <LogoutButton />
         {children}
       </body>

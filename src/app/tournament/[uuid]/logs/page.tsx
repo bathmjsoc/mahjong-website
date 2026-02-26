@@ -17,7 +17,7 @@ export default function LogsPage() {
         placeholder="Enter a query..."
         autoFocus={true}
         className="
-          bg-(--secondary-color) border-(--primary-color) border-2
+          bg-secondary border-primary border-2
           outline-none h-10 rounded-lg w-sm px-2 text-center text-sm
         "
       />

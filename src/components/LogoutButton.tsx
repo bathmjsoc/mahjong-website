@@ -14,9 +14,9 @@ export async function LogoutButton() {
       <IconButton
         onClick={signOut}
         className="
-          bg-(--primary-color) flex items-center justify-center
+          bg-primary flex items-center justify-center
           absolute top-3 right-3 z-50 size-9 rounded-xl
-          hover:text-(--negative-color)
+          hover:text-negative
         "
       >
         <LogOut className="size-5" />

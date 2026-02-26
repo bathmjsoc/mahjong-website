@@ -92,10 +92,10 @@ export function WinSelector({ table, className, occupant }: WinSelectorProps) {
         ))}
       </DropDown>
 
-      <div className="border-(--primary-color) border-t">
+      <div className="border-primary border-t">
         <DropDown.Item
           onClick={() => handleSelect("詐糊", null, occupant)}
-          className="text-(--negative-color)"
+          className="text-negative"
         >
           詐糊
         </DropDown.Item>

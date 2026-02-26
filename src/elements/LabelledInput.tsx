@@ -19,15 +19,15 @@ export function LabelledInput({
       <Input
         {...props}
         className={twMerge(
-          "bg-(--primary-color) text-(--secondary-color)",
-          "border-(--secondary-color) border-2 outline-none",
+          "bg-primary text-secondary",
+          "border-secondary border-2 outline-none",
           "rounded text-center w-full p-2",
           inputClassName,
         )}
       />
       <Label
         className={twMerge(
-          "bg-(--primary-color) text-(--secondary-color)",
+          "bg-primary text-secondary",
           "absolute left-1/2 -translate-x-1/2 top-px -translate-y-1/2",
           "rounded-full px-1 text-xs pointer-events-none",
           labelClassName,
