@@ -2,7 +2,6 @@
 
 import { Shuffle } from "lucide-react";
 import { useState } from "react";
-import { twMerge } from "tailwind-merge";
 import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
@@ -45,9 +44,10 @@ export default function TournamentPage() {
           </IconButton>
         </div>
 
-        <div className={twMerge("w-full", isShaking && "animate-shake")}>
-          <TableList tables={tables} />
-        </div>
+        <TableList
+          tables={tables}
+          className={isShaking ? "animate-shake" : ""}
+        />
       </div>
     </div>
   );

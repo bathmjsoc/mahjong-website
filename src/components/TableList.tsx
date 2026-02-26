@@ -10,13 +10,19 @@ import type { Table } from "@/lib/types";
 
 type TableListProps = {
   tables: Table[];
+  className?: string;
 };
 
-export function TableList({ tables }: TableListProps) {
+export function TableList({ tables, className }: TableListProps) {
   const { currentSession } = useTournament();
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center">
+    <div
+      className={twMerge(
+        "grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center",
+        className,
+      )}
+    >
       {tables.map((table, index) => (
         <TableCard key={table.id} table={table} number={index + 1} />
       ))}
