@@ -11,7 +11,7 @@ export default function LoginPage() {
     <div className="flex min-h-dvh items-center justify-center">
       <LoginForm />
 
-      <footer className="fixed bottom-2 text-xs">
+      <footer className="fixed bottom-2 text-primary text-xs">
         <span>
           Developed by{" "}
           <Link
