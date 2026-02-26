@@ -9,16 +9,23 @@ import {
   useState,
 } from "react";
 import { fetchAttendance } from "@/actions/attendance";
-import { fetchLogs } from "@/actions/logs";
+import { fetchLogEntries, fetchLogParticipants } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { createClient } from "@/lib/supabase/browser";
-import type { Attendance, Log, Player, Session, Table } from "@/lib/types";
+import type {
+  Attendance,
+  Log,
+  LogEntry,
+  LogParticipant,
+  Player,
+  Session,
+  Table,
+} from "@/lib/types";
 
 type TournamentContextType = {
   tournamentId: string;
-  attendance: Attendance[];
   players: Player[];
   registeredPlayers: Player[];
   lockedPlayerIds: Set<string>;
@@ -47,79 +54,105 @@ export function TournamentProvider({
 
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [logs, setLogs] = useState<Log[]>([]);
+  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+  const [logParticipants, setLogParticipants] = useState<LogParticipant[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
 
   // The current session is the last one in sessions
-  const currentSession = useMemo(
-    () => sessions[sessions.length - 1],
-    [sessions],
-  );
+  const currentSession = sessions[sessions.length - 1];
 
-  const registeredPlayers = useMemo(() => {
-    const registeredPlayerIds = new Set(
-      attendance
-        .filter((a) => a.session_id === currentSession.id && a.registered)
-        .map((a) => a.player_id),
-    );
+  const playerMap = useMemo(() => {
+    return new Map(players.map((player) => [player.id, player]));
+  }, [players]);
 
-    return players.filter((player) => registeredPlayerIds.has(player.id));
-  }, [attendance, currentSession, players]);
+  const logs = useMemo(() => {
+    return logEntries.map((entry) => {
+      const participants = logParticipants.filter((p) => p.log_id === entry.id);
 
-  const lockedPlayerIds = useMemo(() => {
-    return new Set(
-      attendance
-        .filter((a) => a.session_id === currentSession.id && a.locked)
-        .map((a) => a.player_id),
-    );
-  }, [attendance, currentSession]);
+      const winners = [];
+      const losers = [];
 
-  const duplicatePlayerIds = useMemo(() => {
-    const seen = new Set<string>();
-    const duplicates = new Set<string>();
+      for (const participant of participants) {
+        const player = playerMap.get(participant.player_id);
+        if (!player) continue;
 
-    const ids = tables
-      .filter((table) => !table.is_saved)
-      .flatMap((table) => [
+        if (participant.role === "winner") winners.push(player);
+        if (participant.role === "loser") losers.push(player);
+      }
+
+      return {
+        ...entry,
+        winners,
+        losers,
+      };
+    });
+  }, [logEntries, logParticipants, playerMap]);
+
+  const { seatedPlayerIds, duplicatePlayerIds } = useMemo(() => {
+    const seatedPlayerIds = new Set<string>();
+    const duplicatePlayerIds = new Set<string>();
+
+    for (const table of tables) {
+      if (table.saved) continue;
+
+      const seats = [
         table.east_id,
         table.south_id,
         table.west_id,
         table.north_id,
-      ]);
+      ];
 
-    for (const id of ids) {
-      if (seen.has(id)) duplicates.add(id);
-      else seen.add(id);
+      for (const id of seats) {
+        if (!id) continue;
+
+        if (seatedPlayerIds.has(id)) {
+          duplicatePlayerIds.add(id);
+        } else seatedPlayerIds.add(id);
+      }
     }
 
-    return duplicates;
+    return { seatedPlayerIds, duplicatePlayerIds };
   }, [tables]);
 
-  const unseatedPlayerIds = useMemo(() => {
-    const seatedPlayerIds = new Set(
-      tables
-        .filter((table) => !table.is_saved)
-        .flatMap((table) => [
-          table.east_id,
-          table.south_id,
-          table.west_id,
-          table.north_id,
-        ]),
-    );
+  const { registeredPlayers, lockedPlayerIds, unseatedPlayerIds } =
+    useMemo(() => {
+      const registeredPlayers: Player[] = [];
+      const lockedPlayerIds = new Set<string>();
+      const unseatedPlayerIds = new Set<string>();
 
-    return new Set(
-      registeredPlayers
-        .filter((player) => !seatedPlayerIds.has(player.id))
-        .filter((player) => !lockedPlayerIds.has(player.id))
-        .map((player) => player.id),
-    );
-  }, [tables, registeredPlayers, lockedPlayerIds]);
+      const currentSessionAttendance = attendance.filter(
+        (entry) => entry.session_id === currentSession.id,
+      );
+
+      for (const entry of currentSessionAttendance) {
+        const player = playerMap.get(entry.player_id);
+        if (!player) continue;
+
+        // Collect players who are registered
+        if (entry.registered) {
+          registeredPlayers.push(player);
+
+          // Collect players who are not locked and not seated
+          if (!entry.locked && !seatedPlayerIds.has(player.id)) {
+            unseatedPlayerIds.add(player.id);
+          }
+        }
+
+        // Collect players who are locked
+        if (entry.locked) {
+          lockedPlayerIds.add(player.id);
+        }
+      }
+
+      return { registeredPlayers, lockedPlayerIds, unseatedPlayerIds };
+    }, [attendance, currentSession, playerMap, seatedPlayerIds]);
 
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
-    fetchLogs(tournamentId).then(setLogs);
     fetchSessions(tournamentId).then(setSessions);
+    fetchLogEntries(tournamentId).then(setLogEntries);
+    fetchLogParticipants(tournamentId).then(setLogParticipants);
   }, [tournamentId]);
 
   useEffect(() => {
@@ -183,7 +216,6 @@ export function TournamentProvider({
     <TournamentContext.Provider
       value={{
         tournamentId,
-        attendance,
         players,
         registeredPlayers,
         lockedPlayerIds,

@@ -5,15 +5,23 @@ export type Attendance = {
   locked: boolean;
 };
 
-export type Log = {
+export type Log = LogEntry & {
+  winners: Player[];
+  losers: Player[];
+};
+
+export type LogEntry = {
   id: string;
-  type: string;
-  winner_ids: string[];
-  loser_ids: string[];
-  other_ids: string[];
-  faan: number;
   session_id: string;
+  type: string;
+  faan: number;
   disabled: boolean;
+};
+
+export type LogParticipant = {
+  log_id: string;
+  player_id: string;
+  role: "winner" | "loser" | null;
 };
 
 export type Player = {
@@ -23,8 +31,9 @@ export type Player = {
 
 export type Session = {
   id: string;
+  tournament_id: string;
   start_date: string;
-  number: number;
+  number: number; // Derived locally
 };
 
 export type Table = {
@@ -33,15 +42,14 @@ export type Table = {
   south_id: string;
   west_id: string;
   north_id: string;
-  created_at: string;
-  is_saved: boolean;
+  saved: boolean;
 };
 
 export type Tournament = {
   id: string;
   name: string;
-  members: number;
   last_updated: Date;
+  player_count: number; // Derived locally
 };
 
 export type Wind = "east" | "south" | "west" | "north";
