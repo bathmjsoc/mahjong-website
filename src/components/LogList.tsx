@@ -8,6 +8,10 @@ type LogListProps = {
 };
 
 export function LogList({ logs }: LogListProps) {
+  if (logs.length === 0) {
+    return <span className="text-primary text-xs italic">No logs found.</span>;
+  }
+
   return (
     <table className="text-primary text-sm w-full border-separate border-spacing-y-2">
       <thead>

@@ -7,6 +7,12 @@ type LeaderboardProps = {
 };
 
 export function Leaderboard({ players }: LeaderboardProps) {
+  if (players.length === 0) {
+    return (
+      <span className="text-primary text-xs italic">No players found.</span>
+    );
+  }
+
   return (
     <table className="table-fixed border-primary border">
       <thead className="bg-primary text-secondary">

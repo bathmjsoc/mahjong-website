@@ -17,6 +17,10 @@ type PlayerListProps = {
 };
 
 export function PlayerList({ players }: PlayerListProps) {
+  if (players.length === 0) {
+    return <span className="text-xs italic">No players registered.</span>;
+  }
+
   return (
     <table>
       <thead>

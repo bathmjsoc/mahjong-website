@@ -55,11 +55,7 @@ export default function SessionsPage() {
         Download Graphs
       </IconButton>
 
-      {players.length > 0 ? (
-        <Leaderboard players={players} />
-      ) : (
-        <span className="text-primary text-xs italic">No players found.</span>
-      )}
+      <Leaderboard players={players} />
     </div>
   );
 }

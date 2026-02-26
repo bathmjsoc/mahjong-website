@@ -13,12 +13,7 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col items-center p-10 gap-10">
       <CreateTournamentButton />
-
-      {tournaments.length > 0 ? (
-        <TournamentList tournaments={tournaments} />
-      ) : (
-        <div className="text-primary text-xs italic">No tournaments found!</div>
-      )}
+      <TournamentList tournaments={tournaments} />
     </div>
   );
 }
