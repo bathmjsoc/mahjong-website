@@ -7,7 +7,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { WindIndicator } from "@/components/WindIndicator";
 import { useTournament } from "@/context/TournamentContext";
-import { IconButton } from "@/elements/IconButton";
+import { FilledButton } from "@/elements/FilledButton";
 
 export default function TournamentPage() {
   const { currentSession, lockedPlayerIds, registeredPlayers, tables } =
@@ -34,14 +34,14 @@ export default function TournamentPage() {
 
       <div className="flex flex-col items-center w-full overflow-hidden">
         <div className="py-5">
-          <IconButton
+          <FilledButton
             onClick={handleShuffle}
             disabled={isShaking}
-            className="bg-primary flex gap-2 items-center justify-center px-4 py-2 rounded-lg hover:text-info"
+            className="bg-primary flex gap-2 items-center justify-center"
           >
             <Shuffle className="size-5" />
             Shuffle Tables
-          </IconButton>
+          </FilledButton>
         </div>
 
         <TableList

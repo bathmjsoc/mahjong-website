@@ -9,6 +9,7 @@ import { IconButton } from "@/elements/IconButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
+import {FilledButton} from "@/elements/FilledButton";
 
 export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();
@@ -37,13 +38,13 @@ export default function SessionsPage() {
         buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
       />
 
-      <IconButton
+      <FilledButton
         onClick={handleGraphRequest}
-        className="bg-accent flex gap-2 items-center justify-center px-4 py-2 rounded-lg text-sm"
+        className="flex gap-2 items-center justify-center text-sm"
       >
         <ChartColumn className="size-5" />
-        Download Graphs
-      </IconButton>
+        Download Graph
+      </FilledButton>
 
       <Leaderboard players={players} />
     </div>
