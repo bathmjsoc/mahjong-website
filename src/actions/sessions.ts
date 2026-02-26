@@ -52,13 +52,9 @@ export async function getPlayersFromSession(
         `getPlayersFromSession encountered an error: ${error.message}`,
       );
 
-    // Convert start_date field to Date object
-    return (
-      data?.map((session) => ({
-        ...session,
-        start_date: new Date(session.start_date),
-      })) ?? []
-    );
+    //
+
+    return data ?? [];
   }
 
   // Return all players from the given session
