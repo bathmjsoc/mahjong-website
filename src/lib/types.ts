@@ -21,7 +21,7 @@ export type LogEntry = {
 export type LogParticipant = {
   log_id: string;
   player_id: string;
-  role: "winner" | "loser" | null;
+  role: "winner" | "loser" | "other";
 };
 
 export type Player = {
