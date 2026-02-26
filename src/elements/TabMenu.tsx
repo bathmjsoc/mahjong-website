@@ -37,10 +37,9 @@ export function TabLink({ children, href, className, ...props }: TabLinkProps) {
         {...props}
         className={twMerge(
           "bg-primary text-secondary",
-          "border-primary border-2 outline-none",
-          "flex flex-1 items-center justify-center rounded-xl p-1",
-          "transition duration-300 hover:scale-97 active:scale-95",
-          "data-[active=true]:border-secondary",
+          "border-transparent border-2 outline-none rounded-xl p-1",
+          "flex items-center justify-center transition duration-300",
+          "hover:scale-97 active:scale-95 data-[active=true]:border-secondary",
           className,
         )}
       >
