@@ -17,7 +17,7 @@ export default function TournamentPage() {
   async function handleShuffle() {
     setIsShaking(true);
 
-    const availableTables = tables.filter((table) => !table.is_saved);
+    const availableTables = tables.filter((table) => !table.saved);
     const availablePlayers = registeredPlayers.filter(
       (player) => !lockedPlayerIds.has(player.id),
     );

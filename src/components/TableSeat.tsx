@@ -24,6 +24,7 @@ export function TableSeat({
   buttonClassName,
 }: TableSeatProps) {
   const { duplicatePlayerIds, players, registeredPlayers } = useTournament();
+
   const occupantId = table[`${wind}_id` as WindKey];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
 

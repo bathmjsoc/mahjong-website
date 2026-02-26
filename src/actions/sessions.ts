@@ -36,7 +36,6 @@ export async function fetchSessions(tournamentId: string): Promise<Session[]> {
 
 export async function getPlayersFromSession(
   session: Session,
-  tournamentId: string,
 ): Promise<Player[]> {
   const supabase = await createClient();
 
@@ -45,7 +44,7 @@ export async function getPlayersFromSession(
     const { data, error } = await supabase
       .from("players")
       .select("*")
-      .eq("tournament_id", tournamentId);
+      .eq("tournament_id", session.tournament_id);
 
     if (error)
       throw new Error(

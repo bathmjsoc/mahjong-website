@@ -50,7 +50,7 @@ function TableCard({ table, number }: TableProps) {
     <div
       className={twMerge(
         "grid grid-cols-5 grid-rows-5 w-70 h-70",
-        table.is_saved && "opacity-50",
+        table.saved && "opacity-50",
       )}
     >
       <TableSeat
@@ -80,7 +80,7 @@ function TableCard({ table, number }: TableProps) {
       />
       {/* Table Number */}
       <div className="flex items-center justify-center text-primary text-7xl row-start-3 col-start-3">
-        {table.is_saved ? "S" : number}
+        {table.saved ? "S" : number}
       </div>
 
       <div className="flex items-center justify-center gap-5 row-start-4 col-start-2 col-span-3">

@@ -53,11 +53,11 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.winner_ids}
+        {log.winners.map((player) => player.name).join(", ")}
       </td>
 
       <td className="border-primary border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
-        {log.loser_ids}
+        {log.losers.map((player) => player.name).join(", ")}
       </td>
 
       <td>

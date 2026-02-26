@@ -46,7 +46,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
       <div className="flex items-center justify-between text-xs">
         <div className="flex items-center justify-center gap-1">
           <Users className="size-4" />
-          {tournament.members}
+          {tournament.player_count}
         </div>
         Updated {formatTimeAgo(tournament.last_updated)}
       </div>

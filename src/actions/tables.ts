@@ -60,10 +60,10 @@ export async function updateTable(
 export async function saveTable(table: Table): Promise<void> {
   const supabase = await createClient();
 
-  const { id, created_at, ...tableData } = table;
+  const { id, ...tableData } = table;
   const { error } = await supabase.from("tables").insert({
     ...tableData,
-    is_saved: true,
+    saved: true,
   });
 
   if (error)

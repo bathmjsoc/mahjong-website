@@ -11,12 +11,17 @@ import type { Player, Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
 
 export default function SessionsPage() {
-  const { sessions, tournamentId } = useTournament();
+  const { sessions } = useTournament();
   const [players, setPlayers] = useState<Player[]>([]);
 
   // Prepend 'Overall Standings' pseudo-session
   const sessionOptions: Session[] = useMemo(() => {
-    const overallSession: Session = { id: "", number: -1, start_date: "" };
+    const overallSession: Session = {
+      id: "",
+      number: -1,
+      start_date: "",
+      tournament_id: "",
+    };
     return [overallSession, ...sessions];
   }, [sessions]);
 
@@ -24,8 +29,8 @@ export default function SessionsPage() {
 
   useEffect(() => {
     if (!session) return;
-    getPlayersFromSession(session, tournamentId).then(setPlayers);
-  }, [session, tournamentId]);
+    getPlayersFromSession(session).then(setPlayers);
+  }, [session]);
 
   function handleGraphRequest() {
     console.log(
