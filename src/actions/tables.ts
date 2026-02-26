@@ -84,8 +84,8 @@ export async function shuffleTables(
   }
 
   while (availableTables.length < neededTables) {
-    const newTable = await createTable(session);
-    availableTables.push(newTable);
+    const tableToCreate = await createTable(session);
+    availableTables.push(tableToCreate);
   }
 
   for (const table of availableTables) {
