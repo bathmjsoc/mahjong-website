@@ -18,10 +18,7 @@ export function LoginForm() {
     <>
       <form
         action={formAction}
-        className="
-            bg-primary text-secondary
-            flex flex-col gap-3 rounded-lg w-sm p-5
-          "
+        className=" bg-primary text-secondary flex flex-col gap-3 rounded-lg w-sm p-5"
       >
         <LabelledInput
           name="email"
