@@ -8,13 +8,14 @@ import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Session } from "@/lib/types";
+import { getSessionName } from "@/lib/utils";
 
 export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();
 
   // Prepend 'Overall Standings' pseudo-session
   const sessionOptions: Session[] = useMemo(() => {
-    const overallSession: Session = { id: "", number: -1 };
+    const overallSession: Session = { id: "", number: -1, start_date: "" };
     return [overallSession, ...sessions];
   }, [sessions]);
 
@@ -38,11 +39,7 @@ export default function SessionsPage() {
         value={session}
         options={sessionOptions}
         onChange={setSession}
-        getOptionLabel={(session) =>
-          session.number === -1
-            ? "Overall Standings"
-            : `Session ${session.number}`
-        }
+        getOptionLabel={getSessionName}
         getOptionKey={(session) => session.id}
         buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
       />

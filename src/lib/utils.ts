@@ -1,3 +1,5 @@
+import type { Session } from "@/lib/types";
+
 /*
  * Formats a date object as a relative string (e.g., "5 minutes ago")
  * */
@@ -53,4 +55,13 @@ export function shuffle<T>(items: T[]): T[] {
   }
 
   return result;
+}
+
+/*
+ * Formats a session name using number and start_date
+ * */
+export function getSessionName(session: Session): string {
+  return session.number === -1
+    ? "Overall Standings"
+    : `Session ${session.number} (${session.start_date})`;
 }

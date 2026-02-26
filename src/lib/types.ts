@@ -23,6 +23,7 @@ export type Player = {
 
 export type Session = {
   id: string;
+  start_date: string;
   number: number;
 };
 
