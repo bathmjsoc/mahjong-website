@@ -26,12 +26,19 @@ export async function fetchSessions(tournamentId: string): Promise<Session[]> {
   if (error)
     throw new Error(`fetchSessions encountered an error: ${error.message}`);
 
-  return (
+  const sessions =
     data?.map((session, index) => ({
       ...session,
       number: index + 1,
-    })) ?? []
-  );
+    })) ?? [];
+
+  const overallSession = {
+    id: "",
+    number: -1,
+    start_date: "",
+  };
+
+  return [overallSession, ...sessions]; // Prepend 'Overall Standings' pseudo-session
 }
 
 export async function getPlayersFromSession(
