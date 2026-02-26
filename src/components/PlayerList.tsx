@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
