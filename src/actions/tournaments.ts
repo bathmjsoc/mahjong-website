@@ -1,11 +1,11 @@
 "use server";
 
 import { createSession } from "@/actions/sessions";
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 import type { Tournament } from "@/lib/types";
 
 export async function createTournament(tournamentName: string): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("tournaments")
@@ -20,7 +20,7 @@ export async function createTournament(tournamentName: string): Promise<void> {
 }
 
 export async function fetchTournaments(): Promise<Tournament[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("tournaments")
@@ -38,7 +38,7 @@ export async function fetchTournaments(): Promise<Tournament[]> {
 }
 
 export async function getTournamentName(tournamentId: string): Promise<string> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("tournaments")

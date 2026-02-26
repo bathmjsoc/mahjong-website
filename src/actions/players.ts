@@ -1,13 +1,13 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 import type { Player } from "@/lib/types";
 
 export async function createPlayer(
   tournamentId: string,
   playerName: string,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("players").insert({
     tournament_id: tournamentId,
@@ -19,7 +19,7 @@ export async function createPlayer(
 }
 
 export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("players")
@@ -37,7 +37,7 @@ export async function updatePlayer(
   player: Player,
   newName: string,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("players")
@@ -49,7 +49,7 @@ export async function updatePlayer(
 }
 
 export async function deletePlayer(player: Player): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("players").delete().eq("id", player.id);
 

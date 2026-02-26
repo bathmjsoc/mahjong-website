@@ -13,7 +13,7 @@ import { fetchLogs } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
-import { supabaseBrowser } from "@/lib/supabase_client";
+import { createClient } from "@/lib/supabase/browser";
 import type { Attendance, Log, Player, Session, Table } from "@/lib/types";
 
 type TournamentContextType = {
@@ -43,7 +43,7 @@ export function TournamentProvider({
   children,
   tournamentId,
 }: TournamentProviderProps) {
-  const supabase = supabaseBrowser();
+  const supabase = createClient();
 
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
