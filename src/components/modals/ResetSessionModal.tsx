@@ -34,7 +34,7 @@ export function ResetSessionModal({
             players? This cannot be undone!
           </span>
 
-          <FilledButton className="bg-(--negative-color)" onClick={handleReset}>
+          <FilledButton className="bg-negative" onClick={handleReset}>
             RESET SESSION
           </FilledButton>
         </div>

@@ -1,13 +1,13 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 import type { Attendance, Player, Session } from "@/lib/types";
 
 export async function registerPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("attendance").upsert(
     {
@@ -24,7 +24,7 @@ export async function registerPlayer(
 }
 
 export async function fetchAttendance(session: Session): Promise<Attendance[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("attendance")
@@ -41,7 +41,7 @@ export async function deregisterPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("attendance")
@@ -56,7 +56,7 @@ export async function lockPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("attendance")
@@ -71,7 +71,7 @@ export async function unlockPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase
     .from("attendance")

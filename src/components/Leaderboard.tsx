@@ -8,15 +8,15 @@ type LeaderboardProps = {
 
 export function Leaderboard({ players }: LeaderboardProps) {
   return (
-    <table className="table-fixed border-(--primary-color) border">
-      <thead className="bg-(--primary-color) text-(--secondary-color)">
+    <table className="table-fixed border-primary border">
+      <thead className="bg-primary text-secondary">
         <tr>
           <th className="w-25">Rank</th>
           <th className="w-75">Name</th>
           <th className="w-25">Score</th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-(--primary-color)">
+      <tbody className="divide-y divide-primary">
         {players.map((player, index) => (
           <PlayerRow key={player.id} player={player} position={index + 1} />
         ))}
@@ -34,7 +34,7 @@ function PlayerRow({ player, position }: PlayerRowProps) {
   const score = 0;
 
   return (
-    <tr className="text-center text-sm">
+    <tr className="text-primary text-center text-sm">
       <td className="border-l">{formatPosition(position)}</td>
 
       <td>{player.name}</td>

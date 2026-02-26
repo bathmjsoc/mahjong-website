@@ -25,7 +25,7 @@ export function TableList({ tables }: TableListProps) {
       <div className="flex items-center justify-center size-70">
         <IconButton
           onClick={() => createTable(currentSession)}
-          className="bg-(--accent-color) rounded-full p-3"
+          className="bg-accent rounded-full p-3"
         >
           <Plus className="size-7" />
         </IconButton>
@@ -73,7 +73,7 @@ function TableCard({ table, number }: TableProps) {
         buttonClassName="-rotate-90"
       />
       {/* Table Number */}
-      <div className="flex items-center justify-center text-(--primary-color) text-7xl row-start-3 col-start-3">
+      <div className="flex items-center justify-center text-primary text-7xl row-start-3 col-start-3">
         {table.is_saved ? "S" : number}
       </div>
 
@@ -81,9 +81,9 @@ function TableCard({ table, number }: TableProps) {
         {/* Save Table Button */}
         <IconButton
           onClick={() => saveTable(table)}
-          className="hover:text-(--save-color)"
+          className="hover:text-info"
         >
-          <div className="bg-(--primary-color) flex items-center justify-center rounded-full size-8">
+          <div className="bg-primary flex items-center justify-center rounded-full size-8">
             <Archive className="size-4" />
           </div>
         </IconButton>
@@ -91,9 +91,9 @@ function TableCard({ table, number }: TableProps) {
         {/* Delete Table Button */}
         <IconButton
           onClick={() => deleteTable(table)}
-          className="hover:text-(--negative-color)"
+          className="hover:text-negative"
         >
-          <div className="bg-(--primary-color) flex items-center justify-center rounded-full size-8">
+          <div className="bg-primary flex items-center justify-center rounded-full size-8">
             <Trash2 className="size-4" />
           </div>
         </IconButton>

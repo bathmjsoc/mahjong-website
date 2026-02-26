@@ -30,17 +30,14 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         <DialogPanel
           transition
           className="
-            bg-(--primary-color) text-(--secondary-color)
+            bg-primary text-secondary
             rounded-xl p-4 transition duration-300
             data-closed:scale-95 data-closed:opacity-0
           "
         >
           <div className="flex items-center justify-between mb-4">
             <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
-            <IconButton
-              onClick={onClose}
-              className="hover:text-(--negative-color)"
-            >
+            <IconButton onClick={onClose} className="hover:text-negative">
               <X />
             </IconButton>
           </div>

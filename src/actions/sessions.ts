@@ -1,10 +1,10 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 import type { Player, Session } from "@/lib/types";
 
 export async function createSession(tournamentId: string): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error: fetchError } = await supabase
     .from("sessions")
@@ -33,7 +33,7 @@ export async function createSession(tournamentId: string): Promise<void> {
 }
 
 export async function fetchSessions(tournamentId: string): Promise<Session[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("sessions")
@@ -51,7 +51,7 @@ export async function getPlayersFromSession(
   session: Session,
   tournamentId: string,
 ): Promise<Player[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   // Return all players from the tournament
   if (session.number === -1) {

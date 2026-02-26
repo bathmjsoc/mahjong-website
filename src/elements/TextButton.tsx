@@ -10,7 +10,7 @@ export function TextButton({ children, className, ...props }: TextButtonProps) {
       {...props}
       className={twMerge(
         "outline-none underline underline-offset-2 cursor-pointer",
-        "transition duration-300 hover:text-(--accent-color)",
+        "transition duration-300 hover:text-accent",
         className,
       )}
     >

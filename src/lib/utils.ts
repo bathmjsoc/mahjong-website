@@ -27,9 +27,9 @@ export function formatTimeAgo(date: Date): string {
  * Maps a score to a Tailwind background color class
  * */
 export function scoreToColor(score: number): string {
-  if (score < 0) return "bg-(--negative-color)";
-  if (score > 0) return "bg-(--positive-color)";
-  return "bg-(--neutral-color)";
+  if (score < 0) return "bg-negative";
+  if (score > 0) return "bg-positive";
+  return "bg-neutral";
 }
 
 /*

@@ -13,7 +13,7 @@ export function FilledButton({
     <Button
       {...props}
       className={twMerge(
-        "bg-(--accent-color) text-(--secondary-color)",
+        "bg-accent text-secondary",
         "border-none outline-none rounded p-2 transition duration-300",
         "enabled:cursor-pointer enabled:hover:scale-97 enabled:active:scale-95",
         "disabled:cursor-not-allowed",

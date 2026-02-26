@@ -32,7 +32,7 @@ export function Sidebar() {
       <div className="flex">
         <div
           className={twMerge(
-            "bg-(--primary-color) text-(--secondary-color)",
+            "bg-primary text-secondary",
             "transition-all duration-500 overflow-hidden",
             isOpen ? "w-md px-5" : "w-0 px-0",
           )}
@@ -51,28 +51,28 @@ export function Sidebar() {
             <div className="flex gap-15">
               <IconButton
                 onClick={() => setActiveModal("create")}
-                className="hover:text-(--positive-color)"
+                className="hover:text-positive"
               >
                 <UserPlus className="size-6" />
               </IconButton>
 
               <IconButton
                 onClick={() => setActiveModal("edit")}
-                className="hover:text-(--neutral-color)"
+                className="hover:text-neutral"
               >
                 <UserPen className="size-6" />
               </IconButton>
 
               <IconButton
                 onClick={() => setActiveModal("delete")}
-                className="hover:text-(--negative-color)"
+                className="hover:text-negative"
               >
                 <UserMinus className="size-6" />
               </IconButton>
 
               <IconButton
                 onClick={() => setActiveModal("reset")}
-                className="hover:text-(--save-color)"
+                className="hover:text-info"
               >
                 <RefreshCw className="size-6" />
               </IconButton>
@@ -90,10 +90,9 @@ export function Sidebar() {
         <IconButton
           onClick={() => setIsOpen(!isOpen)}
           className="
-            bg-(--primary-color) text-(--secondary-color)
+            bg-primary text-secondary
             flex items-center justify-center
             rounded-r-2xl -ml-1 mt-5 h-20 w-10
-            hover:text-(--save-color)
           "
         >
           <ChevronRight

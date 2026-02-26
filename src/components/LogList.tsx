@@ -9,7 +9,7 @@ type LogListProps = {
 
 export function LogList({ logs }: LogListProps) {
   return (
-    <table className="text-(--primary-color) text-sm w-full border-separate border-spacing-y-2">
+    <table className="text-primary text-sm w-full border-separate border-spacing-y-2">
       <thead>
         <tr>
           <th className="w-[10%]">Session</th>
@@ -36,28 +36,28 @@ type LogRowProps = {
 function LogRow({ log }: LogRowProps) {
   return (
     <tr>
-      <td className="border-(--primary-color) border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
+      <td className="border-primary border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
         {log.session_id}
       </td>
 
-      <td className="border-(--primary-color) border-x-0 border-y text-center p-2 truncate">
+      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
         {log.faan}
       </td>
 
-      <td className="border-(--primary-color) border-x-0 border-y text-center p-2 truncate">
+      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
         {log.type}
       </td>
 
-      <td className="border-(--primary-color) border-x-0 border-y text-center p-2 truncate">
+      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
         {log.winner_ids}
       </td>
 
-      <td className="border-(--primary-color) border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
+      <td className="border-primary border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
         {log.loser_ids}
       </td>
 
       <td>
-        <IconButton className="flex items-center justify-center w-full text-(--primary-color) hover:text-(--negative-color)">
+        <IconButton className="flex items-center justify-center w-full text-primary hover:text-negative">
           <Trash2 className="size-5" />
         </IconButton>
       </td>

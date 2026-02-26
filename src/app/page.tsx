@@ -1,23 +1,41 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import { LoginForm } from "@/components/LoginForm";
-import { supabaseServer } from "@/lib/supabase_server";
 
 export const metadata: Metadata = {
   title: "mahjong-website",
 };
 
-export default async function LoginPage() {
-  const supabase = await supabaseServer();
-  const { data } = await supabase.auth.getUser();
-
-  if (data.user) {
-    redirect("/dashboard");
-  }
-
+export default function LoginPage() {
   return (
     <div className="flex min-h-dvh items-center justify-center">
       <LoginForm />
+
+      <footer className="fixed bottom-2 text-xs">
+        <span>
+          Developed by{" "}
+          <Link
+            href="https://github.com/edwinauton"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Edwin Auton
+          </Link>
+        </span>
+        <span className="mx-2">/</span>
+        <span>
+          Original Concept by{" "}
+          <Link
+            href="https://github.com/duskt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Guy Johns
+          </Link>
+        </span>
+      </footer>
     </div>
   );
 }

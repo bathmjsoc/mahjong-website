@@ -9,7 +9,7 @@ export function IconButton({ children, className, ...props }: IconButtonProps) {
     <Button
       {...props}
       className={twMerge(
-        "text-(--secondary-color) outline-none cursor-pointer",
+        "text-secondary outline-none cursor-pointer",
         "transition duration-300 hover:scale-95 active:scale-90",
         className,
       )}

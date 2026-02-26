@@ -1,10 +1,10 @@
 import { LogOut } from "lucide-react";
 import { signOut } from "@/actions/auth";
 import { IconButton } from "@/elements/IconButton";
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function LogoutButton() {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
   if (!data.user) return null;
@@ -12,11 +12,11 @@ export async function LogoutButton() {
   return (
     <form action={signOut}>
       <IconButton
-        onClick={signOut}
+        type="submit"
         className="
-          bg-(--primary-color) flex items-center justify-center
+          bg-primary flex items-center justify-center
           absolute top-3 right-3 z-50 size-9 rounded-xl
-          hover:text-(--negative-color)
+          hover:text-negative
         "
       >
         <LogOut className="size-5" />

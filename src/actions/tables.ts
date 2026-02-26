@@ -1,11 +1,11 @@
 "use server";
 
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 import type { Player, Session, Table, Wind, WindKey } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 
 export async function createTable(session: Session): Promise<Table> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("tables")
@@ -22,7 +22,7 @@ export async function createTable(session: Session): Promise<Table> {
 }
 
 export async function fetchTables(session: Session): Promise<Table[]> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("tables")
@@ -40,7 +40,7 @@ export async function updateTable(
   table: Table,
   players: Partial<Record<Wind, Player | null>>,
 ): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const payload: Partial<Record<WindKey, string | null>> = {};
   for (const wind in players) {
@@ -58,7 +58,7 @@ export async function updateTable(
 }
 
 export async function saveTable(table: Table): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { id, created_at, ...tableData } = table;
   const { error } = await supabase.from("tables").insert({
@@ -97,7 +97,7 @@ export async function shuffleTables(
 }
 
 export async function deleteTable(table: Table): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("tables").delete().eq("id", table.id);
 

@@ -47,7 +47,7 @@ export function DeletePlayerModal({
             getOptionKey={(player) => player.id}
             emptyMessage="No players found"
             placeholder="Select a player..."
-            buttonClassName="text-(--primary-color) rounded-lg w-xs p-2"
+            buttonClassName="text-primary rounded-lg w-xs p-2"
           />
 
           {selectedPlayer && (
@@ -58,7 +58,7 @@ export function DeletePlayerModal({
           )}
 
           <FilledButton
-            className="bg-(--negative-color)"
+            className="bg-negative"
             onClick={handleDelete}
             disabled={!selectedPlayer}
           >

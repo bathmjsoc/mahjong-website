@@ -1,24 +1,31 @@
 @import "tailwindcss";
 
-:root {
-  --bg-color: #c0bbba;
-  --primary-color: #35363a;
-  --secondary-color: #ecebea;
-  --accent-color: #285d33;
+@theme {
+  --color-background: #c0bbba;
+  --color-primary: #35363a;
+  --color-secondary: #ecebea;
+  --color-accent: #285d33;
 
-  --save-color: #60a5fa;
-  --positive-color: #15803d;
-  --neutral-color: #ca8a04;
-  --negative-color: #b91c1c;
+  --color-info: #60a5fa;
+  --color-positive: #15803d;
+  --color-neutral: #ca8a04;
+  --color-negative: #b91c1c;
 }
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    @apply bg-background;
+    scrollbar-gutter: stable;
   }
 }
 

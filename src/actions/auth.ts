@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { supabaseServer } from "@/lib/supabase_server";
+import { createClient } from "@/lib/supabase/server";
 
 export type ActionState = {
   error?: string;
@@ -12,7 +12,7 @@ export async function signUp(
   _: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -27,7 +27,7 @@ export async function signIn(
   _: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -39,7 +39,7 @@ export async function signIn(
 }
 
 export async function signOut(): Promise<void> {
-  const supabase = await supabaseServer();
+  const supabase = await createClient();
 
   await supabase.auth.signOut();
 

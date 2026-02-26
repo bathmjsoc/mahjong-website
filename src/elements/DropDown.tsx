@@ -44,12 +44,12 @@ export function DropDown({
               disabled={disabled}
               className={twMerge(
                 "w-full text-center outline-none rounded transition",
-                isNested ? "p-1" : "bg-(--accent-color)",
+                isNested ? "p-1" : "bg-accent",
                 !disabled
                   ? [
                       "cursor-pointer",
                       isNested
-                        ? "hover:bg-(--primary-color)/25"
+                        ? "hover:bg-primary/25"
                         : "hover:scale-93 active:scale-87",
                     ]
                   : "opacity-50 cursor-not-allowed",
@@ -62,8 +62,8 @@ export function DropDown({
               <PopoverPanel
                 anchor={`${isNested ? "right start" : "bottom"}`}
                 className={twMerge(
-                  "bg-(--secondary-color) text-(--primary-color)",
-                  "border-(--primary-color) border-2 outline-none",
+                  "bg-secondary text-primary",
+                  "border-primary border-2 outline-none",
                   "flex flex-col rounded-xl text-sm p-1 z-50",
                   isNested ? "ml-2" : "mt-2",
                   panelClassName,
@@ -96,7 +96,7 @@ function Item({ onClick, children, className, disabled, ...props }: ItemProps) {
       onClick={handleClick}
       className={twMerge(
         "w-full text-center outline-none rounded cursor-pointer p-1",
-        "hover:bg-(--primary-color)/25",
+        "hover:bg-primary/25",
         className,
       )}
     >
