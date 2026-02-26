@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
+import { WindIndicator } from "@/components/WindIndicator";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
 
@@ -30,6 +31,7 @@ export default function TournamentPage() {
   return (
     <div className="flex min-h-dvh">
       <Sidebar />
+      <WindIndicator />
 
       <div className="flex flex-col items-center w-full overflow-hidden">
         <div className="py-5">
