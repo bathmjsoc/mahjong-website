@@ -31,10 +31,12 @@ export async function fetchTournaments(): Promise<Tournament[]> {
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
 
   // Convert last_updated field to Date object
-  return (data ?? []).map((tournament) => ({
-    ...tournament,
-    last_updated: new Date(tournament.last_updated),
-  }));
+  return (
+    data?.map((tournament) => ({
+      ...tournament,
+      last_updated: new Date(tournament.last_updated),
+    })) ?? []
+  );
 }
 
 export async function getTournamentName(tournamentId: string): Promise<string> {
