@@ -13,13 +13,14 @@ import { getSessionName } from "@/lib/utils";
 export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();
   const [players, setPlayers] = useState<Player[]>([]);
-  const [session, setSession] = useState<Session | null>(sessions[0]);
 
   // Prepend 'Overall Standings' pseudo-session
   const sessionOptions: Session[] = useMemo(() => {
     const overallSession: Session = { id: "", number: -1, start_date: "" };
     return [overallSession, ...sessions];
   }, [sessions]);
+
+  const [session, setSession] = useState<Session | null>(sessionOptions[0]);
 
   useEffect(() => {
     if (!session) return;
