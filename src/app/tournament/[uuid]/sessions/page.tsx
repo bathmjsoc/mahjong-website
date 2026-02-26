@@ -1,7 +1,7 @@
 "use client";
 
 import { ChartColumn } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getPlayersFromSession } from "@/actions/sessions";
 import { Leaderboard } from "@/components/Leaderboard";
 import { useTournament } from "@/context/TournamentContext";
@@ -14,6 +14,12 @@ export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();
   const [players, setPlayers] = useState<Player[]>([]);
   const [session, setSession] = useState<Session | null>(sessions[0]);
+
+  // Prepend 'Overall Standings' pseudo-session
+  const sessionOptions: Session[] = useMemo(() => {
+    const overallSession: Session = { id: "", number: -1, start_date: "" };
+    return [overallSession, ...sessions];
+  }, [sessions]);
 
   useEffect(() => {
     if (!session) return;
@@ -30,7 +36,7 @@ export default function SessionsPage() {
     <div className="flex flex-col gap-7 items-center py-10">
       <RoundedListbox<Session>
         value={session}
-        options={sessions}
+        options={sessionOptions}
         onChange={setSession}
         getOptionLabel={getSessionName}
         getOptionKey={(session) => session.id}
