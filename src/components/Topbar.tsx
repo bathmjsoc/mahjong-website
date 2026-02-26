@@ -1,6 +1,9 @@
 "use client";
 
+import { LogOut } from "lucide-react";
+import { signOut } from "@/actions/auth";
 import { useTournament } from "@/context/TournamentContext";
+import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
 
 const TABS = [
@@ -14,7 +17,7 @@ export function Topbar() {
   const { tournamentId } = useTournament();
 
   return (
-    <nav className="bg-accent flex items-center h-15 pl-5 z-50">
+    <nav className="bg-accent flex items-center justify-between h-15 px-5 z-50">
       <TabMenu>
         {TABS.map(({ label, href }) => (
           <TabLink
@@ -26,6 +29,13 @@ export function Topbar() {
           </TabLink>
         ))}
       </TabMenu>
+
+      <FilledButton
+        onClick={signOut}
+        className="bg-primary size-9 rounded-xl hover:text-negative"
+      >
+        <LogOut className="size-5" />
+      </FilledButton>
     </nav>
   );
 }

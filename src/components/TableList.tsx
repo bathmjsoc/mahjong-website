@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { TableSeat } from "@/components/TableSeat";
 import { useTournament } from "@/context/TournamentContext";
-import { IconButton } from "@/elements/IconButton";
+import { FilledButton } from "@/elements/FilledButton";
 import type { Table } from "@/lib/types";
 
 type TableListProps = {
@@ -29,12 +29,12 @@ export function TableList({ tables, className }: TableListProps) {
 
       {/* Add New Table Button */}
       <div className="flex items-center justify-center size-70">
-        <IconButton
+        <FilledButton
           onClick={() => createTable(currentSession)}
-          className="bg-accent rounded-full p-3"
+          className="rounded-full p-3"
         >
           <Plus className="size-7" />
-        </IconButton>
+        </FilledButton>
       </div>
     </div>
   );
@@ -85,24 +85,20 @@ function TableCard({ table, number }: TableProps) {
 
       <div className="flex items-center justify-center gap-5 row-start-4 col-start-2 col-span-3">
         {/* Save Table Button */}
-        <IconButton
+        <FilledButton
           onClick={() => saveTable(table)}
-          className="hover:text-info"
+          className="bg-primary rounded-full hover:text-info"
         >
-          <div className="bg-primary flex items-center justify-center rounded-full size-8">
-            <Archive className="size-4" />
-          </div>
-        </IconButton>
+          <Archive className="size-4" />
+        </FilledButton>
 
         {/* Delete Table Button */}
-        <IconButton
+        <FilledButton
           onClick={() => deleteTable(table)}
-          className="hover:text-negative"
+          className="bg-primary rounded-full hover:text-negative"
         >
-          <div className="bg-primary flex items-center justify-center rounded-full size-8">
-            <Trash2 className="size-4" />
-          </div>
-        </IconButton>
+          <Trash2 className="size-4" />
+        </FilledButton>
       </div>
     </div>
   );

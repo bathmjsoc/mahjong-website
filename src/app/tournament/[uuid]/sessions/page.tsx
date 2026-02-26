@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { getPlayersFromSession } from "@/actions/sessions";
 import { Leaderboard } from "@/components/Leaderboard";
 import { useTournament } from "@/context/TournamentContext";
-import { IconButton } from "@/elements/IconButton";
+import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
-import {FilledButton} from "@/elements/FilledButton";
 
 export default function SessionsPage() {
   const { sessions, tournamentId } = useTournament();
