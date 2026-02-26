@@ -17,7 +17,7 @@ export default async function DashboardPage() {
       {tournaments.length > 0 ? (
         <TournamentList tournaments={tournaments} />
       ) : (
-        <div className="text-xs italic">No tournaments found!</div>
+        <div className="text-primary text-xs italic">No tournaments found!</div>
       )}
     </div>
   );
