@@ -1,10 +1,12 @@
+"use client";
+
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import type { Player, Table, Wind, WindKey } from "@/lib/types";
+import type { Player, Table, Wind } from "@/lib/types";
 
 type TableSeatProps = {
   table: Table;
@@ -21,14 +23,15 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { duplicatePlayerIds, players, registeredPlayers } = useTournament();
-  const occupantId = table[`${wind}_id` as WindKey];
+  const { duplicatePlayerIds, playerMap, registeredPlayers } = useTournament();
+
+  const occupantId = table[`${wind}_id`];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
 
-  const occupant = useMemo(
-    () => players.find((p) => p.id === occupantId) ?? null,
-    [players, occupantId],
-  );
+  const occupant = useMemo(() => {
+    if (!occupantId) return null;
+    return playerMap[occupantId] ?? null;
+  }, [playerMap, occupantId]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;

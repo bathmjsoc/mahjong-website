@@ -1,0 +1,83 @@
+"use client";
+
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { fetchSessions } from "@/actions/sessions";
+import { createClient } from "@/lib/supabase/browser";
+import type { Session } from "@/lib/types";
+
+type SessionsContextType = {
+  currentSession: Session;
+  sessionMap: Record<string, Session>;
+  sessions: Session[];
+};
+
+const SessionsContext = createContext<SessionsContextType | undefined>(
+  undefined,
+);
+
+const supabase = createClient();
+
+export function SessionsProvider({
+  tournamentId,
+  children,
+}: {
+  tournamentId: string;
+  children: ReactNode;
+}) {
+  const [sessions, setSessions] = useState<Session[]>([]);
+
+  const currentSession = useMemo(() => {
+    return sessions[sessions.length - 1];
+  }, [sessions]);
+
+  const sessionMap = useMemo(() => {
+    const record: Record<string, Session> = {};
+    sessions.forEach((session) => {
+      record[session.id] = session;
+    });
+    return record;
+  }, [sessions]);
+
+  useEffect(() => {
+    if (!tournamentId) return;
+    fetchSessions(tournamentId).then(setSessions);
+
+    const channel = supabase
+      .channel(`sessions:${tournamentId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sessions",
+          filter: `tournament_id=eq.${tournamentId}`,
+        },
+        () => fetchSessions(tournamentId).then(setSessions),
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [tournamentId]);
+
+  return (
+    <SessionsContext.Provider value={{ currentSession, sessionMap, sessions }}>
+      {children}
+    </SessionsContext.Provider>
+  );
+}
+
+export const useSessions = () => {
+  const context = useContext(SessionsContext);
+  if (!context)
+    throw new Error("useSessions must be used within SessionsProvider!");
+  return context;
+};

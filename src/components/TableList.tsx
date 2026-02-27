@@ -5,30 +5,36 @@ import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { TableSeat } from "@/components/TableSeat";
 import { useTournament } from "@/context/TournamentContext";
-import { IconButton } from "@/elements/IconButton";
+import { FilledButton } from "@/elements/FilledButton";
 import type { Table } from "@/lib/types";
 
 type TableListProps = {
   tables: Table[];
+  className?: string;
 };
 
-export function TableList({ tables }: TableListProps) {
+export function TableList({ tables, className }: TableListProps) {
   const { currentSession } = useTournament();
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center">
+    <div
+      className={twMerge(
+        "grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center",
+        className,
+      )}
+    >
       {tables.map((table, index) => (
         <TableCard key={table.id} table={table} number={index + 1} />
       ))}
 
       {/* Add New Table Button */}
       <div className="flex items-center justify-center size-70">
-        <IconButton
+        <FilledButton
           onClick={() => createTable(currentSession)}
-          className="bg-accent rounded-full p-3"
+          className="rounded-full p-3"
         >
           <Plus className="size-7" />
-        </IconButton>
+        </FilledButton>
       </div>
     </div>
   );
@@ -44,7 +50,7 @@ function TableCard({ table, number }: TableProps) {
     <div
       className={twMerge(
         "grid grid-cols-5 grid-rows-5 w-70 h-70",
-        table.is_saved && "opacity-50",
+        table.saved && "opacity-50",
       )}
     >
       <TableSeat
@@ -74,29 +80,25 @@ function TableCard({ table, number }: TableProps) {
       />
       {/* Table Number */}
       <div className="flex items-center justify-center text-primary text-7xl row-start-3 col-start-3">
-        {table.is_saved ? "S" : number}
+        {table.saved ? "S" : number}
       </div>
 
       <div className="flex items-center justify-center gap-5 row-start-4 col-start-2 col-span-3">
         {/* Save Table Button */}
-        <IconButton
+        <FilledButton
           onClick={() => saveTable(table)}
-          className="hover:text-info"
+          className="bg-primary rounded-full hover:text-info"
         >
-          <div className="bg-primary flex items-center justify-center rounded-full size-8">
-            <Archive className="size-4" />
-          </div>
-        </IconButton>
+          <Archive className="size-4" />
+        </FilledButton>
 
         {/* Delete Table Button */}
-        <IconButton
+        <FilledButton
           onClick={() => deleteTable(table)}
-          className="hover:text-negative"
+          className="bg-primary rounded-full hover:text-negative"
         >
-          <div className="bg-primary flex items-center justify-center rounded-full size-8">
-            <Trash2 className="size-4" />
-          </div>
-        </IconButton>
+          <Trash2 className="size-4" />
+        </FilledButton>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
 import { PlayerList } from "@/components/PlayerList";
 import { useTournament } from "@/context/TournamentContext";
+import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import type { Player } from "@/lib/types";
@@ -78,20 +79,15 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            {registeredPlayers.length > 0 ? (
-              <PlayerList players={registeredPlayers} />
-            ) : (
-              <span className="text-xs italic">No players registered.</span>
-            )}
+            <PlayerList session={currentSession} players={registeredPlayers} />
           </div>
         </div>
 
         {/* Collapse/Expand Sidebar Button */}
-        <IconButton
+        <FilledButton
           onClick={() => setIsOpen(!isOpen)}
           className="
             bg-primary text-secondary
-            flex items-center justify-center
             rounded-r-2xl -ml-1 mt-5 h-20 w-10
           "
         >
@@ -101,7 +97,7 @@ export function Sidebar() {
               isOpen ? "rotate-180" : "rotate-0",
             )}
           />
-        </IconButton>
+        </FilledButton>
       </div>
 
       <CreatePlayerModal

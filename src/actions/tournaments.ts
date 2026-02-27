@@ -24,17 +24,20 @@ export async function fetchTournaments(): Promise<Tournament[]> {
 
   const { data, error } = await supabase
     .from("tournaments")
-    .select("*")
+    .select("*, players(id)")
     .order("last_updated", { ascending: false });
 
   if (error)
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
 
-  // Convert last_updated field to Date object
-  return (data ?? []).map((tournament) => ({
-    ...tournament,
-    last_updated: new Date(tournament.last_updated),
-  }));
+  // Convert last_updated to Date object and calculate member_count
+  return (
+    data?.map((tournament) => ({
+      ...tournament,
+      last_updated: new Date(tournament.last_updated),
+      member_count: tournament.players.length,
+    })) ?? []
+  );
 }
 
 export async function getTournamentName(tournamentId: string): Promise<string> {

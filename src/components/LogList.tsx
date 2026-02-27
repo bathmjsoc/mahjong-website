@@ -1,5 +1,5 @@
-// TODO: Refactor after logs have been implemented on DB
 import { Trash2 } from "lucide-react";
+import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
 
@@ -8,15 +8,19 @@ type LogListProps = {
 };
 
 export function LogList({ logs }: LogListProps) {
+  if (logs.length === 0) {
+    return <span className="text-primary text-xs italic">No logs found.</span>;
+  }
+
   return (
-    <table className="text-primary text-sm w-full border-separate border-spacing-y-2">
+    <table className="text-primary text-sm w-full max-w-7xl border-separate border-spacing-y-2">
       <thead>
         <tr>
           <th className="w-[10%]">Session</th>
           <th className="w-[10%]">Faan</th>
           <th className="w-[10%]">Win Type</th>
-          <th className="w-[20%]">Winner</th>
-          <th className="">Loser(s)</th>
+          <th className="w-auto">Winner(s)</th>
+          <th className="w-auto">Loser(s)</th>
           <th className="w-7" />
         </tr>
       </thead>
@@ -37,27 +41,30 @@ function LogRow({ log }: LogRowProps) {
   return (
     <tr>
       <td className="border-primary border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
-        {log.session_id}
+        {log.session_number}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.faan}
+        {log.win_type === "詐糊" ? "N/A" : log.faan}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.type}
+        {log.win_type}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.winner_ids}
+        {log.winners.map((player) => player.name).join(", ") || "N/A"}
       </td>
 
       <td className="border-primary border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
-        {log.loser_ids}
+        {log.losers.map((player) => player.name).join(", ") || "N/A"}
       </td>
 
       <td>
-        <IconButton className="flex items-center justify-center w-full text-primary hover:text-negative">
+        <IconButton
+          onClick={() => disableLog(log)}
+          className="text-primary hover:text-negative flex items-center justify-center w-full"
+        >
           <Trash2 className="size-5" />
         </IconButton>
       </td>
