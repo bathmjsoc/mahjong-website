@@ -11,7 +11,7 @@ import type { Player, Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
 
 export default function SessionsPage() {
-  const { sessions } = useTournament();
+  const { sessions, tournamentId } = useTournament();
   const [players, setPlayers] = useState<Player[]>([]);
 
   // Prepend 'Overall Standings' pseudo-session
@@ -20,10 +20,10 @@ export default function SessionsPage() {
       id: "",
       number: -1,
       start_date: "",
-      tournament_id: "",
+      tournament_id: tournamentId,
     };
     return [overallSession, ...sessions];
-  }, [sessions]);
+  }, [sessions, tournamentId]);
 
   const [session, setSession] = useState<Session | null>(sessionOptions[0]);
 
