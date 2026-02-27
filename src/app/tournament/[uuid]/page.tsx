@@ -10,17 +10,12 @@ import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 
 export default function TournamentPage() {
-  const { currentSession, lockedPlayerIds, registeredPlayers, tables } =
+  const { availablePlayers, availableTables, currentSession, tables } =
     useTournament();
   const [isShaking, setIsShaking] = useState(false);
 
   async function handleShuffle() {
     setIsShaking(true);
-
-    const availableTables = tables.filter((table) => !table.saved);
-    const availablePlayers = registeredPlayers.filter(
-      (player) => !lockedPlayerIds.has(player.id),
-    );
 
     await shuffleTables(currentSession, availableTables, availablePlayers);
 

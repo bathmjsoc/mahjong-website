@@ -9,22 +9,34 @@ import {
   useState,
 } from "react";
 import { fetchAttendance } from "@/actions/attendance";
+import { fetchLogs } from "@/actions/logs";
 import { fetchPlayers } from "@/actions/players";
 import { fetchSessions } from "@/actions/sessions";
 import { fetchTables } from "@/actions/tables";
 import { createClient } from "@/lib/supabase/browser";
-import type { Attendance, Player, Session, Table } from "@/lib/types";
+import type {
+  Attendance,
+  Log,
+  LogEntry,
+  Player,
+  Session,
+  Table,
+} from "@/lib/types";
 
 type TournamentContextType = {
-  tournamentId: string;
+  availablePlayers: Player[];
+  availableTables: Table[];
+  currentSession: Session;
+  duplicatePlayerIds: Set<string>;
+  lockedPlayerIds: Set<string>;
+  logs: Log[];
+  playerMap: Map<string, Player>;
   players: Player[];
   registeredPlayers: Player[];
-  lockedPlayerIds: Set<string>;
-  duplicatePlayerIds: Set<string>;
-  unseatedPlayerIds: Set<string>;
   sessions: Session[];
-  currentSession: Session;
   tables: Table[];
+  tournamentId: string;
+  unseatedPlayerIds: Set<string>;
 };
 
 const TournamentContext = createContext<TournamentContextType | undefined>(
@@ -43,72 +55,104 @@ export function TournamentProvider({
   const supabase = createClient();
 
   const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
   const [players, setPlayers] = useState<Player[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [tables, setTables] = useState<Table[]>([]);
 
   // The current session is the last one in sessions
-  const currentSession = sessions[sessions.length - 1];
+  const currentSession = useMemo(() => {
+    return sessions[sessions.length - 1];
+  }, [sessions]);
 
   const playerMap = useMemo(() => {
     return new Map(players.map((player) => [player.id, player]));
   }, [players]);
 
-  const { seatedPlayerIds, duplicatePlayerIds } = useMemo(() => {
-    const seatedPlayerIds = new Set<string>();
-    const duplicatePlayerIds = new Set<string>();
+  const { availableTables, seatedPlayerIds, duplicatePlayerIds } =
+    useMemo(() => {
+      const seatedPlayerIds = new Set<string>();
+      const duplicatePlayerIds = new Set<string>();
 
-    for (const table of tables) {
-      if (table.saved) continue;
+      for (const table of tables) {
+        if (table.saved) continue;
 
-      const seats = [
-        table.east_id,
-        table.south_id,
-        table.west_id,
-        table.north_id,
-      ];
+        const seats = [
+          table.east_id,
+          table.south_id,
+          table.west_id,
+          table.north_id,
+        ];
 
-      for (const id of seats) {
-        if (!id) continue;
+        for (const id of seats) {
+          if (!id) continue;
 
-        if (seatedPlayerIds.has(id)) {
-          duplicatePlayerIds.add(id);
-        } else {
-          seatedPlayerIds.add(id);
+          if (seatedPlayerIds.has(id)) {
+            duplicatePlayerIds.add(id);
+          } else {
+            seatedPlayerIds.add(id);
+          }
         }
+      }
+
+      const availableTables = tables.filter((table) => !table.saved);
+
+      return { seatedPlayerIds, duplicatePlayerIds, availableTables };
+    }, [tables]);
+
+  const {
+    availablePlayers,
+    registeredPlayers,
+    lockedPlayerIds,
+    unseatedPlayerIds,
+  } = useMemo(() => {
+    const registeredPlayers: Player[] = [];
+    const lockedPlayerIds = new Set<string>();
+    const unseatedPlayerIds = new Set<string>();
+
+    for (const entry of attendance) {
+      if (entry.session_id !== currentSession.id) continue;
+
+      const player = playerMap.get(entry.player_id);
+      if (!player || !entry.registered) continue;
+
+      registeredPlayers.push(player);
+
+      if (entry.locked) {
+        lockedPlayerIds.add(player.id);
+      } else if (!entry.locked && !seatedPlayerIds.has(player.id)) {
+        unseatedPlayerIds.add(player.id);
       }
     }
 
-    return { seatedPlayerIds, duplicatePlayerIds };
-  }, [tables]);
+    const availablePlayers = registeredPlayers.filter(
+      (player) => !lockedPlayerIds.has(player.id),
+    );
 
-  const { registeredPlayers, lockedPlayerIds, unseatedPlayerIds } =
-    useMemo(() => {
-      const registeredPlayers: Player[] = [];
-      const lockedPlayerIds = new Set<string>();
-      const unseatedPlayerIds = new Set<string>();
+    return {
+      registeredPlayers,
+      lockedPlayerIds,
+      unseatedPlayerIds,
+      availablePlayers,
+    };
+  }, [attendance, currentSession, playerMap, seatedPlayerIds]);
 
-      for (const entry of attendance) {
-        if (entry.session_id !== currentSession.id) continue;
+  const logs = useMemo(() => {
+    return logEntries.map((entry) => {
+      const winners: Player[] = [];
+      const losers: Player[] = [];
 
-        const player = playerMap.get(entry.player_id);
+      for (const participant of entry.log_participants) {
+        const player = playerMap.get(participant.player_id);
         if (!player) continue;
 
-        if (entry.registered) {
-          registeredPlayers.push(player);
-
-          if (entry.locked) {
-            lockedPlayerIds.add(player.id);
-          }
-
-          if (!entry.locked && !seatedPlayerIds.has(player.id)) {
-            unseatedPlayerIds.add(player.id);
-          }
-        }
+        if (participant.role === "winner") winners.push(player);
+        if (participant.role === "loser") losers.push(player);
       }
 
-      return { registeredPlayers, lockedPlayerIds, unseatedPlayerIds };
-    }, [attendance, currentSession, playerMap, seatedPlayerIds]);
+      return { ...entry, winners, losers };
+    });
+  }, [logEntries, playerMap]);
 
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
@@ -120,6 +164,11 @@ export function TournamentProvider({
     fetchAttendance(currentSession).then(setAttendance);
     fetchTables(currentSession).then(setTables);
   }, [currentSession]);
+
+  useEffect(() => {
+    if (!sessions) return;
+    fetchLogs(sessions).then(setLogEntries);
+  }, [sessions]);
 
   useEffect(() => {
     if (!currentSession) return;
@@ -141,6 +190,16 @@ export function TournamentProvider({
         {
           event: "*",
           schema: "public",
+          table: "log_entries",
+          filter: `session_id=eq.${currentSession.id}`,
+        },
+        () => fetchLogs([currentSession]).then(setLogEntries),
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
           table: "players",
           filter: `tournament_id=eq.${tournamentId}`,
         },
@@ -153,21 +212,22 @@ export function TournamentProvider({
         {
           event: "*",
           schema: "public",
-          table: "tables",
-          filter: `session_id=eq.${currentSession.id}`,
+          table: "sessions",
+          filter: `tournament_id=eq.${tournamentId}`,
         },
-        () => fetchTables(currentSession).then(setTables),
+        () => fetchSessions(tournamentId).then(setSessions),
       )
       .on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
-          table: "sessions",
-          filter: `tournament_id=eq.${tournamentId}`,
+          table: "tables",
+          filter: `session_id=eq.${currentSession.id}`,
         },
-        () => fetchSessions(tournamentId).then(setSessions),
+        () => fetchTables(currentSession).then(setTables),
       )
+
       .subscribe();
 
     return () => {
@@ -178,15 +238,19 @@ export function TournamentProvider({
   return (
     <TournamentContext.Provider
       value={{
-        tournamentId,
+        availablePlayers,
+        availableTables,
+        currentSession,
+        duplicatePlayerIds,
+        lockedPlayerIds,
+        logs,
+        playerMap,
         players,
         registeredPlayers,
-        lockedPlayerIds,
-        duplicatePlayerIds,
-        unseatedPlayerIds,
         sessions,
-        currentSession,
         tables,
+        tournamentId,
+        unseatedPlayerIds,
       }}
     >
       {children}
