@@ -13,16 +13,18 @@ export type Log = LogEntry & {
 export type LogEntry = {
   id: string;
   session_id: string;
-  type: string;
+  type: WinType;
   faan: number;
-  disabled: boolean;
+  log_participants: LogParticipant[]; // Derived locally
 };
 
-export type LogParticipant = {
+type LogParticipant = {
   log_id: string;
   player_id: string;
-  role: "winner" | "loser" | "other";
+  role: LogRole;
 };
+
+export type LogRole = "winner" | "loser" | "other";
 
 export type Player = {
   id: string;
@@ -53,3 +55,5 @@ export type Tournament = {
 };
 
 export type Wind = "east" | "south" | "west" | "north";
+
+export type WinType = "打出" | "自摸" | "包自摸" | "詐糊";
