@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Session } from "@/lib/types";
+import type { Session } from "@/lib/types";
 
 export async function createSession(tournamentId: string): Promise<void> {
   const supabase = await createClient();
@@ -32,39 +32,4 @@ export async function fetchSessions(tournamentId: string): Promise<Session[]> {
       number: index + 1,
     })) ?? []
   );
-}
-
-export async function getPlayersFromSession(
-  session: Session,
-): Promise<Player[]> {
-  const supabase = await createClient();
-
-  // Return all players from the tournament
-  if (session.number === -1) {
-    const { data, error } = await supabase
-      .from("players")
-      .select("*")
-      .eq("tournament_id", session.tournament_id);
-
-    if (error)
-      throw new Error(
-        `getPlayersFromSession encountered an error: ${error.message}`,
-      );
-
-    return data ?? [];
-  }
-
-  // Return all players from the given session
-  const { data, error } = await supabase
-    .from("attendance")
-    .select("player:players(*)")
-    .eq("session_id", session.id)
-    .overrideTypes<{ player: Player }[]>();
-
-  if (error)
-    throw new Error(
-      `getPlayersFromSession encountered an error: ${error.message}`,
-    );
-
-  return data?.map((row) => row.player) ?? [];
 }

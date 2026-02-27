@@ -1,26 +1,22 @@
 "use client";
 
 import { twMerge } from "tailwind-merge";
-import { useTournament } from "@/context/TournamentContext";
-import type { Player, Session } from "@/lib/types";
+import type { Player } from "@/lib/types";
 import { formatPosition, rankPlayers, scoreToColor } from "@/lib/utils";
 
 type LeaderboardProps = {
   players: Player[];
-  session: Session;
+  scores: Record<string, number>;
 };
 
-export function Leaderboard({ players, session }: LeaderboardProps) {
-  const { overallScores, sessionScores } = useTournament();
+export function Leaderboard({ players, scores }: LeaderboardProps) {
+  const rankedPlayers = rankPlayers(players, scores);
 
   if (players.length === 0) {
     return (
       <span className="text-primary text-xs italic">No players found.</span>
     );
   }
-
-  const scores = sessionScores[session.id] || overallScores;
-  const rankedPlayers = rankPlayers(players, scores);
 
   return (
     <table className="table-fixed border-primary border">
