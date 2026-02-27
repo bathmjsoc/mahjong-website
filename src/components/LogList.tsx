@@ -13,7 +13,7 @@ export function LogList({ logs }: LogListProps) {
   }
 
   return (
-    <table className="text-primary text-sm w-full border-separate border-spacing-y-2">
+    <table className="text-primary text-sm w-full max-w-7xl border-separate border-spacing-y-2">
       <thead>
         <tr>
           <th className="w-[10%]">Session</th>
