@@ -19,7 +19,7 @@ export type LogEntry = {
   log_participants: LogParticipant[]; // Derived locally
 };
 
-type LogParticipant = {
+export type LogParticipant = {
   player_id: string;
   role: LogRole;
 };
