@@ -73,13 +73,16 @@ export function TournamentProvider({
     return new Map(sessions.map((session) => [session.id, session]));
   }, [sessions]);
 
-  const { availableTables, seatedPlayerIds, duplicatePlayerIds } =
+  const { availableTables, duplicatePlayerIds, seatedPlayerIds } =
     useMemo(() => {
-      const seatedPlayerIds = new Set<string>();
+      const availableTables: Table[] = [];
       const duplicatePlayerIds = new Set<string>();
+      const seatedPlayerIds = new Set<string>();
 
       for (const table of tables) {
         if (table.saved) continue;
+
+        availableTables.push(table);
 
         const seats = [
           table.east_id,
@@ -99,9 +102,7 @@ export function TournamentProvider({
         }
       }
 
-      const availableTables = tables.filter((table) => !table.saved);
-
-      return { seatedPlayerIds, duplicatePlayerIds, availableTables };
+      return { availableTables, seatedPlayerIds, duplicatePlayerIds };
     }, [tables]);
 
   const {
@@ -110,39 +111,41 @@ export function TournamentProvider({
     lockedPlayerIds,
     unseatedPlayerIds,
   } = useMemo(() => {
+    const availablePlayers: Player[] = [];
     const registeredPlayers: Player[] = [];
     const lockedPlayerIds = new Set<string>();
     const unseatedPlayerIds = new Set<string>();
 
     for (const entry of attendance) {
-      if (entry.session_id !== currentSession.id) continue;
+      if (entry.session_id !== currentSession.id || !entry.registered) continue;
 
       const player = playerMap.get(entry.player_id);
-      if (!player || !entry.registered) continue;
+      if (!player) continue;
 
       registeredPlayers.push(player);
 
       if (entry.locked) {
         lockedPlayerIds.add(player.id);
-      } else if (!entry.locked && !seatedPlayerIds.has(player.id)) {
-        unseatedPlayerIds.add(player.id);
+      } else {
+        availablePlayers.push(player);
+
+        if (!seatedPlayerIds.has(player.id)) {
+          unseatedPlayerIds.add(player.id);
+        }
       }
     }
-
-    const availablePlayers = registeredPlayers.filter(
-      (player) => !lockedPlayerIds.has(player.id),
-    );
 
     return {
       registeredPlayers,
       lockedPlayerIds,
-      unseatedPlayerIds,
       availablePlayers,
+      unseatedPlayerIds,
     };
   }, [attendance, currentSession, playerMap, seatedPlayerIds]);
 
   const logs = useMemo(() => {
     return logEntries.map((entry) => {
+      const session_number = sessionMap.get(entry.session_id)?.number ?? 0;
       const winners: Player[] = [];
       const losers: Player[] = [];
 
@@ -153,8 +156,6 @@ export function TournamentProvider({
         if (participant.role === "winner") winners.push(player);
         if (participant.role === "loser") losers.push(player);
       }
-
-      const session_number = sessionMap.get(entry.session_id)?.number ?? 0;
 
       return { ...entry, session_number, winners, losers };
     });
@@ -172,7 +173,7 @@ export function TournamentProvider({
   }, [currentSession]);
 
   useEffect(() => {
-    if (!sessions) return;
+    if (!sessions.length) return;
     fetchLogs(sessions).then(setLogEntries);
   }, [sessions]);
 
