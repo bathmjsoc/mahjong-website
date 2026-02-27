@@ -45,7 +45,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.faan}
+        {log.win_type === "詐糊" ? "N/A" : log.faan}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">

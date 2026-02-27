@@ -2,9 +2,10 @@
 
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
+import { createLog } from "@/actions/logs";
 import { useTournament } from "@/context/TournamentContext";
 import { DropDown } from "@/elements/DropDown";
-import type { Player, Table, WinType } from "@/lib/types";
+import type { LogParticipant, Player, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
   table: Table;
@@ -15,7 +16,7 @@ type WinSelectorProps = {
 const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
-  const { playerMap } = useTournament();
+  const { currentSession, playerMap } = useTournament();
 
   const opponents = useMemo(() => {
     if (!occupant) return [];
@@ -25,55 +26,58 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       table.south_id,
       table.west_id,
       table.north_id,
-    ] as const;
+    ];
 
-    return seatIds.map((id) => {
-      const player = id ? (playerMap.get(id) ?? null) : null;
-      return player === occupant ? null : player;
-    });
+    return seatIds
+      .map((id) => (id ? (playerMap.get(id) ?? null) : null))
+      .filter((player) => !player || player.id !== occupant.id);
   }, [table, playerMap, occupant]);
 
-  function handleSelect(
+  async function handleWin(
     winType: WinType,
-    faan?: number,
+    faan: number = 0,
     target?: Player | null,
   ) {
     if (!occupant) return;
 
-    const winners: Player[] = [];
-    const losers: Player[] = [];
-    const others: Player[] = [];
+    const participants: LogParticipant[] = [];
+    const addParticipant = (
+      player: Player | null | undefined,
+      role: LogParticipant["role"],
+    ) => {
+      if (player) {
+        participants.push({ player_id: player.id, role });
+      }
+    };
 
     switch (winType) {
       case "打出":
       case "包自摸":
-        winners.push(occupant);
-        if (target) losers.push(target);
-        opponents.forEach((player) => {
-          if (player && !winners.includes(player) && !losers.includes(player)) {
-            others.push(player);
-          }
-        });
+        addParticipant(occupant, "winner");
+        addParticipant(target, "loser");
+        opponents
+          .filter((player) => player?.id !== target?.id)
+          .forEach((player) => {
+            addParticipant(player, "other");
+          });
         break;
 
       case "自摸":
-        winners.push(occupant);
+        addParticipant(occupant, "winner");
         opponents.forEach((player) => {
-          player && losers.push(player);
+          addParticipant(player, "loser");
         });
         break;
 
       case "詐糊":
-        losers.push(occupant);
+        addParticipant(occupant, "loser");
         opponents.forEach((player) => {
-          player && winners.push(player);
+          addParticipant(player, "winner");
         });
         break;
     }
 
-    console.log(
-      `WinType=${winType}, Faan=${faan}, Winners=${winners.map((p) => p.name).join(", ")}, Losers=${losers.map((p) => p.name).join(", ")}, Others=${others.map((p) => p.name).join(", ")}`,
-    );
+    await createLog(currentSession, faan, winType, participants);
   }
 
   return (
@@ -92,7 +96,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
             {FAAN_OPTIONS.map((faan) => (
               <DropDown.Item
                 key={faan}
-                onClick={() => handleSelect("打出", faan, player)}
+                onClick={() => handleWin("打出", faan, player)}
               >
                 {faan}
               </DropDown.Item>
@@ -103,7 +107,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
       <DropDown title="自摸">
         {FAAN_OPTIONS.map((faan) => (
-          <DropDown.Item key={faan} onClick={() => handleSelect("自摸", faan)}>
+          <DropDown.Item key={faan} onClick={() => handleWin("自摸", faan)}>
             {faan}
           </DropDown.Item>
         ))}
@@ -119,7 +123,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
             {FAAN_OPTIONS.map((faan) => (
               <DropDown.Item
                 key={faan}
-                onClick={() => handleSelect("包自摸", faan, player)}
+                onClick={() => handleWin("包自摸", faan, player)}
               >
                 {faan}
               </DropDown.Item>
@@ -130,7 +134,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
       <div className="border-primary border-t">
         <DropDown.Item
-          onClick={() => handleSelect("詐糊")}
+          onClick={() => handleWin("詐糊")}
           className="text-negative"
         >
           詐糊

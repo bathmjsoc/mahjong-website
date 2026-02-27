@@ -1,7 +1,45 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Log, LogEntry, Session } from "@/lib/types";
+import type {
+  Log,
+  LogEntry,
+  LogParticipant,
+  Session,
+  WinType,
+} from "@/lib/types";
+
+export async function createLog(
+  session: Session,
+  faan: number,
+  winType: WinType,
+  participants: LogParticipant[],
+): Promise<void> {
+  const supabase = await createClient();
+
+  const { data: log, error: entryError } = await supabase
+    .from("log_entries")
+    .insert({ session_id: session.id, faan, win_type: winType })
+    .select("id")
+    .single();
+
+  if (!log || entryError)
+    throw new Error(`createLog encountered an error: ${entryError.message}`);
+
+  const participantRows = participants.map((participant) => ({
+    ...participant,
+    log_id: log.id,
+  }));
+
+  const { error: participantError } = await supabase
+    .from("log_participants")
+    .insert(participantRows);
+
+  if (participantError)
+    throw new Error(
+      `createLog encountered an error: ${participantError.message}`,
+    );
+}
 
 export async function fetchLogs(sessions: Session[]): Promise<LogEntry[]> {
   const supabase = await createClient();
