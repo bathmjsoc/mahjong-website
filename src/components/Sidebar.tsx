@@ -24,7 +24,7 @@ import type { Player } from "@/lib/types";
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
-  const { currentSession, players } = useTournament();
+  const { currentSession, players, registeredPlayers } = useTournament();
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
@@ -79,7 +79,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            <PlayerList session={currentSession} players={players} />
+            <PlayerList session={currentSession} players={registeredPlayers} />
           </div>
         </div>
 
