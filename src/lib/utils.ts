@@ -1,28 +1,28 @@
-import type { Log, Player, Session } from "@/lib/types";
+import type { Player, Session } from "@/lib/types";
 
 /*
  * Formats a date object as a relative string (e.g., "5 minutes ago")
  * */
 export function formatTimeAgo(date: Date): string {
-  const seconds = Math.round((date.getTime() - Date.now()) / 1000);
+  const delta = Math.round((date.getTime() - Date.now()) / 1000);
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
-  const cutoffs: { unit: Intl.RelativeTimeFormatUnit; secs: number }[] = [
-    { unit: "year", secs: 31536000 },
-    { unit: "month", secs: 2592000 },
-    { unit: "week", secs: 604800 },
-    { unit: "day", secs: 86400 },
-    { unit: "hour", secs: 3600 },
-    { unit: "minute", secs: 60 },
-  ] as const;
+  const cutoffs: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
+    { unit: "year", seconds: 31536000 },
+    { unit: "month", seconds: 2592000 },
+    { unit: "week", seconds: 604800 },
+    { unit: "day", seconds: 86400 },
+    { unit: "hour", seconds: 3600 },
+    { unit: "minute", seconds: 60 },
+  ];
 
   for (const cutoff of cutoffs) {
-    if (Math.abs(seconds) >= cutoff.secs) {
-      return rtf.format(Math.round(seconds / cutoff.secs), cutoff.unit);
+    if (Math.abs(delta) >= cutoff.seconds) {
+      return rtf.format(Math.round(delta / cutoff.seconds), cutoff.unit);
     }
   }
 
-  return rtf.format(seconds, "second");
+  return rtf.format(delta, "second");
 }
 
 /*
@@ -38,9 +38,15 @@ export function scoreToColor(score: number): string {
  * Formats a number as an ordinal (e.g., 1 -> 1st)
  * */
 export function formatPosition(number: number): string {
-  const suffixes = ["th", "st", "nd", "rd"] as const;
-  const v = number % 100;
-  return number + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  const rules = new Intl.PluralRules("en", { type: "ordinal" });
+  const suffixes: Record<string, string> = {
+    one: "st",
+    two: "nd",
+    few: "rd",
+    other: "th",
+  };
+
+  return `${number}${suffixes[rules.select(number)]}`;
 }
 
 /*
