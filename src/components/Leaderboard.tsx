@@ -1,17 +1,26 @@
+"use client";
+
 import { twMerge } from "tailwind-merge";
-import type { Player } from "@/lib/types";
-import { formatPosition, scoreToColor } from "@/lib/utils";
+import { useTournament } from "@/context/TournamentContext";
+import type { Player, Session } from "@/lib/types";
+import { formatPosition, rankPlayers, scoreToColor } from "@/lib/utils";
 
 type LeaderboardProps = {
   players: Player[];
+  session: Session;
 };
 
-export function Leaderboard({ players }: LeaderboardProps) {
+export function Leaderboard({ players, session }: LeaderboardProps) {
+  const { overallScores, sessionScores } = useTournament();
+
   if (players.length === 0) {
     return (
       <span className="text-primary text-xs italic">No players found.</span>
     );
   }
+
+  const scores = sessionScores[session.id] || overallScores;
+  const rankedPlayers = rankPlayers(players, scores);
 
   return (
     <table className="table-fixed border-primary border">
@@ -23,8 +32,13 @@ export function Leaderboard({ players }: LeaderboardProps) {
         </tr>
       </thead>
       <tbody className="divide-primary divide-y">
-        {players.map((player, index) => (
-          <PlayerRow key={player.id} player={player} position={index + 1} />
+        {rankedPlayers.map((player, index) => (
+          <PlayerRow
+            key={player.id}
+            player={player}
+            score={scores[player.id] ?? 0}
+            position={index + 1}
+          />
         ))}
       </tbody>
     </table>
@@ -34,18 +48,20 @@ export function Leaderboard({ players }: LeaderboardProps) {
 type PlayerRowProps = {
   player: Player;
   position: number;
+  score: number;
 };
 
-function PlayerRow({ player, position }: PlayerRowProps) {
-  const score = 0;
+function PlayerRow({ player, position, score }: PlayerRowProps) {
+  const formattedPosition = formatPosition(position);
+  const scoreColor = scoreToColor(score);
 
   return (
     <tr className="text-primary text-center text-sm">
-      <td className="border-l">{formatPosition(position)}</td>
+      <td className="border-l">{formattedPosition}</td>
 
       <td>{player.name}</td>
 
-      <td className={twMerge("border-r", scoreToColor(score))}>{score}</td>
+      <td className={twMerge("border-r", scoreColor)}>{score}</td>
     </tr>
   );
 }

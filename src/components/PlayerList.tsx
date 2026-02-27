@@ -9,17 +9,23 @@ import {
 } from "@/actions/attendance";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
-import type { Player } from "@/lib/types";
-import { scoreToColor } from "@/lib/utils";
+import type { Player, Session } from "@/lib/types";
+import { rankPlayers, scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
   players: Player[];
+  session: Session;
 };
 
-export function PlayerList({ players }: PlayerListProps) {
+export function PlayerList({ players, session }: PlayerListProps) {
+  const { lockedPlayerIds, seatedPlayerIds, sessionScores } = useTournament();
+
   if (players.length === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
+
+  const scores = sessionScores[session.id] ?? {};
+  const rankedPlayers = rankPlayers(players, scores);
 
   return (
     <table>
@@ -32,8 +38,15 @@ export function PlayerList({ players }: PlayerListProps) {
         </tr>
       </thead>
       <tbody>
-        {players.map((player) => (
-          <PlayerRow key={player.id} player={player} />
+        {rankedPlayers.map((player) => (
+          <PlayerRow
+            key={player.id}
+            player={player}
+            score={scores[player.id] ?? 0}
+            isLocked={lockedPlayerIds.has(player.id)}
+            isUnseated={!seatedPlayerIds.has(player.id)}
+            session={session}
+          />
         ))}
       </tbody>
     </table>
@@ -41,20 +54,24 @@ export function PlayerList({ players }: PlayerListProps) {
 }
 
 type PlayerRowProps = {
+  session: Session;
+  isLocked: boolean;
+  isUnseated: boolean;
   player: Player;
+  score: number;
 };
 
-function PlayerRow({ player }: PlayerRowProps) {
-  const { currentSession, lockedPlayerIds, unseatedPlayerIds } =
-    useTournament();
-  const isLocked = lockedPlayerIds.has(player.id);
-  const isUnseated = unseatedPlayerIds.has(player.id);
-  const score = 0;
+function PlayerRow({
+  session,
+  isLocked,
+  isUnseated,
+  player,
+  score,
+}: PlayerRowProps) {
+  const scoreColor = scoreToColor(score);
 
-  function handleSelect() {
-    isLocked
-      ? unlockPlayer(currentSession, player)
-      : lockPlayer(currentSession, player);
+  function handleLockToggle() {
+    isLocked ? unlockPlayer(session, player) : lockPlayer(session, player);
   }
 
   return (
@@ -62,7 +79,7 @@ function PlayerRow({ player }: PlayerRowProps) {
       {/* Lock/Unlock Player Icon */}
       <td>
         <IconButton
-          onClick={handleSelect}
+          onClick={handleLockToggle}
           className="flex items-center justify-center w-full"
         >
           <div className="relative size-4">
@@ -96,10 +113,7 @@ function PlayerRow({ player }: PlayerRowProps) {
       </td>
 
       <td
-        className={twMerge(
-          "border-secondary border-2 text-center",
-          scoreToColor(score),
-        )}
+        className={twMerge("border-secondary border-2 text-center", scoreColor)}
       >
         {score}
       </td>
@@ -107,7 +121,7 @@ function PlayerRow({ player }: PlayerRowProps) {
       {/* Deregister Player Icon */}
       <td>
         <IconButton
-          onClick={() => deregisterPlayer(currentSession, player)}
+          onClick={() => deregisterPlayer(session, player)}
           className="flex items-center justify-center w-full hover:text-negative"
         >
           <X className="size-5" />

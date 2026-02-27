@@ -26,6 +26,8 @@ export function CreatePlayerModal({
   async function handleSubmit(formData: FormData) {
     const playerName = formData.get("playerName") as string;
 
+    if (!playerName) return;
+
     if (players.some((player) => player.name === playerName)) {
       setError("This name is already taken.");
       return;

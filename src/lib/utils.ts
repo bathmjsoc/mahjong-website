@@ -1,4 +1,4 @@
-import type { Session } from "@/lib/types";
+import type { Log, Player, Session } from "@/lib/types";
 
 /*
  * Formats a date object as a relative string (e.g., "5 minutes ago")
@@ -64,4 +64,35 @@ export function getSessionName(session: Session): string {
   return session.number === -1
     ? "Overall Standings"
     : `Session ${session.number} (${session.start_date})`;
+}
+
+export function getPlayerScores(logs: Log[]): Record<string, number> {
+  const scoreMap: Record<string, number> = {};
+
+  for (const log of logs) {
+    for (const winner of log.winners) {
+      scoreMap[winner.id] = (scoreMap[winner.id] || 0) + log.faan;
+    }
+
+    for (const loser of log.losers) {
+      scoreMap[loser.id] = (scoreMap[loser.id] || 0) - log.faan;
+    }
+  }
+
+  return scoreMap;
+}
+
+/*
+ * Returns a list of players sorted by their corresponding scores
+ * */
+export function rankPlayers(
+  players: Player[],
+  scores: Record<string, number>,
+): Player[] {
+  return players
+    .map((player) => ({
+      ...player,
+      score: scores[player.id] ?? 0,
+    }))
+    .sort((a, b) => b.score - a.score);
 }
