@@ -51,8 +51,6 @@ export async function getPlayersFromSession(
         `getPlayersFromSession encountered an error: ${error.message}`,
       );
 
-    //
-
     return data ?? [];
   }
 
