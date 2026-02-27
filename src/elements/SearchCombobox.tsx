@@ -35,8 +35,8 @@ export function SearchCombobox<T>({
   const filteredOptions =
     query === ""
       ? []
-      : options.filter((o) =>
-          getOptionLabel(o).toLowerCase().includes(query.toLowerCase()),
+      : options.filter((option) =>
+          getOptionLabel(option).toLowerCase().includes(query.toLowerCase()),
         );
 
   function handleSelect(item: T | null) {
