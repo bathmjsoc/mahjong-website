@@ -41,7 +41,7 @@ function LogRow({ log }: LogRowProps) {
   return (
     <tr>
       <td className="border-primary border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
-        {log.session_id}
+        {log.session_number}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">

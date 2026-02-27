@@ -6,8 +6,9 @@ export type Attendance = {
 };
 
 export type Log = LogEntry & {
-  winners: Player[];
-  losers: Player[];
+  session_number: number; // Derived locally
+  winners: Player[]; // Derived locally
+  losers: Player[]; // Derived locally
 };
 
 export type LogEntry = {

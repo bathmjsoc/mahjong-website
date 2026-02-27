@@ -69,6 +69,10 @@ export function TournamentProvider({
     return new Map(players.map((player) => [player.id, player]));
   }, [players]);
 
+  const sessionMap = useMemo(() => {
+    return new Map(sessions.map((session) => [session.id, session]));
+  }, [sessions]);
+
   const { availableTables, seatedPlayerIds, duplicatePlayerIds } =
     useMemo(() => {
       const seatedPlayerIds = new Set<string>();
@@ -150,9 +154,11 @@ export function TournamentProvider({
         if (participant.role === "loser") losers.push(player);
       }
 
-      return { ...entry, winners, losers };
+      const session_number = sessionMap.get(entry.session_id)?.number ?? 0;
+
+      return { ...entry, session_number, winners, losers };
     });
-  }, [logEntries, playerMap]);
+  }, [logEntries, playerMap, sessionMap]);
 
   useEffect(() => {
     fetchPlayers(tournamentId).then(setPlayers);
