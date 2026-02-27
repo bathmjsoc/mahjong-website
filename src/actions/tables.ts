@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Session, Table, Wind, WindKey } from "@/lib/types";
+import type { Player, Session, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 
 export async function createTable(session: Session): Promise<Table> {
@@ -42,7 +42,7 @@ export async function updateTable(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Partial<Record<WindKey, string | null>> = {};
+  const payload: Partial<Record<string, string | null>> = {};
   for (const wind in players) {
     const w = wind as Wind;
     payload[`${w}_id`] = players[w]?.id ?? null;

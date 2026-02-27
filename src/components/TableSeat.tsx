@@ -6,7 +6,7 @@ import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
 import { useTournament } from "@/context/TournamentContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import type { Player, Table, Wind, WindKey } from "@/lib/types";
+import type { Player, Table, Wind } from "@/lib/types";
 
 type TableSeatProps = {
   table: Table;
@@ -25,7 +25,7 @@ export function TableSeat({
 }: TableSeatProps) {
   const { duplicatePlayerIds, players, registeredPlayers } = useTournament();
 
-  const occupantId = table[`${wind}_id` as WindKey];
+  const occupantId = table[`${wind}_id`];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
 
   const occupant = useMemo(

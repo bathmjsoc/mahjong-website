@@ -53,4 +53,3 @@ export type Tournament = {
 };
 
 export type Wind = "east" | "south" | "west" | "north";
-export type WindKey = keyof Table & `${Wind}_id`;
