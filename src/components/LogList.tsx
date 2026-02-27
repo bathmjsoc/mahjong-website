@@ -49,7 +49,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">
-        {log.type}
+        {log.win_type}
       </td>
 
       <td className="border-primary border-x-0 border-y text-center p-2 truncate">

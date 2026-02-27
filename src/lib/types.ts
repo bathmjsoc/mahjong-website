@@ -14,13 +14,12 @@ export type Log = LogEntry & {
 export type LogEntry = {
   id: string;
   session_id: string;
-  type: WinType;
+  win_type: WinType;
   faan: number;
   log_participants: LogParticipant[]; // Derived locally
 };
 
 type LogParticipant = {
-  log_id: string;
   player_id: string;
   role: LogRole;
 };
