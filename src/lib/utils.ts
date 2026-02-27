@@ -72,22 +72,6 @@ export function getSessionName(session: Session): string {
     : `Session ${session.number} (${session.start_date})`;
 }
 
-export function getPlayerScores(logs: Log[]): Record<string, number> {
-  const scoreMap: Record<string, number> = {};
-
-  for (const log of logs) {
-    for (const winner of log.winners) {
-      scoreMap[winner.id] = (scoreMap[winner.id] || 0) + log.faan;
-    }
-
-    for (const loser of log.losers) {
-      scoreMap[loser.id] = (scoreMap[loser.id] || 0) - log.faan;
-    }
-  }
-
-  return scoreMap;
-}
-
 /*
  * Returns a list of players sorted by their corresponding scores
  * */

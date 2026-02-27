@@ -11,9 +11,9 @@ import {
 import { fetchLogs } from "@/actions/logs";
 import { usePlayers } from "@/context/PlayerContext";
 import { useSessions } from "@/context/SessionContext";
+import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/browser";
 import type { Log, LogEntry, Player } from "@/lib/types";
-import { getPlayerScores } from "@/lib/utils";
 
 type LogsContextType = {
   logs: Log[];
