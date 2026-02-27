@@ -1,34 +1,35 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { LogEntry, LogParticipant } from "@/lib/types";
+import type { LogEntry, Session } from "@/lib/types";
 
-export async function fetchLogEntries(
-  tournamentId: string,
-): Promise<LogEntry[]> {
+export async function fetchLogs(sessions: Session[]): Promise<LogEntry[]> {
   const supabase = await createClient();
 
-  const { error } = await supabase
+  if (sessions.length === 0) return [];
+
+  const sessionIds = sessions.map((session) => session.id);
+  const { data, error } = await supabase
     .from("log_entries")
-    .select("*")
-    .eq("tournament_id", tournamentId)
+    .select(`
+      *,
+      log_participants (
+        log_id,
+        player_id,
+        role
+      )
+    `)
+    .in("session_id", sessionIds)
+    .eq("disabled", false)
     .order("timestamp", { ascending: false });
 
   if (error)
-    throw new Error(`fetchSessions encountered an error: ${error.message}`);
-}
+    throw new Error(`fetchLogs encountered an error: ${error.message}`);
 
-export async function fetchLogParticipants(
-  tournamentId: string,
-): Promise<LogParticipant[]> {
-  const supabase = await createClient();
-
-  const { error } = await supabase
-    .from("log_participants")
-    .select("*")
-    .eq("tournament_id", tournamentId)
-    .order("timestamp", { ascending: false });
-
-  if (error)
-    throw new Error(`fetchSessions encountered an error: ${error.message}`);
+  return (
+    data?.map((entry) => ({
+      ...entry,
+      log_participants: entry.log_participants ?? [],
+    })) ?? []
+  );
 }
