@@ -1,5 +1,5 @@
-// TODO: Refactor after logs have been implemented on DB
 import { Trash2 } from "lucide-react";
+import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
 
@@ -61,7 +61,10 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td>
-        <IconButton className="flex items-center justify-center w-full text-primary hover:text-negative">
+        <IconButton
+          onClick={() => disableLog(log)}
+          className="text-primary hover:text-negative flex items-center justify-center w-full"
+        >
           <Trash2 className="size-5" />
         </IconButton>
       </td>
