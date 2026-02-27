@@ -14,7 +14,7 @@ export function Leaderboard({ players }: LeaderboardProps) {
   }
 
   return (
-    <table className="table-fixed border-primary">
+    <table className="table-fixed border-primary border">
       <thead className="bg-primary text-secondary">
         <tr>
           <th className="w-25">Rank</th>
