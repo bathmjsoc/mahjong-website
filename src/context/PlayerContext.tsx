@@ -13,7 +13,7 @@ import { createClient } from "@/lib/supabase/browser";
 import type { Player } from "@/lib/types";
 
 type PlayersContextType = {
-  playerMap: Map<string, Player>;
+  playerMap: Record<string, Player>;
   players: Player[];
 };
 
@@ -31,7 +31,11 @@ export function PlayersProvider({
   const [players, setPlayers] = useState<Player[]>([]);
 
   const playerMap = useMemo(() => {
-    return new Map(players.map((player) => [player.id, player]));
+    const record: Record<string, Player> = {};
+    players.forEach((player) => {
+      record[player.id] = player;
+    });
+    return record;
   }, [players]);
 
   useEffect(() => {

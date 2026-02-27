@@ -32,12 +32,12 @@ export function LogsProvider({ children }: { children: ReactNode }) {
 
   const logs: Log[] = useMemo(() => {
     return logEntries.map((entry) => {
-      const session_number = sessionMap.get(entry.session_id)?.number ?? 0;
+      const session_number = sessionMap[entry.session_id]?.number ?? 0;
       const winners: Player[] = [];
       const losers: Player[] = [];
 
       for (const participant of entry.log_participants) {
-        const player = playerMap.get(participant.player_id);
+        const player = playerMap[participant.player_id];
         if (!player) continue;
 
         if (participant.role === "winner") winners.push(player);

@@ -30,7 +30,7 @@ export function TableSeat({
 
   const occupant = useMemo(() => {
     if (!occupantId) return null;
-    return playerMap.get(occupantId) ?? null;
+    return playerMap[occupantId] ?? null;
   }, [playerMap, occupantId]);
 
   async function handleSelect(player: Player | null) {

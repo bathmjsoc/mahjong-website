@@ -29,7 +29,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     ];
 
     return seatIds
-      .map((id) => (id ? (playerMap.get(id) ?? null) : null))
+      .map((id) => (id ? (playerMap[id] ?? null) : null))
       .filter((player) => !player || player.id !== occupant.id);
   }, [table, playerMap, occupant]);
 

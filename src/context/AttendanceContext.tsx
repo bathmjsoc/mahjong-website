@@ -47,7 +47,7 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
           continue;
         }
 
-        const player = playerMap.get(entry.player_id);
+        const player = playerMap[entry.player_id];
         if (!player) continue;
 
         registeredPlayers.push(player);

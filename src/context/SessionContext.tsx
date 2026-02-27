@@ -14,7 +14,7 @@ import type { Session } from "@/lib/types";
 
 type SessionsContextType = {
   currentSession: Session;
-  sessionMap: Map<string, Session>;
+  sessionMap: Record<string, Session>;
   sessions: Session[];
 };
 
@@ -38,7 +38,11 @@ export function SessionsProvider({
   }, [sessions]);
 
   const sessionMap = useMemo(() => {
-    return new Map(sessions.map((session) => [session.id, session]));
+    const record: Record<string, Session> = {};
+    sessions.forEach((session) => {
+      record[session.id] = session;
+    });
+    return record;
   }, [sessions]);
 
   useEffect(() => {
