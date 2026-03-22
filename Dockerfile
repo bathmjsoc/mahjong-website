@@ -1,5 +1,5 @@
 FROM node:24-slim
-WORKDIR /src/
+WORKDIR /app/
 
 # Install dependencies inside the container.
 # Copy package files first to use Docker caching.
