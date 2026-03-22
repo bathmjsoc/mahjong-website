@@ -1,11 +1,8 @@
 services:
   main:
     container_name: mahjong-website
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Make the website accessible at localhost:3000
     env_file:
-      - .env.local
-    command: [ "npm", "run", "dev" ]
+      - .env  # Load environment variables
