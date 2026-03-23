@@ -58,6 +58,8 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
         }
       }
 
+      registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
+
       return {
         availablePlayers,
         lockedPlayerIds,
