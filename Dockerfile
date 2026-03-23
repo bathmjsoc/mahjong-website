@@ -1,15 +1,14 @@
 FROM node:24-slim
+WORKDIR /app/
 
-# Set working directory within Docker
-WORKDIR /src/
-
-# Install dependencies within Docker
+# Install dependencies inside the container.
+# Copy package files first to use Docker caching.
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy files into Docker
+# Copy the other files into the container.
 COPY . .
 
-# Expose port 3000 and start app
-EXPOSE 3000
+# Start the Next.js development server.
+# The website will be available at http://localhost:3000
 CMD ["npm", "run", "dev"]

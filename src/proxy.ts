@@ -3,15 +3,15 @@ import { updateSession } from "@/lib/supabase/middleware";
 
 export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
-  const isLoginPage = request.nextUrl.pathname === "/";
+  const { pathname } = request.nextUrl;
 
   // Route unauthenticated users to login page
-  if (!user && !isLoginPage) {
+  if (!user && pathname !== "/") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Route authenticated users away from login page
-  if (user && isLoginPage) {
+  if (user && pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -20,6 +20,12 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    /*
+     * Run on all requests except for:
+     * - _next/static
+     * - _next/image
+     * - favicon.ico
+     */
+    "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

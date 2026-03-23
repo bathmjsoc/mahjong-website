@@ -1,4 +1,4 @@
-.env.local
+.env
 .idea
 .next
 node_modules
