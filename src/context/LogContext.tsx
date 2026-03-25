@@ -16,6 +16,7 @@ import { createClient } from "@/lib/supabase/browser";
 import type { Log, LogEntry, Player } from "@/lib/types";
 
 type LogsContextType = {
+  enabledLogs: Log[];
   logs: Log[];
   overallScores: Record<string, number>;
   sessionScores: Record<string, Record<string, number>>;
@@ -48,10 +49,18 @@ export function LogsProvider({ children }: { children: ReactNode }) {
     });
   }, [logEntries, playerMap, sessionMap]);
 
-  const overallScores = useMemo(() => getPlayerScores(logs), [logs]);
+  const enabledLogs = useMemo(
+    () => logs.filter((log) => !log.disabled),
+    [logs],
+  );
+
+  const overallScores = useMemo(
+    () => getPlayerScores(enabledLogs),
+    [enabledLogs],
+  );
 
   const sessionScores = useMemo(() => {
-    const grouped = Object.groupBy(logs, (log) => log.session_id);
+    const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
 
     const scores: Record<string, Record<string, number>> = {};
     for (const sessionId in grouped) {
@@ -59,7 +68,7 @@ export function LogsProvider({ children }: { children: ReactNode }) {
     }
 
     return scores;
-  }, [logs]);
+  }, [enabledLogs]);
 
   useEffect(() => {
     if (!sessions.length) return;
@@ -87,7 +96,9 @@ export function LogsProvider({ children }: { children: ReactNode }) {
   }, [sessions]);
 
   return (
-    <LogsContext.Provider value={{ logs, overallScores, sessionScores }}>
+    <LogsContext.Provider
+      value={{ enabledLogs, logs, overallScores, sessionScores }}
+    >
       {children}
     </LogsContext.Provider>
   );

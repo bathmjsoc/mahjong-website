@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
+import { twMerge } from "tailwind-merge";
 
 type LogListProps = {
   logs: Log[];
@@ -39,34 +40,61 @@ type LogRowProps = {
 
 function LogRow({ log }: LogRowProps) {
   return (
-    <tr>
-      <td className="border-primary border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate">
+    <tr className={log.disabled ? "text-negative" : "text-primary"}>
+      <td
+        className={twMerge(
+          log.disabled ? "border-negative" : "border-primary",
+          "border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate",
+        )}
+      >
         {log.session_number}
       </td>
 
-      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
+      <td
+        className={twMerge(
+          log.disabled ? "border-negative" : "border-primary",
+          "border-x-0 border-y text-center p-2 truncate",
+        )}
+      >
         {log.win_type === "詐糊" ? "N/A" : log.faan}
       </td>
 
-      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
+      <td
+        className={twMerge(
+          log.disabled ? "border-negative" : "border-primary",
+          "border-x-0 border-y text-center p-2 truncate",
+        )}
+      >
         {log.win_type}
       </td>
 
-      <td className="border-primary border-x-0 border-y text-center p-2 truncate">
+      <td
+        className={twMerge(
+          log.disabled ? "border-negative" : "border-primary",
+          "border-x-0 border-y text-center p-2 truncate",
+        )}
+      >
         {log.winners.map((player) => player.name).join(", ") || "N/A"}
       </td>
 
-      <td className="border-primary border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate">
+      <td
+        className={twMerge(
+          log.disabled ? "border-negative" : "border-primary",
+          "border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate",
+        )}
+      >
         {log.losers.map((player) => player.name).join(", ") || "N/A"}
       </td>
 
       <td>
-        <IconButton
-          onClick={() => disableLog(log)}
-          className="text-primary hover:text-negative flex items-center justify-center w-full"
-        >
-          <Trash2 className="size-5" />
-        </IconButton>
+        {!log.disabled && (
+          <IconButton
+            onClick={() => disableLog(log)}
+            className="text-primary enabled:hover:text-negative flex items-center justify-center w-full"
+          >
+            <Trash2 className="size-5" />
+          </IconButton>
+        )}
       </td>
     </tr>
   );

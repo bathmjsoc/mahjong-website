@@ -16,6 +16,7 @@ export type LogEntry = {
   session_id: string;
   win_type: WinType;
   faan: number;
+  disabled: boolean;
   log_participants: LogParticipant[]; // Derived locally
 };
 
