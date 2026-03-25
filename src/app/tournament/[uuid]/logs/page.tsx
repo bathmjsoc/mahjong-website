@@ -1,12 +1,12 @@
 "use client";
 
 import { Input } from "@headlessui/react";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { LogList } from "@/components/LogList";
 import { useTournament } from "@/context/TournamentContext";
 import { IconButton } from "@/elements/IconButton";
-import { Eye, EyeOff } from "lucide-react";
-import { twMerge } from "tailwind-merge";
 
 export default function LogsPage() {
   const { enabledLogs, logs } = useTournament();

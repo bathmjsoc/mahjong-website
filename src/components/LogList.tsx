@@ -1,8 +1,8 @@
 import { Trash2 } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
-import { twMerge } from "tailwind-merge";
 
 type LogListProps = {
   logs: Log[];
