@@ -18,7 +18,7 @@ export function LogList({ logs }: LogListProps) {
         <tr>
           <th className="w-[10%]">Session</th>
           <th className="w-[10%]">Faan</th>
-          <th className="w-[10%]">Win Type</th>
+          <th className="w-[10%]">Type</th>
           <th className="w-auto">Winner(s)</th>
           <th className="w-auto">Loser(s)</th>
           <th className="w-7" />
