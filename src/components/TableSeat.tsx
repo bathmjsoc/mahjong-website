@@ -68,6 +68,7 @@ export function TableSeat({
           onChange={handleSelect}
           getOptionLabel={(player) => player.name}
           getOptionKey={(player) => player.id}
+          disabled={table.saved}
           emptyMessage="No players found"
           placeholder="[EMPTY]"
           buttonClassName="h-8 text-xs tracking-tighter rounded-full"
