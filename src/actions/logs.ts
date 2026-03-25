@@ -58,7 +58,6 @@ export async function fetchLogs(sessions: Session[]): Promise<LogEntry[]> {
       )
     `)
     .in("session_id", sessionIds)
-    .eq("disabled", false)
     .order("timestamp", { ascending: false });
 
   if (error)

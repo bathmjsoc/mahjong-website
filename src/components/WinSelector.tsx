@@ -86,7 +86,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       buttonClassName={twMerge("rounded-full size-8", className)}
       disabled={!occupant}
     >
-      <DropDown title="打出">
+      <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
           <DropDown
             key={player?.id}
@@ -105,7 +105,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         ))}
       </DropDown>
 
-      <DropDown title="自摸">
+      <DropDown title="自摸 (Self-Draw)">
         {FAAN_OPTIONS.map((faan) => (
           <DropDown.Item key={faan} onClick={() => handleWin("自摸", faan)}>
             {faan}
@@ -113,7 +113,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         ))}
       </DropDown>
 
-      <DropDown title="包自摸">
+      <DropDown title="包自摸 (Special Case)">
         {opponents.map((player) => (
           <DropDown
             key={player?.id}
@@ -137,7 +137,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
           onClick={() => handleWin("詐糊")}
           className="text-negative"
         >
-          詐糊
+          詐糊 (False Win)
         </DropDown.Item>
       </div>
     </DropDown>

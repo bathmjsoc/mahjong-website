@@ -23,10 +23,12 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { duplicatePlayerIds, playerMap, registeredPlayers } = useTournament();
+  const { duplicatePlayerIds, lockedPlayerIds, playerMap, registeredPlayers } =
+    useTournament();
 
   const occupantId = table[`${wind}_id`];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
+  const isLocked = occupantId ? lockedPlayerIds.has(occupantId) : false;
 
   const occupant = useMemo(() => {
     if (!occupantId) return null;
@@ -47,6 +49,7 @@ export function TableSeat({
         className={twMerge(
           "bg-primary text-secondary",
           "flex items-center justify-between gap-1 rounded-full p-1 w-50 shrink-0",
+          isLocked && "ring-2 ring-neutral",
           isDuplicate && "ring-2 ring-negative",
           tableClassName,
         )}
@@ -65,6 +68,7 @@ export function TableSeat({
           onChange={handleSelect}
           getOptionLabel={(player) => player.name}
           getOptionKey={(player) => player.id}
+          disabled={table.saved}
           emptyMessage="No players found"
           placeholder="[EMPTY]"
           buttonClassName="h-8 text-xs tracking-tighter rounded-full"

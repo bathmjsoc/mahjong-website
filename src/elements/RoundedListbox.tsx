@@ -13,9 +13,9 @@ type RoundedListboxProps<T> = {
   onChange: (value: T | null) => void;
   getOptionLabel: (item: T) => string;
   getOptionKey: (item: T) => Key;
+  disabled?: boolean;
   emptyMessage?: string;
   placeholder?: string;
-  highlight?: boolean;
   buttonClassName?: string;
   optionsClassName?: string;
   optionClassName?: string;
@@ -27,6 +27,7 @@ export function RoundedListbox<T>({
   onChange,
   getOptionLabel,
   getOptionKey,
+  disabled = false,
   emptyMessage = "No options available",
   placeholder = "No option selected",
   buttonClassName,
@@ -38,12 +39,13 @@ export function RoundedListbox<T>({
   return (
     <Listbox value={value} onChange={onChange}>
       <ListboxButton
+        disabled={disabled}
         className={twMerge(
           isPlaceholder
             ? "bg-secondary text-negative"
             : "bg-secondary text-primary",
           "w-full text-center font-bold truncate outline-none cursor-pointer",
-          "transition duration-300 hover:bg-secondary/75",
+          "transition duration-300 enabled:hover:bg-secondary/75 disabled:cursor-not-allowed",
           buttonClassName,
         )}
       >

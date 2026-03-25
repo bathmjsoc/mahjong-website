@@ -87,7 +87,8 @@ function TableCard({ table, number }: TableProps) {
         {/* Save Table Button */}
         <FilledButton
           onClick={() => saveTable(table)}
-          className="bg-primary rounded-full hover:text-info"
+          className="bg-primary rounded-full enabled:hover:text-info"
+          disabled={table.saved}
         >
           <Archive className="size-4" />
         </FilledButton>

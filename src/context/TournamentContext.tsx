@@ -17,6 +17,7 @@ type TournamentContextType = {
   registeredPlayers: ReturnType<typeof useAttendance>["registeredPlayers"];
 
   // Logs
+  enabledLogs: ReturnType<typeof useLogs>["enabledLogs"];
   logs: ReturnType<typeof useLogs>["logs"];
   overallScores: ReturnType<typeof useLogs>["overallScores"];
   sessionScores: ReturnType<typeof useLogs>["sessionScores"];
@@ -66,6 +67,7 @@ function TournamentConsumer({
         registeredPlayers: attendance.registeredPlayers,
 
         // Logs
+        enabledLogs: logs.enabledLogs,
         logs: logs.logs,
         overallScores: logs.overallScores,
         sessionScores: logs.sessionScores,
