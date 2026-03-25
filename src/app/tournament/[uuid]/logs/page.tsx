@@ -31,18 +31,18 @@ export default function LogsPage() {
           onClick={() => setShowDisabled(!showDisabled)}
           className="flex items-center justify-center"
         >
-          <div className="relative size-6">
+          <div className="relative size-5">
             <Eye
               className={twMerge(
                 "text-primary hover:text-info",
-                "absolute size-6 transition duration-300",
+                "absolute size-5 transition duration-300",
                 showDisabled ? "opacity-100 scale-100" : "opacity-0 scale-50",
               )}
             />
             <EyeOff
               className={twMerge(
                 "text-primary hover:text-info",
-                "absolute size-6 transition duration-300",
+                "absolute size-5 transition duration-300",
                 showDisabled ? "opacity-0 scale-50" : "opacity-100 scale-100",
               )}
             />
