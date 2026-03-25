@@ -30,12 +30,12 @@ export async function fetchTournaments(): Promise<Tournament[]> {
   if (error)
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
 
-  // Convert last_updated to Date object and calculate member_count
+  // Convert last_updated to Date object and calculate player_count
   return (
     data?.map((tournament) => ({
       ...tournament,
       last_updated: new Date(tournament.last_updated),
-      member_count: tournament.players.length,
+      player_count: tournament.players.length,
     })) ?? []
   );
 }
