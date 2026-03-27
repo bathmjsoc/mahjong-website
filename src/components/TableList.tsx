@@ -23,8 +23,8 @@ export function TableList({ tables, className }: TableListProps) {
         className,
       )}
     >
-      {tables.map((table, index) => (
-        <TableCard key={table.id} table={table} number={index + 1} />
+      {tables.map((table) => (
+        <TableCard key={table.id} table={table} />
       ))}
 
       {/* Add New Table Button */}
@@ -42,10 +42,9 @@ export function TableList({ tables, className }: TableListProps) {
 
 type TableProps = {
   table: Table;
-  number: number;
 };
 
-function TableCard({ table, number }: TableProps) {
+function TableCard({ table }: TableProps) {
   return (
     <div
       className={twMerge(
@@ -80,7 +79,7 @@ function TableCard({ table, number }: TableProps) {
       />
       {/* Table Number */}
       <div className="flex items-center justify-center text-primary text-7xl row-start-3 col-start-3">
-        {table.saved ? "S" : number}
+        {table.saved ? "S" : table.number}
       </div>
 
       <div className="flex items-center justify-center gap-5 row-start-4 col-start-2 col-span-3">
