@@ -28,12 +28,16 @@ export async function fetchTables(session: Session): Promise<Table[]> {
     .from("tables")
     .select("*")
     .eq("session_id", session.id)
-    .order("created_at", { ascending: true });
+    .order("number", { ascending: true });
 
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return data?.sort((a, b) => {
+    if (a.saved && !b.saved) return 1;
+    if (!a.saved && b.saved) return -1;
+    return 0;
+  }) ?? [];
 }
 
 export async function updateTable(

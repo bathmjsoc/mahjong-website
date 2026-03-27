@@ -45,6 +45,7 @@ export type Table = {
   south_id: string;
   west_id: string;
   north_id: string;
+  number: number;
   saved: boolean;
 };
 
