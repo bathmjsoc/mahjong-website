@@ -33,11 +33,13 @@ export async function fetchTables(session: Session): Promise<Table[]> {
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return data?.sort((a, b) => {
-    if (a.saved && !b.saved) return 1;
-    if (!a.saved && b.saved) return -1;
-    return 0;
-  }) ?? [];
+  return (
+    data?.sort((a, b) => {
+      if (a.saved && !b.saved) return 1;
+      if (!a.saved && b.saved) return -1;
+      return 0;
+    }) ?? []
+  );
 }
 
 export async function updateTable(
