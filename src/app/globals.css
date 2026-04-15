@@ -25,7 +25,7 @@
 @layer base {
   html {
     @apply bg-background;
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable; /* Not ideal, but fixes some issues */
   }
 }
 
