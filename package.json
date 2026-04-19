@@ -21,6 +21,6 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@types/react": "^19.2.14 ",
     "tailwindcss": "^4.2.2",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.3"
   }
 }
