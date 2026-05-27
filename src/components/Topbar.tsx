@@ -1,10 +1,11 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut } from "lucide-react";
 import { signOut } from "@/actions/auth";
 import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
+import { useRouter } from "next/navigation";
 
 const TABS = [
   { label: "Tables", href: "" },
@@ -15,6 +16,7 @@ const TABS = [
 
 export function Topbar() {
   const { tournamentId } = useTournament();
+  const router = useRouter();
 
   return (
     <nav className="bg-accent flex items-center justify-between h-15 px-5 z-50">
@@ -30,12 +32,21 @@ export function Topbar() {
         ))}
       </TabMenu>
 
-      <FilledButton
-        onClick={signOut}
-        className="bg-primary size-9 rounded-xl hover:text-negative"
-      >
-        <LogOut className="size-5" />
-      </FilledButton>
+      <div className="flex gap-5 items-center justify-center">
+        <FilledButton
+          onClick={() => router.push("/dashboard")}
+          className="bg-primary size-9 rounded-xl hover:text-info"
+        >
+          <LayoutDashboard className="size-5" />
+        </FilledButton>
+
+        <FilledButton
+          onClick={signOut}
+          className="bg-primary size-9 rounded-xl hover:text-negative"
+        >
+          <LogOut className="size-5" />
+        </FilledButton>
+      </div>
     </nav>
   );
 }
