@@ -3,8 +3,15 @@
 import type { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 
+export type SeriesData = {
+  name: string;
+  color?: string;
+  curve?: "smooth" | "straight";
+  points: { x: string; y: number }[];
+};
+
 type LineGraphProps = {
-  data: { key: string; value: number }[];
+  data: SeriesData[];
   enableTooltip?: boolean;
   showXAxis?: boolean;
   showYAxis?: boolean;
@@ -20,6 +27,15 @@ export function LineGraph({
   xAxisTitle,
   yAxisTitle,
 }: LineGraphProps) {
+  const series = data.map((d) => ({
+    name: d.name,
+    data: d.points,
+  }));
+
+  const colors = data.map((d) => d.color ?? "var(--color-accent)");
+
+  const curves = data.map((d) => d.curve ?? "smooth");
+
   const options: ApexOptions = {
     chart: {
       type: "line",
@@ -27,8 +43,8 @@ export function LineGraph({
       toolbar: { show: false },
       zoom: { enabled: false },
     },
-    colors: ["var(--color-accent)"],
-    stroke: { curve: "smooth", width: 3 },
+    colors: colors,
+    stroke: { curve: curves, width: 3 },
     tooltip: { enabled: enableTooltip },
     xaxis: {
       title: { text: xAxisTitle ?? "" },
@@ -37,7 +53,6 @@ export function LineGraph({
         style: { colors: "var(--color-primary)" },
         rotate: -90,
       },
-      categories: data.map((d) => d.key),
       axisBorder: { show: showXAxis, color: "var(--color-primary)" },
       axisTicks: { show: showXAxis, color: "var(--color-primary)" },
     },
@@ -48,11 +63,10 @@ export function LineGraph({
   };
 
   return (
-      <Chart
-        series={[{ name: yAxisTitle, data: data.map((d) => d.value) }]}
-        options={options}
-        className="bg-secondary border-primary border-2 rounded-xl w-full h-full px-3"
-      />
-
+    <Chart
+      series={series}
+      options={options}
+      className="bg-secondary border-primary border-2 rounded-xl w-full h-full px-3"
+    />
   );
 }
