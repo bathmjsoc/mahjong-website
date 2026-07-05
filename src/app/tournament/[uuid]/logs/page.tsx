@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@headlessui/react";
 import { Eye, EyeOff, Info, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -124,7 +123,7 @@ export default function LogsPage() {
             </div>
           </div>
 
-          <Input
+          <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {

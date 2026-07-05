@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   type ComponentProps,
   createContext,
@@ -81,9 +76,16 @@ export function DropDown({
   );
 }
 
-type ItemProps = ComponentProps<typeof Button>;
+type ItemProps = ComponentProps<"button">;
 
-function Item({ onClick, children, className, disabled, ...props }: ItemProps) {
+function Item({
+  type = "button",
+  onClick,
+  children,
+  className,
+  disabled,
+  ...props
+}: ItemProps) {
   const closeRoot = useContext(RootContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
@@ -92,7 +94,8 @@ function Item({ onClick, children, className, disabled, ...props }: ItemProps) {
   }
 
   return (
-    <Button
+    <button
+      type={type}
       {...props}
       disabled={disabled}
       onClick={handleClick}
@@ -103,7 +106,7 @@ function Item({ onClick, children, className, disabled, ...props }: ItemProps) {
       )}
     >
       {children}
-    </Button>
+    </button>
   );
 }
 

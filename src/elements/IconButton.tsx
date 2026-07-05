@@ -1,12 +1,17 @@
-import { Button } from "@headlessui/react";
 import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-type IconButtonProps = ComponentProps<typeof Button>;
+type IconButtonProps = ComponentProps<"button">;
 
-export function IconButton({ children, className, ...props }: IconButtonProps) {
+export function IconButton({
+  children,
+  className,
+  type = "button",
+  ...props
+}: IconButtonProps) {
   return (
-    <Button
+    <button
+      type={type}
       {...props}
       className={twMerge(
         "text-secondary outline-none transition duration-300",
@@ -16,6 +21,6 @@ export function IconButton({ children, className, ...props }: IconButtonProps) {
       )}
     >
       {children}
-    </Button>
+    </button>
   );
 }

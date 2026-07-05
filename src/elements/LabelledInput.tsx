@@ -1,8 +1,6 @@
-import { Field, Input, Label } from "@headlessui/react";
 import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-// ComponentProps<typeof Input> doesn't work
 type LabelledInputProps = ComponentProps<"input"> & {
   inputClassName?: string;
   labelClassName?: string;
@@ -15,8 +13,8 @@ export function LabelledInput({
   ...props
 }: LabelledInputProps) {
   return (
-    <Field className="relative">
-      <Input
+    <div className="relative">
+      <input
         {...props}
         className={twMerge(
           "bg-primary text-secondary",
@@ -25,7 +23,7 @@ export function LabelledInput({
           inputClassName,
         )}
       />
-      <Label
+      <span
         className={twMerge(
           "bg-primary text-secondary",
           "absolute left-1/2 -translate-x-1/2 top-px -translate-y-1/2",
@@ -34,7 +32,7 @@ export function LabelledInput({
         )}
       >
         {children}
-      </Label>
-    </Field>
+      </span>
+    </div>
   );
 }
