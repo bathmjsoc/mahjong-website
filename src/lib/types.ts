@@ -27,6 +27,13 @@ export type LogParticipant = {
 
 export type LogRole = "winner" | "loser" | "other";
 
+export type LogSearchTag = {
+  id: string;
+  display: string;
+  key: "session" | "type" | "faan" | "player";
+  value: string;
+};
+
 export type Player = {
   id: string;
   name: string;
