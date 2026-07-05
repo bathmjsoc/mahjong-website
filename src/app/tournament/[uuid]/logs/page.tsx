@@ -130,7 +130,6 @@ export default function LogsPage() {
               if (e.key === "Enter") createTag();
             }}
             placeholder="Enter a query..."
-            autoFocus={true}
             className="
               bg-secondary border-primary border-2
               outline-none h-10 rounded-lg w-sm px-2 text-center text-sm
