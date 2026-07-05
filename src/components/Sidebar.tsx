@@ -15,7 +15,9 @@ import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
 import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
 import { PlayerList } from "@/components/PlayerList";
-import { useTournament } from "@/context/TournamentContext";
+import { useAttendance } from "@/context/AttendanceContext";
+import { usePlayers } from "@/context/PlayerContext";
+import { useSessions } from "@/context/SessionContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
@@ -24,7 +26,10 @@ import type { Player } from "@/lib/types";
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
-  const { currentSession, players, registeredPlayers } = useTournament();
+  const { registeredPlayers } = useAttendance();
+  const { players } = usePlayers();
+  const { currentSession } = useSessions();
+
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 

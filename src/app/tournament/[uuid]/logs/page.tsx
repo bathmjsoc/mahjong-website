@@ -4,7 +4,7 @@ import { Eye, EyeOff, Info, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { LogList } from "@/components/LogList";
-import { useTournament } from "@/context/TournamentContext";
+import { useLogs } from "@/context/LogContext";
 import { IconButton } from "@/elements/IconButton";
 
 type SearchTag = {
@@ -19,7 +19,8 @@ function normalizeText(text: string) {
 }
 
 export default function LogsPage() {
-  const { enabledLogs, logs } = useTournament();
+  const { enabledLogs, logs } = useLogs();
+
   const [query, setQuery] = useState("");
   const [showDisabled, setShowDisabled] = useState(false);
   const [tags, setTags] = useState<SearchTag[]>([]);

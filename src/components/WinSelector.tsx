@@ -3,7 +3,8 @@
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { createLog } from "@/actions/logs";
-import { useTournament } from "@/context/TournamentContext";
+import { usePlayers } from "@/context/PlayerContext";
+import { useSessions } from "@/context/SessionContext";
 import { DropDown } from "@/elements/DropDown";
 import type { LogParticipant, Player, Table, WinType } from "@/lib/types";
 
@@ -16,7 +17,8 @@ type WinSelectorProps = {
 const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
-  const { currentSession, playerMap } = useTournament();
+  const { playerMap } = usePlayers();
+  const { currentSession } = useSessions();
 
   const opponents = useMemo(() => {
     if (!occupant) return [];

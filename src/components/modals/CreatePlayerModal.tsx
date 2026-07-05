@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createPlayer } from "@/actions/players";
+import { usePlayers } from "@/context/PlayerContext";
 import { useTournament } from "@/context/TournamentContext";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -15,7 +16,9 @@ export function CreatePlayerModal({
   isOpen,
   closeModalAction,
 }: CreatePlayerModalProps) {
-  const { players, tournamentId } = useTournament();
+  const { players } = usePlayers();
+  const { tournamentId } = useTournament();
+
   const [error, setError] = useState<string | null>(null);
 
   function handleClose() {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { updatePlayer } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
+import { usePlayers } from "@/context/PlayerContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -19,7 +19,8 @@ export function EditPlayerModal({
   isOpen,
   closeModalAction,
 }: EditPlayerModalProps) {
-  const { players } = useTournament();
+  const { players } = usePlayers();
+
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [newName, setNewName] = useState("");
   const [notification, setNotification] = useState("");

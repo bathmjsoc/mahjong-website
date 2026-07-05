@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
-import { useTournament } from "@/context/TournamentContext";
+import { useAttendance } from "@/context/AttendanceContext";
+import { usePlayers } from "@/context/PlayerContext";
+import { useTables } from "@/context/TableContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import type { Player, Table, Wind } from "@/lib/types";
 
@@ -23,8 +25,9 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { duplicatePlayerIds, lockedPlayerIds, playerMap, registeredPlayers } =
-    useTournament();
+  const { lockedPlayerIds, registeredPlayers } = useAttendance();
+  const { playerMap } = usePlayers();
+  const { duplicatePlayerIds } = useTables();
 
   const occupantId = table[`${wind}_id`];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;

@@ -7,7 +7,9 @@ import {
   lockPlayer,
   unlockPlayer,
 } from "@/actions/attendance";
-import { useTournament } from "@/context/TournamentContext";
+import { useAttendance } from "@/context/AttendanceContext";
+import { useLogs } from "@/context/LogContext";
+import { useTables } from "@/context/TableContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
@@ -18,7 +20,9 @@ type PlayerListProps = {
 };
 
 export function PlayerList({ players, session }: PlayerListProps) {
-  const { lockedPlayerIds, seatedPlayerIds, sessionScores } = useTournament();
+  const { lockedPlayerIds } = useAttendance();
+  const { sessionScores } = useLogs();
+  const { seatedPlayerIds } = useTables();
 
   if (players.length === 0) {
     return <span className="text-xs italic">No players registered.</span>;
