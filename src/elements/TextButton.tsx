@@ -1,12 +1,17 @@
-import { Button } from "@headlessui/react";
 import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-type TextButtonProps = ComponentProps<typeof Button>;
+type TextButtonProps = ComponentProps<"button">;
 
-export function TextButton({ children, className, ...props }: TextButtonProps) {
+export function TextButton({
+  children,
+  className,
+  type = "button",
+  ...props
+}: TextButtonProps) {
   return (
-    <Button
+    <button
+      type={type}
       {...props}
       className={twMerge(
         "outline-none underline underline-offset-2 cursor-pointer",
@@ -15,6 +20,6 @@ export function TextButton({ children, className, ...props }: TextButtonProps) {
       )}
     >
       {children}
-    </Button>
+    </button>
   );
 }

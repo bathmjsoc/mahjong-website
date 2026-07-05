@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { fetchSessions } from "@/actions/sessions";
+import { useTournament } from "@/context/TournamentContext";
 import { createClient } from "@/lib/supabase/browser";
 import type { Session } from "@/lib/types";
 
@@ -21,16 +22,11 @@ type SessionsContextType = {
 const SessionsContext = createContext<SessionsContextType | undefined>(
   undefined,
 );
-
 const supabase = createClient();
 
-export function SessionsProvider({
-  tournamentId,
-  children,
-}: {
-  tournamentId: string;
-  children: ReactNode;
-}) {
+export function SessionsProvider({ children }: { children: ReactNode }) {
+  const { tournamentId } = useTournament();
+
   const [sessions, setSessions] = useState<Session[]>([]);
 
   const currentSession = useMemo(() => {
@@ -38,11 +34,7 @@ export function SessionsProvider({
   }, [sessions]);
 
   const sessionMap = useMemo(() => {
-    const record: Record<string, Session> = {};
-    sessions.forEach((session) => {
-      record[session.id] = session;
-    });
-    return record;
+    return Object.fromEntries(sessions.map((session) => [session.id, session]));
   }, [sessions]);
 
   useEffect(() => {
@@ -64,7 +56,7 @@ export function SessionsProvider({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, [tournamentId]);
 

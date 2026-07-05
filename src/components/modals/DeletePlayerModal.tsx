@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { deletePlayer } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
+import { usePlayers } from "@/context/PlayerContext";
+
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
@@ -18,7 +19,8 @@ export function DeletePlayerModal({
   isOpen,
   closeModalAction,
 }: DeletePlayerModalProps) {
-  const { players } = useTournament();
+  const { players } = usePlayers();
+
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [deletedName, setDeletedName] = useState("");
 

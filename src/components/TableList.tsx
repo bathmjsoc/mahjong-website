@@ -4,7 +4,7 @@ import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { TableSeat } from "@/components/TableSeat";
-import { useTournament } from "@/context/TournamentContext";
+import { useSessions } from "@/context/SessionContext";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Table } from "@/lib/types";
 
@@ -14,7 +14,7 @@ type TableListProps = {
 };
 
 export function TableList({ tables, className }: TableListProps) {
-  const { currentSession } = useTournament();
+  const { currentSession } = useSessions();
 
   return (
     <div

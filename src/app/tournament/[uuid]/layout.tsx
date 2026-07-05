@@ -37,7 +37,7 @@ export default async function TournamentLayout({
   return (
     <TournamentProvider tournamentId={tournamentId}>
       <Topbar />
-      <main>{children}</main>
+      {children}
     </TournamentProvider>
   );
 }

@@ -24,12 +24,12 @@ type AttendanceContextType = {
 const AttendanceContext = createContext<AttendanceContextType | undefined>(
   undefined,
 );
-
 const supabase = createClient();
 
 export function AttendanceProvider({ children }: { children: ReactNode }) {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
+
   const [attendance, setAttendance] = useState<Attendance[]>([]);
 
   const { availablePlayers, lockedPlayerIds, registeredPlayers } =
@@ -49,8 +49,8 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
 
         const player = playerMap[entry.player_id];
         if (!player) continue;
-
         registeredPlayers.push(player);
+
         if (entry.locked) {
           lockedPlayerIds.add(player.id);
         } else {
@@ -87,7 +87,7 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, [currentSession]);
 

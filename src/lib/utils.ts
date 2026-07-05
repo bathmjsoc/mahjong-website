@@ -86,3 +86,10 @@ export function rankPlayers(
     }))
     .sort((a, b) => b.score - a.score);
 }
+
+/*
+ * Formats input text in a standardized manner for comparison purposes
+ * */
+export function normalizeText(text: string) {
+  return text.replaceAll(" ", "").toLowerCase();
+}

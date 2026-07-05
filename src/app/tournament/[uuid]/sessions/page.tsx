@@ -3,6 +3,9 @@
 import { ChartColumn } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Leaderboard } from "@/components/Leaderboard";
+import { useLogs } from "@/context/LogContext";
+import { usePlayers } from "@/context/PlayerContext";
+import { useSessions } from "@/context/SessionContext";
 import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
@@ -10,8 +13,10 @@ import type { Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
 
 export default function SessionsPage() {
-  const { overallScores, players, sessions, sessionScores, tournamentId } =
-    useTournament();
+  const { overallScores, sessionScores } = useLogs();
+  const { players } = usePlayers();
+  const { sessions } = useSessions();
+  const { tournamentId } = useTournament();
 
   // Prepend 'Overall Standings' pseudo-session
   const sessionOptions: Session[] = useMemo(() => {

@@ -21,11 +21,11 @@ type TablesContextType = {
 };
 
 const TablesContext = createContext<TablesContextType | undefined>(undefined);
-
 const supabase = createClient();
 
 export const TablesProvider = ({ children }: { children: ReactNode }) => {
   const { currentSession } = useSessions();
+
   const [tables, setTables] = useState<Table[]>([]);
 
   const { availableTables, seatedPlayerIds, duplicatePlayerIds } =
@@ -81,7 +81,7 @@ export const TablesProvider = ({ children }: { children: ReactNode }) => {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, [currentSession]);
 

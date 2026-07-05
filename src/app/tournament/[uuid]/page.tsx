@@ -6,12 +6,16 @@ import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { WindIndicator } from "@/components/WindIndicator";
-import { useTournament } from "@/context/TournamentContext";
+import { useAttendance } from "@/context/AttendanceContext";
+import { useSessions } from "@/context/SessionContext";
+import { useTables } from "@/context/TableContext";
 import { FilledButton } from "@/elements/FilledButton";
 
 export default function TournamentPage() {
-  const { availablePlayers, availableTables, currentSession, tables } =
-    useTournament();
+  const { availablePlayers } = useAttendance();
+  const { currentSession } = useSessions();
+  const { availableTables, tables } = useTables();
+
   const [isShaking, setIsShaking] = useState(false);
 
   async function handleShuffle() {

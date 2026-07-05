@@ -1,11 +1,11 @@
 "use client";
 
 import { LayoutDashboard, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { signOut } from "@/actions/auth";
 import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
-import { useRouter } from "next/navigation";
 
 const TABS = [
   { label: "Tables", href: "" },
@@ -19,7 +19,7 @@ export function Topbar() {
   const router = useRouter();
 
   return (
-    <nav className="bg-accent flex items-center justify-between h-15 px-5 z-50">
+    <div className="bg-accent flex items-center justify-between h-15 px-5 z-50">
       <TabMenu>
         {TABS.map(({ label, href }) => (
           <TabLink
@@ -47,6 +47,6 @@ export function Topbar() {
           <LogOut className="size-5" />
         </FilledButton>
       </div>
-    </nav>
+    </div>
   );
 }

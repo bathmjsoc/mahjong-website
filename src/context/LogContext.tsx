@@ -23,13 +23,17 @@ type LogsContextType = {
 };
 
 const LogsContext = createContext<LogsContextType | undefined>(undefined);
-
 const supabase = createClient();
 
 export function LogsProvider({ children }: { children: ReactNode }) {
   const { sessionMap, sessions } = useSessions();
   const { playerMap } = usePlayers();
+
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+
+  const sessionIds = useMemo(() => {
+    return sessions.map((session) => session.id).join(",");
+  }, [sessions]);
 
   const logs: Log[] = useMemo(() => {
     return logEntries.map((entry) => {
@@ -49,15 +53,13 @@ export function LogsProvider({ children }: { children: ReactNode }) {
     });
   }, [logEntries, playerMap, sessionMap]);
 
-  const enabledLogs = useMemo(
-    () => logs.filter((log) => !log.disabled),
-    [logs],
-  );
+  const enabledLogs = useMemo(() => {
+    return logs.filter((log) => !log.disabled);
+  }, [logs]);
 
-  const overallScores = useMemo(
-    () => getPlayerScores(enabledLogs),
-    [enabledLogs],
-  );
+  const overallScores = useMemo(() => {
+    return getPlayerScores(enabledLogs);
+  }, [enabledLogs]);
 
   const sessionScores = useMemo(() => {
     const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
@@ -74,8 +76,6 @@ export function LogsProvider({ children }: { children: ReactNode }) {
     if (!sessions.length) return;
     fetchLogs(sessions).then(setLogEntries);
 
-    const sessionIds = sessions.map((session) => session.id).join(",");
-
     const channel = supabase
       .channel(`logs:${sessionIds}`)
       .on(
@@ -91,9 +91,9 @@ export function LogsProvider({ children }: { children: ReactNode }) {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
-  }, [sessions]);
+  }, [sessions, sessionIds]);
 
   return (
     <LogsContext.Provider
