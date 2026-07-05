@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { fetchPlayers } from "@/actions/players";
+import { useTournament } from "@/context/TournamentContext";
 import { createClient } from "@/lib/supabase/browser";
 import type { Player } from "@/lib/types";
 
@@ -18,24 +19,15 @@ type PlayersContextType = {
 };
 
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
-
 const supabase = createClient();
 
-export function PlayersProvider({
-  tournamentId,
-  children,
-}: {
-  tournamentId: string;
-  children: ReactNode;
-}) {
+export function PlayersProvider({ children }: { children: ReactNode }) {
+  const { tournamentId } = useTournament();
+
   const [players, setPlayers] = useState<Player[]>([]);
 
   const playerMap = useMemo(() => {
-    const record: Record<string, Player> = {};
-    players.forEach((player) => {
-      record[player.id] = player;
-    });
-    return record;
+    return Object.fromEntries(players.map((player) => [player.id, player]));
   }, [players]);
 
   useEffect(() => {
@@ -57,7 +49,7 @@ export function PlayersProvider({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, [tournamentId]);
 
