@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
@@ -8,7 +8,8 @@ import { useAttendance } from "@/context/AttendanceContext";
 import { usePlayers } from "@/context/PlayerContext";
 import { useTables } from "@/context/TableContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import type { Player, Table, Wind } from "@/lib/types";
+import { getPointDeltas } from "@/lib/scoring";
+import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 
 type TableSeatProps = {
   table: Table;
@@ -29,6 +30,8 @@ export function TableSeat({
   const { playerMap } = usePlayers();
   const { duplicatePlayerIds } = useTables();
 
+  const [animationPoints, setAnimationPoints] = useState<number>(0);
+
   const occupantId = table[`${wind}_id`];
   const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
   const isLocked = occupantId ? lockedPlayerIds.has(occupantId) : false;
@@ -37,6 +40,31 @@ export function TableSeat({
     if (!occupantId) return null;
     return playerMap[occupantId] ?? null;
   }, [playerMap, occupantId]);
+
+  useEffect(() => {
+    if (!occupant?.id) return;
+
+    const eventName = `points-animation-${table.id}`;
+
+    const handleAnimation = (event: Event) => {
+      if (!(event instanceof CustomEvent)) return;
+
+      const { faan, winType, participants }: PointsAnimationEvent =
+        event.detail;
+
+      const participant = participants.find((p) => p.player_id === occupant.id);
+      if (!participant) return;
+
+      const pointDeltas = getPointDeltas(faan, winType);
+      const points = pointDeltas[participant.role];
+
+      setAnimationPoints(points);
+      setTimeout(() => setAnimationPoints(0), 2000);
+    };
+
+    window.addEventListener(eventName, handleAnimation);
+    return () => window.removeEventListener(eventName, handleAnimation);
+  }, [occupant, table]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
@@ -78,6 +106,19 @@ export function TableSeat({
           optionsClassName="w-auto"
         />
       </div>
+
+      {/* Point Delta Animation */}
+      {animationPoints !== 0 && (
+        <span
+          className={twMerge(
+            "shadow0 pointer-events-none absolute animate-fly-out font-bold text-sm",
+            "[text-shadow:-1px_-1px_0_#fff,1px_-1px_0_#fff,-1px_1px_0_#fff,1px_1px_0_#fff,0_2px_3px_rgba(0,0,0,0.4)]",
+            animationPoints > 0 ? "text-positive" : "text-negative",
+          )}
+        >
+          {animationPoints > 0 ? `+${animationPoints}` : animationPoints}
+        </span>
+      )}
     </div>
   );
 }

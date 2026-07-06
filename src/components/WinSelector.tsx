@@ -6,7 +6,13 @@ import { createLog } from "@/actions/logs";
 import { usePlayers } from "@/context/PlayerContext";
 import { useSessions } from "@/context/SessionContext";
 import { DropDown } from "@/elements/DropDown";
-import type { LogParticipant, Player, Table, WinType } from "@/lib/types";
+import type {
+  LogParticipant,
+  Player,
+  PointsAnimationEvent,
+  Table,
+  WinType,
+} from "@/lib/types";
 
 type WinSelectorProps = {
   table: Table;
@@ -80,6 +86,12 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     }
 
     await createLog(currentSession, faan, winType, participants);
+
+    window.dispatchEvent(
+      new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
+        detail: { faan, winType, participants },
+      }),
+    );
   }
 
   return (
