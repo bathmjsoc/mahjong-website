@@ -28,7 +28,7 @@ export function ResetSessionModal({
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Reset Session">
-        <div className="flex flex-col gap-3 w-xs">
+        <div className="flex w-xs flex-col gap-3">
           <span className="text-xs">
             Are you sure you want to reset the session and deregister all
             players? This cannot be undone!

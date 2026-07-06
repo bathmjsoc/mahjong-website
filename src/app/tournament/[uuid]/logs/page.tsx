@@ -76,7 +76,7 @@ export default function LogsPage() {
           toggleDisabledLogs={toggleDisabledLogs}
         />
 
-        <div className="flex flex-wrap items-center justify-center gap-2 w-xl">
+        <div className="flex w-xl flex-wrap items-center justify-center gap-2">
           {tags.map((tag) => (
             <Tag key={tag.id} tag={tag} removeTag={removeTag} />
           ))}
@@ -95,13 +95,7 @@ type TagProps = {
 
 function Tag({ tag, removeTag }: TagProps) {
   return (
-    <div
-      className="
-        bg-accent text-secondary
-        flex items-center justify-center gap-1
-        rounded-full px-2 py-1 text-xs
-      "
-    >
+    <div className="flex items-center justify-center gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs">
       {tag.display}
 
       <IconButton

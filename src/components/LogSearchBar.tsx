@@ -51,27 +51,24 @@ export function LogSearchBar({
           if (e.key === "Enter") handleSubmit();
         }}
         placeholder="Enter a query..."
-        className="
-          bg-secondary border-primary border-2
-          outline-none h-10 rounded-lg w-sm px-2 text-center text-sm
-        "
+        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
       />
 
       <IconButton
         onClick={toggleDisabledLogs}
-        className="text-primary flex items-center justify-center hover:text-info"
+        className="flex items-center justify-center text-primary hover:text-info"
       >
         <div className="relative size-5">
           <Eye
             className={twMerge(
               "absolute size-5 transition duration-300",
-              showDisabledLogs ? "opacity-100 scale-100" : "opacity-0 scale-50",
+              showDisabledLogs ? "scale-100 opacity-100" : "scale-50 opacity-0",
             )}
           />
           <EyeOff
             className={twMerge(
               "absolute size-5 transition duration-300",
-              showDisabledLogs ? "opacity-0 scale-50" : "opacity-100 scale-100",
+              showDisabledLogs ? "scale-50 opacity-0" : "scale-100 opacity-100",
             )}
           />
         </div>
@@ -83,22 +80,17 @@ export function LogSearchBar({
 function SearchInstructions() {
   return (
     <div className="group relative inline-block">
-      <IconButton className="text-primary flex items-center justify-center hover:text-info ">
+      <IconButton className="flex items-center justify-center text-primary hover:text-info">
         <Info className="size-5" />
       </IconButton>
 
-      <div
-        className="
-          hidden group-hover:block absolute bg-secondary border-primary border-2
-          w-max left-1/2 -translate-x-1/2 mt-3 p-2 rounded-xl z-10 text-xs
-        "
-      >
+      <div className="absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 border-primary bg-secondary p-2 text-xs group-hover:block">
         <span className="font-bold">How to Search Logs</span>
 
         <ol className="list-inside list-decimal">
           <li>
             Enter queries in the form <em>key=value</em>:
-            <ul className="list-inside list-disc ml-4">
+            <ul className="ml-4 list-inside list-disc">
               <li>session=[session number]</li>
               <li>type=[win type]</li>
               <li>faan=[number of faan]</li>

@@ -39,11 +39,11 @@ export function Sidebar() {
         <div
           className={twMerge(
             "bg-primary text-secondary",
-            "transition-all duration-500 overflow-hidden",
+            "overflow-hidden transition-all duration-500",
             isOpen ? "w-md px-5" : "w-0 px-0",
           )}
         >
-          <div className="flex flex-col gap-5 items-center max-w-md min-w-max py-10">
+          <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
               options={players}
               onSelect={(player) => registerPlayer(currentSession, player)}
@@ -91,10 +91,7 @@ export function Sidebar() {
         {/* Collapse/Expand Sidebar Button */}
         <FilledButton
           onClick={() => setIsOpen(!isOpen)}
-          className="
-            bg-primary text-secondary
-            rounded-r-2xl -ml-1 mt-5 h-20 w-10
-          "
+          className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"
         >
           <ChevronRight
             className={twMerge(

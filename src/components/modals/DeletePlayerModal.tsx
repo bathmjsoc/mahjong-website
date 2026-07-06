@@ -40,7 +40,7 @@ export function DeletePlayerModal({
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose} title="Delete Player">
-        <div className="flex flex-col gap-3 w-xs">
+        <div className="flex w-xs flex-col gap-3">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}

@@ -39,6 +39,12 @@ export type Player = {
   name: string;
 };
 
+export type PointsAnimationEvent = {
+  faan: number;
+  winType: WinType;
+  participants: LogParticipant[];
+};
+
 export type Session = {
   id: string;
   tournament_id: string;

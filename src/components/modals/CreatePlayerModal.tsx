@@ -42,7 +42,7 @@ export function CreatePlayerModal({
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Player">
-      <form action={handleSubmit} className="flex flex-col gap-3 w-xs">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
         <LabelledInput
           name="playerName"
           onChange={() => setError(null)}
@@ -53,7 +53,7 @@ export function CreatePlayerModal({
         >
           Player Name
         </LabelledInput>
-        {error && <p className="text-negative text-xs text-center">{error}</p>}
+        {error && <p className="text-center text-negative text-xs">{error}</p>}
       </form>
     </Modal>
   );

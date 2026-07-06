@@ -15,7 +15,7 @@ export function TournamentList({ tournaments }: TournamentListProps) {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,300px)] gap-5 w-full justify-center">
+    <div className="grid w-full grid-cols-[repeat(auto-fit,300px)] justify-center gap-5">
       {tournaments.map((tournament) => (
         <TournamentCard key={tournament.id} tournament={tournament} />
       ))}
@@ -31,11 +31,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
   return (
     <Link
       href={`/tournament/${tournament.id}`}
-      className="
-        bg-primary text-secondary
-        flex flex-col gap-10 p-3 rounded-lg
-        transition duration-300 hover:scale-97 active:scale-95
-      "
+      className="flex flex-col gap-10 rounded-lg bg-primary p-3 text-secondary transition duration-300 hover:scale-97 active:scale-95"
     >
       {/* Tournament Name */}
       <span title={tournament.name} className="text-lg">

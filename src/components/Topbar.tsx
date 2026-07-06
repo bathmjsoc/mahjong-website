@@ -19,7 +19,7 @@ export function Topbar() {
   const router = useRouter();
 
   return (
-    <div className="bg-accent flex items-center justify-between h-15 px-5 z-50">
+    <div className="z-50 flex h-15 items-center justify-between bg-accent px-5">
       <TabMenu>
         {TABS.map(({ label, href }) => (
           <TabLink
@@ -32,17 +32,17 @@ export function Topbar() {
         ))}
       </TabMenu>
 
-      <div className="flex gap-5 items-center justify-center">
+      <div className="flex items-center justify-center gap-5">
         <FilledButton
           onClick={() => router.push("/dashboard")}
-          className="bg-primary size-9 rounded-xl hover:text-info"
+          className="size-9 rounded-xl bg-primary hover:text-info"
         >
           <LayoutDashboard className="size-5" />
         </FilledButton>
 
         <FilledButton
           onClick={signOut}
-          className="bg-primary size-9 rounded-xl hover:text-negative"
+          className="size-9 rounded-xl bg-primary hover:text-negative"
         >
           <LogOut className="size-5" />
         </FilledButton>

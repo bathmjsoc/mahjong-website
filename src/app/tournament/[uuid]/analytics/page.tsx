@@ -22,7 +22,7 @@ const data: SeriesData[] = [
 
 export default function AnalyticsPage() {
   return (
-    <div className="flex flex-col items-center gap-10 p-10 w-3xl">
+    <div className="flex w-3xl flex-col items-center gap-10 p-10">
       <LineGraph data={data} />
     </div>
   );

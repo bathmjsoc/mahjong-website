@@ -48,7 +48,7 @@ export default function SessionsPage() {
   }, [overallScores, players, selectedSession, sessionScores]);
 
   return (
-    <div className="flex flex-col gap-7 items-center py-10">
+    <div className="flex flex-col items-center gap-7 py-10">
       <RoundedListbox<Session>
         value={selectedSession}
         options={sessionOptions}
@@ -58,7 +58,7 @@ export default function SessionsPage() {
         buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
       />
 
-      <FilledButton className="flex gap-2 items-center justify-center text-sm">
+      <FilledButton className="flex items-center justify-center gap-2 text-sm">
         <ChartColumn className="size-5" />
         Download Graph
       </FilledButton>

@@ -31,12 +31,12 @@ export default function TournamentPage() {
       <Sidebar />
       <WindIndicator />
 
-      <div className="flex flex-col items-center w-full overflow-hidden">
+      <div className="flex w-full flex-col items-center overflow-hidden">
         <div className="py-5">
           <FilledButton
             onClick={handleShuffle}
             disabled={isShaking}
-            className="bg-primary flex gap-2 items-center justify-center"
+            className="flex items-center justify-center gap-2 bg-primary"
           >
             <Shuffle className="size-5" />
             Shuffle Tables

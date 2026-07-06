@@ -44,7 +44,7 @@ export function RoundedListbox<T>({
           isPlaceholder
             ? "bg-secondary text-negative"
             : "bg-secondary text-primary",
-          "w-full text-center font-bold truncate outline-none cursor-pointer",
+          "w-full cursor-pointer truncate text-center font-bold outline-none",
           "transition duration-300 enabled:hover:bg-secondary/75 disabled:cursor-not-allowed",
           buttonClassName,
         )}
@@ -56,15 +56,15 @@ export function RoundedListbox<T>({
         transition
         className={twMerge(
           "bg-secondary text-primary",
-          "border-primary border-2 outline-none",
-          "max-h-50 w-(--button-width) z-50 mt-2 p-1",
-          "rounded-xl text-sm no-scrollbar",
+          "border-2 border-primary outline-none",
+          "z-50 mt-2 max-h-50 w-(--button-width) p-1",
+          "no-scrollbar rounded-xl text-sm",
           "transition duration-300 data-closed:scale-95 data-closed:opacity-0",
           optionsClassName,
         )}
       >
         {options.length === 0 ? (
-          <div className="text-center text-xs p-1 italic">{emptyMessage}</div>
+          <div className="p-1 text-center text-xs italic">{emptyMessage}</div>
         ) : (
           options.map((item) => (
             <ListboxOption
@@ -72,7 +72,7 @@ export function RoundedListbox<T>({
               value={item}
               className={twMerge(
                 "flex items-center justify-center",
-                "outline-none cursor-pointer rounded-md p-1",
+                "cursor-pointer rounded-md p-1 outline-none",
                 "transition duration-300 hover:bg-primary/25",
                 optionClassName,
               )}

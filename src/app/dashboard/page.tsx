@@ -14,16 +14,13 @@ export default async function DashboardPage() {
   const tournaments = await fetchTournaments();
 
   return (
-    <div className="flex flex-col items-center p-10 gap-10">
+    <div className="flex flex-col items-center gap-10 p-10">
       <CreateTournamentButton />
       <TournamentList tournaments={tournaments} />
 
       <FilledButton
         onClick={signOut}
-        className="
-          bg-primary absolute top-3 right-3 size-9 rounded-xl
-          hover:text-negative
-        "
+        className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
       >
         <LogOut className="size-5" />
       </FilledButton>

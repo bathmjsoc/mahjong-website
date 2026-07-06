@@ -13,7 +13,7 @@ type TabMenuProps = {
 export function TabMenu({ children, className }: TabMenuProps) {
   return (
     <nav
-      className={twMerge("flex gap-5 items-center justify-center", className)}
+      className={twMerge("flex items-center justify-center gap-5", className)}
     >
       {children}
     </nav>
@@ -33,7 +33,7 @@ export function TabLink({ children, href, className, ...props }: TabLinkProps) {
       {...props}
       className={twMerge(
         "bg-primary text-secondary",
-        "border-transparent border-2 outline-none rounded-xl p-1",
+        "rounded-xl border-2 border-transparent p-1 outline-none",
         "flex items-center justify-center transition duration-300",
         "hover:scale-97 active:scale-95 data-[active=true]:border-secondary",
         className,

@@ -26,7 +26,7 @@ export function CreateTournamentModal({
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
-      <form action={handleSubmit} className="flex flex-col gap-3 w-xs">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
         <LabelledInput
           name="tournamentName"
           type="text"

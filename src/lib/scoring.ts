@@ -1,4 +1,4 @@
-import type { Log } from "@/lib/types";
+import type { Log, LogRole, WinType } from "@/lib/types";
 
 const SCORING_RULES: Record<
   number,
@@ -64,4 +64,13 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
   }
 
   return scores;
+}
+
+export function getPointDeltas(
+  faan: number,
+  winType: WinType,
+): Record<LogRole, number> {
+  const { winner, loser } = SCORING_RULES[faan][winType];
+
+  return { winner: winner, loser: loser, other: 0 };
 }
