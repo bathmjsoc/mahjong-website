@@ -20,10 +20,7 @@ export default async function DashboardPage() {
 
       <FilledButton
         onClick={signOut}
-        className="
-          bg-primary absolute top-3 right-3 size-9 rounded-xl
-          hover:text-negative
-        "
+        className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
       >
         <LogOut className="size-5" />
       </FilledButton>

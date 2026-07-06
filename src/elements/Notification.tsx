@@ -32,14 +32,9 @@ export function Notification({
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className="fixed bottom-5 right-5 z-99">
-        <div
-          className="
-            bg-secondary text-primary
-            border-primary border-2 rounded-lg p-3 w-xs
-          "
-        >
-          <div className="font-bold text-md mb-2">{title}</div>
+      <div className="fixed right-5 bottom-5 z-99">
+        <div className="w-xs rounded-lg border-2 border-primary bg-secondary p-3 text-primary">
+          <div className="mb-2 font-bold text-md">{title}</div>
           <div className="text-xs">{children}</div>
         </div>
       </div>

@@ -51,10 +51,7 @@ export function LogSearchBar({
           if (e.key === "Enter") handleSubmit();
         }}
         placeholder="Enter a query..."
-        className="
-          bg-secondary border-primary border-2
-          outline-none h-10 rounded-lg w-sm px-2 text-center text-sm
-        "
+        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
       />
 
       <IconButton

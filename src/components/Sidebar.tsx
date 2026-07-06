@@ -91,10 +91,7 @@ export function Sidebar() {
         {/* Collapse/Expand Sidebar Button */}
         <FilledButton
           onClick={() => setIsOpen(!isOpen)}
-          className="
-            bg-primary text-secondary
-            rounded-r-2xl -ml-1 mt-5 h-20 w-10
-          "
+          className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"
         >
           <ChevronRight
             className={twMerge(
