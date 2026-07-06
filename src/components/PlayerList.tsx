@@ -84,21 +84,21 @@ function PlayerRow({
       <td>
         <IconButton
           onClick={handleLockToggle}
-          className="flex items-center justify-center w-full"
+          className="flex w-full items-center justify-center"
         >
           <div className="relative size-4">
             <LockKeyhole
               className={twMerge(
                 "text-neutral hover:text-secondary",
                 "absolute size-4 transition duration-300",
-                isLocked ? "opacity-100 scale-100" : "opacity-0 scale-50",
+                isLocked ? "scale-100 opacity-100" : "scale-50 opacity-0",
               )}
             />
             <LockKeyholeOpen
               className={twMerge(
                 "text-secondary hover:text-neutral",
                 "absolute size-4 transition duration-300",
-                isLocked ? "opacity-0 scale-50" : "opacity-100 scale-100",
+                isLocked ? "scale-50 opacity-0" : "scale-100 opacity-100",
               )}
             />
           </div>
@@ -107,7 +107,7 @@ function PlayerRow({
 
       <td
         className={twMerge(
-          "text-secondary border-secondary border-2 text-left px-2 py-1",
+          "border-2 border-secondary px-2 py-1 text-left text-secondary",
           "transition duration-300",
           isUnseated && "text-negative",
           isLocked && "text-neutral",
@@ -117,7 +117,7 @@ function PlayerRow({
       </td>
 
       <td
-        className={twMerge("border-secondary border-2 text-center", scoreColor)}
+        className={twMerge("border-2 border-secondary text-center", scoreColor)}
       >
         {score}
       </td>
@@ -126,7 +126,7 @@ function PlayerRow({
       <td>
         <IconButton
           onClick={() => deregisterPlayer(session, player)}
-          className="flex items-center justify-center w-full hover:text-negative"
+          className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />
         </IconButton>

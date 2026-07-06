@@ -53,7 +53,7 @@ export function SearchCombobox<T>({
         placeholder={placeholder}
         className={twMerge(
           "bg-secondary text-primary",
-          "w-full text-center rounded-md p-2 outline-none cursor-text",
+          "w-full cursor-text rounded-md p-2 text-center outline-none",
           inputClassName,
         )}
       />
@@ -61,13 +61,13 @@ export function SearchCombobox<T>({
         anchor="bottom"
         className={twMerge(
           "bg-secondary text-primary",
-          "max-h-50 w-(--input-width) z-50 mt-2 p-1 outline-none",
-          "rounded-lg text-sm no-scrollbar empty:invisible",
+          "z-50 mt-2 max-h-50 w-(--input-width) p-1 outline-none",
+          "no-scrollbar rounded-lg text-sm empty:invisible",
           optionsClassName,
         )}
       >
         {filteredOptions.length === 0 && query !== "" ? (
-          <div className="text-center text-xs p-1 italic">{emptyMessage}</div>
+          <div className="p-1 text-center text-xs italic">{emptyMessage}</div>
         ) : (
           filteredOptions.map((item) => (
             <ComboboxOption
@@ -75,7 +75,7 @@ export function SearchCombobox<T>({
               value={item}
               className={twMerge(
                 "flex items-center justify-center",
-                "outline-none cursor-pointer truncate rounded-md p-2",
+                "cursor-pointer truncate rounded-md p-2 outline-none",
                 "transition duration-300 hover:bg-primary/25",
                 optionClassName,
               )}

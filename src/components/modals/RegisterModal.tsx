@@ -37,7 +37,7 @@ export function RegisterModal({
   return (
     <>
       <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
-        <form action={formAction} className="flex flex-col gap-3 w-xs">
+        <form action={formAction} className="flex w-xs flex-col gap-3">
           <LabelledInput
             name="email"
             type="email"
@@ -60,7 +60,7 @@ export function RegisterModal({
           </LabelledInput>
 
           {state?.error && (
-            <p className="text-negative text-xs text-center">{state.error}</p>
+            <p className="text-center text-negative text-xs">{state.error}</p>
           )}
 
           <FilledButton type="submit" disabled={isPending}>

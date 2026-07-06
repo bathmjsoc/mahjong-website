@@ -19,7 +19,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
   }
 
   return (
-    <table className="table-fixed border-primary border">
+    <table className="table-fixed border border-primary">
       <thead className="bg-primary text-secondary">
         <tr>
           <th className="w-25">Rank</th>
@@ -27,7 +27,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
           <th className="w-25">Score</th>
         </tr>
       </thead>
-      <tbody className="divide-primary divide-y">
+      <tbody className="divide-y divide-primary">
         {rankedPlayers.map((player, index) => (
           <PlayerRow
             key={player.id}
@@ -52,7 +52,7 @@ function PlayerRow({ player, position, score }: PlayerRowProps) {
   const scoreColor = scoreToColor(score);
 
   return (
-    <tr className="text-primary text-center text-sm">
+    <tr className="text-center text-primary text-sm">
       <td className="border-l">{formattedPosition}</td>
 
       <td>{player.name}</td>

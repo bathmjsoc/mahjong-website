@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const tournaments = await fetchTournaments();
 
   return (
-    <div className="flex flex-col items-center p-10 gap-10">
+    <div className="flex flex-col items-center gap-10 p-10">
       <CreateTournamentButton />
       <TournamentList tournaments={tournaments} />
 

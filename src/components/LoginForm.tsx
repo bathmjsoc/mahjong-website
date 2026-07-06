@@ -18,7 +18,7 @@ export function LoginForm() {
     <>
       <form
         action={formAction}
-        className=" bg-primary text-secondary flex flex-col gap-3 rounded-lg w-sm p-5"
+        className="flex w-sm flex-col gap-3 rounded-lg bg-primary p-5 text-secondary"
       >
         <LabelledInput
           name="email"
@@ -42,14 +42,14 @@ export function LoginForm() {
         </LabelledInput>
 
         {state?.error && (
-          <p className="text-negative text-xs text-center">{state.error}</p>
+          <p className="text-center text-negative text-xs">{state.error}</p>
         )}
 
         <FilledButton type="submit" disabled={isPending}>
           Sign In
         </FilledButton>
 
-        <div className="flex items-center justify-center -mb-1">
+        <div className="-mb-1 flex items-center justify-center">
           <TextButton
             onClick={() => setIsRegisterOpen(true)}
             className="text-xs"

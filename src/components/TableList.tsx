@@ -19,7 +19,7 @@ export function TableList({ tables, className }: TableListProps) {
   return (
     <div
       className={twMerge(
-        "grid grid-cols-[repeat(auto-fit,280px)] gap-10 w-full justify-center",
+        "grid w-full grid-cols-[repeat(auto-fit,280px)] justify-center gap-10",
         className,
       )}
     >
@@ -28,7 +28,7 @@ export function TableList({ tables, className }: TableListProps) {
       ))}
 
       {/* Add New Table Button */}
-      <div className="flex items-center justify-center size-70">
+      <div className="flex size-70 items-center justify-center">
         <FilledButton
           onClick={() => createTable(currentSession)}
           className="rounded-full p-3"
@@ -48,7 +48,7 @@ function TableCard({ table }: TableProps) {
   return (
     <div
       className={twMerge(
-        "grid grid-cols-5 grid-rows-5 w-70 h-70",
+        "grid h-70 w-70 grid-cols-5 grid-rows-5",
         table.saved && "opacity-50",
       )}
     >
@@ -78,15 +78,15 @@ function TableCard({ table }: TableProps) {
         buttonClassName="-rotate-90"
       />
       {/* Table Number */}
-      <div className="flex items-center justify-center text-primary text-7xl row-start-3 col-start-3">
+      <div className="col-start-3 row-start-3 flex items-center justify-center text-7xl text-primary">
         {table.saved ? "S" : table.number}
       </div>
 
-      <div className="flex items-center justify-center gap-5 row-start-4 col-start-2 col-span-3">
+      <div className="col-span-3 col-start-2 row-start-4 flex items-center justify-center gap-5">
         {/* Save Table Button */}
         <FilledButton
           onClick={() => saveTable(table)}
-          className="bg-primary rounded-full enabled:hover:text-info"
+          className="rounded-full bg-primary enabled:hover:text-info"
           disabled={table.saved}
         >
           <Archive className="size-4" />
@@ -95,7 +95,7 @@ function TableCard({ table }: TableProps) {
         {/* Delete Table Button */}
         <FilledButton
           onClick={() => deleteTable(table)}
-          className="bg-primary rounded-full hover:text-negative"
+          className="rounded-full bg-primary hover:text-negative"
         >
           <Trash2 className="size-4" />
         </FilledButton>

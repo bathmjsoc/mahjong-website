@@ -14,7 +14,7 @@ export function LogList({ logs }: LogListProps) {
   }
 
   return (
-    <table className="text-primary text-sm w-full max-w-7xl border-separate border-spacing-y-2">
+    <table className="w-full max-w-7xl border-separate border-spacing-y-2 text-primary text-sm">
       <thead>
         <tr>
           <th className="w-[10%]">Session</th>
@@ -44,7 +44,7 @@ function LogRow({ log }: LogRowProps) {
       <td
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
-          "border-l border-r-0 border-y rounded-l-xl text-center p-2 truncate",
+          "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
         {log.session_number}
@@ -53,7 +53,7 @@ function LogRow({ log }: LogRowProps) {
       <td
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y text-center p-2 truncate",
+          "truncate border-x-0 border-y p-2 text-center",
         )}
       >
         {log.win_type === "詐糊" ? "N/A" : log.faan}
@@ -62,7 +62,7 @@ function LogRow({ log }: LogRowProps) {
       <td
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y text-center p-2 truncate",
+          "truncate border-x-0 border-y p-2 text-center",
         )}
       >
         {log.win_type}
@@ -71,7 +71,7 @@ function LogRow({ log }: LogRowProps) {
       <td
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y text-center p-2 truncate",
+          "truncate border-x-0 border-y p-2 text-center",
         )}
       >
         {log.winners.map((player) => player.name).join(", ") || "N/A"}
@@ -80,7 +80,7 @@ function LogRow({ log }: LogRowProps) {
       <td
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
-          "border-l-0 border-r border-y rounded-r-xl text-center p-2 truncate",
+          "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
         {log.losers.map((player) => player.name).join(", ") || "N/A"}
@@ -90,7 +90,7 @@ function LogRow({ log }: LogRowProps) {
         {!log.disabled && (
           <IconButton
             onClick={() => disableLog(log)}
-            className="text-primary enabled:hover:text-negative flex items-center justify-center w-full"
+            className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
           >
             <Trash2 className="size-5" />
           </IconButton>

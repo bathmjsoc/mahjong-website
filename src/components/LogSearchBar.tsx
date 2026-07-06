@@ -59,19 +59,19 @@ export function LogSearchBar({
 
       <IconButton
         onClick={toggleDisabledLogs}
-        className="text-primary flex items-center justify-center hover:text-info"
+        className="flex items-center justify-center text-primary hover:text-info"
       >
         <div className="relative size-5">
           <Eye
             className={twMerge(
               "absolute size-5 transition duration-300",
-              showDisabledLogs ? "opacity-100 scale-100" : "opacity-0 scale-50",
+              showDisabledLogs ? "scale-100 opacity-100" : "scale-50 opacity-0",
             )}
           />
           <EyeOff
             className={twMerge(
               "absolute size-5 transition duration-300",
-              showDisabledLogs ? "opacity-0 scale-50" : "opacity-100 scale-100",
+              showDisabledLogs ? "scale-50 opacity-0" : "scale-100 opacity-100",
             )}
           />
         </div>
@@ -83,7 +83,7 @@ export function LogSearchBar({
 function SearchInstructions() {
   return (
     <div className="group relative inline-block">
-      <IconButton className="text-primary flex items-center justify-center hover:text-info ">
+      <IconButton className="flex items-center justify-center text-primary hover:text-info">
         <Info className="size-5" />
       </IconButton>
 
@@ -98,7 +98,7 @@ function SearchInstructions() {
         <ol className="list-inside list-decimal">
           <li>
             Enter queries in the form <em>key=value</em>:
-            <ul className="list-inside list-disc ml-4">
+            <ul className="ml-4 list-inside list-disc">
               <li>session=[session number]</li>
               <li>type=[win type]</li>
               <li>faan=[number of faan]</li>

@@ -35,8 +35,8 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             data-closed:scale-95 data-closed:opacity-0
           "
         >
-          <div className="flex items-center justify-between mb-4">
-            <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
+          <div className="mb-4 flex items-center justify-between">
+            <DialogTitle className="font-bold text-lg">{title}</DialogTitle>
             <IconButton onClick={onClose} className="hover:text-negative">
               <X />
             </IconButton>

@@ -76,7 +76,7 @@ export default function LogsPage() {
           toggleDisabledLogs={toggleDisabledLogs}
         />
 
-        <div className="flex flex-wrap items-center justify-center gap-2 w-xl">
+        <div className="flex w-xl flex-wrap items-center justify-center gap-2">
           {tags.map((tag) => (
             <Tag key={tag.id} tag={tag} removeTag={removeTag} />
           ))}

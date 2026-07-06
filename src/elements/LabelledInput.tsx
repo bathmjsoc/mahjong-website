@@ -18,16 +18,16 @@ export function LabelledInput({
         {...props}
         className={twMerge(
           "bg-primary text-secondary",
-          "border-secondary border-2 outline-none",
-          "rounded text-center w-full p-2",
+          "border-2 border-secondary outline-none",
+          "w-full rounded p-2 text-center",
           inputClassName,
         )}
       />
       <span
         className={twMerge(
           "bg-primary text-secondary",
-          "absolute left-1/2 -translate-x-1/2 top-px -translate-y-1/2",
-          "rounded-full px-1 text-xs pointer-events-none",
+          "absolute top-px left-1/2 -translate-x-1/2 -translate-y-1/2",
+          "pointer-events-none rounded-full px-1 text-xs",
           labelClassName,
         )}
       >

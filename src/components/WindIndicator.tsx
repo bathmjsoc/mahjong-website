@@ -9,7 +9,7 @@ export function WindIndicator() {
   const [wind, setWind] = useState<string | null>(WINDS[0]);
 
   return (
-    <div className="bg-primary absolute top-20 right-5 rounded-2xl">
+    <div className="absolute top-20 right-5 rounded-2xl bg-primary">
       <RoundedListbox<string>
         value={wind}
         options={WINDS}

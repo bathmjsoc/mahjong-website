@@ -15,8 +15,8 @@ export function FilledButton({
       {...props}
       className={twMerge(
         "bg-accent text-secondary",
-        "border-none outline-none rounded p-2 transition duration-300",
-        "enabled:cursor-pointer enabled:hover:scale-97 enabled:active:scale-95",
+        "rounded border-none p-2 outline-none transition duration-300",
+        "enabled:cursor-pointer enabled:active:scale-95 enabled:hover:scale-97",
         "disabled:cursor-not-allowed",
         className,
       )}
