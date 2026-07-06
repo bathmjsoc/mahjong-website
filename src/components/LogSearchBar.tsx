@@ -84,12 +84,7 @@ function SearchInstructions() {
         <Info className="size-5" />
       </IconButton>
 
-      <div
-        className="
-          hidden group-hover:block absolute bg-secondary border-primary border-2
-          w-max left-1/2 -translate-x-1/2 mt-3 p-2 rounded-xl z-10 text-xs
-        "
-      >
+      <div className="absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 border-primary bg-secondary p-2 text-xs group-hover:block">
         <span className="font-bold">How to Search Logs</span>
 
         <ol className="list-inside list-decimal">
