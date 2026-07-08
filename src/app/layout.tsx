@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { Oxygen_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "mahjong-website",
+};
 
 const font = Oxygen_Mono({
   subsets: ["latin"],
