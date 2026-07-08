@@ -10,7 +10,7 @@ import {
 } from "react";
 import { fetchPlayers } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
-import { createClient } from "@/lib/supabase/browser";
+import { createClient } from "@/lib/supabase/client";
 import type { Player } from "@/lib/types";
 
 type PlayersContextType = {

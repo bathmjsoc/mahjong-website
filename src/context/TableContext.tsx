@@ -10,7 +10,7 @@ import {
 } from "react";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/context/SessionContext";
-import { createClient } from "@/lib/supabase/browser";
+import { createClient } from "@/lib/supabase/client";
 import type { Table } from "@/lib/types";
 
 type TablesContextType = {

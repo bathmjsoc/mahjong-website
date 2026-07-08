@@ -11,7 +11,7 @@ import {
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/context/PlayerContext";
 import { useSessions } from "@/context/SessionContext";
-import { createClient } from "@/lib/supabase/browser";
+import { createClient } from "@/lib/supabase/client";
 import type { Attendance, Player } from "@/lib/types";
 
 type AttendanceContextType = {
