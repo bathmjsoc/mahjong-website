@@ -3,8 +3,8 @@ services:
     container_name: mahjong-website
     build: .
     ports:
-      - "3000:3000"  # Make the website accessible at localhost:3000
+      - "3000:3000"  # Connects the container to localhost:3000
     env_file:
-      - .env  # Load environment variables
+      - .env
     volumes:
-      - .:/app  # Sync local code to container
+      - .:/app  # Sync local code changes to the container
