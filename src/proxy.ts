@@ -1,13 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const publicRoutes = [
-  "/"
-]
+const publicRoutes = ["/"];
 
 export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
-  const  pathname = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname;
 
   // Route unauthenticated users to login page
   if (!user && !publicRoutes.includes(pathname)) {
