@@ -111,8 +111,7 @@ export function TableSeat({
       {animationPoints !== 0 && (
         <span
           className={twMerge(
-            "shadow0 pointer-events-none absolute animate-fly-out font-bold text-sm",
-            "[text-shadow:-1px_-1px_0_#fff,1px_-1px_0_#fff,-1px_1px_0_#fff,1px_1px_0_#fff,0_2px_3px_rgba(0,0,0,0.4)]",
+            "pointer-events-none absolute animate-fly-out font-bold outline-text",
             animationPoints > 0 ? "text-positive" : "text-negative",
           )}
         >

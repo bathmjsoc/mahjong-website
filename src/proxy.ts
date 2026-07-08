@@ -1,17 +1,19 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
+const publicRoutes = ["/"];
+
 export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
-  const { pathname } = request.nextUrl;
+  const pathname = request.nextUrl.pathname;
 
   // Route unauthenticated users to login page
-  if (!user && pathname !== "/") {
+  if (!user && !publicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Route authenticated users away from login page
-  if (user && pathname === "/") {
+  if (user && publicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -23,9 +25,8 @@ export const config = {
     /*
      * Run on all requests except for:
      * - _next/static
-     * - _next/image
      * - favicon.ico
      */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/((?!_next/static|favicon.ico).*)",
   ],
 };
