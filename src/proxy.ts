@@ -3,7 +3,7 @@ import { updateSession } from "@/lib/supabase/middleware";
 
 export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
-  const { pathname } = request.nextUrl;
+  const  pathname = request.nextUrl.pathname;
 
   // Route unauthenticated users to login page
   if (!user && pathname !== "/") {
@@ -23,9 +23,8 @@ export const config = {
     /*
      * Run on all requests except for:
      * - _next/static
-     * - _next/image
      * - favicon.ico
      */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/((?!_next/static|favicon.ico).*)",
   ],
 };
