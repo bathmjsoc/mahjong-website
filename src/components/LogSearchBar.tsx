@@ -31,9 +31,9 @@ export function LogSearchBar({
       case "player":
         addTag({
           id: crypto.randomUUID(),
-          display: input,
-          key,
-          value,
+          label: input,
+          key: key,
+          value: value,
         });
 
         setQuery("");
