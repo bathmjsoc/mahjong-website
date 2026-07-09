@@ -15,9 +15,7 @@ export async function createTable(session: Session): Promise<Table> {
     .limit(1);
 
   if (fetchError)
-    throw new Error(
-      `createTable encountered an error: ${fetchError.message}`,
-    );
+    throw new Error(`createTable encountered an error: ${fetchError.message}`);
 
   const nextNumber = tables?.length ? tables[0].number + 1 : 1;
 
@@ -25,7 +23,7 @@ export async function createTable(session: Session): Promise<Table> {
     .from("tables")
     .insert({
       session_id: session.id,
-      number: nextNumber
+      number: nextNumber,
     })
     .select()
     .single();
