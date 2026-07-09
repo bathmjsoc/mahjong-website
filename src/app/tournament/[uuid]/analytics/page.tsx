@@ -1,8 +1,8 @@
 "use client";
 
-import { LineGraph, type SeriesData } from "@/components/LineGraph";
+import { LineGraph } from "@/components/LineGraph";
 
-const data: SeriesData[] = [
+const data = [
   {
     name: "Player A",
     points: [

@@ -2,11 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-
-export type ActionState = {
-  error?: string;
-  success?: boolean;
-} | null;
+import {ActionState} from "@/lib/types";
 
 export async function signUp(
   _: ActionState,

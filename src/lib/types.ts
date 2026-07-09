@@ -57,7 +57,7 @@ export type ActionState = {
 
 export type LogSearchTag = {
   id: string;
-  display: string;
+  label: string;
   key: "session" | "type" | "faan" | "player";
   value: string;
 };

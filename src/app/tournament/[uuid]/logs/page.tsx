@@ -103,7 +103,7 @@ type TagProps = {
 function Tag({ tag, removeTag }: TagProps) {
   return (
     <div className="flex items-center justify-center gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs">
-      {tag.display}
+      {tag.label}
 
       <IconButton
         onClick={() => removeTag(tag.id)}
