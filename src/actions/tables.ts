@@ -7,18 +7,33 @@ import { shuffle } from "@/lib/utils";
 export async function createTable(session: Session): Promise<Table> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: tables, error: fetchError } = await supabase
+    .from("tables")
+    .select("number")
+    .eq("session_id", session.id)
+    .order("number", { ascending: false })
+    .limit(1);
+
+  if (fetchError)
+    throw new Error(
+      `createTable encountered an error: ${fetchError.message}`,
+    );
+
+  const nextNumber = tables?.length ? tables[0].number + 1 : 1;
+
+  const { data: newTable, error: insertError } = await supabase
     .from("tables")
     .insert({
       session_id: session.id,
+      number: nextNumber
     })
     .select()
     .single();
 
-  if (error)
-    throw new Error(`createTable encountered an error: ${error.message}`);
+  if (insertError)
+    throw new Error(`createTable encountered an error: ${insertError.message}`);
 
-  return data;
+  return newTable;
 }
 
 export async function fetchTables(session: Session): Promise<Table[]> {
