@@ -49,16 +49,17 @@ export function TableSeat({
     const handleAnimation = (event: Event) => {
       if (!(event instanceof CustomEvent)) return;
 
-      const { faan, winType, participants }: PointsAnimationEvent =
+      const { faan, winType, winners, losers }: PointsAnimationEvent =
         event.detail;
 
-      const participant = participants.find((p) => p.player_id === occupant.id);
-      if (!participant) return;
-
       const pointDeltas = getPointDeltas(faan, winType);
-      const points = pointDeltas[participant.role];
 
-      setAnimationPoints(points);
+      if (winners.some((p) => p.id === occupant.id)) {
+        setAnimationPoints(pointDeltas.winner);
+      } else if (losers.some((p) => p.id === occupant.id)) {
+        setAnimationPoints(pointDeltas.loser);
+      }
+
       setTimeout(() => setAnimationPoints(0), 2000);
     };
 

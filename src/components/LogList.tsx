@@ -1,6 +1,8 @@
 import { Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { disableLog } from "@/actions/logs";
+import { usePlayers } from "@/context/PlayerContext";
+import { useSessions } from "@/context/SessionContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Log } from "@/lib/types";
 
@@ -39,6 +41,9 @@ type LogRowProps = {
 };
 
 function LogRow({ log }: LogRowProps) {
+  const { playerMap } = usePlayers();
+  const { sessionMap } = useSessions();
+
   return (
     <tr className={log.disabled ? "text-negative" : "text-primary"}>
       <td
@@ -47,7 +52,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
-        {log.session_number}
+        {sessionMap[log.session_id].number}
       </td>
 
       <td
@@ -74,7 +79,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.winners.map((player) => player.name).join(", ") || "N/A"}
+        {log.winner_ids.map((id) => playerMap[id].name).join(", ")}
       </td>
 
       <td
@@ -83,7 +88,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.losers.map((player) => player.name).join(", ") || "N/A"}
+        {log.loser_ids.map((id) => playerMap[id].name).join(", ")}
       </td>
 
       <td>
