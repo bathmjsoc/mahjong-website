@@ -14,17 +14,21 @@ export async function createSession(tournamentId: string): Promise<void> {
     .limit(1);
 
   if (fetchError)
-    throw new Error(`createSession encountered an error: ${fetchError.message}`);
+    throw new Error(
+      `createSession encountered an error: ${fetchError.message}`,
+    );
 
   const nextNumber = sessions?.length ? sessions[0].number + 1 : 1;
 
   const { error: insertError } = await supabase.from("sessions").insert({
     tournament_id: tournamentId,
-    number: nextNumber
+    number: nextNumber,
   });
 
   if (insertError)
-    throw new Error(`createSession encountered an error: ${insertError.message}`);
+    throw new Error(
+      `createSession encountered an error: ${insertError.message}`,
+    );
 }
 
 export async function fetchSessions(tournamentId: string): Promise<Session[]> {
