@@ -7,18 +7,31 @@ import { shuffle } from "@/lib/utils";
 export async function createTable(session: Session): Promise<Table> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: tables, error: fetchError } = await supabase
+    .from("tables")
+    .select("number")
+    .eq("session_id", session.id)
+    .order("number", { ascending: false })
+    .limit(1);
+
+  if (fetchError)
+    throw new Error(`createTable encountered an error: ${fetchError.message}`);
+
+  const nextNumber = tables?.length ? tables[0].number + 1 : 1;
+
+  const { data: newTable, error: insertError } = await supabase
     .from("tables")
     .insert({
       session_id: session.id,
+      number: nextNumber,
     })
     .select()
     .single();
 
-  if (error)
-    throw new Error(`createTable encountered an error: ${error.message}`);
+  if (insertError)
+    throw new Error(`createTable encountered an error: ${insertError.message}`);
 
-  return data;
+  return newTable;
 }
 
 export async function fetchTables(session: Session): Promise<Table[]> {
@@ -28,18 +41,13 @@ export async function fetchTables(session: Session): Promise<Table[]> {
     .from("tables")
     .select("*")
     .eq("session_id", session.id)
+    .order("saved", { ascending: true })
     .order("number", { ascending: true });
 
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return (
-    data?.sort((a, b) => {
-      if (a.saved && !b.saved) return 1;
-      if (!a.saved && b.saved) return -1;
-      return 0;
-    }) ?? []
-  );
+  return data ?? [];
 }
 
 export async function updateTable(
@@ -48,11 +56,10 @@ export async function updateTable(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Partial<Record<string, string | null>> = {};
-  for (const wind in players) {
-    const w = wind as Wind;
-    payload[`${w}_id`] = players[w]?.id ?? null;
-  }
+  const payload: Record<string, string | null> = {};
+  Object.entries(players).forEach(([wind, player]) => {
+    payload[`${wind}_id`] = player?.id ?? null;
+  });
 
   const { error } = await supabase
     .from("tables")

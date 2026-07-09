@@ -6,13 +6,7 @@ import { createLog } from "@/actions/logs";
 import { usePlayers } from "@/context/PlayerContext";
 import { useSessions } from "@/context/SessionContext";
 import { DropDown } from "@/elements/DropDown";
-import type {
-  LogParticipant,
-  Player,
-  PointsAnimationEvent,
-  Table,
-  WinType,
-} from "@/lib/types";
+import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
   table: Table;
@@ -48,48 +42,45 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   ) {
     if (!occupant) return;
 
-    const participants: LogParticipant[] = [];
-    const addParticipant = (
-      player: Player | null | undefined,
-      role: LogParticipant["role"],
-    ) => {
-      if (player) {
-        participants.push({ player_id: player.id, role });
-      }
-    };
+    const winners: Player[] = [];
+    const losers: Player[] = [];
+    const others: Player[] = [];
 
     switch (winType) {
       case "打出":
       case "包自摸":
-        addParticipant(occupant, "winner");
-        addParticipant(target, "loser");
+        winners.push(occupant);
+        if (target) losers.push(target);
+
         opponents
           .filter((player) => player?.id !== target?.id)
           .forEach((player) => {
-            addParticipant(player, "other");
+            if (player) others.push(player);
           });
         break;
 
       case "自摸":
-        addParticipant(occupant, "winner");
+        winners.push(occupant);
+
         opponents.forEach((player) => {
-          addParticipant(player, "loser");
+          if (player) losers.push(player);
         });
         break;
 
       case "詐糊":
-        addParticipant(occupant, "loser");
+        losers.push(occupant);
+
         opponents.forEach((player) => {
-          addParticipant(player, "winner");
+          if (player) winners.push(player);
         });
         break;
     }
 
-    await createLog(currentSession, faan, winType, participants);
+    await createLog(currentSession, faan, winType, winners, losers, others);
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
-        detail: { faan, winType, participants },
+        detail: { faan, winType, winners, losers, others },
       }),
     );
   }

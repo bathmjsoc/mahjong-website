@@ -1,50 +1,50 @@
-import type { Log, LogRole, WinType } from "@/lib/types";
+import type { Log, WinType } from "@/lib/types";
 
 const SCORING_RULES: Record<
   number,
-  Record<string, { winner: number; loser: number }>
+  Record<string, { winner: number; loser: number; other: number }>
 > = {
-  0: { 詐糊: { winner: 128, loser: -384 } }, // 詐糊
+  0: { 詐糊: { winner: 128, loser: -384, other: 0 } }, // 詐糊
 
   3: {
-    打出: { winner: 16, loser: -16 },
-    自摸: { winner: 24, loser: -8 },
-    包自摸: { winner: 24, loser: -24 },
+    打出: { winner: 16, loser: -16, other: 0 },
+    自摸: { winner: 24, loser: -8, other: 0 },
+    包自摸: { winner: 24, loser: -2, other: 0 },
   },
   4: {
-    打出: { winner: 32, loser: -32 },
-    自摸: { winner: 48, loser: -16 },
-    包自摸: { winner: 48, loser: -48 },
+    打出: { winner: 32, loser: -32, other: 0 },
+    自摸: { winner: 48, loser: -16, other: 0 },
+    包自摸: { winner: 48, loser: -48, other: 0 },
   },
   5: {
-    打出: { winner: 48, loser: -48 },
-    自摸: { winner: 72, loser: -24 },
-    包自摸: { winner: 72, loser: -72 },
+    打出: { winner: 48, loser: -48, other: 0 },
+    自摸: { winner: 72, loser: -24, other: 0 },
+    包自摸: { winner: 72, loser: -72, other: 0 },
   },
   6: {
-    打出: { winner: 64, loser: -64 },
-    自摸: { winner: 96, loser: -32 },
-    包自摸: { winner: 96, loser: -96 },
+    打出: { winner: 64, loser: -64, other: 0 },
+    自摸: { winner: 96, loser: -32, other: 0 },
+    包自摸: { winner: 96, loser: -96, other: 0 },
   },
   7: {
-    打出: { winner: 96, loser: -96 },
-    自摸: { winner: 144, loser: -48 },
-    包自摸: { winner: 144, loser: -144 },
+    打出: { winner: 96, loser: -96, other: 0 },
+    自摸: { winner: 144, loser: -48, other: 0 },
+    包自摸: { winner: 144, loser: -144, other: 0 },
   },
   8: {
-    打出: { winner: 128, loser: -128 },
-    自摸: { winner: 192, loser: -64 },
-    包自摸: { winner: 192, loser: -192 },
+    打出: { winner: 128, loser: -128, other: 0 },
+    自摸: { winner: 192, loser: -64, other: 0 },
+    包自摸: { winner: 192, loser: -192, other: 0 },
   },
   9: {
-    打出: { winner: 192, loser: -192 },
-    自摸: { winner: 288, loser: -96 },
-    包自摸: { winner: 288, loser: -288 },
+    打出: { winner: 192, loser: -192, other: 0 },
+    自摸: { winner: 288, loser: -96, other: 0 },
+    包自摸: { winner: 288, loser: -288, other: 0 },
   },
   10: {
-    打出: { winner: 256, loser: -256 },
-    自摸: { winner: 384, loser: -128 },
-    包自摸: { winner: 384, loser: -384 },
+    打出: { winner: 256, loser: -256, other: 0 },
+    自摸: { winner: 384, loser: -128, other: 0 },
+    包自摸: { winner: 384, loser: -384, other: 0 },
   },
 };
 
@@ -55,11 +55,16 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
     const rule = SCORING_RULES[log.faan]?.[log.win_type];
     if (!rule) continue;
 
-    for (const player of log.log_participants) {
-      if (player.role === "other") continue;
+    for (const winner of log.winner_ids) {
+      scores[winner] = (scores[winner] ?? 0) + rule.winner;
+    }
 
-      const points = player.role === "winner" ? rule.winner : rule.loser;
-      scores[player.player_id] = (scores[player.player_id] ?? 0) + points;
+    for (const loser of log.loser_ids) {
+      scores[loser] = (scores[loser] ?? 0) + rule.loser;
+    }
+
+    for (const other of log.other_ids) {
+      scores[other] = (scores[other] ?? 0) + rule.other;
     }
   }
 
@@ -69,8 +74,8 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
 export function getPointDeltas(
   faan: number,
   winType: WinType,
-): Record<LogRole, number> {
-  const { winner, loser } = SCORING_RULES[faan][winType];
+): Record<string, number> {
+  const { winner, loser, other } = SCORING_RULES[faan][winType];
 
-  return { winner: winner, loser: loser, other: 0 };
+  return { winner: winner, loser: loser, other: other };
 }

@@ -3,7 +3,7 @@
 import type { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 
-export type SeriesData = {
+type SeriesData = {
   name: string;
   color?: string;
   curve?: "smooth" | "straight";

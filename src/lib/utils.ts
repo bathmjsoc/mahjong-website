@@ -3,8 +3,9 @@ import type { Player, Session } from "@/lib/types";
 /*
  * Formats a date object as a relative string (e.g., "5 minutes ago")
  * */
-export function formatTimeAgo(date: Date): string {
-  const delta = Math.round((date.getTime() - Date.now()) / 1000);
+export function formatTimeAgo(timestamp: string): string {
+  const timestampTime = new Date(timestamp).getTime();
+  const delta = Math.round((timestampTime - Date.now()) / 1000);
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
   const cutoffs: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [

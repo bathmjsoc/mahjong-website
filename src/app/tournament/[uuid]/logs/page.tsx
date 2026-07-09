@@ -5,38 +5,16 @@ import { useMemo, useState } from "react";
 import { LogList } from "@/components/LogList";
 import { LogSearchBar } from "@/components/LogSearchBar";
 import { useLogs } from "@/context/LogContext";
+import { usePlayers } from "@/context/PlayerContext";
+import { useSessions } from "@/context/SessionContext";
 import { IconButton } from "@/elements/IconButton";
 import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
 
-const tagFilters = {
-  session: (log: Log, tag: LogSearchTag) => {
-    return log.session_number === parseInt(tag.value, 10);
-  },
-
-  type: (log: Log, tag: LogSearchTag) => {
-    return normalizeText(log.win_type) === normalizeText(tag.value);
-  },
-
-  faan: (log: Log, tag: LogSearchTag) => {
-    return log.faan === parseInt(tag.value, 10);
-  },
-
-  player: (log: Log, tag: LogSearchTag) => {
-    const isWinner = log.winners.some((player) => {
-      return normalizeText(player.name) === normalizeText(tag.value);
-    });
-
-    const isLoser = log.losers.some((player) => {
-      return normalizeText(player.name) === normalizeText(tag.value);
-    });
-
-    return isWinner || isLoser;
-  },
-};
-
 export default function LogsPage() {
   const { enabledLogs, logs } = useLogs();
+  const { playerMap } = usePlayers();
+  const { sessionMap } = useSessions();
 
   const [showDisabledLogs, setShowDisabledLogs] = useState(false);
   const [tags, setTags] = useState<LogSearchTag[]>([]);
@@ -46,6 +24,35 @@ export default function LogsPage() {
   const filteredLogs = useMemo(() => {
     if (!tags.length) return baseLogs;
 
+    const tagFilters = {
+      session: (log: Log, tag: LogSearchTag) => {
+        const session = sessionMap[log.session_id];
+        return session.number === parseInt(tag.value, 10);
+      },
+
+      type: (log: Log, tag: LogSearchTag) => {
+        return normalizeText(log.win_type) === normalizeText(tag.value);
+      },
+
+      faan: (log: Log, tag: LogSearchTag) => {
+        return log.faan === parseInt(tag.value, 10);
+      },
+
+      player: (log: Log, tag: LogSearchTag) => {
+        const isWinner = log.winner_ids.some((id) => {
+          const player = playerMap[id];
+          return normalizeText(player.name) === normalizeText(tag.value);
+        });
+
+        const isLoser = log.loser_ids.some((id) => {
+          const player = playerMap[id];
+          return normalizeText(player.name) === normalizeText(tag.value);
+        });
+
+        return isWinner || isLoser;
+      },
+    };
+
     let result = baseLogs;
 
     for (const tag of tags) {
@@ -53,7 +60,7 @@ export default function LogsPage() {
     }
 
     return result;
-  }, [baseLogs, tags]);
+  }, [baseLogs, playerMap, sessionMap, tags]);
 
   function addTag(tag: LogSearchTag) {
     setTags((tags) => [...tags, tag]);
@@ -96,7 +103,7 @@ type TagProps = {
 function Tag({ tag, removeTag }: TagProps) {
   return (
     <div className="flex items-center justify-center gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs">
-      {tag.display}
+      {tag.label}
 
       <IconButton
         onClick={() => removeTag(tag.id)}

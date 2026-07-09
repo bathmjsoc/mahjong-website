@@ -1,81 +1,56 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type {
-  Log,
-  LogEntry,
-  LogParticipant,
-  Session,
-  WinType,
-} from "@/lib/types";
+import type { Log, Player, Session, WinType } from "@/lib/types";
 
 export async function createLog(
   session: Session,
   faan: number,
   winType: WinType,
-  participants: LogParticipant[],
+  winners: Player[],
+  losers: Player[],
+  others: Player[],
 ): Promise<void> {
   const supabase = await createClient();
 
-  const { data: log, error: entryError } = await supabase
-    .from("log_entries")
-    .insert({ session_id: session.id, faan, win_type: winType })
-    .select("id")
-    .single();
+  const { error } = await supabase.from("logs").insert({
+    session_id: session.id,
+    faan: faan,
+    win_type: winType,
+    winner_ids: winners.map((player) => player.id),
+    loser_ids: losers.map((player) => player.id),
+    other_ids: others.map((player) => player.id),
+  });
 
-  if (!log || entryError)
-    throw new Error(`createLog encountered an error: ${entryError.message}`);
-
-  const participantRows = participants.map((participant) => ({
-    ...participant,
-    log_id: log.id,
-  }));
-
-  const { error: participantError } = await supabase
-    .from("log_participants")
-    .insert(participantRows);
-
-  if (participantError)
-    throw new Error(
-      `createLog encountered an error: ${participantError.message}`,
-    );
+  if (error)
+    throw new Error(`createLog encountered an error: ${error.message}`);
 }
 
-export async function fetchLogs(sessions: Session[]): Promise<LogEntry[]> {
-  const supabase = await createClient();
-
+export async function fetchLogs(sessions: Session[]): Promise<Log[]> {
   if (sessions.length === 0) return [];
 
-  const sessionIds = sessions.map((session) => session.id);
+  const supabase = await createClient();
+
   const { data, error } = await supabase
-    .from("log_entries")
-    .select(`
-      *,
-      log_participants (
-        log_id,
-        player_id,
-        role
-      )
-    `)
-    .in("session_id", sessionIds)
+    .from("logs")
+    .select("*")
+    .in(
+      "session_id",
+      sessions.map((session) => session.id),
+    )
     .order("timestamp", { ascending: false });
 
   if (error)
     throw new Error(`fetchLogs encountered an error: ${error.message}`);
 
-  return (
-    data?.map((entry) => ({
-      ...entry,
-      log_participants: entry.log_participants ?? [],
-    })) ?? []
-  );
+  return data ?? [];
 }
 
-export async function disableLog(log: Log) {
+export async function disableLog(log: Log): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase
-    .from("log_entries")
+    .from("logs")
     .update({ disabled: true })
     .eq("id", log.id);
 

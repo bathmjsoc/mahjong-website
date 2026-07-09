@@ -9,11 +9,10 @@ import {
   useState,
 } from "react";
 import { fetchLogs } from "@/actions/logs";
-import { usePlayers } from "@/context/PlayerContext";
 import { useSessions } from "@/context/SessionContext";
 import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
-import type { Log, LogEntry, Player } from "@/lib/types";
+import type { Log } from "@/lib/types";
 
 type LogsContextType = {
   enabledLogs: Log[];
@@ -26,32 +25,13 @@ const LogsContext = createContext<LogsContextType | undefined>(undefined);
 const supabase = createClient();
 
 export function LogsProvider({ children }: { children: ReactNode }) {
-  const { sessionMap, sessions } = useSessions();
-  const { playerMap } = usePlayers();
+  const { sessions } = useSessions();
 
-  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
+  const [logs, setLogs] = useState<Log[]>([]);
 
   const sessionIds = useMemo(() => {
     return sessions.map((session) => session.id).join(",");
   }, [sessions]);
-
-  const logs: Log[] = useMemo(() => {
-    return logEntries.map((entry) => {
-      const session_number = sessionMap[entry.session_id]?.number ?? 0;
-      const winners: Player[] = [];
-      const losers: Player[] = [];
-
-      for (const participant of entry.log_participants) {
-        const player = playerMap[participant.player_id];
-        if (!player) continue;
-
-        if (participant.role === "winner") winners.push(player);
-        if (participant.role === "loser") losers.push(player);
-      }
-
-      return { ...entry, winners, losers, session_number };
-    });
-  }, [logEntries, playerMap, sessionMap]);
 
   const enabledLogs = useMemo(() => {
     return logs.filter((log) => !log.disabled);
@@ -74,7 +54,7 @@ export function LogsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!sessions.length) return;
-    fetchLogs(sessions).then(setLogEntries);
+    fetchLogs(sessions).then(setLogs);
 
     const channel = supabase
       .channel(`logs:${sessionIds}`)
@@ -83,10 +63,10 @@ export function LogsProvider({ children }: { children: ReactNode }) {
         {
           event: "*",
           schema: "public",
-          table: "log_entries",
+          table: "logs",
           filter: `session_id=in.(${sessionIds})`,
         },
-        () => fetchLogs(sessions).then(setLogEntries),
+        () => fetchLogs(sessions).then(setLogs),
       )
       .subscribe();
 
