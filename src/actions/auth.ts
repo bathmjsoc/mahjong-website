@@ -12,8 +12,12 @@ export async function signUp(
   _: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
+
+  if (!email || !password) {
+    return { error: "Email and password are required." };
+  }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
@@ -27,8 +31,12 @@ export async function signIn(
   _: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
+
+  if (!email || !password) {
+    return { error: "Email and password are required." };
+  }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
