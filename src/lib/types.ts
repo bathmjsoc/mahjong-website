@@ -14,6 +14,7 @@ export type Log = {
   winner_ids: string[];
   loser_ids: string[];
   other_ids: string[];
+  timestamp: string;
   disabled: boolean;
 };
 
