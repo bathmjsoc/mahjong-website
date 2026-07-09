@@ -28,18 +28,13 @@ export async function fetchTables(session: Session): Promise<Table[]> {
     .from("tables")
     .select("*")
     .eq("session_id", session.id)
+    .order("saved", { ascending: true })
     .order("number", { ascending: true });
 
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return (
-    data?.sort((a, b) => {
-      if (a.saved && !b.saved) return 1;
-      if (!a.saved && b.saved) return -1;
-      return 0;
-    }) ?? []
-  );
+  return data ?? [];
 }
 
 export async function updateTable(
@@ -48,11 +43,10 @@ export async function updateTable(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Partial<Record<string, string | null>> = {};
-  for (const wind in players) {
-    const w = wind as Wind;
-    payload[`${w}_id`] = players[w]?.id ?? null;
-  }
+  const payload: Record<string, string | null> = {};
+  Object.entries(players).forEach(([wind, player]) => {
+    payload[`${wind}_id`] = player?.id ?? null;
+  });
 
   const { error } = await supabase
     .from("tables")
