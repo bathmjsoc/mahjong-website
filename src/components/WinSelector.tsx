@@ -90,9 +90,9 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       disabled={!occupant}
     >
       <DropDown title="打出 (Throw)">
-        {opponents.map((player) => (
+        {opponents.map((player, index) => (
           <DropDown
-            key={player?.id}
+            key={player?.id ?? index}
             title={player?.name ?? "[EMPTY]"}
             disabled={!player}
           >
@@ -117,9 +117,9 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       </DropDown>
 
       <DropDown title="包自摸 (Special Case)">
-        {opponents.map((player) => (
+        {opponents.map((player, index) => (
           <DropDown
-            key={player?.id}
+            key={player?.id ?? index}
             title={player?.name ?? "[EMPTY]"}
             disabled={!player}
           >
