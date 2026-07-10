@@ -35,7 +35,9 @@ export async function createTable(session: Session): Promise<Table> {
   return newTable;
 }
 
-export async function fetchTables(session: Session): Promise<Table[]> {
+export async function fetchTables(session: Session | null): Promise<Table[]> {
+  if (!session) return [];
+
   const supabase = await createClient();
 
   const { data: tables, error } = await supabase
@@ -85,10 +87,12 @@ export async function saveTable(table: Table): Promise<void> {
 }
 
 export async function shuffleTables(
-  session: Session,
+  session: Session | null,
   availableTables: Table[],
   availablePlayers: Player[],
 ): Promise<void> {
+  if (!session) return
+
   const shuffledPlayers = shuffle(availablePlayers);
   const neededTables = Math.ceil(availablePlayers.length / 4);
 

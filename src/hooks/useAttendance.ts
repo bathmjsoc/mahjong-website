@@ -19,7 +19,7 @@ export function useAttendance(): UseAttendanceType {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
 
-  const queryKey = ["attendance", currentSession.id];
+  const queryKey = ["attendance", currentSession?.id];
   const query = useQuery({
     queryKey,
     queryFn: () => fetchAttendance(currentSession),
@@ -30,7 +30,7 @@ export function useAttendance(): UseAttendanceType {
       const registeredPlayers: Player[] = [];
 
       for (const entry of attendance) {
-        if (entry.session_id !== currentSession.id || !entry.registered) {
+        if (entry.session_id !== currentSession?.id || !entry.registered) {
           continue;
         }
 

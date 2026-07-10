@@ -4,13 +4,15 @@ import { createClient } from "@/lib/supabase/server";
 import type { Log, Player, Session, WinType } from "@/lib/types";
 
 export async function createLog(
-  session: Session,
+  session: Session | null,
   faan: number,
   winType: WinType,
   winners: Player[],
   losers: Player[],
   others: Player[],
 ): Promise<void> {
+  if (!session) return;
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("logs").insert({
