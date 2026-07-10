@@ -20,9 +20,7 @@ export default function TournamentPage() {
 
   async function handleShuffle() {
     setIsShaking(true);
-
     await shuffleTables(currentSession, availableTables, availablePlayers);
-
     setIsShaking(false);
   }
 
