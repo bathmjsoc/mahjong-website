@@ -67,10 +67,10 @@ export function shuffle<T>(items: T[]): T[] {
 /*
  * Formats a session name using number and start_date
  * */
-export function getSessionName(session: Session): string {
-  return session.number === -1
-    ? "Overall Standings"
-    : `Session ${session.number} (${session.start_date})`;
+export function getSessionName(session: Session | null): string {
+  if (!session) return "Overall Standings";
+
+  return `Session ${session.number} (${session.start_date})`;
 }
 
 /*

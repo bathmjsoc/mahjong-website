@@ -1,13 +1,11 @@
-"use client";
-
 import { useState } from "react";
 import { updatePlayer } from "@/actions/players";
-import { usePlayers } from "@/context/PlayerContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { usePlayers } from "@/hooks/usePlayers";
 import type { Player } from "@/lib/types";
 
 type EditPlayerModalProps = {

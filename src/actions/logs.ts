@@ -31,7 +31,7 @@ export async function fetchLogs(sessions: Session[]): Promise<Log[]> {
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: logs, error } = await supabase
     .from("logs")
     .select("*")
     .in(
@@ -43,7 +43,7 @@ export async function fetchLogs(sessions: Session[]): Promise<Log[]> {
   if (error)
     throw new Error(`fetchLogs encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return logs ?? [];
 }
 
 export async function disableLog(log: Log): Promise<void> {

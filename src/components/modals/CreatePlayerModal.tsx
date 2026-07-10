@@ -1,11 +1,9 @@
-"use client";
-
 import { useState } from "react";
 import { createPlayer } from "@/actions/players";
-import { usePlayers } from "@/context/PlayerContext";
 import { useTournament } from "@/context/TournamentContext";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
+import { usePlayers } from "@/hooks/usePlayers";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;

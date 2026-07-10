@@ -5,11 +5,13 @@ import { useState } from "react";
 import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
-import { WindIndicator } from "@/components/WindIndicator";
-import { useAttendance } from "@/context/AttendanceContext";
-import { useSessions } from "@/context/SessionContext";
-import { useTables } from "@/context/TableContext";
 import { FilledButton } from "@/elements/FilledButton";
+import { RoundedListbox } from "@/elements/RoundedListbox";
+import { useAttendance } from "@/hooks/useAttendance";
+import { useSessions } from "@/hooks/useSessions";
+import { useTables } from "@/hooks/useTables";
+
+const WINDS = ["東", "南", "西", "北"];
 
 export default function TournamentPage() {
   const { availablePlayers } = useAttendance();
@@ -17,19 +19,28 @@ export default function TournamentPage() {
   const { availableTables, tables } = useTables();
 
   const [isShaking, setIsShaking] = useState(false);
+  const [wind, setWind] = useState<string | null>(WINDS[0]);
 
   async function handleShuffle() {
     setIsShaking(true);
-
     await shuffleTables(currentSession, availableTables, availablePlayers);
-
     setIsShaking(false);
   }
 
   return (
     <div className="flex min-h-dvh">
       <Sidebar />
-      <WindIndicator />
+
+      <div className="absolute top-20 right-5 rounded-2xl bg-primary">
+        <RoundedListbox<string>
+          value={wind}
+          options={WINDS}
+          onChange={setWind}
+          getOptionLabel={(wind) => wind}
+          getOptionKey={(wind) => wind}
+          buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
+        />
+      </div>
 
       <div className="flex w-full flex-col items-center overflow-hidden">
         <div className="py-5">

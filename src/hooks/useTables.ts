@@ -1,35 +1,28 @@
-"use client";
-
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchTables } from "@/actions/tables";
-import { useSessions } from "@/context/SessionContext";
+import { useSessions } from "@/hooks/useSessions";
 import { createClient } from "@/lib/supabase/client";
 import type { Table } from "@/lib/types";
 
-type TablesContextType = {
+type UseTablesType = {
   availableTables: Table[];
   duplicatePlayerIds: Set<string>;
   seatedPlayerIds: Set<string>;
   tables: Table[];
+  isLoading: boolean;
+  isError: boolean;
 };
 
-const TablesContext = createContext<TablesContextType | undefined>(undefined);
-const supabase = createClient();
-
-export const TablesProvider = ({ children }: { children: ReactNode }) => {
+export function useTables(): UseTablesType {
   const { currentSession } = useSessions();
 
-  const [tables, setTables] = useState<Table[]>([]);
-
-  const { availableTables, seatedPlayerIds, duplicatePlayerIds } =
-    useMemo(() => {
+  const queryKey = ["tables", currentSession.id];
+  const query = useQuery({
+    queryKey,
+    queryFn: () => fetchTables(currentSession),
+    enabled: !!currentSession,
+    select: (tables) => {
       const availableTables: Table[] = [];
       const duplicatePlayerIds = new Set<string>();
       const seatedPlayerIds = new Set<string>();
@@ -55,16 +48,34 @@ export const TablesProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       }
+
       return {
+        tables,
         availableTables,
         duplicatePlayerIds,
         seatedPlayerIds,
       };
-    }, [tables]);
+    },
+  });
+
+  return {
+    availableTables: query.data?.availableTables ?? [],
+    duplicatePlayerIds: query.data?.duplicatePlayerIds ?? new Set<string>(),
+    seatedPlayerIds: query.data?.seatedPlayerIds ?? new Set<string>(),
+    tables: query.data?.tables ?? [],
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
+}
+
+const supabase = createClient();
+export function useTablesRealtime() {
+  const { currentSession } = useSessions();
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!currentSession) return;
-    fetchTables(currentSession).then(setTables);
 
     const channel = supabase
       .channel(`tables:${currentSession.id}`)
@@ -76,32 +87,13 @@ export const TablesProvider = ({ children }: { children: ReactNode }) => {
           table: "tables",
           filter: `session_id=eq.${currentSession.id}`,
         },
-        () => fetchTables(currentSession).then(setTables),
+        () =>
+          queryClient.invalidateQueries({
+            queryKey: ["tables", currentSession.id],
+          }),
       )
       .subscribe();
 
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [currentSession]);
-
-  return (
-    <TablesContext.Provider
-      value={{
-        availableTables,
-        duplicatePlayerIds,
-        seatedPlayerIds,
-        tables,
-      }}
-    >
-      {children}
-    </TablesContext.Provider>
-  );
-};
-
-export const useTables = () => {
-  const context = useContext(TablesContext);
-  if (!context)
-    throw new Error("useTables must be used within TablesProvider!");
-  return context;
-};
+    return () => void supabase.removeChannel(channel);
+  }, [currentSession, queryClient]);
+}

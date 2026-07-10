@@ -1,5 +1,3 @@
-"use client";
-
 import { useActionState, useState } from "react";
 import { signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";

@@ -1,5 +1,3 @@
-"use client";
-
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   type ComponentProps,

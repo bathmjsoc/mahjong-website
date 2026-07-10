@@ -26,7 +26,7 @@ export async function registerPlayer(
 export async function fetchAttendance(session: Session): Promise<Attendance[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: attendance, error } = await supabase
     .from("attendance")
     .select("*")
     .eq("session_id", session.id);
@@ -34,7 +34,7 @@ export async function fetchAttendance(session: Session): Promise<Attendance[]> {
   if (error)
     throw new Error(`fetchAttendance encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return attendance ?? [];
 }
 
 export async function deregisterPlayer(

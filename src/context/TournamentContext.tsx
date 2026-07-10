@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, type ReactNode, useContext } from "react";
-import { AttendanceProvider } from "@/context/AttendanceContext";
-import { LogsProvider } from "@/context/LogContext";
-import { PlayersProvider } from "@/context/PlayerContext";
-import { SessionsProvider } from "@/context/SessionContext";
-import { TablesProvider } from "@/context/TableContext";
+import { useAttendanceRealtime } from "@/hooks/useAttendance";
+import { useLogsRealtime } from "@/hooks/useLogs";
+import { usePlayersRealtime } from "@/hooks/usePlayers";
+import { useSessionsRealtime } from "@/hooks/useSessions";
+import { useTablesRealtime } from "@/hooks/useTables";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -14,6 +14,16 @@ type TournamentContextType = {
 const TournamentContext = createContext<TournamentContextType | undefined>(
   undefined,
 );
+
+function TournamentRealtime({ children }: { children: ReactNode }) {
+  useAttendanceRealtime();
+  useLogsRealtime();
+  usePlayersRealtime();
+  useSessionsRealtime();
+  useTablesRealtime();
+
+  return children;
+}
 
 export function TournamentProvider({
   tournamentId,
@@ -24,22 +34,14 @@ export function TournamentProvider({
 }) {
   return (
     <TournamentContext.Provider value={{ tournamentId }}>
-      <PlayersProvider>
-        <SessionsProvider>
-          <LogsProvider>
-            <TablesProvider>
-              <AttendanceProvider>{children}</AttendanceProvider>
-            </TablesProvider>
-          </LogsProvider>
-        </SessionsProvider>
-      </PlayersProvider>
+      <TournamentRealtime>{children}</TournamentRealtime>
     </TournamentContext.Provider>
   );
 }
 
-export const useTournament = () => {
+export function useTournament() {
   const context = useContext(TournamentContext);
   if (!context)
     throw new Error("useTournament must be used within TournamentProvider!");
   return context;
-};
+}

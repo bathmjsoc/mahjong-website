@@ -7,17 +7,18 @@ import { shuffle } from "@/lib/utils";
 export async function createTable(session: Session): Promise<Table> {
   const supabase = await createClient();
 
-  const { data: tables, error: fetchError } = await supabase
+  const { data: table, error: fetchError } = await supabase
     .from("tables")
     .select("number")
     .eq("session_id", session.id)
     .order("number", { ascending: false })
-    .limit(1);
+    .limit(1)
+    .maybeSingle();
 
   if (fetchError)
     throw new Error(`createTable encountered an error: ${fetchError.message}`);
 
-  const nextNumber = tables?.length ? tables[0].number + 1 : 1;
+  const nextNumber = table ? table.number + 1 : 1;
 
   const { data: newTable, error: insertError } = await supabase
     .from("tables")
@@ -37,7 +38,7 @@ export async function createTable(session: Session): Promise<Table> {
 export async function fetchTables(session: Session): Promise<Table[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: tables, error } = await supabase
     .from("tables")
     .select("*")
     .eq("session_id", session.id)
@@ -47,7 +48,7 @@ export async function fetchTables(session: Session): Promise<Table[]> {
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return tables ?? [];
 }
 
 export async function updateTable(

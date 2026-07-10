@@ -1,9 +1,9 @@
 import { Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { disableLog } from "@/actions/logs";
-import { usePlayers } from "@/context/PlayerContext";
-import { useSessions } from "@/context/SessionContext";
 import { IconButton } from "@/elements/IconButton";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useSessions } from "@/hooks/useSessions";
 import type { Log } from "@/lib/types";
 
 type LogListProps = {

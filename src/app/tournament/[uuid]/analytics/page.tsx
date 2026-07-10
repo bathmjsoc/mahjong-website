@@ -1,5 +1,3 @@
-"use client";
-
 import { LineGraph } from "@/components/LineGraph";
 
 const data = [

@@ -1,6 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { createTournament } from "@/actions/tournaments";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -14,13 +12,14 @@ export function CreateTournamentModal({
   isOpen,
   closeModalAction,
 }: CreateTournamentModalProps) {
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   async function handleSubmit(formData: FormData) {
     const tournamentName = formData.get("tournamentName") as string;
 
     await createTournament(tournamentName);
-    router.refresh();
+    await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+
     closeModalAction();
   }
 
