@@ -69,7 +69,7 @@ export function useLogs(): UseLogsType {
       .subscribe();
 
     return () => void supabase.removeChannel(channel);
-  }, [sessionIds, queryClient, queryKey]);
+  }, [sessions, sessionIds, queryClient, queryKey]);
 
   return {
     logs: query.data?.logs ?? [],
