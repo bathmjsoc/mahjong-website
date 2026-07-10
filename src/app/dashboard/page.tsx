@@ -1,29 +1,27 @@
-import { LogOut } from "lucide-react";
-import type { Metadata } from "next";
-import { signOut } from "@/actions/auth";
-import { fetchTournaments } from "@/actions/tournaments";
-import { CreateTournamentButton } from "@/components/CreateTournamentButton";
+"use client";
+
+import { useState } from "react";
+import { CreateTournamentModal } from "@/components/modals/CreateTournamentModal";
 import { TournamentList } from "@/components/TournamentList";
 import { FilledButton } from "@/elements/FilledButton";
+import { useTournaments } from "@/hooks/useTournaments";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-};
-
-export default async function DashboardPage() {
-  const tournaments = await fetchTournaments();
+export default function DashboardPage() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { tournaments } = useTournaments();
 
   return (
     <div className="flex flex-col items-center gap-10 p-10">
-      <CreateTournamentButton />
-      <TournamentList tournaments={tournaments} />
-
-      <FilledButton
-        onClick={signOut}
-        className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
-      >
-        <LogOut className="size-5" />
+      <FilledButton onClick={() => setIsOpen(true)} className="w-sm py-3">
+        Create New Tournament
       </FilledButton>
+
+      <CreateTournamentModal
+        isOpen={isOpen}
+        closeModalAction={() => setIsOpen(false)}
+      />
+
+      <TournamentList tournaments={tournaments} />
     </div>
   );
 }
