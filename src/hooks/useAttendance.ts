@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
@@ -24,7 +24,10 @@ export function useAttendance(): UseAttendanceType {
   const { playerMap } = usePlayers();
 
   const queryClient = useQueryClient();
-  const queryKey = ["attendance", currentSession.id];
+  const queryKey = useMemo(
+    () => ["attendance", currentSession?.id],
+    [currentSession],
+  );
 
   const query = useQuery({
     queryKey,

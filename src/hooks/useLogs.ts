@@ -31,7 +31,7 @@ export function useLogs(): UseLogsType {
   }, [sessions]);
 
   const queryClient = useQueryClient();
-  const queryKey = ["logs", sessionIds];
+  const queryKey = useMemo(() => ["logs", sessionIds], [sessionIds]);
 
   const query = useQuery({
     queryKey,

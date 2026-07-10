@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/useSessions";
 import { createClient } from "@/lib/supabase/client";
@@ -22,7 +22,10 @@ export function useTables(): UseTablesType {
   const { currentSession } = useSessions();
 
   const queryClient = useQueryClient();
-  const queryKey = ["tables", currentSession.id];
+  const queryKey = useMemo(
+    () => ["tables", currentSession?.id],
+    [currentSession],
+  );
 
   const query = useQuery({
     queryKey,

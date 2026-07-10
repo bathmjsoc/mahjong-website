@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchPlayers } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
 import { createClient } from "@/lib/supabase/client";
@@ -20,7 +20,7 @@ export function usePlayers(): UsePlayersType {
   const { tournamentId } = useTournament();
 
   const queryClient = useQueryClient();
-  const queryKey = ["players", tournamentId];
+  const queryKey = useMemo(() => ["players", tournamentId], [tournamentId]);
 
   const query = useQuery({
     queryKey,

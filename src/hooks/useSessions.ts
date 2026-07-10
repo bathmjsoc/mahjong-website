@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchSessions } from "@/actions/sessions";
 import { useTournament } from "@/context/TournamentContext";
 import { createClient } from "@/lib/supabase/client";
@@ -21,7 +21,7 @@ export function useSessions(): UseSessionsType {
   const { tournamentId } = useTournament();
 
   const queryClient = useQueryClient();
-  const queryKey = ["sessions", tournamentId];
+  const queryKey = useMemo(() => ["sessions", tournamentId], [tournamentId]);
 
   const query = useQuery({
     queryKey,
