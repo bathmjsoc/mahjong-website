@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
-import { useAttendance } from "@/context/AttendanceContext";
-import { usePlayers } from "@/context/PlayerContext";
-import { useTables } from "@/context/TableContext";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { useAttendance } from "@/hooks/useAttendance";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useTables } from "@/hooks/useTables";
 import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 

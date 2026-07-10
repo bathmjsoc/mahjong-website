@@ -3,12 +3,12 @@
 import { ChartColumn } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Leaderboard } from "@/components/Leaderboard";
-import { useLogs } from "@/context/LogContext";
-import { usePlayers } from "@/context/PlayerContext";
-import { useSessions } from "@/context/SessionContext";
 import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { useLogs } from "@/hooks/useLogs";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useSessions } from "@/hooks/useSessions";
 import type { Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
 

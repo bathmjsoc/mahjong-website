@@ -6,10 +6,10 @@ import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
 import { WindIndicator } from "@/components/WindIndicator";
-import { useAttendance } from "@/context/AttendanceContext";
-import { useSessions } from "@/context/SessionContext";
-import { useTables } from "@/context/TableContext";
 import { FilledButton } from "@/elements/FilledButton";
+import { useAttendance } from "@/hooks/useAttendance";
+import { useSessions } from "@/hooks/useSessions";
+import { useTables } from "@/hooks/useTables";
 
 export default function TournamentPage() {
   const { availablePlayers } = useAttendance();

@@ -15,12 +15,12 @@ import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
 import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
 import { PlayerList } from "@/components/PlayerList";
-import { useAttendance } from "@/context/AttendanceContext";
-import { usePlayers } from "@/context/PlayerContext";
-import { useSessions } from "@/context/SessionContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
+import { useAttendance } from "@/hooks/useAttendance";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useSessions } from "@/hooks/useSessions";
 import type { Player } from "@/lib/types";
 
 type ModalType = "create" | "edit" | "delete" | "reset" | null;

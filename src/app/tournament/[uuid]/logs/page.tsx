@@ -4,10 +4,10 @@ import { X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { LogList } from "@/components/LogList";
 import { LogSearchBar } from "@/components/LogSearchBar";
-import { useLogs } from "@/context/LogContext";
-import { usePlayers } from "@/context/PlayerContext";
-import { useSessions } from "@/context/SessionContext";
 import { IconButton } from "@/elements/IconButton";
+import { useLogs } from "@/hooks/useLogs";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useSessions } from "@/hooks/useSessions";
 import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
 

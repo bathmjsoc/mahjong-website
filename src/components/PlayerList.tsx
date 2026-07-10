@@ -7,10 +7,10 @@ import {
   lockPlayer,
   unlockPlayer,
 } from "@/actions/attendance";
-import { useAttendance } from "@/context/AttendanceContext";
-import { useLogs } from "@/context/LogContext";
-import { useTables } from "@/context/TableContext";
 import { IconButton } from "@/elements/IconButton";
+import { useAttendance } from "@/hooks/useAttendance";
+import { useLogs } from "@/hooks/useLogs";
+import { useTables } from "@/hooks/useTables";
 import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
 

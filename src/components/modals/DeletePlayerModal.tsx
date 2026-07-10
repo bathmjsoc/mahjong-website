@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { deletePlayer } from "@/actions/players";
-import { usePlayers } from "@/context/PlayerContext";
-
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { usePlayers } from "@/hooks/usePlayers";
 import type { Player } from "@/lib/types";
 
 type DeletePlayerModalProps = {
