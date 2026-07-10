@@ -1,11 +1,6 @@
 "use client";
 
 import { createContext, type ReactNode, useContext } from "react";
-import { AttendanceProvider } from "@/context/AttendanceContext";
-import { LogsProvider } from "@/context/LogContext";
-import { PlayersProvider } from "@/context/PlayerContext";
-import { SessionsProvider } from "@/context/SessionContext";
-import { TablesProvider } from "@/context/TableContext";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -24,22 +19,14 @@ export function TournamentProvider({
 }) {
   return (
     <TournamentContext.Provider value={{ tournamentId }}>
-      <PlayersProvider>
-        <SessionsProvider>
-          <LogsProvider>
-            <TablesProvider>
-              <AttendanceProvider>{children}</AttendanceProvider>
-            </TablesProvider>
-          </LogsProvider>
-        </SessionsProvider>
-      </PlayersProvider>
+      {children}
     </TournamentContext.Provider>
   );
 }
 
-export const useTournament = () => {
+export function useTournament() {
   const context = useContext(TournamentContext);
   if (!context)
     throw new Error("useTournament must be used within TournamentProvider!");
   return context;
-};
+}

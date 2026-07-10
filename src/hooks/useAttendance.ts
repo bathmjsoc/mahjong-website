@@ -1,54 +1,48 @@
 "use client";
 
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchAttendance } from "@/actions/attendance";
-import { usePlayers } from "@/context/PlayerContext";
-import { useSessions } from "@/context/SessionContext";
+import { usePlayers } from "@/hooks/usePlayers";
+import { useSessions } from "@/hooks/useSessions";
 import { createClient } from "@/lib/supabase/client";
 import type { Attendance, Player } from "@/lib/types";
 
-type AttendanceContextType = {
+type UseAttendanceType = {
   attendance: Attendance[];
   availablePlayers: Player[];
   lockedPlayerIds: Set<string>;
   registeredPlayers: Player[];
+  isLoading: boolean;
+  isError: boolean;
 };
 
-const AttendanceContext = createContext<AttendanceContextType | undefined>(
-  undefined,
-);
 const supabase = createClient();
 
-export function AttendanceProvider({ children }: { children: ReactNode }) {
+export function useAttendance(): UseAttendanceType {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
 
-  const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const queryClient = useQueryClient();
+  const queryKey = ["attendance", currentSession.id];
 
-  const { availablePlayers, lockedPlayerIds, registeredPlayers } =
-    useMemo(() => {
+  const query = useQuery({
+    queryKey,
+    queryFn: () => fetchAttendance(currentSession!),
+    enabled: !!currentSession,
+    select: (fetchedAttendance) => {
       const availablePlayers: Player[] = [];
       const lockedPlayerIds = new Set<string>();
       const registeredPlayers: Player[] = [];
 
-      if (!currentSession) {
-        return { availablePlayers, lockedPlayerIds, registeredPlayers };
-      }
-
-      for (const entry of attendance) {
+      for (const entry of fetchedAttendance) {
         if (entry.session_id !== currentSession.id || !entry.registered) {
           continue;
         }
 
         const player = playerMap[entry.player_id];
         if (!player) continue;
+
         registeredPlayers.push(player);
 
         if (entry.locked) {
@@ -61,16 +55,16 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
       registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
 
       return {
+        attendance: fetchedAttendance,
         availablePlayers,
         lockedPlayerIds,
         registeredPlayers,
       };
-    }, [attendance, currentSession, playerMap]);
+    },
+  });
 
   useEffect(() => {
     if (!currentSession) return;
-
-    fetchAttendance(currentSession).then(setAttendance);
 
     const channel = supabase
       .channel(`attendance:${currentSession.id}`)
@@ -82,32 +76,19 @@ export function AttendanceProvider({ children }: { children: ReactNode }) {
           table: "attendance",
           filter: `session_id=eq.${currentSession.id}`,
         },
-        () => fetchAttendance(currentSession).then(setAttendance),
+        () => queryClient.invalidateQueries({ queryKey }),
       )
       .subscribe();
 
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [currentSession]);
+    return () => void supabase.removeChannel(channel);
+  }, [currentSession, queryClient, queryKey]);
 
-  return (
-    <AttendanceContext.Provider
-      value={{
-        attendance,
-        availablePlayers,
-        lockedPlayerIds,
-        registeredPlayers,
-      }}
-    >
-      {children}
-    </AttendanceContext.Provider>
-  );
+  return {
+    attendance: query.data?.attendance ?? [],
+    availablePlayers: query.data?.availablePlayers ?? [],
+    lockedPlayerIds: query.data?.lockedPlayerIds ?? new Set<string>(),
+    registeredPlayers: query.data?.registeredPlayers ?? [],
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
 }
-
-export const useAttendance = () => {
-  const context = useContext(AttendanceContext);
-  if (!context)
-    throw new Error("useAttendance must be used within AttendanceProvider!");
-  return context;
-};
