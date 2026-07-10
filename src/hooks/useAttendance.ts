@@ -1,7 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
+import { createClient } from "@/lib/supabase/client";
 import type { Attendance, Player } from "@/lib/types";
 
 type UseAttendanceType = {
@@ -63,4 +65,34 @@ export function useAttendance(): UseAttendanceType {
     isLoading: query.isLoading,
     isError: query.isError,
   };
+}
+
+const supabase = createClient();
+export function useAttendanceRealtime() {
+  const { currentSession } = useSessions();
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!currentSession) return;
+
+    const channel = supabase
+      .channel(`attendance:${currentSession.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "attendance",
+          filter: `session_id=eq.${currentSession.id}`,
+        },
+        () =>
+          queryClient.invalidateQueries({
+            queryKey: ["attendance", currentSession.id],
+          }),
+      )
+      .subscribe();
+
+    return () => void supabase.removeChannel(channel);
+  }, [currentSession, queryClient]);
 }
