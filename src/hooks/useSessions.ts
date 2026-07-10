@@ -25,7 +25,7 @@ export function useSessions(): UseSessionsType {
 
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchSessions(tournamentId!),
+    queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
     select: (fetchedSessions) => {
       const currentSession = fetchedSessions[fetchedSessions.length - 1];
