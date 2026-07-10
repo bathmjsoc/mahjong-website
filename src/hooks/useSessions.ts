@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Session } from "@/lib/types";
 
 type UseSessionsType = {
-  currentSession: Session;
+  currentSession: Session | null;
   sessionMap: Record<string, Session>;
   sessions: Session[];
   isLoading: boolean;
@@ -22,11 +22,7 @@ export function useSessions(): UseSessionsType {
     queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
     select: (sessions) => {
-      const currentSession = sessions.at(-1);
-
-      if (!currentSession) {
-        throw new Error("Tournament has no sessions.");
-      }
+      const currentSession = sessions.at(-1) ?? null;
 
       const sessionMap = Object.fromEntries(
         sessions.map((session) => [session.id, session]),
@@ -37,7 +33,7 @@ export function useSessions(): UseSessionsType {
   });
 
   return {
-    currentSession: query.data?.currentSession ?? ({} as Session),
+    currentSession: query.data?.currentSession ?? null,
     sessionMap: query.data?.sessionMap ?? {},
     sessions: query.data?.sessions ?? [],
     isLoading: query.isLoading,

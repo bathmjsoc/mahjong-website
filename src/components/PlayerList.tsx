@@ -14,7 +14,7 @@ import { rankPlayers, scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
   players: Player[];
-  session: Session;
+  session: Session | null;
 };
 
 export function PlayerList({ players, session }: PlayerListProps) {
@@ -22,7 +22,7 @@ export function PlayerList({ players, session }: PlayerListProps) {
   const { sessionScores } = useLogs();
   const { seatedPlayerIds } = useTables();
 
-  if (players.length === 0) {
+  if (players.length === 0 || !session) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 

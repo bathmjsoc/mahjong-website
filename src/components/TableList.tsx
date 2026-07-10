@@ -28,7 +28,10 @@ export function TableList({ tables, className }: TableListProps) {
       {/* Add New Table Button */}
       <div className="flex size-70 items-center justify-center">
         <FilledButton
-          onClick={() => createTable(currentSession)}
+          onClick={async () => {
+            if (!currentSession) return;
+            await createTable(currentSession);
+          }}
           className="rounded-full p-3"
         >
           <Plus className="size-7" />

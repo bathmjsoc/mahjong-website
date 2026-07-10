@@ -4,9 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import type { Attendance, Player, Session } from "@/lib/types";
 
 export async function registerPlayer(
-  session: Session,
+  session: Session | null,
   player: Player,
 ): Promise<void> {
+  if (!session) return;
+
   const supabase = await createClient();
 
   const { error } = await supabase.from("attendance").upsert(
@@ -23,7 +25,9 @@ export async function registerPlayer(
     throw new Error(`registerPlayer encountered an error: ${error.message}`);
 }
 
-export async function fetchAttendance(session: Session): Promise<Attendance[]> {
+export async function fetchAttendance(session: Session | null): Promise<Attendance[]> {
+  if (!session) return [];
+
   const supabase = await createClient();
 
   const { data: attendance, error } = await supabase
