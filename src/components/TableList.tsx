@@ -1,5 +1,3 @@
-"use client";
-
 import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";

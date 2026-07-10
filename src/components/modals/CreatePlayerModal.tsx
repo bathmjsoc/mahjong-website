@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { createPlayer } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";

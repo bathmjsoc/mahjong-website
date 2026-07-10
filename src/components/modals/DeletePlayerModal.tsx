@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { deletePlayer } from "@/actions/players";
 import { FilledButton } from "@/elements/FilledButton";

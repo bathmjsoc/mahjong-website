@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";

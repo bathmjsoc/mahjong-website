@@ -1,5 +1,3 @@
-"use client";
-
 import { useQueryClient } from "@tanstack/react-query";
 import { createTournament } from "@/actions/tournaments";
 import { LabelledInput } from "@/elements/LabelledInput";

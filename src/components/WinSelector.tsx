@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { createLog } from "@/actions/logs";

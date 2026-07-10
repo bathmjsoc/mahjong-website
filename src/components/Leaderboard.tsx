@@ -1,5 +1,3 @@
-"use client";
-
 import { twMerge } from "tailwind-merge";
 import type { Player } from "@/lib/types";
 import { formatPosition, rankPlayers, scoreToColor } from "@/lib/utils";
