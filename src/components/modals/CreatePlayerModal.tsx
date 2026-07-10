@@ -25,8 +25,7 @@ export function CreatePlayerModal({
   }
 
   async function handleSubmit(formData: FormData) {
-    const playerName = formData.get("playerName") as string;
-
+    const playerName = formData.get("playerName")?.toString();
     if (!playerName) return;
 
     if (players.some((player) => player.name === playerName)) {

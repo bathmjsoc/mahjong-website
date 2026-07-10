@@ -15,7 +15,8 @@ export function CreateTournamentModal({
   const queryClient = useQueryClient();
 
   async function handleSubmit(formData: FormData) {
-    const tournamentName = formData.get("tournamentName") as string;
+    const tournamentName = formData.get("tournamentName")?.toString();
+    if (!tournamentName) return
 
     await createTournament(tournamentName);
     await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
