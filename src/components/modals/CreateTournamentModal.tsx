@@ -21,6 +21,7 @@ export function CreateTournamentModal({
 
     await createTournament(tournamentName);
     await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+
     closeModalAction();
   }
 
