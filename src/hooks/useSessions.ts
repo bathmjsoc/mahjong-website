@@ -22,7 +22,11 @@ export function useSessions(): UseSessionsType {
     queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
     select: (sessions) => {
-      const currentSession = sessions[sessions.length - 1];
+      const currentSession = sessions.at(-1);
+
+      if (!currentSession) {
+        throw new Error("Tournament has no sessions.");
+      }
 
       const sessionMap = Object.fromEntries(
         sessions.map((session) => [session.id, session]),
@@ -33,7 +37,7 @@ export function useSessions(): UseSessionsType {
   });
 
   return {
-    currentSession: query.data?.currentSession!,
+    currentSession: query.data?.currentSession ?? ({} as Session),
     sessionMap: query.data?.sessionMap ?? {},
     sessions: query.data?.sessions ?? [],
     isLoading: query.isLoading,
