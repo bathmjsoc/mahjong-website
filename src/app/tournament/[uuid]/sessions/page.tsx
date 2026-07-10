@@ -36,11 +36,12 @@ export default function SessionsPage() {
     <div className="flex flex-col items-center gap-7 py-10">
       <RoundedListbox<Session | null>
         value={selectedSession}
-        options={[...sessions, null]}
-        onChange={(session) => setSelectedSession(session ?? null)}
+        options={[null, ...sessions]}
+        onChange={setSelectedSession}
         getOptionLabel={getSessionName}
-        getOptionKey={(session) => session?.id ?? "overall"}
-        buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
+        placeholder="Overall Standings"
+        getOptionKey={(session) => session?.id ?? "overall-standings"}
+        buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
       />
 
       <FilledButton className="flex items-center justify-center gap-2 text-sm">
