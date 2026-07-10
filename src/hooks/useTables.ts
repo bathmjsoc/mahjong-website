@@ -28,12 +28,12 @@ export function useTables(): UseTablesType {
     queryKey,
     queryFn: () => fetchTables(currentSession),
     enabled: !!currentSession,
-    select: (fetchedTables) => {
+    select: (tables) => {
       const availableTables: Table[] = [];
       const duplicatePlayerIds = new Set<string>();
       const seatedPlayerIds = new Set<string>();
 
-      for (const table of fetchedTables) {
+      for (const table of tables) {
         if (table.saved) continue;
         availableTables.push(table);
 
@@ -56,7 +56,7 @@ export function useTables(): UseTablesType {
       }
 
       return {
-        tables: fetchedTables,
+        tables,
         availableTables,
         duplicatePlayerIds,
         seatedPlayerIds,

@@ -30,12 +30,12 @@ export function useAttendance(): UseAttendanceType {
     queryKey,
     queryFn: () => fetchAttendance(currentSession),
     enabled: !!currentSession,
-    select: (fetchedAttendance) => {
+    select: (attendance) => {
       const availablePlayers: Player[] = [];
       const lockedPlayerIds = new Set<string>();
       const registeredPlayers: Player[] = [];
 
-      for (const entry of fetchedAttendance) {
+      for (const entry of attendance) {
         if (entry.session_id !== currentSession.id || !entry.registered) {
           continue;
         }
@@ -55,7 +55,7 @@ export function useAttendance(): UseAttendanceType {
       registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
 
       return {
-        attendance: fetchedAttendance,
+        attendance,
         availablePlayers,
         lockedPlayerIds,
         registeredPlayers,

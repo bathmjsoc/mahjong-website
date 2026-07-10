@@ -27,14 +27,14 @@ export function useSessions(): UseSessionsType {
     queryKey,
     queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
-    select: (fetchedSessions) => {
-      const currentSession = fetchedSessions[fetchedSessions.length - 1];
+    select: (sessions) => {
+      const currentSession = sessions[sessions.length - 1];
 
       const sessionMap = Object.fromEntries(
-        fetchedSessions.map((session) => [session.id, session]),
+        sessions.map((session) => [session.id, session]),
       );
 
-      return { sessions: fetchedSessions, currentSession, sessionMap };
+      return { sessions, currentSession, sessionMap };
     },
   });
 
