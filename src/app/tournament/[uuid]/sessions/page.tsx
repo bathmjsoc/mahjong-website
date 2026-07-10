@@ -16,12 +16,10 @@ export default function SessionsPage() {
   const { players } = usePlayers();
   const { sessions } = useSessions();
 
-  const [selectedSession, setSelectedSession] = useState<Session | undefined>(
-    undefined,
-  );
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
 
   const { scores, activePlayers } = useMemo(() => {
-    const isOverall = selectedSession === undefined;
+    const isOverall = selectedSession === null;
 
     const scores = isOverall
       ? overallScores
@@ -36,10 +34,10 @@ export default function SessionsPage() {
 
   return (
     <div className="flex flex-col items-center gap-7 py-10">
-      <RoundedListbox<Session | undefined>
+      <RoundedListbox<Session | null>
         value={selectedSession}
-        options={[...sessions, undefined]}
-        onChange={(session) => setSelectedSession(session ?? undefined)}
+        options={[...sessions, null]}
+        onChange={(session) => setSelectedSession(session ?? null)}
         getOptionLabel={getSessionName}
         getOptionKey={(session) => session?.id ?? "overall"}
         buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
