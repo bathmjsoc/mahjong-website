@@ -38,7 +38,7 @@ export async function createTable(session: Session): Promise<Table> {
 export async function fetchTables(session: Session): Promise<Table[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: tables, error } = await supabase
     .from("tables")
     .select("*")
     .eq("session_id", session.id)
@@ -48,7 +48,7 @@ export async function fetchTables(session: Session): Promise<Table[]> {
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return tables ?? [];
 }
 
 export async function updateTable(

@@ -35,7 +35,7 @@ export async function createSession(tournamentId: string): Promise<void> {
 export async function fetchSessions(tournamentId: string): Promise<Session[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: sessions, error } = await supabase
     .from("sessions")
     .select("*")
     .eq("tournament_id", tournamentId)
@@ -44,5 +44,5 @@ export async function fetchSessions(tournamentId: string): Promise<Session[]> {
   if (error)
     throw new Error(`fetchSessions encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return sessions ?? [];
 }

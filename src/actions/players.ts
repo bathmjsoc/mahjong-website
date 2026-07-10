@@ -21,7 +21,7 @@ export async function createPlayer(
 export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: players, error } = await supabase
     .from("players")
     .select("*")
     .eq("tournament_id", tournamentId)
@@ -30,7 +30,7 @@ export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   if (error)
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);
 
-  return data ?? [];
+  return players ?? [];
 }
 
 export async function updatePlayer(
