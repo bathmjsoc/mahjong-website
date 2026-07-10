@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, type ReactNode, useContext } from "react";
-import { useAttendanceRealtime } from "@/hooks/useAttendanceRealtime";
-import { useLogsRealtime } from "@/hooks/useLogsRealtime";
-import { usePlayersRealtime } from "@/hooks/usePlayersRealtime";
-import { useSessionsRealtime } from "@/hooks/useSessionsRealtime";
-import { useTablesRealtime } from "@/hooks/useTablesRealtime";
+import { useAttendanceRealtime } from "@/hooks/useAttendance";
+import { useLogsRealtime } from "@/hooks/useLogs";
+import { usePlayersRealtime } from "@/hooks/usePlayers";
+import { useSessionsRealtime } from "@/hooks/useSessions";
+import { useTablesRealtime } from "@/hooks/useTables";
 
 type TournamentContextType = {
   tournamentId: string;
