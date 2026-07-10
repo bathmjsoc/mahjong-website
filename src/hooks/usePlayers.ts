@@ -1,10 +1,8 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchPlayers } from "@/actions/players";
 import { useTournament } from "@/context/TournamentContext";
-import { createClient } from "@/lib/supabase/client";
 import type { Player } from "@/lib/types";
 
 type UsePlayersType = {
@@ -14,14 +12,10 @@ type UsePlayersType = {
   isError: boolean;
 };
 
-const supabase = createClient();
-
 export function usePlayers(): UsePlayersType {
   const { tournamentId } = useTournament();
 
-  const queryClient = useQueryClient();
-  const queryKey = useMemo(() => ["players", tournamentId], [tournamentId]);
-
+  const queryKey = ["players", tournamentId];
   const query = useQuery({
     queryKey,
     queryFn: () => fetchPlayers(tournamentId),
@@ -34,26 +28,6 @@ export function usePlayers(): UsePlayersType {
       return { players, playerMap };
     },
   });
-
-  useEffect(() => {
-    if (!tournamentId) return;
-
-    const channel = supabase
-      .channel(`players:${tournamentId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "players",
-          filter: `tournament_id=eq.${tournamentId}`,
-        },
-        () => queryClient.invalidateQueries({ queryKey }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [tournamentId, queryClient, queryKey]);
 
   return {
     playerMap: query.data?.playerMap ?? {},

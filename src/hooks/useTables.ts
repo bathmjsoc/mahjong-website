@@ -1,10 +1,8 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/useSessions";
-import { createClient } from "@/lib/supabase/client";
 import type { Table } from "@/lib/types";
 
 type UseTablesType = {
@@ -16,17 +14,10 @@ type UseTablesType = {
   isError: boolean;
 };
 
-const supabase = createClient();
-
 export function useTables(): UseTablesType {
   const { currentSession } = useSessions();
 
-  const queryClient = useQueryClient();
-  const queryKey = useMemo(
-    () => ["tables", currentSession?.id],
-    [currentSession],
-  );
-
+  const queryKey = ["tables", currentSession.id];
   const query = useQuery({
     queryKey,
     queryFn: () => fetchTables(currentSession),
@@ -66,26 +57,6 @@ export function useTables(): UseTablesType {
       };
     },
   });
-
-  useEffect(() => {
-    if (!currentSession) return;
-
-    const channel = supabase
-      .channel(`tables:${currentSession.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "tables",
-          filter: `session_id=eq.${currentSession.id}`,
-        },
-        () => queryClient.invalidateQueries({ queryKey }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [currentSession, queryClient, queryKey]);
 
   return {
     availableTables: query.data?.availableTables ?? [],

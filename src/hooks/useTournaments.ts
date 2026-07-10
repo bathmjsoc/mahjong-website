@@ -10,9 +10,9 @@ type UseTournamentsReturn = {
   isError: boolean;
 };
 
-const queryKey = ["tournaments"];
-
 export function useTournaments(): UseTournamentsReturn {
+  const queryKey = ["tournaments"];
+
   const query = useQuery({
     queryKey,
     queryFn: () => fetchTournaments(),

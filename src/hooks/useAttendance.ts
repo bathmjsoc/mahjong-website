@@ -1,11 +1,7 @@
-"use client";
-
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import { createClient } from "@/lib/supabase/client";
 import type { Attendance, Player } from "@/lib/types";
 
 type UseAttendanceType = {
@@ -17,18 +13,11 @@ type UseAttendanceType = {
   isError: boolean;
 };
 
-const supabase = createClient();
-
 export function useAttendance(): UseAttendanceType {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
 
-  const queryClient = useQueryClient();
-  const queryKey = useMemo(
-    () => ["attendance", currentSession?.id],
-    [currentSession],
-  );
-
+  const queryKey = ["attendance", currentSession.id];
   const query = useQuery({
     queryKey,
     queryFn: () => fetchAttendance(currentSession),
@@ -65,26 +54,6 @@ export function useAttendance(): UseAttendanceType {
       };
     },
   });
-
-  useEffect(() => {
-    if (!currentSession) return;
-
-    const channel = supabase
-      .channel(`attendance:${currentSession.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "attendance",
-          filter: `session_id=eq.${currentSession.id}`,
-        },
-        () => queryClient.invalidateQueries({ queryKey }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [currentSession, queryClient, queryKey]);
 
   return {
     attendance: query.data?.attendance ?? [],

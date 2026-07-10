@@ -1,12 +1,11 @@
 "use client";
 // TODO: See if it is possible to avoid passing a list of sessions to fetch logs
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useSessions } from "@/hooks/useSessions";
 import { getPlayerScores } from "@/lib/scoring";
-import { createClient } from "@/lib/supabase/client";
 import type { Log } from "@/lib/types";
 
 type UseLogsType = {
@@ -18,8 +17,6 @@ type UseLogsType = {
   isError: boolean;
 };
 
-const supabase = createClient();
-
 export function useLogs(): UseLogsType {
   const { sessions } = useSessions();
 
@@ -30,9 +27,7 @@ export function useLogs(): UseLogsType {
       .join(",");
   }, [sessions]);
 
-  const queryClient = useQueryClient();
-  const queryKey = useMemo(() => ["logs", sessionIds], [sessionIds]);
-
+  const queryKey = ["logs", sessionIds];
   const query = useQuery({
     queryKey,
     queryFn: () => fetchLogs(sessions),
@@ -51,26 +46,6 @@ export function useLogs(): UseLogsType {
       return { logs, enabledLogs, overallScores, sessionScores };
     },
   });
-
-  useEffect(() => {
-    if (!sessions.length) return;
-
-    const channel = supabase
-      .channel(`logs:${sessionIds}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "logs",
-          filter: `session_id=in.(${sessionIds})`,
-        },
-        () => queryClient.invalidateQueries({ queryKey }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [sessions, sessionIds, queryClient, queryKey]);
 
   return {
     logs: query.data?.logs ?? [],
