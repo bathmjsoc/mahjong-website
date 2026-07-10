@@ -1,4 +1,5 @@
 "use client";
+// TODO: See if it is possible to avoid using a pseudo-session for overall standings
 
 import { ChartColumn } from "lucide-react";
 import { useMemo, useState } from "react";

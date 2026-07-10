@@ -1,4 +1,5 @@
 "use client";
+// TODO: See if it is possible to avoid passing a list of sessions to fetch logs
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
