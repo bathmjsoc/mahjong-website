@@ -13,7 +13,7 @@ export async function createTournament(tournamentName: string): Promise<void> {
     .select("id")
     .single();
 
-  if (!tournament || error)
+  if (error)
     throw new Error(`createTournament encountered an error: ${error?.message}`);
 
   await createSession(tournament.id);
@@ -42,7 +42,7 @@ export async function getTournamentName(tournamentId: string): Promise<string> {
     .eq("id", tournamentId)
     .single();
 
-  if (!tournament || error)
+  if (error)
     throw new Error(
       `getTournamentName encountered an error: ${error?.message}`,
     );
