@@ -1,5 +1,3 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
 import { fetchSessions } from "@/actions/sessions";
 import { useTournament } from "@/context/TournamentContext";

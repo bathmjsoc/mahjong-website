@@ -1,5 +1,3 @@
-"use client";
-
 import { useQuery } from "@tanstack/react-query";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/useSessions";
