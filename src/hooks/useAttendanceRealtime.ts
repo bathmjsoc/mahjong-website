@@ -25,7 +25,7 @@ export function useAttendanceRealtime() {
         },
         () =>
           queryClient.invalidateQueries({
-            queryKey: ["sessions", currentSession.id],
+            queryKey: ["attendance", currentSession.id],
           }),
       )
       .subscribe();
