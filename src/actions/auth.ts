@@ -46,8 +46,7 @@ export async function signOut(): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
 
-  if (error)
-    throw new Error(`signOut encountered an error: ${error.message}`);
+  if (error) throw new Error(`signOut encountered an error: ${error.message}`);
 
   redirect("/");
 }
