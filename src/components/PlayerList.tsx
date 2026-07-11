@@ -40,11 +40,11 @@ export function PlayerList({ players, session }: PlayerListProps) {
         </tr>
       </thead>
       <tbody>
-        {rankedPlayers.map((player) => (
+        {rankedPlayers.map(({ player, score }) => (
           <PlayerRow
             key={player.id}
             player={player}
-            score={scores[player.id] ?? 0}
+            score={score}
             isLocked={lockedPlayerIds.has(player.id)}
             isUnseated={!seatedPlayerIds.has(player.id)}
             session={session}
