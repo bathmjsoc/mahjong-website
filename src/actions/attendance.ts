@@ -25,7 +25,9 @@ export async function registerPlayer(
     throw new Error(`registerPlayer encountered an error: ${error.message}`);
 }
 
-export async function fetchAttendance(session: Session | null): Promise<Attendance[]> {
+export async function fetchAttendance(
+  session: Session | null,
+): Promise<Attendance[]> {
   if (!session) return [];
 
   const supabase = await createClient();
@@ -41,47 +43,40 @@ export async function fetchAttendance(session: Session | null): Promise<Attendan
   return attendance ?? [];
 }
 
-export async function deregisterPlayer(
+async function updateAttendance(
   session: Session,
   player: Player,
+  attendance: Partial<Attendance>,
 ): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase
     .from("attendance")
-    .update({ registered: false })
+    .update(attendance)
     .match({ session_id: session.id, player_id: player.id });
 
-  if (error)
-    throw new Error(`deregisterPlayer encountered an error: ${error.message}`);
+  if (error) {
+    throw new Error(`updateAttendance encountered an error: ${error.message}`);
+  }
+}
+
+export async function deregisterPlayer(
+  session: Session,
+  player: Player,
+): Promise<void> {
+  await updateAttendance(session, player, { registered: false });
 }
 
 export async function lockPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await createClient();
-
-  const { error } = await supabase
-    .from("attendance")
-    .update({ locked: true })
-    .match({ session_id: session.id, player_id: player.id });
-
-  if (error)
-    throw new Error(`lockPlayer encountered an error: ${error.message}`);
+  await updateAttendance(session, player, { locked: true });
 }
 
 export async function unlockPlayer(
   session: Session,
   player: Player,
 ): Promise<void> {
-  const supabase = await createClient();
-
-  const { error } = await supabase
-    .from("attendance")
-    .update({ locked: false })
-    .match({ session_id: session.id, player_id: player.id });
-
-  if (error)
-    throw new Error(`unlockPlayer encountered an error: ${error.message}`);
+  await updateAttendance(session, player, { locked: false });
 }
