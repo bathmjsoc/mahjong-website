@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Log, Player, Session, WinType } from "@/lib/types";
 
 export async function createLog(
+  tournamentId: string,
   session: Session | null,
   faan: number,
   winType: WinType,
@@ -16,6 +17,7 @@ export async function createLog(
   const supabase = await createClient();
 
   const { error } = await supabase.from("logs").insert({
+    tournament_id: tournamentId,
     session_id: session.id,
     faan: faan,
     win_type: winType,
@@ -28,18 +30,13 @@ export async function createLog(
     throw new Error(`createLog encountered an error: ${error.message}`);
 }
 
-export async function fetchLogs(sessions: Session[]): Promise<Log[]> {
-  if (sessions.length === 0) return [];
-
+export async function fetchLogs(tournamentId: string): Promise<Log[]> {
   const supabase = await createClient();
 
   const { data: logs, error } = await supabase
     .from("logs")
     .select("*")
-    .in(
-      "session_id",
-      sessions.map((session) => session.id),
-    )
+    .eq("tournament_id", tournamentId)
     .order("timestamp", { ascending: false });
 
   if (error)

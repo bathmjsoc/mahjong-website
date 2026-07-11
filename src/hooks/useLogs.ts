@@ -1,11 +1,7 @@
-// TODO: See if it is possible to avoid passing a list of sessions to fetch logs
-
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchLogs } from "@/actions/logs";
-import { useSessions } from "@/hooks/useSessions";
+import { useTournament } from "@/context/TournamentContext";
 import { getPlayerScores } from "@/lib/scoring";
-import { createClient } from "@/lib/supabase/client";
 import type { Log } from "@/lib/types";
 
 type UseLogsType = {
@@ -18,20 +14,13 @@ type UseLogsType = {
 };
 
 export function useLogs(): UseLogsType {
-  const { sessions } = useSessions();
+  const { tournamentId } = useTournament();
 
-  const sessionIds = useMemo(() => {
-    return sessions
-      .map((s) => s.id)
-      .sort()
-      .join(",");
-  }, [sessions]);
-
-  const queryKey = ["logs", sessionIds];
+  const queryKey = ["logs", tournamentId];
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchLogs(sessions),
-    enabled: sessions.length > 0,
+    queryFn: () => fetchLogs(tournamentId),
+    enabled: !!tournamentId,
     select: (logs) => {
       const enabledLogs = logs.filter((log) => !log.disabled);
       const overallScores = getPlayerScores(enabledLogs);
