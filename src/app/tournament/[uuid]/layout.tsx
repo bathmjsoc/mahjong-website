@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { getTournamentName } from "@/actions/tournaments";
 import { Topbar } from "@/components/Topbar";
-import { TournamentProvider } from "@/context/TournamentContext";
+import { TournamentProvider } from "@/providers/TournamentProvider";
 
 type TournamentLayoutProps = {
   children: ReactNode;

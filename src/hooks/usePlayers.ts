@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchPlayers } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
 import type { Player } from "@/lib/types";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type UsePlayersType = {
   playerMap: Record<string, Player>;

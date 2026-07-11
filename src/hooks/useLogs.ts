@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchLogs } from "@/actions/logs";
-import { useTournament } from "@/context/TournamentContext";
 import { getPlayerScores } from "@/lib/scoring";
 import type { Log } from "@/lib/types";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type UseLogsType = {
   enabledLogs: Log[];
