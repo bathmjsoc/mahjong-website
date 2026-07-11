@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, useContext, useMemo } from "react";
 import { useAttendanceRealtime } from "@/hooks/useAttendance";
 import { useLogsRealtime } from "@/hooks/useLogs";
 import { usePlayersRealtime } from "@/hooks/usePlayers";
@@ -32,8 +32,10 @@ export function TournamentProvider({
   tournamentId: string;
   children: ReactNode;
 }) {
+  const value = useMemo(() => ({ tournamentId }), [tournamentId]);
+
   return (
-    <TournamentContext.Provider value={{ tournamentId }}>
+    <TournamentContext.Provider value={value}>
       <TournamentRealtime>{children}</TournamentRealtime>
     </TournamentContext.Provider>
   );
