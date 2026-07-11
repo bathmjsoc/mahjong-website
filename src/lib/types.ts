@@ -72,6 +72,13 @@ export type PointsAnimationEvent = {
   others: Player[];
 };
 
+export type PointDelta = { winner: number; loser: number };
+
+export type ScoringRule = {
+  faan: number;
+  deltas: Partial<Record<WinType, PointDelta>>;
+};
+
 export type Wind = "east" | "south" | "west" | "north";
 
 export type WinType = "打出" | "自摸" | "包自摸" | "詐糊";
