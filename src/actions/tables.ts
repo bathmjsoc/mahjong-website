@@ -91,7 +91,7 @@ export async function shuffleTables(
   availableTables: Table[],
   availablePlayers: Player[],
 ): Promise<void> {
-  if (!session) return
+  if (!session) return;
 
   const shuffledPlayers = shuffle(availablePlayers);
   const neededTables = Math.ceil(availablePlayers.length / 4);
