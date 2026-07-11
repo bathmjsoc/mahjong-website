@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchTournaments } from "@/actions/tournaments";
 import type { Tournament } from "@/lib/types";
 
-type UseTournamentsReturn = {
+type UseTournamentsType = {
   tournaments: Tournament[];
   isLoading: boolean;
   isError: boolean;
 };
 
-export function useTournaments(): UseTournamentsReturn {
+export function useTournaments(): UseTournamentsType {
   const queryKey = ["tournaments"];
 
   const query = useQuery({
