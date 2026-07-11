@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "check": "biome check .",
     "dev": "next dev",
     "format": "biome format --write",
-    "lint": "biome check --write ."
+    "lint": "biome check --write .",
+    "update": "npx npm-check-updates"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
