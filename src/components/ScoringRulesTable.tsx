@@ -78,10 +78,10 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
   ) {
     const nextRule = structuredClone(rule);
 
-    if (nextRule.deltas[winType]) {
-      nextRule.deltas[winType][field] = value;
-      onChange(nextRule);
-    }
+    nextRule.deltas[winType] ??= { winner: 0, loser: 0 };
+    nextRule.deltas[winType][field] = value;
+
+    onChange(nextRule);
   }
 
   return (
