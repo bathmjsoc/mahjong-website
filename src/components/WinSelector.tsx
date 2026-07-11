@@ -4,6 +4,7 @@ import { createLog } from "@/actions/logs";
 import { DropDown } from "@/elements/DropDown";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
+import { useTournaments } from "@/hooks/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 import { useTournament } from "@/providers/TournamentProvider";
 
@@ -13,12 +14,14 @@ type WinSelectorProps = {
   className?: string;
 };
 
-const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
-
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
   const { tournamentId } = useTournament();
+  const { tournamentsMap } = useTournaments();
+
+  const tournament = tournamentsMap[tournamentId];
+  const faanOptions = tournament.scoring_rules.map((rule) => rule.faan);
 
   const opponents = useMemo(() => {
     if (!occupant) return [];
@@ -106,7 +109,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
             title={player?.name ?? "[EMPTY]"}
             disabled={!player}
           >
-            {FAAN_OPTIONS.map((faan) => (
+            {faanOptions.map((faan) => (
               <DropDown.Item
                 key={faan}
                 onClick={() => handleWin("打出", faan, player)}
@@ -119,7 +122,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       </DropDown>
 
       <DropDown title="自摸 (Self-Draw)">
-        {FAAN_OPTIONS.map((faan) => (
+        {faanOptions.map((faan) => (
           <DropDown.Item key={faan} onClick={() => handleWin("自摸", faan)}>
             {faan}
           </DropDown.Item>
@@ -133,7 +136,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
             title={player?.name ?? "[EMPTY]"}
             disabled={!player}
           >
-            {FAAN_OPTIONS.map((faan) => (
+            {faanOptions.map((faan) => (
               <DropDown.Item
                 key={faan}
                 onClick={() => handleWin("包自摸", faan, player)}
