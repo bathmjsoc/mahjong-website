@@ -49,6 +49,7 @@ export type Tournament = {
   name: string;
   last_updated: string;
   player_count: number;
+  scoring_rules: ScoringRule[];
 };
 
 // ---------- Other Types ----------
