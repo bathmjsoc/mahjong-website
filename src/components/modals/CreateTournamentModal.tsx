@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
 import { createTournament } from "@/actions/tournaments";
@@ -25,8 +24,6 @@ export function CreateTournamentModal({
   isOpen,
   closeModalAction,
 }: CreateTournamentModalProps) {
-  const queryClient = useQueryClient();
-
   const [scoringRules, setScoringRules] = useState<ScoringRule[]>([
     { faan: 0, deltas: createEmptyDeltas() },
   ]);
@@ -38,7 +35,6 @@ export function CreateTournamentModal({
     console.log(scoringRules);
 
     await createTournament(tournamentName);
-    await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
 
     closeModalAction();
   }

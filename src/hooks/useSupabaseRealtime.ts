@@ -19,6 +19,19 @@ export function useSupabaseRealtime() {
       {
         event: "*",
         schema: "public",
+        table: "tournaments",
+      },
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: ["tournaments"],
+        }),
+    );
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
         table: "logs",
         filter: `tournament_id=eq.${tournamentId}`,
       },
