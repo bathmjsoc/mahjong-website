@@ -1,11 +1,7 @@
 "use client";
 
 import { createContext, type ReactNode, useContext, useMemo } from "react";
-import { useAttendanceRealtime } from "@/hooks/useAttendance";
-import { useLogsRealtime } from "@/hooks/useLogs";
-import { usePlayersRealtime } from "@/hooks/usePlayers";
-import { useSessionsRealtime } from "@/hooks/useSessions";
-import { useTablesRealtime } from "@/hooks/useTables";
+import { useSupabaseRealtime } from "@/hooks/useSupabaseRealtime";
 
 type TournamentContextType = {
   tournamentId: string;
@@ -16,11 +12,7 @@ const TournamentContext = createContext<TournamentContextType | undefined>(
 );
 
 function TournamentRealtime({ children }: { children: ReactNode }) {
-  useAttendanceRealtime();
-  useLogsRealtime();
-  usePlayersRealtime();
-  useSessionsRealtime();
-  useTablesRealtime();
+  useSupabaseRealtime();
 
   return children;
 }
