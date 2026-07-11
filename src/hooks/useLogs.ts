@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchLogs } from "@/actions/logs";
+import { useTournaments } from "@/hooks/useTournaments";
 import { getPlayerScores } from "@/lib/scoring";
 import type { Log } from "@/lib/types";
 import { useTournament } from "@/providers/TournamentProvider";
@@ -15,6 +16,9 @@ type UseLogsType = {
 
 export function useLogs(): UseLogsType {
   const { tournamentId } = useTournament();
+  const { tournamentsMap } = useTournaments();
+
+  const tournament = tournamentsMap[tournamentId];
 
   const queryKey = ["logs", tournamentId];
   const query = useQuery({
@@ -23,13 +27,19 @@ export function useLogs(): UseLogsType {
     enabled: !!tournamentId,
     select: (logs) => {
       const enabledLogs = logs.filter((log) => !log.disabled);
-      const overallScores = getPlayerScores(enabledLogs);
+      const overallScores = getPlayerScores(
+        enabledLogs,
+        tournament.scoring_rules,
+      );
 
       const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
 
       const sessionScores: Record<string, Record<string, number>> = {};
       for (const sessionId in grouped) {
-        sessionScores[sessionId] = getPlayerScores(grouped[sessionId] ?? []);
+        sessionScores[sessionId] = getPlayerScores(
+          grouped[sessionId] ?? [],
+          tournament.scoring_rules,
+        );
       }
 
       return { logs, enabledLogs, overallScores, sessionScores };

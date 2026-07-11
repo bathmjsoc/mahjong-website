@@ -49,6 +49,7 @@ export type Tournament = {
   name: string;
   last_updated: string;
   player_count: number;
+  scoring_rules: ScoringRule[];
 };
 
 // ---------- Other Types ----------
@@ -70,6 +71,13 @@ export type PointsAnimationEvent = {
   winners: Player[];
   losers: Player[];
   others: Player[];
+};
+
+export type PointDelta = { winner: number; loser: number };
+
+export type ScoringRule = {
+  faan: number;
+  deltas: Partial<Record<WinType, PointDelta>>;
 };
 
 export type Wind = "east" | "south" | "west" | "north";

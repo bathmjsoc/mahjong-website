@@ -82,5 +82,5 @@ export function useSupabaseRealtime() {
     channel.subscribe();
 
     return () => void supabase.removeChannel(channel);
-  }, [tournamentId, currentSession?.id, queryClient]);
+  }, [tournamentId, currentSession, queryClient]);
 }
