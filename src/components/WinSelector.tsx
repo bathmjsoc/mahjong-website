@@ -5,6 +5,7 @@ import { DropDown } from "@/elements/DropDown";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
   table: Table;
@@ -17,6 +18,7 @@ const FAAN_OPTIONS = [3, 4, 5, 6, 7, 8, 9, 10] as const;
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
+  const { tournamentId } = useTournament();
 
   const opponents = useMemo(() => {
     if (!occupant) return [];
@@ -74,7 +76,15 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    await createLog(currentSession, faan, winType, winners, losers, others);
+    await createLog(
+      tournamentId,
+      currentSession,
+      faan,
+      winType,
+      winners,
+      losers,
+      others,
+    );
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {

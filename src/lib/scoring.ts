@@ -75,7 +75,11 @@ export function getPointDeltas(
   faan: number,
   winType: WinType,
 ): Record<string, number> {
-  const { winner, loser, other } = SCORING_RULES[faan][winType];
+  const rule = SCORING_RULES[faan]?.[winType];
 
-  return { winner: winner, loser: loser, other: other };
+  if (!rule) {
+    return { winner: 0, loser: 0, other: 0 };
+  }
+
+  return rule;
 }

@@ -1,9 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchPlayers } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
-import { createClient } from "@/lib/supabase/client";
 import type { Player } from "@/lib/types";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type UsePlayersType = {
   playerMap: Record<string, Player>;
@@ -35,34 +33,4 @@ export function usePlayers(): UsePlayersType {
     isLoading: query.isLoading,
     isError: query.isError,
   };
-}
-
-const supabase = createClient();
-export function usePlayersRealtime() {
-  const { tournamentId } = useTournament();
-
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (!tournamentId) return;
-
-    const channel = supabase
-      .channel(`players:${tournamentId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "players",
-          filter: `tournament_id=eq.${tournamentId}`,
-        },
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ["players", tournamentId],
-          }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [tournamentId, queryClient]);
 }

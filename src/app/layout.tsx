@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Oxygen_Mono } from "next/font/google";
 import type { ReactNode } from "react";
-import { QueryProvider } from "@/context/QueryProvider";
+import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {

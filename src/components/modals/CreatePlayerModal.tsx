@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createPlayer } from "@/actions/players";
-import { useTournament } from "@/context/TournamentContext";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayers } from "@/hooks/usePlayers";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;

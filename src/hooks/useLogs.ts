@@ -1,12 +1,8 @@
-// TODO: See if it is possible to avoid passing a list of sessions to fetch logs
-
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchLogs } from "@/actions/logs";
-import { useSessions } from "@/hooks/useSessions";
 import { getPlayerScores } from "@/lib/scoring";
-import { createClient } from "@/lib/supabase/client";
 import type { Log } from "@/lib/types";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type UseLogsType = {
   enabledLogs: Log[];
@@ -18,20 +14,13 @@ type UseLogsType = {
 };
 
 export function useLogs(): UseLogsType {
-  const { sessions } = useSessions();
+  const { tournamentId } = useTournament();
 
-  const sessionIds = useMemo(() => {
-    return sessions
-      .map((s) => s.id)
-      .sort()
-      .join(",");
-  }, [sessions]);
-
-  const queryKey = ["logs", sessionIds];
+  const queryKey = ["logs", tournamentId];
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchLogs(sessions),
-    enabled: sessions.length > 0,
+    queryFn: () => fetchLogs(tournamentId),
+    enabled: !!tournamentId,
     select: (logs) => {
       const enabledLogs = logs.filter((log) => !log.disabled);
       const overallScores = getPlayerScores(enabledLogs);
@@ -55,41 +44,4 @@ export function useLogs(): UseLogsType {
     isLoading: query.isLoading,
     isError: query.isError,
   };
-}
-
-const supabase = createClient();
-export function useLogsRealtime() {
-  const { sessions } = useSessions();
-
-  const sessionIds = useMemo(() => {
-    return sessions
-      .map((s) => s.id)
-      .sort()
-      .join(",");
-  }, [sessions]);
-
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (!sessions.length) return;
-
-    const channel = supabase
-      .channel(`logs:${sessionIds}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "logs",
-          filter: `session_id=in.(${sessionIds})`,
-        },
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ["logs", sessionIds],
-          }),
-      )
-      .subscribe();
-
-    return () => void supabase.removeChannel(channel);
-  }, [sessions, sessionIds, queryClient]);
 }

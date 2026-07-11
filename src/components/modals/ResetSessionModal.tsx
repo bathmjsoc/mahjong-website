@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createSession } from "@/actions/sessions";
-import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
+import { useTournament } from "@/providers/TournamentProvider";
 
 type ConfirmRefreshModalProps = {
   isOpen: boolean;

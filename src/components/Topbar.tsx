@@ -3,9 +3,9 @@
 import { LayoutDashboard, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signOut } from "@/actions/auth";
-import { useTournament } from "@/context/TournamentContext";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
+import { useTournament } from "@/providers/TournamentProvider";
 
 const TABS = [
   { label: "Tables", href: "" },

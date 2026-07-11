@@ -8,6 +8,7 @@ export type Attendance = {
 
 export type Log = {
   id: string;
+  tournament_id: string;
   session_id: string;
   faan: number;
   win_type: WinType;
