@@ -32,10 +32,7 @@ export function CreateTournamentModal({
     const tournamentName = formData.get("tournamentName")?.toString();
     if (!tournamentName) return;
 
-    console.log(scoringRules);
-
-    await createTournament(tournamentName);
-
+    await createTournament(tournamentName, scoringRules);
     closeModalAction();
   }
 
