@@ -1,4 +1,4 @@
-import type { Player, Session } from "@/lib/types";
+import type { Player, Session, WinType } from "@/lib/types";
 
 /*
  * Formats a date object as a relative string (e.g., "5 minutes ago")
@@ -94,3 +94,13 @@ export function rankPlayers(
 export function normalizeText(text: string) {
   return text.replaceAll(" ", "").toLowerCase();
 }
+
+/*
+ * Maps a Cantonese win type to an English tooltip
+ */
+export const winTypeMap: Record<WinType, string> = {
+  打出: "Throw",
+  自摸: "Self-Draw",
+  包自摸: "Special Case",
+  詐糊: "False Win",
+} as const;

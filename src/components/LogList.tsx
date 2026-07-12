@@ -4,14 +4,8 @@ import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import type { Log, WinType } from "@/lib/types";
-
-const winTypeMap: Record<WinType, string> = {
-  打出: "Throw",
-  自摸: "Self-Draw",
-  包自摸: "Special Case",
-  詐糊: "False Win",
-} as const;
+import type { Log } from "@/lib/types";
+import { winTypeMap } from "@/lib/utils";
 
 type LogListProps = {
   logs: Log[];
