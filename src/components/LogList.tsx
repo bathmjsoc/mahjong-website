@@ -61,7 +61,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.win_type === "詐糊" ? "N/A" : log.faan}
+        {log.faan ?? "N/A"}
       </td>
 
       <td
