@@ -55,6 +55,7 @@ export function LogSearchBar({
       />
 
       <IconButton
+        title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
         onClick={toggleDisabledLogs}
         className="flex items-center justify-center text-primary hover:text-info"
       >

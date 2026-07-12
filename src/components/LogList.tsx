@@ -96,6 +96,7 @@ function LogRow({ log }: LogRowProps) {
       <td>
         {!log.disabled && (
           <IconButton
+            title="Disable Log"
             onClick={() => disableLog(log)}
             className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
           >
