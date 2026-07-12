@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, Fragment, type SetStateAction } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
 import type { ScoringRule, WinType } from "@/lib/types";
 
@@ -31,18 +31,12 @@ export function ScoringRulesTable({
         </tr>
 
         <tr>
-          {WIN_TYPES.flatMap((winType) => [
-            <th
-              key={`${winType}_winner`}
-              className="border-secondary border-l text-xs"
-            >
-              Winner
-            </th>,
-
-            <th key={`${winType}_loser`} className="text-xs">
-              Loser
-            </th>,
-          ])}
+          {WIN_TYPES.map((winType) => (
+            <Fragment key={`${winType}_headers`}>
+              <th className="border-secondary border-l text-xs">Winner</th>
+              <th className="text-xs">Loser</th>
+            </Fragment>
+          ))}
         </tr>
       </thead>
 
@@ -65,13 +59,14 @@ type ScoringRuleRowProps = {
 };
 
 function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
-  function updateFaan(value: number) {
+  function handleFaanChange(value: number) {
     const nextRule = structuredClone(rule);
+
     nextRule.faan = value;
     onChange(nextRule);
   }
 
-  function updateDelta(
+  function handleDeltaChange(
     winType: WinType,
     field: "winner" | "loser",
     value: number,
@@ -80,7 +75,6 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
 
     nextRule.deltas[winType] ??= { winner: 0, loser: 0 };
     nextRule.deltas[winType][field] = value;
-
     onChange(nextRule);
   }
 
@@ -89,38 +83,37 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
       <td className="px-2 py-1">
         <LabelledInput
           type="number"
-          defaultValue={rule.faan}
+          defaultValue={rule.faan ?? 0}
           inputClassName="no-spinner"
-          onBlur={(e) => updateFaan(Number(e.target.value))}
+          onBlur={(e) => handleFaanChange(e.target.valueAsNumber)}
         />
       </td>
 
-      {WIN_TYPES.flatMap((winType) => [
-        <td
-          key={`${winType}_winner_delta`}
-          className="border-secondary border-l px-2 py-1"
-        >
-          <LabelledInput
-            type="number"
-            defaultValue={rule.deltas[winType]?.winner}
-            inputClassName="no-spinner"
-            onBlur={(e) =>
-              updateDelta(winType, "winner", Number(e.target.value))
-            }
-          />
-        </td>,
+      {WIN_TYPES.map((winType) => (
+        <Fragment key={`${winType}_deltas`}>
+          <td className="border-secondary border-l px-2 py-1">
+            <LabelledInput
+              type="number"
+              defaultValue={rule.deltas[winType]?.winner}
+              inputClassName="no-spinner"
+              onBlur={(e) =>
+                handleDeltaChange(winType, "winner", e.target.valueAsNumber)
+              }
+            />
+          </td>
 
-        <td key={`${winType}_loser_delta`} className="px-2 py-1">
-          <LabelledInput
-            type="number"
-            defaultValue={rule.deltas[winType]?.loser}
-            inputClassName="no-spinner"
-            onBlur={(e) =>
-              updateDelta(winType, "loser", Number(e.target.value))
-            }
-          />
-        </td>,
-      ])}
+          <td className="px-2 py-1">
+            <LabelledInput
+              type="number"
+              defaultValue={rule.deltas[winType]?.loser}
+              inputClassName="no-spinner"
+              onBlur={(e) =>
+                handleDeltaChange(winType, "loser", e.target.valueAsNumber)
+              }
+            />
+          </td>
+        </Fragment>
+      ))}
     </tr>
   );
 }

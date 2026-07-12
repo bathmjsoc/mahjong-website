@@ -29,11 +29,6 @@ export function getPointDeltas(
   winType: WinType,
   scoringRules: ScoringRule[],
 ): PointDelta {
-
-  if (faan === null) {
-    return { winner: 384, loser: -384 }
-  }
-
   const scoringRule = scoringRules.find((rule) => rule.faan === faan);
   return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }

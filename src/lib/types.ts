@@ -76,7 +76,7 @@ export type PointsAnimationEvent = {
 export type PointDelta = { winner: number; loser: number };
 
 export type ScoringRule = {
-  faan: number;
+  faan: number | null;
   deltas: Partial<Record<WinType, PointDelta>>;
 };
 
