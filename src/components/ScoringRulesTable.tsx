@@ -2,7 +2,11 @@ import { type Dispatch, Fragment, type SetStateAction } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
 import type { ScoringRule, WinType } from "@/lib/types";
 
-const WIN_TYPES: WinType[] = ["打出", "自摸", "包自摸"] as const;
+const WIN_TYPES: Array<{ winType: WinType; tooltip: string }> = [
+  { winType: "打出", tooltip: "Throw" },
+  { winType: "自摸", tooltip: "Self-Draw" },
+  { winType: "包自摸", tooltip: "Special Case" },
+] as const;
 
 type ScoringRulesTableProps = {
   scoringRules: ScoringRule[];
@@ -23,15 +27,20 @@ export function ScoringRulesTable({
         <tr>
           <th rowSpan={2}>Faan</th>
 
-          {WIN_TYPES.map((winType) => (
-            <th key={winType} colSpan={2} className="border-secondary border-l">
-              {winType}
+          {WIN_TYPES.map(({ winType, tooltip }) => (
+            <th
+              key={winType}
+              colSpan={2}
+              title={tooltip}
+              className="border-secondary border-l"
+            >
+              <span className="cursor-help">{winType}</span>
             </th>
           ))}
         </tr>
 
         <tr>
-          {WIN_TYPES.map((winType) => (
+          {WIN_TYPES.map(({ winType }) => (
             <Fragment key={`${winType}_headers`}>
               <th className="border-secondary border-l text-xs">Winner</th>
               <th className="text-xs">Loser</th>
@@ -89,7 +98,7 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
         />
       </td>
 
-      {WIN_TYPES.map((winType) => (
+      {WIN_TYPES.map(({ winType }) => (
         <Fragment key={`${winType}_deltas`}>
           <td className="border-secondary border-l px-2 py-1">
             <LabelledInput

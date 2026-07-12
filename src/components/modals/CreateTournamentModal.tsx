@@ -139,7 +139,9 @@ function FalseWinEditor({ rule, onChange }: FalseWinEditorProps) {
     <div className="flex items-center justify-center">
       <div className="grid w-3/7 grid-cols-3 gap-4 p-2">
         <div className="flex items-center justify-center">
-          <span className="font-bold">詐糊</span>
+          <span title="False Win" className="font-bold">
+            詐糊
+          </span>
         </div>
 
         <LabelledInput
