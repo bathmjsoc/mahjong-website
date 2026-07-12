@@ -49,7 +49,7 @@ export function ScoringRulesTable({
       <tbody>
         {scoringRules.map((rule, index) => (
           <ScoringRuleRow
-            key={index}
+            key={rule.faan}
             rule={rule}
             onChange={(updatedRule) => handleRuleChange(index, updatedRule)}
           />
