@@ -13,6 +13,7 @@ type DropDownProps = {
   children: ReactNode;
   buttonClassName?: string;
   panelClassName?: string;
+  tooltip?: string;
   disabled?: boolean;
 };
 
@@ -23,6 +24,7 @@ export function DropDown({
   children,
   buttonClassName,
   panelClassName,
+  tooltip = "",
   disabled = false,
 }: DropDownProps) {
   const parentClose = useContext(RootContext);
@@ -36,6 +38,7 @@ export function DropDown({
         return (
           <RootContext.Provider value={rootClose}>
             <PopoverButton
+              title={tooltip}
               disabled={disabled}
               className={twMerge(
                 "w-full rounded text-center outline-none transition",
