@@ -8,7 +8,7 @@ import { type Key, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 type SearchComboboxProps<T> = {
-  options: T[];
+  options: readonly T[];
   onSelect: (item: T) => void;
   getOptionLabel: (item: T) => string;
   getOptionKey: (item: T) => Key;

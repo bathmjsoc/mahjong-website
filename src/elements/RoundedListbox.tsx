@@ -9,7 +9,7 @@ import { twMerge } from "tailwind-merge";
 
 type RoundedListboxProps<T> = {
   value: T | null;
-  options: T[];
+  options: readonly T[];
   onChange: (value: T | null) => void;
   getOptionLabel: (item: T) => string;
   getOptionKey: (item: T) => Key;
