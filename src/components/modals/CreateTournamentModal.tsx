@@ -15,14 +15,14 @@ const DEFAULT_SCORING_RULE: ScoringRule = {
     自摸: { winner: 0, loser: 0 },
     包自摸: { winner: 0, loser: 0 },
   },
-};
+} as const;
 
 const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
   faan: null,
   deltas: {
     詐糊: { winner: 0, loser: 0 },
   },
-};
+} as const;
 
 type CreateTournamentModalProps = {
   isOpen: boolean;

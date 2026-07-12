@@ -11,7 +11,7 @@ import { useAttendance } from "@/hooks/useAttendance";
 import { useSessions } from "@/hooks/useSessions";
 import { useTables } from "@/hooks/useTables";
 
-const WINDS = ["東", "南", "西", "北"];
+const WINDS = ["東", "南", "西", "北"] as const;
 
 export default function TournamentPage() {
   const { availablePlayers } = useAttendance();
