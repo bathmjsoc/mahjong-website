@@ -34,7 +34,7 @@ export function ScoringRulesTable({
               title={tooltip}
               className="border-secondary border-l"
             >
-              <span className="cursor-help">{winType}</span>
+              {winType}
             </th>
           ))}
         </tr>
