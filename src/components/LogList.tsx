@@ -5,6 +5,7 @@ import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Log } from "@/lib/types";
+import { winTypeMap } from "@/lib/utils";
 
 type LogListProps = {
   logs: Log[];
@@ -61,10 +62,11 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.win_type === "詐糊" ? "N/A" : log.faan}
+        {log.faan ?? "N/A"}
       </td>
 
       <td
+        title={winTypeMap[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
@@ -94,6 +96,7 @@ function LogRow({ log }: LogRowProps) {
       <td>
         {!log.disabled && (
           <IconButton
+            title="Disable Log"
             onClick={() => disableLog(log)}
             className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
           >

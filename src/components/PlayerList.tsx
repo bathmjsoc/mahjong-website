@@ -81,6 +81,7 @@ function PlayerRow({
       {/* Lock/Unlock Player Icon */}
       <td>
         <IconButton
+          title={isLocked ? "Unlock Player" : "Lock Player"}
           onClick={handleLockToggle}
           className="flex w-full items-center justify-center"
         >
@@ -123,6 +124,7 @@ function PlayerRow({
       {/* Deregister Player Icon */}
       <td>
         <IconButton
+          title="Deregister Player"
           onClick={() => deregisterPlayer(session, player)}
           className="flex w-full items-center justify-center hover:text-negative"
         >

@@ -40,7 +40,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   async function handleWin(
     winType: WinType,
-    faan: number = 0,
+    faan: number | null,
     target?: Player | null,
   ) {
     if (!occupant) return;
@@ -100,6 +100,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     <DropDown
       title="食"
       buttonClassName={twMerge("rounded-full size-8", className)}
+      tooltip="Record Win"
       disabled={!occupant}
     >
       <DropDown title="打出 (Throw)">
@@ -150,7 +151,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
       <div className="border-primary border-t">
         <DropDown.Item
-          onClick={() => handleWin("詐糊")}
+          onClick={() => handleWin("詐糊", null)}
           className="text-negative"
         >
           詐糊 (False Win)

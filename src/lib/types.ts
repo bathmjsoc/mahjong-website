@@ -10,7 +10,7 @@ export type Log = {
   id: string;
   tournament_id: string;
   session_id: string;
-  faan: number;
+  faan: number | null;
   win_type: WinType;
   winner_ids: string[];
   loser_ids: string[];
@@ -35,10 +35,10 @@ export type Session = {
 export type Table = {
   id: string;
   session_id: string;
-  east_id: string;
-  south_id: string;
-  west_id: string;
-  north_id: string;
+  east_id: string | null;
+  south_id: string | null;
+  west_id: string | null;
+  north_id: string | null;
   number: number;
   saved: boolean;
 };
@@ -66,7 +66,7 @@ export type LogSearchTag = {
 };
 
 export type PointsAnimationEvent = {
-  faan: number;
+  faan: number | null;
   winType: WinType;
   winners: Player[];
   losers: Player[];
@@ -76,7 +76,7 @@ export type PointsAnimationEvent = {
 export type PointDelta = { winner: number; loser: number };
 
 export type ScoringRule = {
-  faan: number;
+  faan: number | null;
   deltas: Partial<Record<WinType, PointDelta>>;
 };
 

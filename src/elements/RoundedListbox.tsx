@@ -9,10 +9,11 @@ import { twMerge } from "tailwind-merge";
 
 type RoundedListboxProps<T> = {
   value: T | null;
-  options: T[];
+  options: readonly T[];
   onChange: (value: T | null) => void;
   getOptionLabel: (item: T) => string;
   getOptionKey: (item: T) => Key;
+  getOptionTooltip?: (item: T) => string;
   disabled?: boolean;
   emptyMessage?: string;
   placeholder?: string;
@@ -27,6 +28,7 @@ export function RoundedListbox<T>({
   onChange,
   getOptionLabel,
   getOptionKey,
+  getOptionTooltip,
   disabled = false,
   emptyMessage = "No options available",
   placeholder = "No option selected",
@@ -70,6 +72,7 @@ export function RoundedListbox<T>({
             <ListboxOption
               key={getOptionKey(item)}
               value={item}
+              title={getOptionTooltip?.(item)}
               className={twMerge(
                 "flex items-center justify-center",
                 "cursor-pointer rounded-md p-1 outline-none",

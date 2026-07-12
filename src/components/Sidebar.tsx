@@ -54,6 +54,7 @@ export function Sidebar() {
 
             <div className="flex gap-15">
               <IconButton
+                title="Create Player"
                 onClick={() => setActiveModal("create")}
                 className="hover:text-positive"
               >
@@ -61,6 +62,7 @@ export function Sidebar() {
               </IconButton>
 
               <IconButton
+                title="Edit Player"
                 onClick={() => setActiveModal("edit")}
                 className="hover:text-neutral"
               >
@@ -68,6 +70,7 @@ export function Sidebar() {
               </IconButton>
 
               <IconButton
+                title="Delete Player"
                 onClick={() => setActiveModal("delete")}
                 className="hover:text-negative"
               >
@@ -75,6 +78,7 @@ export function Sidebar() {
               </IconButton>
 
               <IconButton
+                title="Reset Session"
                 onClick={() => setActiveModal("reset")}
                 className="hover:text-info"
               >

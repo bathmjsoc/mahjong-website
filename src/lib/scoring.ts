@@ -25,16 +25,10 @@ export function getPlayerScores(
 }
 
 export function getPointDeltas(
-  faan: number,
+  faan: number | null,
   winType: WinType,
   scoringRules: ScoringRule[],
 ): PointDelta {
-  const rule = scoringRules.find((rule) => rule.faan === faan);
-  const pointDelta = rule?.deltas[winType];
-
-  if (!pointDelta) {
-    return { winner: 0, loser: 0 };
-  }
-
-  return pointDelta;
+  const scoringRule = scoringRules.find((rule) => rule.faan === faan);
+  return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }

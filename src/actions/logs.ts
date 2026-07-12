@@ -6,7 +6,7 @@ import type { Log, Player, Session, WinType } from "@/lib/types";
 export async function createLog(
   tournamentId: string,
   session: Session | null,
-  faan: number,
+  faan: number | null,
   winType: WinType,
   winners: Player[],
   losers: Player[],
