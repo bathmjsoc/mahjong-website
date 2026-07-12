@@ -104,3 +104,13 @@ export const winTypeMap: Record<WinType, string> = {
   包自摸: "Special Case",
   詐糊: "False Win",
 } as const;
+
+/*
+ * Maps a Cantonese wind to an English tooltip
+ */
+export const windMap: Record<string, string> = {
+  東: "East",
+  南: "South",
+  西: "West",
+  北: "North",
+} as const;
