@@ -4,7 +4,14 @@ import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import type { Log } from "@/lib/types";
+import type { Log, WinType } from "@/lib/types";
+
+const winTypeMap: Record<WinType, string> = {
+  打出: "Throw",
+  自摸: "Self-Draw",
+  包自摸: "Special Case",
+  詐糊: "False Win",
+} as const;
 
 type LogListProps = {
   logs: Log[];
@@ -65,6 +72,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
+        title={winTypeMap[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
