@@ -100,6 +100,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     <DropDown
       title="食"
       buttonClassName={twMerge("rounded-full size-8", className)}
+      tooltip="Record Win"
       disabled={!occupant}
     >
       <DropDown title="打出 (Throw)">
