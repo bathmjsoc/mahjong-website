@@ -81,9 +81,7 @@ export function LogSearchBar({
 function SearchInstructions() {
   return (
     <div className="group relative inline-block">
-      <IconButton className="flex items-center justify-center text-primary hover:text-info">
-        <Info className="size-5" />
-      </IconButton>
+      <Info className="size-5 cursor-pointer transition duration-300 hover:text-info" />
 
       <div className="absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 border-primary bg-secondary p-2 text-xs group-hover:block">
         <span className="font-bold">How to Search Logs</span>
