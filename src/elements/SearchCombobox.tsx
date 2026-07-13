@@ -1,5 +1,6 @@
 import {
   Combobox,
+  ComboboxButton,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -34,7 +35,7 @@ export function SearchCombobox<T>({
 
   const filteredOptions =
     query === ""
-      ? []
+      ? options
       : options.filter((option) =>
           getOptionLabel(option).toLowerCase().includes(query.toLowerCase()),
         );
@@ -48,15 +49,18 @@ export function SearchCombobox<T>({
 
   return (
     <Combobox value={null} onChange={handleSelect} onClose={() => setQuery("")}>
-      <ComboboxInput
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder={placeholder}
-        className={twMerge(
-          "bg-secondary text-primary",
-          "w-full cursor-text rounded-md p-2 text-center outline-none",
-          inputClassName,
-        )}
-      />
+      <ComboboxButton>
+        <ComboboxInput
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder={placeholder}
+          className={twMerge(
+            "bg-secondary text-primary",
+            "w-full cursor-text rounded-md p-2 text-center outline-none",
+            inputClassName,
+          )}
+        />
+      </ComboboxButton>
+
       <ComboboxOptions
         anchor="bottom"
         className={twMerge(
