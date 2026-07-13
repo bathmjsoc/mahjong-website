@@ -1,13 +1,20 @@
-import type { Player, Session, WinType } from "@/lib/types";
+import type {
+  Log,
+  Player,
+  PointDelta,
+  ScoringRule,
+  Session,
+  WinType,
+} from "@/lib/types";
 
 /*
- * Formats a date object as a relative string (e.g., "5 minutes ago")
+ * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")
  * */
 export function formatTimeAgo(timestamp: string): string {
   const timestampTime = new Date(timestamp).getTime();
   const delta = Math.round((timestampTime - Date.now()) / 1000);
-  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
   const cutoffs: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
     { unit: "year", seconds: 31536000 },
     { unit: "month", seconds: 2592000 },
@@ -27,7 +34,7 @@ export function formatTimeAgo(timestamp: string): string {
 }
 
 /*
- * Maps a score to a Tailwind background color class
+ * Maps a score to its corresponding Tailwind background color class
  * */
 export function scoreToColor(score: number): string {
   if (score < 0) return "bg-negative";
@@ -36,7 +43,7 @@ export function scoreToColor(score: number): string {
 }
 
 /*
- * Formats a number as an ordinal (e.g., 1 -> 1st)
+ * Appends an ordinal suffix to a number (e.g., 1 -> 1st, 2 -> 2nd)
  * */
 export function formatPosition(number: number): string {
   const rules = new Intl.PluralRules("en", { type: "ordinal" });
@@ -51,7 +58,7 @@ export function formatPosition(number: number): string {
 }
 
 /*
- * Returns shuffled copy of an array
+ * Returns a new array with the same items in a random order
  * */
 export function shuffle<T>(items: T[]): T[] {
   const result = [...items];
@@ -65,16 +72,16 @@ export function shuffle<T>(items: T[]): T[] {
 }
 
 /*
- * Formats a session name using number and start_date
+ * Formats a session number into a display name
  * */
 export function getSessionName(session: Session | null): string {
-  if (!session) return "Overall Standings";
+  if (!session) return "Overall Standings"; // Special case
 
   return `Session ${session.number} (${session.start_date})`;
 }
 
 /*
- * Returns a list of players sorted by their corresponding scores
+ * Combines players with their scores and returns them in descending order
  * */
 export function rankPlayers(
   players: Player[],
@@ -89,14 +96,14 @@ export function rankPlayers(
 }
 
 /*
- * Formats input text in a standardized manner for comparison purposes
+ * Normalizes text by removing whitespace and converting to lowercase for string comparison
  * */
 export function normalizeText(text: string) {
-  return text.replaceAll(" ", "").toLowerCase();
+  return text.replace(/\s+/g, "").toLowerCase();
 }
 
 /*
- * Maps a Cantonese win type to an English tooltip
+ * Maps Cantonese Mahjong win types into English tooltips
  */
 export const winTypeMap: Record<WinType, string> = {
   打出: "Throw",
@@ -106,7 +113,7 @@ export const winTypeMap: Record<WinType, string> = {
 } as const;
 
 /*
- * Maps a Cantonese wind to an English tooltip
+ * Maps Cantonese Mahjong winds into English tooltips
  */
 export const windMap: Record<string, string> = {
   東: "East",
@@ -114,3 +121,44 @@ export const windMap: Record<string, string> = {
   西: "West",
   北: "North",
 } as const;
+
+/*
+ * Calculates the cumulative score for each player from the provided logs
+ */
+export function getPlayerScores(
+  logs: Log[],
+  scoringRules: ScoringRule[],
+): Record<string, number> {
+  const scores: Record<string, number> = {};
+
+  const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
+
+  for (const log of logs) {
+    const rule = ruleMap.get(log.faan);
+    const pointDelta = rule?.deltas[log.win_type];
+
+    if (!pointDelta) continue;
+
+    for (const winner of log.winner_ids) {
+      scores[winner] = (scores[winner] ?? 0) + pointDelta.winner;
+    }
+
+    for (const loser of log.loser_ids) {
+      scores[loser] = (scores[loser] ?? 0) + pointDelta.loser;
+    }
+  }
+
+  return scores;
+}
+
+/*
+ * Determine the winner/loser point deltas for a given faan and win type
+ */
+export function getPointDeltas(
+  faan: number | null,
+  winType: WinType,
+  scoringRules: ScoringRule[],
+): PointDelta {
+  const scoringRule = scoringRules.find((rule) => rule.faan === faan);
+  return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
+}
