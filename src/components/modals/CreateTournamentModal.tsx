@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type KeyboardEvent, useEffect, useState } from "react";
 import { createTournament } from "@/actions/tournaments";
 import { ScoringRulesTable } from "@/components/ScoringRulesTable";
 import { FilledButton } from "@/elements/FilledButton";
@@ -67,10 +67,15 @@ export function CreateTournamentModal({
     setScoringRules((rules) => rules.slice(0, -1));
   }
 
+  function handleKeyDown(e: KeyboardEvent<HTMLFormElement>) {
+    if (e.key === "Enter") e.preventDefault();
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
       <form
         action={handleSubmit}
+        onKeyDown={handleKeyDown}
         className="flex h-150 w-2xl flex-col items-center justify-center gap-4"
       >
         <LabelledInput

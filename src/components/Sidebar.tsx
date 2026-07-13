@@ -5,7 +5,7 @@ import {
   UserPen,
   UserPlus,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { registerPlayer } from "@/actions/attendance";
 import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
@@ -31,6 +31,12 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
+  const playerOptions = useMemo(() => {
+    const registeredIds = new Set(registeredPlayers.map((player) => player.id));
+
+    return players.filter((player) => !registeredIds.has(player.id));
+  }, [players, registeredPlayers]);
+
   return (
     <>
       <div className="flex">
@@ -43,7 +49,7 @@ export function Sidebar() {
         >
           <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
-              options={players}
+              options={playerOptions}
               onSelect={(player) => registerPlayer(currentSession, player)}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}

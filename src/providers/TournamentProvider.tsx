@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useMemo } from "react";
+import {
+  createContext,
+  type PropsWithChildren,
+  type ReactNode,
+  useContext,
+  useMemo,
+} from "react";
 import { useSupabaseRealtime } from "@/hooks/useSupabaseRealtime";
 
 type TournamentContextType = {
@@ -11,9 +17,8 @@ const TournamentContext = createContext<TournamentContextType | undefined>(
   undefined,
 );
 
-function TournamentRealtime({ children }: { children: ReactNode }) {
+function TournamentRealtime({ children }: PropsWithChildren) {
   useSupabaseRealtime();
-
   return children;
 }
 

@@ -65,11 +65,8 @@ type ScoringRuleRowProps = {
 };
 
 function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
-  function handleFaanChange(value: number) {
-    const nextRule = structuredClone(rule);
-
-    nextRule.faan = value;
-    onChange(nextRule);
+  function handleFaanChange(faan: number) {
+    onChange({ ...rule, faan });
   }
 
   function handleDeltaChange(

@@ -9,6 +9,7 @@ export function useSupabaseRealtime() {
   const { currentSession } = useSessions();
 
   const queryClient = useQueryClient();
+  const sessionId = currentSession?.id;
 
   useEffect(() => {
     const supabase = createClient();
@@ -49,18 +50,18 @@ export function useSupabaseRealtime() {
         queryClient.invalidateQueries({ queryKey: ["sessions", tournamentId] }),
     );
 
-    if (currentSession?.id) {
+    if (sessionId) {
       channel.on(
         "postgres_changes",
         {
           event: "*",
           schema: "public",
           table: "attendance",
-          filter: `session_id=eq.${currentSession.id}`,
+          filter: `session_id=eq.${sessionId}`,
         },
         () =>
           queryClient.invalidateQueries({
-            queryKey: ["attendance", currentSession.id],
+            queryKey: ["attendance", sessionId],
           }),
       );
 
@@ -70,11 +71,11 @@ export function useSupabaseRealtime() {
           event: "*",
           schema: "public",
           table: "tables",
-          filter: `session_id=eq.${currentSession.id}`,
+          filter: `session_id=eq.${sessionId}`,
         },
         () =>
           queryClient.invalidateQueries({
-            queryKey: ["tables", currentSession.id],
+            queryKey: ["tables", sessionId],
           }),
       );
     }
@@ -82,5 +83,5 @@ export function useSupabaseRealtime() {
     channel.subscribe();
 
     return () => void supabase.removeChannel(channel);
-  }, [tournamentId, currentSession, queryClient]);
+  }, [tournamentId, sessionId, queryClient]);
 }
