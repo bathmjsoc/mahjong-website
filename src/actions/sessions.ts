@@ -6,7 +6,7 @@ import type { Session } from "@/lib/types";
 export async function createSession(tournamentId: string): Promise<void> {
   const supabase = await createClient();
 
-  const { data: session, error: fetchError } = await supabase
+  const { data: latestSession, error: fetchError } = await supabase
     .from("sessions")
     .select("number")
     .eq("tournament_id", tournamentId)
@@ -19,7 +19,7 @@ export async function createSession(tournamentId: string): Promise<void> {
       `createSession encountered an error: ${fetchError.message}`,
     );
 
-  const nextNumber = session ? session.number + 1 : 1;
+  const nextNumber = latestSession ? latestSession.number + 1 : 1;
 
   const { error: insertError } = await supabase.from("sessions").insert({
     tournament_id: tournamentId,

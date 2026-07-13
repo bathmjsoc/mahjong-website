@@ -7,7 +7,7 @@ import { shuffle } from "@/lib/utils";
 export async function createTable(session: Session): Promise<Table> {
   const supabase = await createClient();
 
-  const { data: table, error: fetchError } = await supabase
+  const { data: latestTable, error: fetchError } = await supabase
     .from("tables")
     .select("number")
     .eq("session_id", session.id)
@@ -18,7 +18,7 @@ export async function createTable(session: Session): Promise<Table> {
   if (fetchError)
     throw new Error(`createTable encountered an error: ${fetchError.message}`);
 
-  const nextNumber = table ? table.number + 1 : 1;
+  const nextNumber = latestTable ? latestTable.number + 1 : 1;
 
   const { data: newTable, error: insertError } = await supabase
     .from("tables")
@@ -94,11 +94,11 @@ export async function shuffleTables(
   if (!session) return;
 
   const shuffledPlayers = shuffle(availablePlayers);
-  const neededTables = Math.ceil(availablePlayers.length / 4);
+  const neededTables = Math.floor(availablePlayers.length / 4);
 
-  while (availableTables.length > neededTables) {
-    const tableToDelete = availableTables.pop();
-    if (tableToDelete) await deleteTable(tableToDelete);
+  if (availableTables.length > neededTables) {
+    const tablesToDelete = availableTables.splice(neededTables);
+    await Promise.all(tablesToDelete.map(deleteTable));
   }
 
   while (availableTables.length < neededTables) {
@@ -106,12 +106,14 @@ export async function shuffleTables(
     availableTables.push(tableToCreate);
   }
 
-  for (const table of availableTables) {
+  const updatePromises = availableTables.map((table) => {
     const [east = null, south = null, west = null, north = null] =
       shuffledPlayers.splice(0, 4);
 
-    await updateTable(table, { east, south, west, north });
-  }
+    return updateTable(table, { east, south, west, north });
+  });
+
+  await Promise.all(updatePromises);
 }
 
 export async function deleteTable(table: Table): Promise<void> {
