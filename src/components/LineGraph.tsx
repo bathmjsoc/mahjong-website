@@ -62,6 +62,7 @@ export function LineGraph({
 
   return (
     <Chart
+      type="line"
       series={series}
       options={options}
       className="h-full w-full rounded-xl border-2 border-primary bg-secondary px-3"
