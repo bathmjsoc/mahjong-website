@@ -38,7 +38,7 @@ export function LineGraph({
     chart: {
       type: "line",
       fontFamily: "inherit",
-      toolbar: { show: false },
+
       zoom: { enabled: false },
     },
     colors: colors,
