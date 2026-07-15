@@ -27,9 +27,10 @@ export default function SessionsPage() {
       ? overallScores
       : (sessionScores[selectedSession.id] ?? {});
 
-    const activePlayers = players.filter((player) => player.id in scores);
-
-    return { scores, activePlayers };
+    return {
+      scores: scores,
+      activePlayers: players.filter((player) => player.id in scores),
+    };
   }, [overallScores, players, selectedSession, sessionScores]);
 
   return (
