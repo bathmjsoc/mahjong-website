@@ -1,6 +1,6 @@
-import { LineGraph } from "@/components/LineGraph";
+import { LineGraph } from "@/elements/LineGraph";
 
-const data = [
+const lineGraphData = [
   {
     name: "Player A",
     points: [
@@ -21,7 +21,7 @@ const data = [
 export default function AnalyticsPage() {
   return (
     <div className="flex w-3xl flex-col items-center gap-10 p-10">
-      <LineGraph data={data} />
+      <LineGraph data={lineGraphData} />
     </div>
   );
 }
