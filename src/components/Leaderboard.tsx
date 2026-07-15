@@ -8,13 +8,13 @@ type LeaderboardProps = {
 };
 
 export function Leaderboard({ players, scores }: LeaderboardProps) {
-  const rankedPlayers = rankPlayers(players, scores);
-
   if (players.length === 0) {
     return (
       <span className="text-primary text-xs italic">No players found.</span>
     );
   }
+
+  const rankedPlayers = rankPlayers(players, scores);
 
   return (
     <table className="table-fixed border border-primary">
