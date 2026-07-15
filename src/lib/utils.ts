@@ -130,7 +130,6 @@ export function getPlayerScores(
   scoringRules: ScoringRule[],
 ): Record<string, number> {
   const scores: Record<string, number> = {};
-
   const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
