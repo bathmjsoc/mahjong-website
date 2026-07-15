@@ -17,12 +17,12 @@ export function ViewGraphModal({
   isOpen,
   closeModalAction,
 }: ViewGraphModalProps) {
-  const rankedPlayers = rankPlayers(players, scores);
-
-  const data = rankedPlayers.map(([player, score]) => ({
-    label: player.name,
-    value: score,
-  }));
+  const data = useMemo(() => {
+    return rankPlayers(players, scores).map(([player, score]) => ({
+      label: player.name,
+      value: score,
+    }));
+  }, [players, scores]);
 
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="View Graph">
