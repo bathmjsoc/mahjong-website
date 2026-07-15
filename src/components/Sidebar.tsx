@@ -37,9 +37,9 @@ export function Sidebar() {
     return players.filter((player) => !registeredIds.has(player.id));
   }, [players, registeredPlayers]);
 
-  function handleRegisterPlayer(player: Player) {
+  async function handleRegisterPlayer(player: Player) {
     if (!currentSession) return;
-    registerPlayer(currentSession, player);
+    await registerPlayer(currentSession, player);
   }
 
   return (
@@ -97,7 +97,9 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            <PlayerList session={currentSession} players={registeredPlayers} />
+            {currentSession && (
+              <PlayerList session={currentSession} />
+            )}
           </div>
         </div>
 
