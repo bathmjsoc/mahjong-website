@@ -16,7 +16,7 @@ type PlayerListProps = {
   session: Session;
 };
 
-export function RegisteredPlayerList({ session }: PlayerListProps) {
+export function PlayerList({ session }: PlayerListProps) {
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { sessionScores } = useLogs();
   const { seatedPlayerIds } = useTables();
