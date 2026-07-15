@@ -146,6 +146,10 @@ export function getPlayerScores(
     for (const loser of log.loser_ids) {
       scores[loser] = (scores[loser] ?? 0) + pointDelta.loser;
     }
+
+    for (const other of log.other_ids) {
+      scores[other] = scores[other] ?? 0;
+    }
   }
 
   return scores;
