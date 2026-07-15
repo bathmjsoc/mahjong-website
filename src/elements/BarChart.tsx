@@ -1,5 +1,6 @@
 import type { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
+import {twMerge} from "tailwind-merge";
 
 type BarChartData = {
   label: string;
@@ -9,9 +10,10 @@ type BarChartData = {
 
 type BarChartProps = {
   data: BarChartData[];
+  className?: string;
 };
 
-export function BarChart({ data }: BarChartProps) {
+export function BarChart({ data, className }: BarChartProps) {
   const series = [
     {
       name: "Score",
@@ -55,8 +57,7 @@ export function BarChart({ data }: BarChartProps) {
       type="bar"
       series={series}
       options={options}
-      height={1000}
-      className="h-full w-full rounded-xl border-2 border-primary bg-secondary px-3"
+      className={twMerge("bg-secondary", className)}
     />
   );
 }
