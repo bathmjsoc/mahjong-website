@@ -12,7 +12,7 @@ import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
 import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
 import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
 import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
-import { PlayerList } from "@/components/PlayerList";
+import { RegisteredPlayerList } from "@/components/RegisteredPlayerList";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
@@ -97,7 +97,9 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            {currentSession && <PlayerList session={currentSession} />}
+            {currentSession && (
+              <RegisteredPlayerList session={currentSession} />
+            )}
           </div>
         </div>
 

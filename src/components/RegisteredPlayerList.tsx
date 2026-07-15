@@ -7,6 +7,7 @@ import {
 } from "@/actions/attendance";
 import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/useAttendance";
+import { useLogs } from "@/hooks/useLogs";
 import { useTables } from "@/hooks/useTables";
 import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
@@ -15,18 +16,17 @@ type PlayerListProps = {
   session: Session;
 };
 
-export function PlayerList({ session }: PlayerListProps) {
+export function RegisteredPlayerList({ session }: PlayerListProps) {
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
+  const { sessionScores } = useLogs();
   const { seatedPlayerIds } = useTables();
 
-  if (registeredPlayers.length === 0 || !session) {
+  if (registeredPlayers.length === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
   const scores = sessionScores[session.id] ?? {};
-  const rankedPlayers = rankPlayers(players, scores);
-
-  if (!session) return;
+  const rankedPlayers = rankPlayers(registeredPlayers, scores);
 
   return (
     <table>
@@ -41,7 +41,7 @@ export function PlayerList({ session }: PlayerListProps) {
         </tr>
       </thead>
       <tbody>
-        {rankedPlayers.map(({ player, score }) => (
+        {rankedPlayers.map(([player, score]) => (
           <PlayerRow
             session={session}
             key={player.id}
