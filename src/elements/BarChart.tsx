@@ -1,6 +1,6 @@
 import type { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import {twMerge} from "tailwind-merge";
+import { twMerge } from "tailwind-merge";
 
 type BarChartData = {
   label: string;

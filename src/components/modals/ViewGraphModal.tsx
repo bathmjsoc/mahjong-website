@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { BarChart } from "@/elements/BarChart";
 import { Modal } from "@/elements/Modal";
 import type { Player } from "@/lib/types";
@@ -26,7 +27,7 @@ export function ViewGraphModal({
   return (
     <Modal isOpen={isOpen} onClose={closeModalAction} title="View Graph">
       <div className="w-xl p-2">
-        <BarChart data={data} className="rounded-xl"/>
+        <BarChart data={data} className="rounded-xl" />
       </div>
     </Modal>
   );
