@@ -26,7 +26,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
         </tr>
       </thead>
       <tbody className="divide-y divide-primary">
-        {rankedPlayers.map(({ player, score }, index) => (
+        {rankedPlayers.map(([player, score], index) => (
           <PlayerRow
             key={player.id}
             player={player}

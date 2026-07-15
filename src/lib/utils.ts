@@ -86,13 +86,11 @@ export function getSessionName(session: Session | null): string {
 export function rankPlayers(
   players: Player[],
   scores: Record<string, number>,
-): { player: Player; score: number }[] {
+): [Player, number][] {
   return players
-    .map((player) => ({
-      player,
-      score: scores[player.id] ?? 0,
-    }))
-    .sort((a, b) => b.score - a.score);
+    .map((player) => ({ player: player, score: scores[player.id] ?? 0 }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ player, score }) => [player, score]);
 }
 
 /*
