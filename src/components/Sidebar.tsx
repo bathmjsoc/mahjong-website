@@ -97,9 +97,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            {currentSession && (
-              <PlayerList session={currentSession} />
-            )}
+            {currentSession && <PlayerList session={currentSession} />}
           </div>
         </div>
 

@@ -7,27 +7,26 @@ import {
 } from "@/actions/attendance";
 import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/useAttendance";
-import { useLogs } from "@/hooks/useLogs";
 import { useTables } from "@/hooks/useTables";
 import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
-  players: Player[];
   session: Session;
 };
 
-export function PlayerList({ players, session }: PlayerListProps) {
-  const { lockedPlayerIds } = useAttendance();
-  const { sessionScores } = useLogs();
+export function PlayerList({ session }: PlayerListProps) {
+  const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { seatedPlayerIds } = useTables();
 
-  if (players.length === 0 || !session) {
+  if (registeredPlayers.length === 0 || !session) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
   const scores = sessionScores[session.id] ?? {};
   const rankedPlayers = rankPlayers(players, scores);
+
+  if (!session) return;
 
   return (
     <table>
@@ -36,18 +35,20 @@ export function PlayerList({ players, session }: PlayerListProps) {
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
-          <th className="w-7 text-[10px] opacity-66">[{players.length}]</th>
+          <th className="w-7 text-[10px] opacity-66">
+            [{registeredPlayers.length}]
+          </th>
         </tr>
       </thead>
       <tbody>
         {rankedPlayers.map(({ player, score }) => (
           <PlayerRow
+            session={session}
             key={player.id}
             player={player}
             score={score}
             isLocked={lockedPlayerIds.has(player.id)}
             isUnseated={!seatedPlayerIds.has(player.id)}
-            session={session}
           />
         ))}
       </tbody>
@@ -73,15 +74,7 @@ function PlayerRow({
   const scoreColor = scoreToColor(score);
 
   function handleLockToggle() {
-    if (!currentSession) return;
-    isLocked
-      ? unlockPlayer(currentSession, player)
-      : lockPlayer(currentSession, player);
-  }
-
-  async function handleDeregisterPlayer() {
-    if (!currentSession) return;
-    await deregisterPlayer(currentSession, player);
+    isLocked ? unlockPlayer(session, player) : lockPlayer(session, player);
   }
 
   return (
@@ -133,7 +126,7 @@ function PlayerRow({
       <td>
         <IconButton
           title="Deregister Player"
-          onClick={handleDeregisterPlayer}
+          onClick={() => deregisterPlayer(session, player)}
           className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />
