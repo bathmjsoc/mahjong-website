@@ -23,9 +23,7 @@ export async function registerPlayer(
     throw new Error(`registerPlayer encountered an error: ${error.message}`);
 }
 
-export async function fetchAttendance(
-  session: Session,
-): Promise<Attendance[]> {
+export async function fetchAttendance(session: Session): Promise<Attendance[]> {
   const supabase = await createClient();
 
   const { data: attendance, error } = await supabase
