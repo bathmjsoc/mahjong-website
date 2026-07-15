@@ -3,6 +3,7 @@
 import { ChartColumn } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Leaderboard } from "@/components/Leaderboard";
+import { ViewGraphModal } from "@/components/modals/ViewGraphModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/useLogs";
@@ -17,6 +18,7 @@ export default function SessionsPage() {
   const { sessions } = useSessions();
 
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { scores, activePlayers } = useMemo(() => {
     const isOverall = selectedSession === null;
@@ -25,31 +27,43 @@ export default function SessionsPage() {
       ? overallScores
       : (sessionScores[selectedSession.id] ?? {});
 
-    const activePlayers = isOverall
-      ? players
-      : players.filter((player) => player.id in scores);
-
-    return { scores, activePlayers };
+    return {
+      scores: scores,
+      activePlayers: players.filter((player) => player.id in scores),
+    };
   }, [overallScores, players, selectedSession, sessionScores]);
 
   return (
-    <div className="flex flex-col items-center gap-7 py-10">
-      <RoundedListbox<Session | null>
-        value={selectedSession}
-        options={[null, ...sessions]}
-        onChange={setSelectedSession}
-        getOptionLabel={getSessionName}
-        placeholder="Overall Standings"
-        getOptionKey={(session) => session?.id ?? "overall-standings"}
-        buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
+    <>
+      <div className="flex flex-col items-center gap-7 py-10">
+        <RoundedListbox<Session | null>
+          value={selectedSession}
+          options={[null, ...sessions]}
+          onChange={setSelectedSession}
+          getOptionLabel={getSessionName}
+          placeholder="Overall Standings"
+          getOptionKey={(session) => session?.id ?? "overall-standings"}
+          buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
+        />
+
+        <FilledButton
+          className="flex items-center justify-center gap-2 text-sm"
+          disabled={!activePlayers.length}
+          onClick={() => setIsOpen(true)}
+        >
+          <ChartColumn className="size-5" />
+          View Graph
+        </FilledButton>
+
+        <Leaderboard players={activePlayers} scores={scores} />
+      </div>
+
+      <ViewGraphModal
+        players={activePlayers}
+        scores={scores}
+        isOpen={isOpen}
+        closeModalAction={() => setIsOpen(false)}
       />
-
-      <FilledButton className="flex items-center justify-center gap-2 text-sm">
-        <ChartColumn className="size-5" />
-        Download Graph
-      </FilledButton>
-
-      <Leaderboard players={activePlayers} scores={scores} />
-    </div>
+    </>
   );
 }

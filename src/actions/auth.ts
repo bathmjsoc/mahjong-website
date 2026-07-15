@@ -18,7 +18,10 @@ export async function signUp(
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
 
-  if (error) return { error: error.message };
+  if (error) {
+    console.error("signUp encountered an error:", error);
+    return { error: error.message };
+  }
 
   return { success: true };
 }
@@ -37,7 +40,10 @@ export async function signIn(
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-  if (error) return { error: error.message };
+  if (error) {
+    console.error("signIn encountered an error:", error);
+    return { error: error.message };
+  }
 
   redirect("/dashboard");
 }
@@ -46,7 +52,7 @@ export async function signOut(): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
 
-  if (error) throw new Error(`signOut encountered an error: ${error.message}`);
+  if (error) console.error("signOut encountered an error:", error);
 
   redirect("/");
 }

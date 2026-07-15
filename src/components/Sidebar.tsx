@@ -37,6 +37,11 @@ export function Sidebar() {
     return players.filter((player) => !registeredIds.has(player.id));
   }, [players, registeredPlayers]);
 
+  async function handleRegisterPlayer(player: Player) {
+    if (!currentSession) return;
+    await registerPlayer(currentSession, player);
+  }
+
   return (
     <>
       <div className="flex">
@@ -50,7 +55,7 @@ export function Sidebar() {
           <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
               options={playerOptions}
-              onSelect={(player) => registerPlayer(currentSession, player)}
+              onSelect={(player) => handleRegisterPlayer(player)}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}
               placeholder="Register a member..."
@@ -92,7 +97,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            <PlayerList session={currentSession} players={registeredPlayers} />
+            {currentSession && <PlayerList session={currentSession} />}
           </div>
         </div>
 

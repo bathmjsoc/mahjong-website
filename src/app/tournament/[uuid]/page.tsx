@@ -23,6 +23,8 @@ export default function TournamentPage() {
   const [wind, setWind] = useState<string | null>(WINDS[0]);
 
   async function handleShuffle() {
+    if (!currentSession) return;
+
     setIsShaking(true);
     await shuffleTables(currentSession, availableTables, availablePlayers);
     setIsShaking(false);

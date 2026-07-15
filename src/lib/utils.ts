@@ -86,13 +86,11 @@ export function getSessionName(session: Session | null): string {
 export function rankPlayers(
   players: Player[],
   scores: Record<string, number>,
-): { player: Player; score: number }[] {
+): [Player, number][] {
   return players
-    .map((player) => ({
-      player,
-      score: scores[player.id] ?? 0,
-    }))
-    .sort((a, b) => b.score - a.score);
+    .map((player) => ({ player: player, score: scores[player.id] ?? 0 }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ player, score }) => [player, score]);
 }
 
 /*
@@ -130,7 +128,6 @@ export function getPlayerScores(
   scoringRules: ScoringRule[],
 ): Record<string, number> {
   const scores: Record<string, number> = {};
-
   const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
@@ -145,6 +142,10 @@ export function getPlayerScores(
 
     for (const loser of log.loser_ids) {
       scores[loser] = (scores[loser] ?? 0) + pointDelta.loser;
+    }
+
+    for (const other of log.other_ids) {
+      scores[other] = scores[other] ?? 0;
     }
   }
 

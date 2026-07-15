@@ -43,7 +43,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     faan: number | null,
     target?: Player | null,
   ) {
-    if (!occupant) return;
+    if (!currentSession || !occupant) return;
 
     const winners: Player[] = [];
     const losers: Player[] = [];

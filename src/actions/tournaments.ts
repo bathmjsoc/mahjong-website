@@ -27,7 +27,7 @@ export async function fetchTournaments(): Promise<Tournament[]> {
 
   const { data: tournaments, error } = await supabase
     .from("tournaments")
-    .select("*, players(id)")
+    .select("*")
     .order("last_updated", { ascending: false });
 
   if (error)

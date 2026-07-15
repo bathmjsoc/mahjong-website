@@ -18,7 +18,10 @@ export function useTables(): UseTablesType {
   const queryKey = ["tables", currentSession?.id];
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchTables(currentSession),
+    queryFn: () => {
+      if (!currentSession) return [];
+      return fetchTables(currentSession);
+    },
     enabled: !!currentSession,
     select: (tables) => {
       const availableTables: Table[] = [];

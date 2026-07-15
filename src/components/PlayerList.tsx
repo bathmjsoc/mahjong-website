@@ -13,21 +13,20 @@ import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
-  players: Player[];
-  session: Session | null;
+  session: Session;
 };
 
-export function PlayerList({ players, session }: PlayerListProps) {
-  const { lockedPlayerIds } = useAttendance();
+export function PlayerList({ session }: PlayerListProps) {
+  const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { sessionScores } = useLogs();
   const { seatedPlayerIds } = useTables();
 
-  if (players.length === 0 || !session) {
+  if (registeredPlayers.length === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
   const scores = sessionScores[session.id] ?? {};
-  const rankedPlayers = rankPlayers(players, scores);
+  const rankedPlayers = rankPlayers(registeredPlayers, scores);
 
   return (
     <table>
@@ -36,18 +35,20 @@ export function PlayerList({ players, session }: PlayerListProps) {
           <th className="w-7" />
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
-          <th className="w-7 text-[10px] opacity-66">[{players.length}]</th>
+          <th className="w-7 text-[10px] opacity-66">
+            [{registeredPlayers.length}]
+          </th>
         </tr>
       </thead>
       <tbody>
-        {rankedPlayers.map(({ player, score }) => (
+        {rankedPlayers.map(([player, score]) => (
           <PlayerRow
+            session={session}
             key={player.id}
             player={player}
             score={score}
             isLocked={lockedPlayerIds.has(player.id)}
             isUnseated={!seatedPlayerIds.has(player.id)}
-            session={session}
           />
         ))}
       </tbody>
