@@ -20,7 +20,10 @@ export function useAttendance(): UseAttendanceType {
   const queryKey = ["attendance", currentSession?.id];
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchAttendance(currentSession),
+    queryFn: () => {
+      if (!currentSession) return [];
+      return fetchAttendance(currentSession);
+    },
     enabled: !!currentSession,
     select: (attendance) => {
       const availablePlayers: Player[] = [];
