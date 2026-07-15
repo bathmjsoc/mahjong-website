@@ -35,7 +35,7 @@ export async function createTable(session: Session): Promise<Table> {
   return newTable;
 }
 
-export async function fetchTables(session: Session | null): Promise<Table[]> {
+export async function fetchTables(session: Session): Promise<Table[]> {
   if (!session) return [];
 
   const supabase = await createClient();

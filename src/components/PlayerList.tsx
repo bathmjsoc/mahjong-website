@@ -14,7 +14,7 @@ import { rankPlayers, scoreToColor } from "@/lib/utils";
 
 type PlayerListProps = {
   players: Player[];
-  session: Session | null;
+  session: Session;
 };
 
 export function PlayerList({ players, session }: PlayerListProps) {
@@ -73,7 +73,15 @@ function PlayerRow({
   const scoreColor = scoreToColor(score);
 
   function handleLockToggle() {
-    isLocked ? unlockPlayer(session, player) : lockPlayer(session, player);
+    if (!currentSession) return;
+    isLocked
+      ? unlockPlayer(currentSession, player)
+      : lockPlayer(currentSession, player);
+  }
+
+  async function handleDeregisterPlayer() {
+    if (!currentSession) return;
+    await deregisterPlayer(currentSession, player);
   }
 
   return (
@@ -125,7 +133,7 @@ function PlayerRow({
       <td>
         <IconButton
           title="Deregister Player"
-          onClick={() => deregisterPlayer(session, player)}
+          onClick={handleDeregisterPlayer}
           className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />
