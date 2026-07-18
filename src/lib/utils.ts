@@ -163,3 +163,28 @@ export function getPointDeltas(
   const scoringRule = scoringRules.find((rule) => rule.faan === faan);
   return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }
+
+export function getPointHistory(
+  logs: Log[],
+  player: Player,
+  scoringRules: ScoringRule[],
+) {
+  const scores = [0];
+
+  for (const log of logs) {
+    const scoringRule = scoringRules.find((rule) => rule.faan === log.faan);
+    const prevPoints = scores.at(-1) ?? 0;
+
+    if (log.winner_ids.includes(player.id)) {
+      const delta = scoringRule?.deltas?.[log.win_type]?.winner ?? 0;
+      scores.push(prevPoints + delta);
+    } else if (log.loser_ids.includes(player.id)) {
+      const delta = scoringRule?.deltas?.[log.win_type]?.loser ?? 0;
+      scores.push(prevPoints + delta);
+    } else if (log.other_ids.includes(player.id)) {
+      scores.push(prevPoints);
+    }
+  }
+
+  return scores;
+}
