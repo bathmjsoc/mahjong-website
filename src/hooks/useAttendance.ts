@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
@@ -18,14 +19,19 @@ export function useAttendance(): UseAttendanceType {
   const { playerMap } = usePlayers();
 
   const queryKey = ["attendance", currentSession?.id];
-  const query = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey,
     queryFn: () => {
       if (!currentSession) return [];
       return fetchAttendance(currentSession);
     },
     enabled: !!currentSession,
-    select: (attendance) => {
+  });
+
+  const attendance = data ?? [];
+
+  const { availablePlayers, lockedPlayerIds, registeredPlayers } =
+    useMemo(() => {
       const availablePlayers: Player[] = [];
       const lockedPlayerIds = new Set<string>();
       const registeredPlayers: Player[] = [];
@@ -50,20 +56,18 @@ export function useAttendance(): UseAttendanceType {
       registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
 
       return {
-        attendance,
         availablePlayers,
         lockedPlayerIds,
         registeredPlayers,
       };
-    },
-  });
+    }, [attendance, currentSession?.id, playerMap]);
 
   return {
-    attendance: query.data?.attendance ?? [],
-    availablePlayers: query.data?.availablePlayers ?? [],
-    lockedPlayerIds: query.data?.lockedPlayerIds ?? new Set<string>(),
-    registeredPlayers: query.data?.registeredPlayers ?? [],
-    isLoading: query.isLoading,
-    isError: query.isError,
+    attendance: attendance,
+    availablePlayers: availablePlayers,
+    lockedPlayerIds: lockedPlayerIds,
+    registeredPlayers: registeredPlayers,
+    isLoading: isLoading,
+    isError: isError,
   };
 }
