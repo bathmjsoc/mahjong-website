@@ -5,8 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useTournament } from "@/providers/TournamentProvider";
 
 export function useSupabaseRealtime() {
-  const { tournamentId } = useTournament();
   const { currentSession } = useSessions();
+  const { tournamentId } = useTournament();
 
   const queryClient = useQueryClient();
   const sessionId = currentSession?.id;
