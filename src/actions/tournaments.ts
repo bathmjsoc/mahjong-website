@@ -1,6 +1,7 @@
 "use server";
 
 import { createSession } from "@/actions/sessions";
+import type { Tables } from "@/lib/database.types";
 import { createClient } from "@/lib/supabase/server";
 import type { ScoringRule, Tournament } from "@/lib/types";
 
@@ -22,13 +23,18 @@ export async function createTournament(
   await createSession(tournament.id);
 }
 
+type TournamentRow = Omit<Tables<"tournaments">, "scoring_rules"> & {
+  scoring_rules: ScoringRule[];
+};
+
 export async function fetchTournaments(): Promise<Tournament[]> {
   const supabase = await createClient();
 
   const { data: tournaments, error } = await supabase
     .from("tournaments")
     .select("*")
-    .order("last_updated", { ascending: false });
+    .order("last_updated", { ascending: false })
+    .overrideTypes<Array<TournamentRow>>(); // Not ideal, but otherwise jsonb breaks the typing
 
   if (error)
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
