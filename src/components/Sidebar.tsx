@@ -31,11 +31,8 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const playerOptions = useMemo(() => {
-    const registeredIds = new Set(registeredPlayers.map((player) => player.id));
-
-    return players.filter((player) => !registeredIds.has(player.id));
-  }, [players, registeredPlayers]);
+  const registeredIds = new Set(registeredPlayers.map((player) => player.id));
+  const playerOptions = players.filter((player) => !registeredIds.has(player.id));
 
   async function handleRegisterPlayer(player: Player) {
     if (!currentSession) return;

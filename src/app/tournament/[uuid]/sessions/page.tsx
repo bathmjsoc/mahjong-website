@@ -1,7 +1,7 @@
 "use client";
 
 import { ChartColumn } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Leaderboard } from "@/components/Leaderboard";
 import { ViewGraphModal } from "@/components/modals/ViewGraphModal";
 import { FilledButton } from "@/elements/FilledButton";
@@ -20,18 +20,12 @@ export default function SessionsPage() {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { scores, activePlayers } = useMemo(() => {
-    const isOverall = selectedSession === null;
+  const isOverall = selectedSession === null;
+  const scores = isOverall
+    ? overallScores
+    : sessionScores[selectedSession.id];
 
-    const scores = isOverall
-      ? overallScores
-      : (sessionScores[selectedSession.id] ?? {});
-
-    return {
-      scores: scores,
-      activePlayers: players.filter((player) => player.id in scores),
-    };
-  }, [overallScores, players, selectedSession, sessionScores]);
+  const activePlayers = players.filter((player) => player.id in scores);
 
   return (
     <>
