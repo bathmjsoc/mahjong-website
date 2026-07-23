@@ -54,7 +54,7 @@ export function useSupabaseRealtime() {
 
     return () => {
       void supabase.removeChannel(channel);
-    }
+    };
   }, [queryClient, tournamentId]);
 
   useEffect(() => {
@@ -95,6 +95,6 @@ export function useSupabaseRealtime() {
 
     return () => {
       void supabase.removeChannel(channel);
-    }
+    };
   }, [queryClient, sessionId]);
 }
