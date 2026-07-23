@@ -50,38 +50,51 @@ export function useSupabaseRealtime() {
         queryClient.invalidateQueries({ queryKey: ["sessions", tournamentId] }),
     );
 
-    if (sessionId) {
-      channel.on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "attendance",
-          filter: `session_id=eq.${sessionId}`,
-        },
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ["attendance", sessionId],
-          }),
-      );
+    channel.subscribe();
 
-      channel.on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "tables",
-          filter: `session_id=eq.${sessionId}`,
-        },
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ["tables", sessionId],
-          }),
-      );
+    return () => {
+      void supabase.removeChannel(channel);
     }
+  }, [queryClient, tournamentId]);
+
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const supabase = createClient();
+    const channel = supabase.channel(`session:${sessionId}`);
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "attendance",
+        filter: `session_id=eq.${sessionId}`,
+      },
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: ["attendance", sessionId],
+        }),
+    );
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "tables",
+        filter: `session_id=eq.${sessionId}`,
+      },
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: ["tables", sessionId],
+        }),
+    );
 
     channel.subscribe();
 
-    return () => void supabase.removeChannel(channel);
-  }, [tournamentId, sessionId, queryClient]);
+    return () => {
+      void supabase.removeChannel(channel);
+    }
+  }, [queryClient, sessionId]);
 }
