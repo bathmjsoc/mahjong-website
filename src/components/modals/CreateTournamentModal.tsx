@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus } from "lucide-react";
-import { type KeyboardEvent, useEffect, useState } from "react";
+import { type KeyboardEvent, useState } from "react";
 import { createTournament } from "@/actions/tournaments";
 import { ScoringRulesTable } from "@/components/ScoringRulesTable";
 import { FilledButton } from "@/elements/FilledButton";
@@ -38,17 +38,9 @@ export function CreateTournamentModal({
   const [scoringRules, setScoringRules] = useState<ScoringRule[]>([
     DEFAULT_SCORING_RULE,
   ]);
-
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     DEFAULT_FALSE_WIN_RULE,
   );
-
-  useEffect(() => {
-    if (!isOpen) {
-      setScoringRules([DEFAULT_SCORING_RULE]);
-      setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
-    }
-  }, [isOpen]);
 
   async function handleSubmit(formData: FormData) {
     const tournamentName = formData.get("tournamentName") as string;
@@ -56,6 +48,12 @@ export function CreateTournamentModal({
     await createTournament(tournamentName, [...scoringRules, falseWinRule]);
     await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
 
+    handleClose();
+  }
+
+  function handleClose() {
+    setScoringRules([DEFAULT_SCORING_RULE]);
+    setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
     closeModalAction();
   }
 
