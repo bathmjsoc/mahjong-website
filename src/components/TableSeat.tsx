@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
 import { WinSelector } from "@/components/WinSelector";
@@ -35,14 +35,10 @@ export function TableSeat({
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
   const occupantId = table[`${wind}_id`];
-  const isDuplicate = occupantId ? duplicatePlayerIds.has(occupantId) : false;
-  const isLocked = occupantId ? lockedPlayerIds.has(occupantId) : false;
+  const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
+  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
+  const occupant = (occupantId && playerMap[occupantId]) || null;
   const tournament = tournamentsMap[tournamentId];
-
-  const occupant = useMemo(() => {
-    if (!occupantId) return null;
-    return playerMap[occupantId] ?? null;
-  }, [playerMap, occupantId]);
 
   useEffect(() => {
     if (!occupant?.id) return;
@@ -72,7 +68,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant, table, tournament]);
+  }, [occupant?.id, table.id, tournament.scoring_rules]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;

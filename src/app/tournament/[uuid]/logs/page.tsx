@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { LogList } from "@/components/LogList";
 import { LogSearchBar } from "@/components/LogSearchBar";
 import { IconButton } from "@/elements/IconButton";
@@ -21,7 +21,7 @@ export default function LogsPage() {
 
   const baseLogs = showDisabledLogs ? logs : enabledLogs;
 
-  const filteredLogs = useMemo(() => {
+  function getFilteredLogs(): Log[] {
     if (!tags.length) return baseLogs;
 
     const tagFilters = {
@@ -60,7 +60,7 @@ export default function LogsPage() {
     }
 
     return result;
-  }, [baseLogs, playerMap, sessionMap, tags]);
+  }
 
   function addTag(tag: LogSearchTag) {
     setTags((tags) => [...tags, tag]);
@@ -90,7 +90,7 @@ export default function LogsPage() {
         </div>
       </div>
 
-      <LogList logs={filteredLogs} />
+      <LogList logs={getFilteredLogs()} />
     </div>
   );
 }
