@@ -5,7 +5,7 @@ import {
   UserPen,
   UserPlus,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { registerPlayer } from "@/actions/attendance";
 import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
@@ -32,7 +32,9 @@ export function Sidebar() {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   const registeredIds = new Set(registeredPlayers.map((player) => player.id));
-  const playerOptions = players.filter((player) => !registeredIds.has(player.id));
+  const playerOptions = players.filter(
+    (player) => !registeredIds.has(player.id),
+  );
 
   async function handleRegisterPlayer(player: Player) {
     if (!currentSession) return;

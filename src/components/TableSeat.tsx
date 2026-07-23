@@ -68,7 +68,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id,  tournament.scoring_rules]);
+  }, [occupant?.id, table.id, tournament.scoring_rules]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
