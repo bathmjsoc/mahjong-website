@@ -43,7 +43,11 @@ export function CreateTournamentModal({
   );
 
   async function handleSubmit(formData: FormData) {
-    const tournamentName = formData.get("tournamentName") as string;
+    const tournamentName = formData.get("tournamentName")?.toString();
+
+    if (!tournamentName) {
+      throw new Error("Tournament Name is required");
+    }
 
     await createTournament(tournamentName, [...scoringRules, falseWinRule]);
     await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
