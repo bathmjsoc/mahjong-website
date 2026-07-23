@@ -53,13 +53,9 @@ export default function LogsPage() {
       },
     };
 
-    let result = baseLogs;
-
-    for (const tag of tags) {
-      result = result.filter((log) => tagFilters[tag.key](log, tag));
-    }
-
-    return result;
+    return baseLogs.filter((log) => {
+      return tags.every((tag) => tagFilters[tag.key](log, tag));
+    });
   }
 
   function addTag(tag: LogSearchTag) {
