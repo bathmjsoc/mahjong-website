@@ -1,7 +1,7 @@
 "use client";
 
 import { Shuffle } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { shuffleTables } from "@/actions/tables";
 import { Sidebar } from "@/components/Sidebar";
 import { TableList } from "@/components/TableList";
@@ -19,15 +19,15 @@ export default function TournamentPage() {
   const { currentSession } = useSessions();
   const { availableTables, tables } = useTables();
 
-  const [isShaking, setIsShaking] = useState(false);
   const [wind, setWind] = useState<string | null>(WINDS[0]);
+  const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
     if (!currentSession) return;
 
-    setIsShaking(true);
-    await shuffleTables(currentSession, availableTables, availablePlayers);
-    setIsShaking(false);
+    startTransition(async () => {
+      await shuffleTables(currentSession, availableTables, availablePlayers);
+    });
   }
 
   return (

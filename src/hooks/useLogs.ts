@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/useTournaments";
 import type { Log } from "@/lib/types";
@@ -21,37 +22,40 @@ export function useLogs(): UseLogsType {
   const tournament = tournamentsMap[tournamentId];
 
   const queryKey = ["logs", tournamentId];
-  const query = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey,
     queryFn: () => fetchLogs(tournamentId),
     enabled: !!tournamentId,
-    select: (logs) => {
-      const enabledLogs = logs.filter((log) => !log.disabled);
-      const overallScores = getPlayerScores(
-        enabledLogs,
-        tournament.scoring_rules,
-      );
-
-      const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
-
-      const sessionScores: Record<string, Record<string, number>> = {};
-      for (const sessionId in grouped) {
-        sessionScores[sessionId] = getPlayerScores(
-          grouped[sessionId] ?? [],
-          tournament.scoring_rules,
-        );
-      }
-
-      return { logs, enabledLogs, overallScores, sessionScores };
-    },
   });
 
+  const logs = data ?? [];
+
+  const { enabledLogs, overallScores, sessionScores } = useMemo(() => {
+    const enabledLogs = logs.filter((log) => !log.disabled);
+    const overallScores = getPlayerScores(
+      enabledLogs,
+      tournament.scoring_rules,
+    );
+
+    const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
+
+    const sessionScores: Record<string, Record<string, number>> = {};
+    for (const sessionId in grouped) {
+      sessionScores[sessionId] = getPlayerScores(
+        grouped[sessionId] ?? [],
+        tournament.scoring_rules,
+      );
+    }
+
+    return { enabledLogs, overallScores, sessionScores };
+  }, [logs, tournament?.scoring_rules]);
+
   return {
-    logs: query.data?.logs ?? [],
-    enabledLogs: query.data?.enabledLogs ?? [],
-    overallScores: query.data?.overallScores ?? {},
-    sessionScores: query.data?.sessionScores ?? {},
-    isLoading: query.isLoading,
-    isError: query.isError,
+    logs: logs,
+    enabledLogs: enabledLogs,
+    overallScores: overallScores,
+    sessionScores: sessionScores,
+    isLoading: isLoading,
+    isError: isError,
   };
 }

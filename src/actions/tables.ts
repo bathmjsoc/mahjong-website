@@ -57,10 +57,12 @@ export async function updateTable(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Record<string, string | null> = {};
-  Object.entries(players).forEach(([wind, player]) => {
-    payload[`${wind}_id`] = player?.id ?? null;
-  });
+  const payload: Record<`${Wind}_id`, string | null> = {
+    east_id: players.east?.id ?? null,
+    south_id: players.south?.id ?? null,
+    west_id: players.west?.id ?? null,
+    north_id: players.north?.id ?? null,
+  };
 
   const { error } = await supabase
     .from("tables")

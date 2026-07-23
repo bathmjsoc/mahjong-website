@@ -14,7 +14,7 @@ export function useTournaments(): UseTournamentsType {
 
   const query = useQuery({
     queryKey,
-    queryFn: () => fetchTournaments(),
+    queryFn: fetchTournaments,
     select: (tournaments) => {
       const tournamentsMap = Object.fromEntries(
         tournaments.map((tournament) => [tournament.id, tournament]),
