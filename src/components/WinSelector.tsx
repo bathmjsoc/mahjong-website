@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { createLog } from "@/actions/logs";
 import { DropDown } from "@/elements/DropDown";
@@ -23,9 +22,8 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const tournament = tournamentsMap[tournamentId];
   const faanOptions = tournament.scoring_rules.map((rule) => rule.faan);
 
-  const opponents = useMemo(() => {
-    if (!occupant) return [];
-
+  const opponents: Player[] = [];
+  if (occupant) {
     const seatIds = [
       table.east_id,
       table.south_id,
@@ -33,10 +31,15 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       table.north_id,
     ];
 
-    return seatIds
-      .map((id) => (id ? (playerMap[id] ?? null) : null))
-      .filter((player) => !player || player.id !== occupant.id);
-  }, [table, playerMap, occupant]);
+    for (const id of seatIds) {
+      if (!id) continue;
+
+      const player = playerMap[id];
+      if (player.id !== occupant.id) {
+        opponents.push(player);
+      }
+    }
+  }
 
   async function handleWin(
     winType: WinType,
