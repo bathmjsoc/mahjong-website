@@ -23,6 +23,7 @@ export async function createTournament(
   await createSession(tournament.id);
 }
 
+// Supabase stores `scoring_rules` as jsonb so we need to override it with the correct type
 type TournamentRow = Omit<Tables<"tournaments">, "scoring_rules"> & {
   scoring_rules: ScoringRule[];
 };
@@ -34,7 +35,7 @@ export async function fetchTournaments(): Promise<Tournament[]> {
     .from("tournaments")
     .select("*")
     .order("last_updated", { ascending: false })
-    .overrideTypes<Array<TournamentRow>>(); // Not ideal, but otherwise jsonb breaks the typing
+    .overrideTypes<Array<TournamentRow>>(); // Not ideal, but otherwise the typing breaks :(
 
   if (error)
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
