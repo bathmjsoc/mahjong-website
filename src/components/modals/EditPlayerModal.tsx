@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { updatePlayer } from "@/actions/players";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
@@ -19,36 +19,61 @@ export function EditPlayerModal({
 }: EditPlayerModalProps) {
   const { players } = usePlayers();
 
-  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
-  const [notification, setNotification] = useState("");
-
-  const isInvalid =
-    !selectedPlayer || !newName.trim() || newName === selectedPlayer.name;
+  const [notification, setNotification] = useState<string | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
-    setSelectedPlayer(null);
+    setError(null);
     setNewName("");
+    setSelectedPlayer(null);
     closeModalAction();
   }
 
   function handleSelect(player: Player | null) {
-    setSelectedPlayer(player);
+    setError(null);
     setNewName(player?.name ?? "");
+    setSelectedPlayer(player);
   }
 
-  async function handleEdit() {
-    if (isInvalid) return;
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setError(null);
+    setNewName(e.target.value);
+  }
 
-    await updatePlayer(selectedPlayer, newName);
-    setNotification(`"${selectedPlayer.name}" renamed to "${newName}".`);
+  async function handleSubmit(formData: FormData) {
+    if (!selectedPlayer) return;
+
+    const updatedName = formData.get("updatedName");
+
+    if (typeof updatedName !== "string" || !updatedName.trim()) {
+      setError("Player Name is required.");
+      return;
+    }
+
+    const trimmedName = updatedName.trim();
+
+    if (
+      players.some(
+        (player) =>
+          player.name === trimmedName && player.id !== selectedPlayer.id,
+      )
+    ) {
+      setError("This name is already taken.");
+      return;
+    }
+
+    await updatePlayer(selectedPlayer, trimmedName);
+
+    setNotification(`"${selectedPlayer.name}" renamed to "${trimmedName}".`);
     handleClose();
   }
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
-        <form action={handleEdit} className="flex flex-col gap-5">
+        <form action={handleSubmit} className="flex flex-col gap-5">
           <RoundedListbox<Player>
             value={selectedPlayer}
             options={players}
@@ -61,17 +86,29 @@ export function EditPlayerModal({
           />
 
           {selectedPlayer && (
-            <LabelledInput
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              type="text"
-              autoComplete="off"
-            >
-              Player Name
-            </LabelledInput>
+            <div className="flex flex-col gap-3">
+              <LabelledInput
+                name="updatedName"
+                value={newName}
+                onChange={handleChange}
+                type="text"
+                autoComplete="off"
+              >
+                Player Name
+              </LabelledInput>
+
+              {error && (
+                <span className="text-center text-negative text-xs">
+                  {error}
+                </span>
+              )}
+            </div>
           )}
 
-          <FilledButton type="submit" disabled={isInvalid}>
+          <FilledButton
+            type="submit"
+            disabled={!selectedPlayer || newName.trim() === selectedPlayer.name}
+          >
             Update Player
           </FilledButton>
         </form>
@@ -79,7 +116,7 @@ export function EditPlayerModal({
 
       <Notification
         isOpen={!!notification}
-        close={() => setNotification("")}
+        close={() => setNotification(null)}
         title="Player Modified"
       >
         {notification}

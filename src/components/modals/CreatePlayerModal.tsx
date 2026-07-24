@@ -25,8 +25,12 @@ export function CreatePlayerModal({
   }
 
   async function handleSubmit(formData: FormData) {
-    const playerName = formData.get("playerName")?.toString();
-    if (!playerName) return;
+    const playerName = formData.get("playerName");
+
+    if (typeof playerName !== "string" || !playerName.trim()) {
+      setError("Player Name is required.");
+      return;
+    }
 
     if (players.some((player) => player.name === playerName)) {
       setError("This name is already taken.");

@@ -1,28 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Minus, Plus } from "lucide-react";
-import { type KeyboardEvent, useState } from "react";
+import { useState } from "react";
 import { createTournament } from "@/actions/tournaments";
-import { ScoringRulesTable } from "@/components/ScoringRulesTable";
+import {
+  DEFAULT_FALSE_WIN_RULE,
+  DEFAULT_SCORING_RULE,
+  ScoringEditor,
+} from "@/components/ScoringEditor";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import type { ScoringRule } from "@/lib/types";
-
-const DEFAULT_SCORING_RULE: ScoringRule = {
-  faan: 0,
-  deltas: {
-    打出: { winner: 0, loser: 0 },
-    自摸: { winner: 0, loser: 0 },
-    包自摸: { winner: 0, loser: 0 },
-  },
-} as const;
-
-const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
-  faan: null,
-  deltas: {
-    詐糊: { winner: 0, loser: 0 },
-  },
-} as const;
 
 type CreateTournamentModalProps = {
   isOpen: boolean;
@@ -35,18 +22,20 @@ export function CreateTournamentModal({
 }: CreateTournamentModalProps) {
   const queryClient = useQueryClient();
 
-  const [scoringRules, setScoringRules] = useState<ScoringRule[]>([
-    DEFAULT_SCORING_RULE,
-  ]);
+  const [error, setError] = useState<string | null>(null);
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     DEFAULT_FALSE_WIN_RULE,
   );
+  const [scoringRules, setScoringRules] = useState<ScoringRule[]>([
+    DEFAULT_SCORING_RULE,
+  ]);
 
   async function handleSubmit(formData: FormData) {
-    const tournamentName = formData.get("tournamentName")?.toString();
+    const tournamentName = formData.get("tournamentName");
 
-    if (!tournamentName) {
-      throw new Error("Tournament Name is required");
+    if (typeof tournamentName !== "string" || !tournamentName.trim()) {
+      setError("Tournament Name is required");
+      return;
     }
 
     await createTournament(tournamentName, [...scoringRules, falseWinRule]);
@@ -56,119 +45,49 @@ export function CreateTournamentModal({
   }
 
   function handleClose() {
-    setScoringRules([DEFAULT_SCORING_RULE]);
+    setError(null);
     setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
+    setScoringRules([DEFAULT_SCORING_RULE]);
     closeModalAction();
   }
 
-  function handleAddRule() {
-    setScoringRules((rules) => [...rules, DEFAULT_SCORING_RULE]);
-  }
-
-  function handleRemoveRule() {
-    setScoringRules((rules) => rules.slice(0, -1));
-  }
-
-  function handleKeyDown(e: KeyboardEvent<HTMLFormElement>) {
-    if (e.key === "Enter") e.preventDefault();
-  }
-
   return (
-    <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Tournament">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Create Tournament">
       <form
         action={handleSubmit}
-        onKeyDown={handleKeyDown}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
         className="flex h-150 w-2xl flex-col items-center justify-center gap-4"
       >
-        <LabelledInput
-          name="tournamentName"
-          type="text"
-          autoComplete="off"
-          autoFocus
-          required
-          inputClassName="w-sm"
-        >
-          Tournament Name
-        </LabelledInput>
+        <div className="flex flex-col gap-3">
+          <LabelledInput
+            name="tournamentName"
+            type="text"
+            autoComplete="off"
+            autoFocus
+            required
+            inputClassName="w-sm"
+          >
+            Tournament Name
+          </LabelledInput>
 
-        <div className="w-full rounded bg-white/10 p-2 text-center text-sm">
-          Scoring Rules
+          {error && (
+            <span className="text-center text-negative text-xs">{error}</span>
+          )}
         </div>
 
-        <FalseWinEditor rule={falseWinRule} onChange={setFalseWinRule} />
+        <ScoringEditor
+          scoringRules={scoringRules}
+          setScoringRules={setScoringRules}
+          falseWinRule={falseWinRule}
+          setFalseWinRule={setFalseWinRule}
+        />
 
-        <div className="scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent flex h-full flex-col gap-4 overflow-y-auto">
-          <ScoringRulesTable
-            scoringRules={scoringRules}
-            setScoringRules={setScoringRules}
-          />
-
-          <div className="flex items-center justify-center gap-4">
-            <FilledButton
-              onClick={handleAddRule}
-              className="size-9 rounded-full bg-positive"
-            >
-              <Plus className="size-5" />
-            </FilledButton>
-
-            <FilledButton
-              onClick={handleRemoveRule}
-              className="size-9 rounded-full bg-negative"
-            >
-              <Minus className="size-5" />
-            </FilledButton>
-          </div>
-        </div>
-
-        <FilledButton type="submit" className="w-sm bg-accent">
+        <FilledButton type="submit" className="w-sm">
           Create Tournament
         </FilledButton>
       </form>
     </Modal>
-  );
-}
-
-type FalseWinEditorProps = {
-  rule: ScoringRule;
-  onChange: (updatedRule: ScoringRule) => void;
-};
-
-function FalseWinEditor({ rule, onChange }: FalseWinEditorProps) {
-  function handleDeltaChange(field: "winner" | "loser", value: number) {
-    const nextRule = structuredClone(rule);
-
-    nextRule.deltas.詐糊 ??= { winner: 0, loser: 0 };
-    nextRule.deltas.詐糊[field] = value;
-    onChange(nextRule);
-  }
-
-  return (
-    <div className="flex items-center justify-center">
-      <div className="grid w-3/7 grid-cols-3 gap-4 p-2">
-        <div className="flex items-center justify-center">
-          <span title="False Win" className="font-bold">
-            詐糊
-          </span>
-        </div>
-
-        <LabelledInput
-          type="number"
-          defaultValue={rule.deltas.詐糊?.winner}
-          inputClassName="no-spinner"
-          onBlur={(e) => handleDeltaChange("winner", e.target.valueAsNumber)}
-        >
-          Winner
-        </LabelledInput>
-
-        <LabelledInput
-          type="number"
-          defaultValue={rule.deltas.詐糊?.loser}
-          inputClassName="no-spinner"
-          onBlur={(e) => handleDeltaChange("loser", e.target.valueAsNumber)}
-        >
-          Loser
-        </LabelledInput>
-      </div>
-    </div>
   );
 }
