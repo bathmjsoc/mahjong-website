@@ -19,22 +19,26 @@ export function EditPlayerModal({
 }: EditPlayerModalProps) {
   const { players } = usePlayers();
 
+  const [error, setError] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
   const [notification, setNotification] = useState<string | null>(null);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
+    setError(null);
     setNewName("");
     setSelectedPlayer(null);
     closeModalAction();
   }
 
   function handleSelect(player: Player | null) {
+    setError(null);
     setNewName(player?.name ?? "");
     setSelectedPlayer(player);
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setError(null);
     setNewName(e.target.value);
   }
 
@@ -44,6 +48,7 @@ export function EditPlayerModal({
     const updatedName = formData.get("updatedName");
 
     if (typeof updatedName !== "string" || !updatedName.trim()) {
+      setError("Player Name is required.");
       return;
     }
 
@@ -55,6 +60,7 @@ export function EditPlayerModal({
           player.name === trimmedName && player.id !== selectedPlayer.id,
       )
     ) {
+      setError("This name is already taken.");
       return;
     }
 
@@ -91,6 +97,10 @@ export function EditPlayerModal({
                 Player Name
               </LabelledInput>
 
+              {error && (
+                <span className="text-center text-negative text-xs">
+                  {error}
+                </span>
               )}
             </div>
           )}
