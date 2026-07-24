@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PUBLIC_ROUTES = new Set(["/"]);
+const PUBLIC_ROUTES = new Set(["/login"]);
 
 export async function proxy(request: NextRequest) {
   const { user, response } = await updateSession(request);
@@ -9,7 +9,7 @@ export async function proxy(request: NextRequest) {
 
   // Route unauthenticated users to login page
   if (!user && !PUBLIC_ROUTES.has(pathname)) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   // Route authenticated users away from login page
