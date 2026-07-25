@@ -60,6 +60,7 @@ export function CreateTournamentModal({
         <div className="flex flex-col gap-3">
           <LabelledInput
             name="tournamentName"
+            onChange={() => setError(null)}
             type="text"
             autoComplete="off"
             autoFocus
