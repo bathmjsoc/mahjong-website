@@ -1,15 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { createTournament } from "@/actions/tournaments";
-import {
-  DEFAULT_FALSE_WIN_RULE,
-  DEFAULT_SCORING_RULE,
-  ScoringEditor,
-} from "@/components/ScoringEditor";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import type { ScoringRule } from "@/lib/types";
+import {
+  DEFAULT_FALSE_WIN_RULE,
+  DEFAULT_SCORING_RULE,
+  ScoringEditor,
+} from "./ScoringEditor";
 
 type CreateTournamentModalProps = {
   isOpen: boolean;

@@ -3,14 +3,14 @@
 import { Shuffle } from "lucide-react";
 import { useState, useTransition } from "react";
 import { shuffleTables } from "@/actions/tables";
-import { Sidebar } from "@/components/Sidebar";
-import { TableList } from "@/components/TableList";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/useAttendance";
 import { useSessions } from "@/hooks/useSessions";
 import { useTables } from "@/hooks/useTables";
 import { windMap } from "@/lib/utils";
+import { Sidebar } from "./_components/Sidebar";
+import { TableList } from "./_components/TableList";
 
 const WINDS = ["東", "南", "西", "北"] as const;
 

@@ -2,11 +2,11 @@
 
 import { useActionState, useState } from "react";
 import { signIn } from "@/actions/auth";
-import { RegisterModal } from "@/components/modals/RegisterModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
 import type { ActionState } from "@/lib/types";
+import { RegisterModal } from "./RegisterModal";
 
 export function LoginForm() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);

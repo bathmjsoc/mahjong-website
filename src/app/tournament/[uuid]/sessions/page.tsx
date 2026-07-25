@@ -2,8 +2,6 @@
 
 import { ChartColumn } from "lucide-react";
 import { useState } from "react";
-import { Leaderboard } from "@/components/Leaderboard";
-import { ViewGraphModal } from "@/components/modals/ViewGraphModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/useLogs";
@@ -11,6 +9,8 @@ import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
+import { Leaderboard } from "./_components/Leaderboard";
+import { ViewGraphModal } from "./_components/ViewGraphModal";
 
 export default function SessionsPage() {
   const { overallScores, sessionScores } = useLogs();

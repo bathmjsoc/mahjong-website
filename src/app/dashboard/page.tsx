@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { CreateTournamentModal } from "@/components/modals/CreateTournamentModal";
-import { TournamentList } from "@/components/TournamentList";
 import { FilledButton } from "@/elements/FilledButton";
 import { useTournaments } from "@/hooks/useTournaments";
+import { CreateTournamentModal } from "./_components/CreateTournamentModal";
+import { TournamentList } from "./_components/TournamentList";
 
 export default function DashboardPage() {
   const [isOpen, setIsOpen] = useState(false);

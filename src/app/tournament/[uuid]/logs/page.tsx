@@ -2,14 +2,14 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
-import { LogList } from "@/components/LogList";
-import { LogSearchBar } from "@/components/LogSearchBar";
 import { IconButton } from "@/elements/IconButton";
 import { useLogs } from "@/hooks/useLogs";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
+import { LogList } from "./_components/LogList";
+import { LogSearchBar } from "./_components/LogSearchBar";
 
 export default function LogsPage() {
   const { enabledLogs, logs } = useLogs();

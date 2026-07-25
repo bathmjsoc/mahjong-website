@@ -8,11 +8,6 @@ import {
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { registerPlayer } from "@/actions/attendance";
-import { CreatePlayerModal } from "@/components/modals/CreatePlayerModal";
-import { DeletePlayerModal } from "@/components/modals/DeletePlayerModal";
-import { EditPlayerModal } from "@/components/modals/EditPlayerModal";
-import { ResetSessionModal } from "@/components/modals/ResetSessionModal";
-import { PlayerList } from "@/components/PlayerList";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
@@ -20,6 +15,11 @@ import { useAttendance } from "@/hooks/useAttendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Player } from "@/lib/types";
+import { CreatePlayerModal } from "./CreatePlayerModal";
+import { DeletePlayerModal } from "./DeletePlayerModal";
+import { EditPlayerModal } from "./EditPlayerModal";
+import { PlayerList } from "./PlayerList";
+import { ResetSessionModal } from "./ResetSessionModal";
 
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
