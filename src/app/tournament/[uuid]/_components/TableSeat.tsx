@@ -51,11 +51,8 @@ export function TableSeat({
       const { faan, winType, winners, losers }: PointsAnimationEvent =
         event.detail;
 
-      const pointDeltas = getPointDeltas(
-        faan,
-        winType,
-        tournament.scoring_rules,
-      );
+      const scoringRules = tournament?.scoring_rules ?? [];
+      const pointDeltas = getPointDeltas(faan, winType, scoringRules);
 
       if (winners.some((p) => p.id === occupant.id)) {
         setAnimationPoints(pointDeltas.winner);
@@ -68,7 +65,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id, tournament.scoring_rules]);
+  }, [occupant?.id, table.id, tournament?.scoring_rules]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;

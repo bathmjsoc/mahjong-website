@@ -20,7 +20,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { tournamentsMap } = useTournaments();
 
   const tournament = tournamentsMap[tournamentId];
-  const faanOptions = tournament.scoring_rules.map((rule) => rule.faan);
+  const faanOptions = tournament?.scoring_rules?.map((rule) => rule.faan) ?? [];
 
   const opponents: Player[] = [];
   if (occupant) {
