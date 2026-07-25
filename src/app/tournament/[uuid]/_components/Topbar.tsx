@@ -5,14 +5,8 @@ import { useRouter } from "next/navigation";
 import { signOut } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
+import { TABS } from "@/lib/constants";
 import { useTournament } from "@/providers/TournamentProvider";
-
-const TABS = [
-  { label: "Tables", href: "" },
-  { label: "Logs", href: "/logs" },
-  { label: "Sessions", href: "/sessions" },
-  { label: "Analytics", href: "/analytics" },
-] as const;
 
 export function Topbar() {
   const { tournamentId } = useTournament();

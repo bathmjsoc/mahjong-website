@@ -1,9 +1,7 @@
 import { Fragment } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
+import { WIN_TYPE_MAP, WIN_TYPES } from "@/lib/constants";
 import type { ScoringRule, WinType } from "@/lib/types";
-import { winTypeMap } from "@/lib/utils";
-
-const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 
 type ScoringRulesTableProps = {
   scoringRules: ScoringRule[];
@@ -28,7 +26,7 @@ export function ScoringRulesTable({
             <th
               key={winType}
               colSpan={2}
-              title={winTypeMap[winType]}
+              title={WIN_TYPE_MAP[winType]}
               className="border-secondary border-l"
             >
               {winType}

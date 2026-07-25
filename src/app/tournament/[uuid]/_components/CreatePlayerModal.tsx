@@ -3,6 +3,7 @@ import { createPlayer } from "@/actions/players";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayers } from "@/hooks/usePlayers";
+import { parseFormString } from "@/lib/utils";
 import { useTournament } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
@@ -22,9 +23,9 @@ export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
   }
 
   async function handleSubmit(formData: FormData) {
-    const playerName = formData.get("playerName");
+    const playerName = parseFormString(formData, "playerName");
 
-    if (typeof playerName !== "string" || !playerName.trim()) {
+    if (!playerName) {
       setError("Player Name is required.");
       return;
     }

@@ -7,6 +7,7 @@ import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayers } from "@/hooks/usePlayers";
 import type { Player } from "@/lib/types";
+import { parseFormString } from "@/lib/utils";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
@@ -42,28 +43,26 @@ export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
   async function handleSubmit(formData: FormData) {
     if (!selectedPlayer) return;
 
-    const updatedName = formData.get("updatedName");
+    const updatedName = parseFormString(formData, "updatedName");
 
-    if (typeof updatedName !== "string" || !updatedName.trim()) {
+    if (!updatedName) {
       setError("Player Name is required.");
       return;
     }
 
-    const trimmedName = updatedName.trim();
-
     if (
       players.some(
         (player) =>
-          player.name === trimmedName && player.id !== selectedPlayer.id,
+          player.name === updatedName && player.id !== selectedPlayer.id,
       )
     ) {
       setError("This name is already taken.");
       return;
     }
 
-    await updatePlayer(selectedPlayer, trimmedName);
+    await updatePlayer(selectedPlayer, updatedName);
 
-    setNotification(`"${selectedPlayer.name}" renamed to "${trimmedName}".`);
+    setNotification(`"${selectedPlayer.name}" renamed to "${updatedName}".`);
     handleClose();
   }
 
@@ -102,10 +101,7 @@ export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
             </div>
           )}
 
-          <FilledButton
-            type="submit"
-            disabled={!selectedPlayer || newName.trim() === selectedPlayer.name}
-          >
+          <FilledButton type="submit" disabled={!selectedPlayer}>
             Update Player
           </FilledButton>
         </form>

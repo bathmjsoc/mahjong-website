@@ -4,8 +4,8 @@ import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
+import { WIN_TYPE_MAP } from "@/lib/constants";
 import type { Log } from "@/lib/types";
-import { winTypeMap } from "@/lib/utils";
 
 type LogListProps = {
   logs: Log[];
@@ -66,7 +66,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
-        title={winTypeMap[log.win_type]}
+        title={WIN_TYPE_MAP[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
@@ -81,7 +81,9 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.winner_ids.map((id) => playerMap[id].name).join(", ")}
+        {log.winner_ids
+          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .join(", ")}
       </td>
 
       <td
@@ -90,7 +92,9 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.loser_ids.map((id) => playerMap[id].name).join(", ")}
+        {log.loser_ids
+          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .join(", ")}
       </td>
 
       <td>

@@ -6,7 +6,7 @@ type FalseWinRuleEditorProps = {
   onChange: (updatedRule: ScoringRule) => void;
 };
 
-export function FalseWinRuleEditor({
+export function FalseWinRuleInput({
   scoringRule,
   onChange,
 }: FalseWinRuleEditorProps) {

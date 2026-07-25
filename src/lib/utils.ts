@@ -1,3 +1,4 @@
+import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
 import type {
   Log,
   Player,
@@ -15,16 +16,8 @@ export function formatTimeAgo(timestamp: string): string {
   const delta = Math.round((timestampTime - Date.now()) / 1000);
 
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-  const cutoffs: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
-    { unit: "year", seconds: 31536000 },
-    { unit: "month", seconds: 2592000 },
-    { unit: "week", seconds: 604800 },
-    { unit: "day", seconds: 86400 },
-    { unit: "hour", seconds: 3600 },
-    { unit: "minute", seconds: 60 },
-  ];
 
-  for (const cutoff of cutoffs) {
+  for (const cutoff of RELATIVE_TIME_CUTOFFS) {
     if (Math.abs(delta) >= cutoff.seconds) {
       return rtf.format(Math.round(delta / cutoff.seconds), cutoff.unit);
     }
@@ -101,27 +94,7 @@ export function normalizeText(text: string) {
 }
 
 /*
- * Maps Cantonese Mahjong win types into English tooltips
- */
-export const winTypeMap: Record<WinType, string> = {
-  打出: "Throw",
-  自摸: "Self-Draw",
-  包自摸: "Special Case",
-  詐糊: "False Win",
-} as const;
-
-/*
- * Maps Cantonese Mahjong winds into English tooltips
- */
-export const windMap: Record<string, string> = {
-  東: "East",
-  南: "South",
-  西: "West",
-  北: "North",
-} as const;
-
-/*
- * Calculates the cumulative score for each player from the provided logs
+ * Calculates the cumulative score for each player from the provided logs and scoring rules
  */
 export function getPlayerScores(
   logs: Log[],
@@ -164,6 +137,9 @@ export function getPointDeltas(
   return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }
 
+/*
+ * Calculate the cumulative point history for a player from the provided logs and scoring rules
+ */
 export function getPointHistory(
   logs: Log[],
   player: Player,
@@ -187,4 +163,17 @@ export function getPointHistory(
   }
 
   return scores;
+}
+
+/*
+ * Safely extract and trim a string value from FormData
+ */
+export function parseFormString(
+  formData: FormData,
+  key: string,
+): string | null {
+  const value = formData.get(key);
+  if (typeof value !== "string" || !value.trim()) return null;
+
+  return value.trim();
 }

@@ -32,14 +32,14 @@ export function useTables(): UseTablesType {
         if (table.saved) continue;
         availableTables.push(table);
 
-        const seatIds = [
+        const SEAT_IDS = [
           table.east_id,
           table.south_id,
           table.west_id,
           table.north_id,
-        ];
+        ] as const;
 
-        for (const id of seatIds) {
+        for (const id of SEAT_IDS) {
           if (!id) continue;
 
           if (seatedPlayerIds.has(id)) {
