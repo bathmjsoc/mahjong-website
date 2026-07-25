@@ -5,15 +5,12 @@ import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { useTournament } from "@/providers/TournamentProvider";
 
-type ConfirmRefreshModalProps = {
+type ResetSessionModalProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-export function ResetSessionModal({
-  isOpen,
-  onClose,
-}: ConfirmRefreshModalProps) {
+export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
   const { tournamentId } = useTournament();
   const [showSuccess, setShowSuccess] = useState(false);
 
