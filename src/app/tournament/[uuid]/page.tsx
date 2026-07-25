@@ -8,11 +8,9 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/useAttendance";
 import { useSessions } from "@/hooks/useSessions";
 import { useTables } from "@/hooks/useTables";
-import { windMap } from "@/lib/constants";
+import { WIND_MAP, WINDS } from "@/lib/constants";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
-
-const WINDS = ["東", "南", "西", "北"] as const;
 
 export default function TournamentPage() {
   const { availablePlayers } = useAttendance();
@@ -35,7 +33,7 @@ export default function TournamentPage() {
       <Sidebar />
 
       <div
-        title={wind ? windMap[wind] : ""}
+        title={wind ? WIND_MAP[wind] : ""}
         className="absolute top-20 right-5 rounded-2xl bg-primary"
       >
         <RoundedListbox<string>
@@ -44,7 +42,7 @@ export default function TournamentPage() {
           onChange={setWind}
           getOptionLabel={(wind) => wind}
           getOptionKey={(wind) => wind}
-          getOptionTooltip={(wind) => windMap[wind]}
+          getOptionTooltip={(wind) => WIND_MAP[wind]}
           buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
         />
       </div>

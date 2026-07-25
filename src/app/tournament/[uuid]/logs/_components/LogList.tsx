@@ -4,7 +4,7 @@ import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import { winTypeMap } from "@/lib/constants";
+import { WIN_TYPE_MAP } from "@/lib/constants";
 import type { Log } from "@/lib/types";
 
 type LogListProps = {
@@ -66,7 +66,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
-        title={winTypeMap[log.win_type]}
+        title={WIN_TYPE_MAP[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
