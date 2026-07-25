@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IconButton } from "@/elements/IconButton";
 import { useLogs } from "@/hooks/useLogs";
 import { usePlayers } from "@/hooks/usePlayers";
@@ -21,38 +21,43 @@ export default function LogsPage() {
 
   const baseLogs = showDisabledLogs ? logs : enabledLogs;
 
-  const tagFilters = {
-    session: (log: Log, tag: LogSearchTag) => {
-      const session = sessionMap[log.session_id];
-      return session.number === parseInt(tag.value, 10);
-    },
+  const tagFilters = useMemo(
+    () => ({
+      session: (log: Log, tag: LogSearchTag) => {
+        const session = sessionMap[log.session_id];
+        return session.number === parseInt(tag.value, 10);
+      },
 
-    type: (log: Log, tag: LogSearchTag) => {
-      return normalizeText(log.win_type) === normalizeText(tag.value);
-    },
+      type: (log: Log, tag: LogSearchTag) => {
+        return normalizeText(log.win_type) === normalizeText(tag.value);
+      },
 
-    faan: (log: Log, tag: LogSearchTag) => {
-      return log.faan === parseInt(tag.value, 10);
-    },
+      faan: (log: Log, tag: LogSearchTag) => {
+        return log.faan === parseInt(tag.value, 10);
+      },
 
-    player: (log: Log, tag: LogSearchTag) => {
-      const isWinner = log.winner_ids.some((id) => {
-        return normalizeText(playerMap[id].name) === normalizeText(tag.value);
-      });
+      player: (log: Log, tag: LogSearchTag) => {
+        const isWinner = log.winner_ids.some((id) => {
+          return normalizeText(playerMap[id].name) === normalizeText(tag.value);
+        });
 
-      const isLoser = log.loser_ids.some((id) => {
-        return normalizeText(playerMap[id].name) === normalizeText(tag.value);
-      });
+        const isLoser = log.loser_ids.some((id) => {
+          return normalizeText(playerMap[id].name) === normalizeText(tag.value);
+        });
 
-      return isWinner || isLoser;
-    },
-  };
+        return isWinner || isLoser;
+      },
+    }),
+    [playerMap, sessionMap],
+  );
 
-  const filteredLogs = tags.length
-    ? baseLogs.filter((log) =>
-        tags.every((tag) => tagFilters[tag.key](log, tag)),
-      )
-    : baseLogs;
+  const filteredLogs = useMemo(() => {
+    if (!tags.length) return baseLogs;
+
+    return baseLogs.filter((log) =>
+      tags.every((tag) => tagFilters[tag.key](log, tag)),
+    );
+  }, [baseLogs, tagFilters, tags]);
 
   function addTag(tag: LogSearchTag) {
     setTags((tags) => [...tags, tag]);
