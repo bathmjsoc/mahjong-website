@@ -21,7 +21,9 @@ export default function SessionsPage() {
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
   const isOverall = selectedSession === null;
-  const scores = isOverall ? overallScores : sessionScores[selectedSession.id];
+  const scores = isOverall
+    ? overallScores
+    : (sessionScores[selectedSession.id] ?? {});
 
   const activePlayers = players.filter((player) => player.id in scores);
 

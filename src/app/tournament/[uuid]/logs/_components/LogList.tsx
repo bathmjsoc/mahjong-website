@@ -81,7 +81,9 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.winner_ids.map((id) => playerMap[id].name).join(", ")}
+        {log.winner_ids
+          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .join(", ")}
       </td>
 
       <td
@@ -90,7 +92,9 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.loser_ids.map((id) => playerMap[id].name).join(", ")}
+        {log.loser_ids
+          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .join(", ")}
       </td>
 
       <td>
