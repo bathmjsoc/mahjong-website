@@ -29,15 +29,11 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       table.south_id,
       table.west_id,
       table.north_id,
-    ];
+    ] as const;
 
     for (const id of seatIds) {
-      if (!id) continue;
-
-      const player = playerMap[id];
-      if (player.id !== occupant.id) {
-        opponents.push(player);
-      }
+      if (!id || id === occupant.id) continue;
+      opponents.push(playerMap[id]);
     }
   }
 
