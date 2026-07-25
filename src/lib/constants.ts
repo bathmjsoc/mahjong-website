@@ -16,6 +16,13 @@ export const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
   },
 } as const;
 
+export const TABS = [
+  { label: "Tables", href: "" },
+  { label: "Logs", href: "/logs" },
+  { label: "Sessions", href: "/sessions" },
+  { label: "Analytics", href: "/analytics" },
+] as const;
+
 export const WIN_TYPE_MAP: Record<WinType, string> = {
   打出: "Throw",
   自摸: "Self-Draw",
