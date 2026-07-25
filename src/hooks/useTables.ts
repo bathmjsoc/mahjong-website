@@ -37,7 +37,7 @@ export function useTables(): UseTablesType {
           table.south_id,
           table.west_id,
           table.north_id,
-        ];
+        ] as const;
 
         for (const id of seatIds) {
           if (!id) continue;
