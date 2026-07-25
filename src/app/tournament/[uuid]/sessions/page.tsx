@@ -18,7 +18,7 @@ export default function SessionsPage() {
   const { sessions } = useSessions();
 
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
   const isOverall = selectedSession === null;
   const scores = isOverall ? overallScores : sessionScores[selectedSession.id];
@@ -41,7 +41,7 @@ export default function SessionsPage() {
         <FilledButton
           className="flex items-center justify-center gap-2 text-sm"
           disabled={!activePlayers.length}
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsGraphModalOpen(true)}
         >
           <ChartColumn className="size-5" />
           View Graph
@@ -53,8 +53,8 @@ export default function SessionsPage() {
       <ViewGraphModal
         players={activePlayers}
         scores={scores}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        isOpen={isGraphModalOpen}
+        onClose={() => setIsGraphModalOpen(false)}
       />
     </>
   );
