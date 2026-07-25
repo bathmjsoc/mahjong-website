@@ -5,7 +5,7 @@ import {
   UserPen,
   UserPlus,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { registerPlayer } from "@/actions/attendance";
 import { FilledButton } from "@/elements/FilledButton";
@@ -31,10 +31,10 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const registeredIds = new Set(registeredPlayers.map((player) => player.id));
-  const playerOptions = players.filter(
-    (player) => !registeredIds.has(player.id),
-  );
+  const playerOptions = useMemo(() => {
+    const registeredIds = new Set(registeredPlayers.map((player) => player.id));
+    return players.filter((player) => !registeredIds.has(player.id));
+  }, [players, registeredPlayers]);
 
   async function handleRegisterPlayer(player: Player) {
     if (!currentSession) return;
