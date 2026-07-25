@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "mahjong-website",
 };
 
-const font = Oxygen_Mono({
+const oxygenMono = Oxygen_Mono({
   subsets: ["latin"],
   weight: "400",
 });
@@ -16,7 +16,7 @@ const font = Oxygen_Mono({
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={oxygenMono.className}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

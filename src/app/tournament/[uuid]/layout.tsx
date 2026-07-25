@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { getTournamentName } from "@/actions/tournaments";
-import { Topbar } from "@/components/Topbar";
 import { TournamentProvider } from "@/providers/TournamentProvider";
+import { Topbar } from "./_components/Topbar";
 
 type TournamentLayoutProps = {
   children: ReactNode;
@@ -18,7 +18,7 @@ export async function generateMetadata({
   try {
     return { title: await getTournamentName(tournamentId) };
   } catch {
-    return { title: "Tournament Not Found" };
+    return {};
   }
 }
 

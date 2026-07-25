@@ -1,8 +1,8 @@
 import { Minus, Plus } from "lucide-react";
-import { FalseWinRuleEditor } from "@/components/FalseWinRuleEditor";
-import { ScoringRulesTable } from "@/components/ScoringRulesTable";
 import { FilledButton } from "@/elements/FilledButton";
 import type { ScoringRule } from "@/lib/types";
+import { FalseWinRuleEditor } from "./FalseWinRuleEditor";
+import { ScoringRulesTable } from "./ScoringRulesTable";
 
 export const DEFAULT_SCORING_RULE: ScoringRule = {
   faan: 0,

@@ -8,13 +8,10 @@ import type { ActionState } from "@/lib/types";
 
 type RegisterModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
-export function RegisterModal({
-  isOpen,
-  closeModalAction,
-}: RegisterModalProps) {
+export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   async function handleSignUp(prevState: ActionState, formData: FormData) {
@@ -22,7 +19,7 @@ export function RegisterModal({
 
     if (result?.success) {
       setShowSuccess(true);
-      closeModalAction();
+      onClose();
     }
 
     return result;
@@ -35,7 +32,7 @@ export function RegisterModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={closeModalAction} title="Create Account">
+      <Modal isOpen={isOpen} onClose={onClose} title="Create Account">
         <form action={formAction} className="flex w-xs flex-col gap-3">
           <LabelledInput
             name="email"

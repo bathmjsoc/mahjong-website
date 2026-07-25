@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { updateTable } from "@/actions/tables";
-import { WinSelector } from "@/components/WinSelector";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/useAttendance";
 import { usePlayers } from "@/hooks/usePlayers";
@@ -10,6 +9,7 @@ import { useTournaments } from "@/hooks/useTournaments";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 import { getPointDeltas } from "@/lib/utils";
 import { useTournament } from "@/providers/TournamentProvider";
+import { WinSelector } from "./WinSelector";
 
 type TableSeatProps = {
   table: Table;

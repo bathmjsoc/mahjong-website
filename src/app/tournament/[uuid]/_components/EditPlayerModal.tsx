@@ -10,13 +10,10 @@ import type { Player } from "@/lib/types";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
-export function EditPlayerModal({
-  isOpen,
-  closeModalAction,
-}: EditPlayerModalProps) {
+export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
   const { players } = usePlayers();
 
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +25,7 @@ export function EditPlayerModal({
     setError(null);
     setNewName("");
     setSelectedPlayer(null);
-    closeModalAction();
+    onClose();
   }
 
   function handleSelect(player: Player | null) {

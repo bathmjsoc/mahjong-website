@@ -2,14 +2,14 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
-import { LogList } from "@/components/LogList";
-import { LogSearchBar } from "@/components/LogSearchBar";
 import { IconButton } from "@/elements/IconButton";
 import { useLogs } from "@/hooks/useLogs";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
+import { LogList } from "./_components/LogList";
+import { LogSearchBar } from "./_components/LogSearchBar";
 
 export default function LogsPage() {
   const { enabledLogs, logs } = useLogs();
@@ -21,42 +21,38 @@ export default function LogsPage() {
 
   const baseLogs = showDisabledLogs ? logs : enabledLogs;
 
-  function getFilteredLogs(): Log[] {
-    if (!tags.length) return baseLogs;
+  const tagFilters = {
+    session: (log: Log, tag: LogSearchTag) => {
+      const session = sessionMap[log.session_id];
+      return session.number === parseInt(tag.value, 10);
+    },
 
-    const tagFilters = {
-      session: (log: Log, tag: LogSearchTag) => {
-        const session = sessionMap[log.session_id];
-        return session.number === parseInt(tag.value, 10);
-      },
+    type: (log: Log, tag: LogSearchTag) => {
+      return normalizeText(log.win_type) === normalizeText(tag.value);
+    },
 
-      type: (log: Log, tag: LogSearchTag) => {
-        return normalizeText(log.win_type) === normalizeText(tag.value);
-      },
+    faan: (log: Log, tag: LogSearchTag) => {
+      return log.faan === parseInt(tag.value, 10);
+    },
 
-      faan: (log: Log, tag: LogSearchTag) => {
-        return log.faan === parseInt(tag.value, 10);
-      },
+    player: (log: Log, tag: LogSearchTag) => {
+      const isWinner = log.winner_ids.some((id) => {
+        return normalizeText(playerMap[id].name) === normalizeText(tag.value);
+      });
 
-      player: (log: Log, tag: LogSearchTag) => {
-        const isWinner = log.winner_ids.some((id) => {
-          const player = playerMap[id];
-          return normalizeText(player.name) === normalizeText(tag.value);
-        });
+      const isLoser = log.loser_ids.some((id) => {
+        return normalizeText(playerMap[id].name) === normalizeText(tag.value);
+      });
 
-        const isLoser = log.loser_ids.some((id) => {
-          const player = playerMap[id];
-          return normalizeText(player.name) === normalizeText(tag.value);
-        });
+      return isWinner || isLoser;
+    },
+  };
 
-        return isWinner || isLoser;
-      },
-    };
-
-    return baseLogs.filter((log) => {
-      return tags.every((tag) => tagFilters[tag.key](log, tag));
-    });
-  }
+  const filteredLogs = tags.length
+    ? baseLogs.filter((log) =>
+        tags.every((tag) => tagFilters[tag.key](log, tag)),
+      )
+    : baseLogs;
 
   function addTag(tag: LogSearchTag) {
     setTags((tags) => [...tags, tag]);
@@ -86,7 +82,7 @@ export default function LogsPage() {
         </div>
       </div>
 
-      <LogList logs={getFilteredLogs()} />
+      <LogList logs={filteredLogs} />
     </div>
   );
 }

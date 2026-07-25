@@ -7,13 +7,10 @@ import { useTournament } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
-export function CreatePlayerModal({
-  isOpen,
-  closeModalAction,
-}: CreatePlayerModalProps) {
+export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
   const { players } = usePlayers();
   const { tournamentId } = useTournament();
 
@@ -21,7 +18,7 @@ export function CreatePlayerModal({
 
   function handleClose() {
     setError(null);
-    closeModalAction();
+    onClose();
   }
 
   async function handleSubmit(formData: FormData) {

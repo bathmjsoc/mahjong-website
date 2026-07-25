@@ -8,14 +8,14 @@ type ViewGraphModalProps = {
   players: Player[];
   scores: Record<string, number>;
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
 export function ViewGraphModal({
   players,
   scores,
   isOpen,
-  closeModalAction,
+  onClose,
 }: ViewGraphModalProps) {
   const data = useMemo(() => {
     return rankPlayers(players, scores).map(([player, score]) => ({
@@ -25,7 +25,7 @@ export function ViewGraphModal({
   }, [players, scores]);
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModalAction} title="View Graph">
+    <Modal isOpen={isOpen} onClose={onClose} title="View Graph">
       <div className="w-xl p-2">
         <BarChart data={data} className="rounded-xl" />
       </div>

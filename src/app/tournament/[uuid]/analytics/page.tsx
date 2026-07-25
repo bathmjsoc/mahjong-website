@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { PlayerAnalytics } from "@/components/PlayerAnalytics";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayers } from "@/hooks/usePlayers";
 import type { Player } from "@/lib/types";
+import { PlayerAnalytics } from "./_components/PlayerAnalytics";
 
 export default function AnalyticsPage() {
   const { players } = usePlayers();

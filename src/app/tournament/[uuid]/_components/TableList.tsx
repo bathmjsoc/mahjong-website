@@ -1,10 +1,10 @@
 import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
-import { TableSeat } from "@/components/TableSeat";
 import { FilledButton } from "@/elements/FilledButton";
 import { useSessions } from "@/hooks/useSessions";
 import type { Table } from "@/lib/types";
+import { TableSeat } from "./TableSeat";
 
 type TableListProps = {
   tables: Table[];

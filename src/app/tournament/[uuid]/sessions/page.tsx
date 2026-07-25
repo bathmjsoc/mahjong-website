@@ -2,8 +2,6 @@
 
 import { ChartColumn } from "lucide-react";
 import { useState } from "react";
-import { Leaderboard } from "@/components/Leaderboard";
-import { ViewGraphModal } from "@/components/modals/ViewGraphModal";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/useLogs";
@@ -11,6 +9,8 @@ import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import type { Session } from "@/lib/types";
 import { getSessionName } from "@/lib/utils";
+import { Leaderboard } from "./_components/Leaderboard";
+import { ViewGraphModal } from "./_components/ViewGraphModal";
 
 export default function SessionsPage() {
   const { overallScores, sessionScores } = useLogs();
@@ -18,7 +18,7 @@ export default function SessionsPage() {
   const { sessions } = useSessions();
 
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
   const isOverall = selectedSession === null;
   const scores = isOverall ? overallScores : sessionScores[selectedSession.id];
@@ -41,7 +41,7 @@ export default function SessionsPage() {
         <FilledButton
           className="flex items-center justify-center gap-2 text-sm"
           disabled={!activePlayers.length}
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsGraphModalOpen(true)}
         >
           <ChartColumn className="size-5" />
           View Graph
@@ -53,8 +53,8 @@ export default function SessionsPage() {
       <ViewGraphModal
         players={activePlayers}
         scores={scores}
-        isOpen={isOpen}
-        closeModalAction={() => setIsOpen(false)}
+        isOpen={isGraphModalOpen}
+        onClose={() => setIsGraphModalOpen(false)}
       />
     </>
   );
