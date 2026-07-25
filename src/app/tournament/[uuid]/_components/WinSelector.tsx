@@ -58,27 +58,21 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         winners.push(occupant);
         if (target) losers.push(target);
 
-        opponents
-          .filter((player) => player?.id !== target?.id)
-          .forEach((player) => {
-            if (player) others.push(player);
-          });
+        for (const player of opponents) {
+          if (player.id !== target?.id) {
+            others.push(player);
+          }
+        }
         break;
 
       case "自摸":
         winners.push(occupant);
-
-        opponents.forEach((player) => {
-          if (player) losers.push(player);
-        });
+        losers.push(...opponents);
         break;
 
       case "詐糊":
         losers.push(occupant);
-
-        opponents.forEach((player) => {
-          if (player) winners.push(player);
-        });
+        winners.push(...opponents);
         break;
     }
 
