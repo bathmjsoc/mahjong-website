@@ -175,7 +175,10 @@ export function getPointHistory(
 /*
  * Safely extract and trim a string value from FormData
  */
-export function parseFormString(formData: FormData, key: string): string | null {
+export function parseFormString(
+  formData: FormData,
+  key: string,
+): string | null {
   const value = formData.get(key);
   if (typeof value !== "string" || !value.trim()) return null;
 
