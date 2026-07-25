@@ -101,10 +101,7 @@ export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
             </div>
           )}
 
-          <FilledButton
-            type="submit"
-            disabled={!selectedPlayer || newName.trim() === selectedPlayer.name}
-          >
+          <FilledButton type="submit" disabled={!selectedPlayer}>
             Update Player
           </FilledButton>
         </form>

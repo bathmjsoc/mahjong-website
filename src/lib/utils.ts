@@ -101,7 +101,7 @@ export function normalizeText(text: string) {
 }
 
 /*
- * Calculates the cumulative score for each player from the provided logs
+ * Calculates the cumulative score for each player from the provided logs and scoring rules
  */
 export function getPlayerScores(
   logs: Log[],
@@ -144,6 +144,9 @@ export function getPointDeltas(
   return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }
 
+/*
+ * Calculate the cumulative point history for a player from the provided logs and scoring rules
+ */
 export function getPointHistory(
   logs: Log[],
   player: Player,
