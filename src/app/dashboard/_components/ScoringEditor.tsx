@@ -1,24 +1,9 @@
 import { Minus, Plus } from "lucide-react";
 import { FilledButton } from "@/elements/FilledButton";
+import { DEFAULT_SCORING_RULE } from "@/lib/constants";
 import type { ScoringRule } from "@/lib/types";
 import { FalseWinRuleInput } from "./FalseWinRuleInput";
 import { ScoringRulesTable } from "./ScoringRulesTable";
-
-export const DEFAULT_SCORING_RULE: ScoringRule = {
-  faan: 0,
-  deltas: {
-    打出: { winner: 0, loser: 0 },
-    自摸: { winner: 0, loser: 0 },
-    包自摸: { winner: 0, loser: 0 },
-  },
-} as const;
-
-export const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
-  faan: null,
-  deltas: {
-    詐糊: { winner: 0, loser: 0 },
-  },
-} as const;
 
 type ScoringEditorProps = {
   scoringRules: ScoringRule[];

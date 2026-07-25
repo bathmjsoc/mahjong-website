@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
+import { winTypeMap } from "@/lib/constants";
 import type { ScoringRule, WinType } from "@/lib/types";
-import { winTypeMap } from "@/lib/utils";
 
 const WIN_TYPES = ["打出", "自摸", "包自摸"] as const;
 

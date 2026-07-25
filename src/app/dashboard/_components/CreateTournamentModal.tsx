@@ -4,12 +4,9 @@ import { createTournament } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
+import { DEFAULT_FALSE_WIN_RULE, DEFAULT_SCORING_RULE } from "@/lib/constants";
 import type { ScoringRule } from "@/lib/types";
-import {
-  DEFAULT_FALSE_WIN_RULE,
-  DEFAULT_SCORING_RULE,
-  ScoringEditor,
-} from "./ScoringEditor";
+import { ScoringEditor } from "./ScoringEditor";
 
 type CreateTournamentModalProps = {
   isOpen: boolean;

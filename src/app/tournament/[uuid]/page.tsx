@@ -8,7 +8,7 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/useAttendance";
 import { useSessions } from "@/hooks/useSessions";
 import { useTables } from "@/hooks/useTables";
-import { windMap } from "@/lib/utils";
+import { windMap } from "@/lib/constants";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 

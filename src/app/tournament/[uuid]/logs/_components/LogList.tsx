@@ -4,8 +4,8 @@ import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
+import { winTypeMap } from "@/lib/constants";
 import type { Log } from "@/lib/types";
-import { winTypeMap } from "@/lib/utils";
 
 type LogListProps = {
   logs: Log[];

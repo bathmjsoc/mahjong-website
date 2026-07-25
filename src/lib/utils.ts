@@ -101,26 +101,6 @@ export function normalizeText(text: string) {
 }
 
 /*
- * Maps Cantonese Mahjong win types into English tooltips
- */
-export const winTypeMap: Record<WinType, string> = {
-  打出: "Throw",
-  自摸: "Self-Draw",
-  包自摸: "Special Case",
-  詐糊: "False Win",
-} as const;
-
-/*
- * Maps Cantonese Mahjong winds into English tooltips
- */
-export const windMap: Record<string, string> = {
-  東: "East",
-  南: "South",
-  西: "West",
-  北: "North",
-} as const;
-
-/*
  * Calculates the cumulative score for each player from the provided logs
  */
 export function getPlayerScores(
