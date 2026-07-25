@@ -1,7 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 import { FilledButton } from "@/elements/FilledButton";
 import type { ScoringRule } from "@/lib/types";
-import { FalseWinRuleEditor } from "./FalseWinRuleEditor";
+import { FalseWinRuleInput } from "./FalseWinRuleInput";
 import { ScoringRulesTable } from "./ScoringRulesTable";
 
 export const DEFAULT_SCORING_RULE: ScoringRule = {
@@ -49,7 +49,7 @@ export function ScoringEditor({
         Scoring Rules
       </div>
 
-      <FalseWinRuleEditor
+      <FalseWinRuleInput
         scoringRule={falseWinRule}
         onChange={setFalseWinRule}
       />
