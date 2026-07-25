@@ -6,6 +6,7 @@ import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { DEFAULT_FALSE_WIN_RULE, DEFAULT_SCORING_RULE } from "@/lib/constants";
 import type { ScoringRule } from "@/lib/types";
+import { parseFormString } from "@/lib/utils";
 import { ScoringEditor } from "./ScoringEditor";
 
 type CreateTournamentModalProps = {
@@ -28,9 +29,9 @@ export function CreateTournamentModal({
   ]);
 
   async function handleSubmit(formData: FormData) {
-    const tournamentName = formData.get("tournamentName");
+    const tournamentName = parseFormString(formData, "tournamentName");
 
-    if (typeof tournamentName !== "string" || !tournamentName.trim()) {
+    if (!tournamentName) {
       setError("Tournament Name is required");
       return;
     }
