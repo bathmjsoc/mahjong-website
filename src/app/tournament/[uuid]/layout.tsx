@@ -18,7 +18,7 @@ export async function generateMetadata({
   try {
     return { title: await getTournamentName(tournamentId) };
   } catch {
-    return { title: "Tournament Not Found" };
+    return {};
   }
 }
 
