@@ -116,22 +116,22 @@ export function Sidebar() {
 
       <CreatePlayerModal
         isOpen={activeModal === "create"}
-        closeModalAction={() => setActiveModal(null)}
+        onClose={() => setActiveModal(null)}
       />
 
       <DeletePlayerModal
         isOpen={activeModal === "delete"}
-        closeModalAction={() => setActiveModal(null)}
+        onClose={() => setActiveModal(null)}
       />
 
       <ResetSessionModal
         isOpen={activeModal === "reset"}
-        closeModalAction={() => setActiveModal(null)}
+        onClose={() => setActiveModal(null)}
       />
 
       <EditPlayerModal
         isOpen={activeModal === "edit"}
-        closeModalAction={() => setActiveModal(null)}
+        onClose={() => setActiveModal(null)}
       />
     </>
   );

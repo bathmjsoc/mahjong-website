@@ -62,7 +62,7 @@ export function LoginForm() {
 
       <RegisterModal
         isOpen={isRegisterOpen}
-        closeModalAction={() => setIsRegisterOpen(false)}
+        onClose={() => setIsRegisterOpen(false)}
       />
     </>
   );

@@ -7,12 +7,12 @@ import { useTournament } from "@/providers/TournamentProvider";
 
 type ConfirmRefreshModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
 export function ResetSessionModal({
   isOpen,
-  closeModalAction,
+  onClose,
 }: ConfirmRefreshModalProps) {
   const { tournamentId } = useTournament();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -20,12 +20,12 @@ export function ResetSessionModal({
   async function handleReset() {
     await createSession(tournamentId);
     setShowSuccess(true);
-    closeModalAction();
+    onClose();
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={closeModalAction} title="Reset Session">
+      <Modal isOpen={isOpen} onClose={onClose} title="Reset Session">
         <div className="flex w-xs flex-col gap-3">
           <span className="text-xs">
             Are you sure you want to reset the session and deregister all

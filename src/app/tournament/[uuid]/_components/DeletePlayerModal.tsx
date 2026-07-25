@@ -9,13 +9,10 @@ import type { Player } from "@/lib/types";
 
 type DeletePlayerModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
-export function DeletePlayerModal({
-  isOpen,
-  closeModalAction,
-}: DeletePlayerModalProps) {
+export function DeletePlayerModal({ isOpen, onClose }: DeletePlayerModalProps) {
   const { players } = usePlayers();
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -23,7 +20,7 @@ export function DeletePlayerModal({
 
   function handleClose() {
     setSelectedPlayer(null);
-    closeModalAction();
+    onClose();
   }
 
   async function handleDelete() {

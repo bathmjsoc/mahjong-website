@@ -13,12 +13,12 @@ import {
 
 type CreateTournamentModalProps = {
   isOpen: boolean;
-  closeModalAction: () => void;
+  onClose: () => void;
 };
 
 export function CreateTournamentModal({
   isOpen,
-  closeModalAction,
+  onClose,
 }: CreateTournamentModalProps) {
   const queryClient = useQueryClient();
 
@@ -48,7 +48,7 @@ export function CreateTournamentModal({
     setError(null);
     setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
     setScoringRules([DEFAULT_SCORING_RULE]);
-    closeModalAction();
+    onClose();
   }
 
   return (

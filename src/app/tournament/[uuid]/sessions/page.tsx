@@ -54,7 +54,7 @@ export default function SessionsPage() {
         players={activePlayers}
         scores={scores}
         isOpen={isOpen}
-        closeModalAction={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
       />
     </>
   );
