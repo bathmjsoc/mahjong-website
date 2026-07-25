@@ -1,3 +1,4 @@
+import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
 import type {
   Log,
   Player,
@@ -15,16 +16,8 @@ export function formatTimeAgo(timestamp: string): string {
   const delta = Math.round((timestampTime - Date.now()) / 1000);
 
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-  const cutoffs: { unit: Intl.RelativeTimeFormatUnit; seconds: number }[] = [
-    { unit: "year", seconds: 31536000 },
-    { unit: "month", seconds: 2592000 },
-    { unit: "week", seconds: 604800 },
-    { unit: "day", seconds: 86400 },
-    { unit: "hour", seconds: 3600 },
-    { unit: "minute", seconds: 60 },
-  ];
 
-  for (const cutoff of cutoffs) {
+  for (const cutoff of RELATIVE_TIME_CUTOFFS) {
     if (Math.abs(delta) >= cutoff.seconds) {
       return rtf.format(Math.round(delta / cutoff.seconds), cutoff.unit);
     }

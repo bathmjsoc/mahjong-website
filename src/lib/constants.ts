@@ -16,6 +16,18 @@ export const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
   },
 } as const;
 
+export const RELATIVE_TIME_CUTOFFS: {
+  unit: Intl.RelativeTimeFormatUnit;
+  seconds: number;
+}[] = [
+  { unit: "year", seconds: 31536000 },
+  { unit: "month", seconds: 2592000 },
+  { unit: "week", seconds: 604800 },
+  { unit: "day", seconds: 86400 },
+  { unit: "hour", seconds: 3600 },
+  { unit: "minute", seconds: 60 },
+] as const;
+
 export const TABS = [
   { label: "Tables", href: "" },
   { label: "Logs", href: "/logs" },
