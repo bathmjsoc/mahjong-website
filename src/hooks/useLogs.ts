@@ -34,7 +34,7 @@ export function useLogs(): UseLogsType {
     const enabledLogs = logs.filter((log) => !log.disabled);
     const overallScores = getPlayerScores(
       enabledLogs,
-      tournament.scoring_rules,
+      tournament?.scoring_rules ?? [],
     );
 
     const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
@@ -43,7 +43,7 @@ export function useLogs(): UseLogsType {
     for (const sessionId in grouped) {
       sessionScores[sessionId] = getPlayerScores(
         grouped[sessionId] ?? [],
-        tournament.scoring_rules,
+        tournament?.scoring_rules ?? [],
       );
     }
 
