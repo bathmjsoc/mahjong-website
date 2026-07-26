@@ -41,6 +41,8 @@ export function TournamentProvider({
 export function useTournamentContext() {
   const context = useContext(TournamentContext);
   if (!context)
-    throw new Error("useTournamentContext must be used within TournamentProvider!");
+    throw new Error(
+      "useTournamentContext must be used within TournamentProvider!",
+    );
   return context;
 }
