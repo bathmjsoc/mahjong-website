@@ -19,7 +19,9 @@ export async function signUp(
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
 
-  if (error) return { error: error.message };
+  if (error) {
+    return { error: error.message };
+  }
 
   return { success: true };
 }
@@ -38,7 +40,9 @@ export async function signIn(
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-  if (error) return { error: error.message };
+  if (error) {
+    return { error: error.message };
+  }
 
   redirect("/dashboard");
 }
