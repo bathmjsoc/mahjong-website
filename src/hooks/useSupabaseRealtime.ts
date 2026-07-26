@@ -12,6 +12,8 @@ export function useSupabaseRealtime() {
   const sessionId = currentSession?.id;
 
   useEffect(() => {
+    if (!tournamentId) return;
+
     const supabase = createClient();
     const channel = supabase.channel(`tournament:${tournamentId}`);
 

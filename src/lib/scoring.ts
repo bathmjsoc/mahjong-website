@@ -17,8 +17,8 @@ export function getPlayerScores(
   const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
-    const rule = ruleMap.get(log.faan);
-    const pointDelta = rule?.deltas[log.win_type];
+    const scoringRule = ruleMap.get(log.faan);
+    const pointDelta = scoringRule?.deltas[log.win_type];
 
     if (!pointDelta) continue;
 
@@ -59,9 +59,10 @@ export function getPointHistory(
   scoringRules: ScoringRule[],
 ) {
   const scores = [0];
+  const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
-    const scoringRule = scoringRules.find((rule) => rule.faan === log.faan);
+    const scoringRule = ruleMap.get(log.faan);
     const prevPoints = scores.at(-1) ?? 0;
 
     if (log.winner_ids.includes(player.id)) {
