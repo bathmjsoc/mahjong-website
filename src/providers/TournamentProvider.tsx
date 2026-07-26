@@ -22,13 +22,15 @@ function TournamentRealtime({ children }: PropsWithChildren) {
   return children;
 }
 
+type TournamentProviderProps = {
+  tournamentId: string;
+  children: ReactNode;
+};
+
 export function TournamentProvider({
   tournamentId,
   children,
-}: {
-  tournamentId: string;
-  children: ReactNode;
-}) {
+}: TournamentProviderProps) {
   const value = useMemo(() => ({ tournamentId }), [tournamentId]);
 
   return (
@@ -38,9 +40,14 @@ export function TournamentProvider({
   );
 }
 
-export function useTournament() {
+export function useTournamentContext() {
   const context = useContext(TournamentContext);
-  if (!context)
-    throw new Error("useTournament must be used within TournamentProvider!");
+
+  if (!context) {
+    throw new Error(
+      "useTournamentContext must be used within TournamentProvider!",
+    );
+  }
+
   return context;
 }

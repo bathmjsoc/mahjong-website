@@ -2,11 +2,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useSessions } from "@/hooks/useSessions";
 import { createClient } from "@/lib/supabase/client";
-import { useTournament } from "@/providers/TournamentProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function useSupabaseRealtime() {
   const { currentSession } = useSessions();
-  const { tournamentId } = useTournament();
+  const { tournamentId } = useTournamentContext();
 
   const queryClient = useQueryClient();
   const sessionId = currentSession?.id;
