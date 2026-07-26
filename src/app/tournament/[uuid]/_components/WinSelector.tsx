@@ -3,7 +3,7 @@ import { createLog } from "@/actions/logs";
 import { DropDown } from "@/elements/DropDown";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type {
   Player,
@@ -22,7 +22,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
   const { tournamentId } = useTournamentContext();
-  const { scoringRules } = useCurrentTournament();
+  const { scoringRules } = useTournaments();
 
   const faanOptions = scoringRules.map((rule) => rule.faan);
 
