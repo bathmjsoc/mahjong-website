@@ -5,22 +5,26 @@ import { createClient } from "@/lib/supabase/server";
 import type { ScoringRule, Tournament } from "@/types/app.types";
 import type { Tables } from "@/types/database.types";
 
-export async function createTournament(
-  tournamentName: string,
-  scoringRules: ScoringRule[],
-): Promise<void> {
+export async function createTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
 
-  const { data: tournament, error } = await supabase
+  const { data: createdTournament, error } = await supabase
     .from("tournaments")
-    .insert({ name: tournamentName, scoring_rules: scoringRules })
+    .insert(tournament)
     .select("id")
     .single();
 
   if (error)
     throw new Error(`createTournament encountered an error: ${error?.message}`);
 
-  await createSession(tournament.id, 1); // Create the first session automatically
+  const initialSession = {
+    id: crypto.randomUUID(),
+    tournament_id: createdTournament.id,
+    number: 1,
+    start_date: new Date().toISOString().slice(0, 10),
+  };
+
+  await createSession(initialSession);
 }
 
 // Supabase stores `scoring_rules` as jsonb so we need to override it with the correct type

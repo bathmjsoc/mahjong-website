@@ -3,16 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Session, Tournament } from "@/types/app.types";
 
-export async function createSession(
-  tournament: Tournament,
-  sessionNumber: number,
-): Promise<void> {
+export async function createSession(session: Session): Promise<void> {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("sessions").insert({
-    tournament_id: tournament.id,
-    number: sessionNumber,
-  });
+  const { error } = await supabase.from("sessions").insert(session);
 
   if (error)
     throw new Error(`createSession encountered an error: ${error.message}`);

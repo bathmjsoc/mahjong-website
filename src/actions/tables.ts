@@ -5,25 +5,19 @@ import { createClient } from "@/lib/supabase/server";
 import { shuffle } from "@/lib/utils";
 import type { Player, Session, Table, Wind } from "@/types/app.types";
 
-export async function createTable(
-  session: Session,
-  tableNumber: number,
-): Promise<Table> {
+export async function createTable(table: Table): Promise<Table> {
   const supabase = await createClient();
 
-  const { data: table, error } = await supabase
+  const { data: createdTable, error } = await supabase
     .from("tables")
-    .insert({
-      session_id: session.id,
-      number: tableNumber,
-    })
+    .insert(table)
     .select()
     .single();
 
   if (error)
     throw new Error(`createTable encountered an error: ${error.message}`);
 
-  return table;
+  return createdTable;
 }
 
 export async function fetchTables(session: Session): Promise<Table[]> {
@@ -81,26 +75,32 @@ export async function shuffleTables(
   availablePlayers: Player[],
 ): Promise<void> {
   const shuffledPlayers = shuffle(availablePlayers);
-  const neededTables = Math.floor(shuffledPlayers.length / 4);
+  const neededTables = Math.ceil(shuffledPlayers.length / 4);
 
   // Delete existing tables
   await Promise.all(availableTables.map(deleteTable));
 
-  // Create required tables
-  const tables = [];
-  while (tables.length < neededTables) {
-    tables.push(await createTable(session, tables.length + 1));
+  // Create new tables with available players
+  const createPromises = [];
+  while (createPromises.length < neededTables) {
+    const [east = null, south = null, west = null, north = null] =
+      shuffledPlayers.splice(0, 4);
+
+    const table: Table = {
+      id: crypto.randomUUID(),
+      session_id: session.id,
+      east_id: east?.id ?? null,
+      south_id: south?.id ?? null,
+      west_id: west?.id ?? null,
+      north_id: north?.id ?? null,
+      number: createPromises.length + 1,
+      saved: false,
+    };
+
+    createPromises.push(createTable(table));
   }
 
-  // Assign shuffled players to tables
-  await Promise.all(
-    tables.map((table) => {
-      const [east = null, south = null, west = null, north = null] =
-        shuffledPlayers.splice(0, 4);
-
-      return updateTable(table, { east, south, west, north });
-    }),
-  );
+  await Promise.all(createPromises);
 }
 
 export async function deleteTable(table: Table): Promise<void> {

@@ -3,16 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Player, Tournament } from "@/types/app.types";
 
-export async function createPlayer(
-  tournament: Tournament,
-  playerName: string,
-): Promise<void> {
+export async function createPlayer(player: Player): Promise<void> {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("players").insert({
-    tournament_id: tournament.id,
-    name: playerName,
-  });
+  const { error } = await supabase.from("players").insert(player);
 
   if (error)
     throw new Error(`createPlayer encountered an error: ${error.message}`);

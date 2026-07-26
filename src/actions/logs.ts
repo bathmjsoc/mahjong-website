@@ -1,34 +1,12 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type {
-  Log,
-  Player,
-  Session,
-  Tournament,
-  WinType,
-} from "@/types/app.types";
+import type { Log, Tournament } from "@/types/app.types";
 
-export async function createLog(
-  tournament: Tournament,
-  session: Session,
-  faan: number | null,
-  winType: WinType,
-  winners: Player[],
-  losers: Player[],
-  others: Player[],
-): Promise<void> {
+export async function createLog(log: Log): Promise<void> {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("logs").insert({
-    tournament_id: tournament.id,
-    session_id: session.id,
-    faan: faan,
-    win_type: winType,
-    winner_ids: winners.map((player) => player.id),
-    loser_ids: losers.map((player) => player.id),
-    other_ids: others.map((player) => player.id),
-  });
+  const { error } = await supabase.from("logs").insert(log);
 
   if (error)
     throw new Error(`createLog encountered an error: ${error.message}`);
