@@ -6,8 +6,8 @@ import { useAttendance } from "@/hooks/useAttendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useTables } from "@/hooks/useTables";
 import { useTournaments } from "@/hooks/useTournaments";
+import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
-import { getPointDeltas } from "@/lib/utils";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import { WinSelector } from "./WinSelector";
 
