@@ -1,9 +1,8 @@
 import { Eye, EyeOff, Info } from "lucide-react";
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { IconButton } from "@/elements/IconButton";
 import type { LogSearchTag } from "@/lib/types";
-import { normalizeText } from "@/lib/utils";
+import { normalizeText, parseFormString } from "@/lib/utils";
 
 type LogSearchBarProps = {
   addTag: (tag: LogSearchTag) => void;
@@ -16,12 +15,11 @@ export function LogSearchBar({
   showDisabledLogs,
   toggleDisabledLogs,
 }: LogSearchBarProps) {
-  const [query, setQuery] = useState("");
+  function handleSubmit(formData: FormData) {
+    const query = parseFormString(formData, "query");
+    if (!query) return;
 
-  function handleSubmit() {
-    const input = normalizeText(query);
-
-    const [key, value] = input.split("=");
+    const [key, value] = normalizeText(query).split("=");
     if (!key || !value) return;
 
     switch (key) {
@@ -31,25 +29,19 @@ export function LogSearchBar({
       case "player":
         addTag({
           id: crypto.randomUUID(),
-          label: input,
+          label: `${key}=${value}`,
           key: key,
           value: value,
         });
-
-        setQuery("");
     }
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <form action={handleSubmit} className="flex items-center gap-2">
       <SearchInstructions />
 
       <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleSubmit();
-        }}
+        name="query"
         placeholder="Enter a query..."
         className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
       />
@@ -74,7 +66,7 @@ export function LogSearchBar({
           />
         </div>
       </IconButton>
-    </div>
+    </form>
   );
 }
 
