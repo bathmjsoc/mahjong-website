@@ -14,6 +14,11 @@ type TableListProps = {
 export function TableList({ tables, className }: TableListProps) {
   const { currentSession } = useSessions();
 
+  async function handleCreateTable(){
+    if (!currentSession) return;
+    await createTable(currentSession);
+  }
+
   return (
     <div
       className={twMerge(
@@ -28,10 +33,7 @@ export function TableList({ tables, className }: TableListProps) {
       {/* Add New Table Button */}
       <div className="flex size-70 items-center justify-center">
         <FilledButton
-          onClick={async () => {
-            if (!currentSession) return;
-            await createTable(currentSession);
-          }}
+          onClick={handleCreateTable}
           className="rounded-full p-3"
         >
           <Plus className="size-7" />
