@@ -13,9 +13,8 @@ type UsePlayersType = {
 export function usePlayers(): UsePlayersType {
   const { tournamentId } = useTournamentContext();
 
-  const queryKey = ["players", tournamentId];
   const query = useQuery({
-    queryKey,
+    queryKey: ["players", tournamentId],
     queryFn: () => fetchPlayers(tournamentId),
     enabled: !!tournamentId,
     select: (players) => {

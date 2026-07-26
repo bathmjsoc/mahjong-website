@@ -18,9 +18,8 @@ export function useAttendance(): UseAttendanceType {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
 
-  const queryKey = ["attendance", currentSession?.id];
   const { data, isLoading, isError } = useQuery({
-    queryKey,
+    queryKey: ["attendance", currentSession?.id],
     queryFn: () => {
       if (!currentSession) return [];
       return fetchAttendance(currentSession);

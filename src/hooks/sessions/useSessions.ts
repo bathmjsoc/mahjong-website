@@ -14,9 +14,8 @@ type UseSessionsType = {
 export function useSessions(): UseSessionsType {
   const { tournamentId } = useTournamentContext();
 
-  const queryKey = ["sessions", tournamentId];
   const query = useQuery({
-    queryKey,
+    queryKey: ["sessions", tournamentId],
     queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
     select: (sessions) => {

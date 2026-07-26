@@ -13,10 +13,8 @@ type UseTournamentsType = {
 export function useTournament(): UseTournamentsType {
   const { tournamentId } = useTournamentContext();
 
-  const queryKey = ["tournaments"];
-
   const query = useQuery({
-    queryKey,
+    queryKey: ["tournaments"],
     queryFn: fetchTournaments,
     select: (tournaments) => {
       const tournament =

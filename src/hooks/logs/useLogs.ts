@@ -19,9 +19,8 @@ export function useLogs(): UseLogsType {
   const { tournamentId } = useTournamentContext();
   const { tournament } = useTournament();
 
-  const queryKey = ["logs", tournamentId];
   const { data, isLoading, isError } = useQuery({
-    queryKey,
+    queryKey: ["logs", tournamentId],
     queryFn: () => fetchLogs(tournamentId),
     enabled: !!tournamentId,
     select: (logs) => {
