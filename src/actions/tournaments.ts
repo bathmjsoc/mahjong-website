@@ -20,7 +20,7 @@ export async function createTournament(
   if (error)
     throw new Error(`createTournament encountered an error: ${error?.message}`);
 
-  await createSession(tournament.id);
+  await createSession(tournament.id, 1); // Create the first session automatically
 }
 
 // Supabase stores `scoring_rules` as jsonb so we need to override it with the correct type

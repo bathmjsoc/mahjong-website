@@ -3,33 +3,19 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Session } from "@/lib/types";
 
-export async function createSession(tournamentId: string): Promise<void> {
+export async function createSession(
+  tournamentId: string,
+  sessionNumber: number,
+): Promise<void> {
   const supabase = await createClient();
 
-  const { data: latestSession, error: fetchError } = await supabase
-    .from("sessions")
-    .select("number")
-    .eq("tournament_id", tournamentId)
-    .order("number", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fetchError)
-    throw new Error(
-      `createSession encountered an error: ${fetchError.message}`,
-    );
-
-  const nextNumber = latestSession ? latestSession.number + 1 : 1;
-
-  const { error: insertError } = await supabase.from("sessions").insert({
+  const { error } = await supabase.from("sessions").insert({
     tournament_id: tournamentId,
-    number: nextNumber,
+    number: sessionNumber,
   });
 
-  if (insertError)
-    throw new Error(
-      `createSession encountered an error: ${insertError.message}`,
-    );
+  if (error)
+    throw new Error(`createSession encountered an error: ${error.message}`);
 }
 
 export async function fetchSessions(tournamentId: string): Promise<Session[]> {
