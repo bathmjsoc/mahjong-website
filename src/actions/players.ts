@@ -1,16 +1,16 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player } from "@/types/app.types";
+import type { Player, Tournament } from "@/types/app.types";
 
 export async function createPlayer(
-  tournamentId: string,
+  tournament: Tournament,
   playerName: string,
 ): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase.from("players").insert({
-    tournament_id: tournamentId,
+    tournament_id: tournament.id,
     name: playerName,
   });
 
@@ -18,13 +18,13 @@ export async function createPlayer(
     throw new Error(`createPlayer encountered an error: ${error.message}`);
 }
 
-export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
+export async function fetchPlayers(tournament: Tournament): Promise<Player[]> {
   const supabase = await createClient();
 
   const { data: players, error } = await supabase
     .from("players")
     .select("*")
-    .eq("tournament_id", tournamentId);
+    .eq("tournament_id", tournament.id);
 
   if (error)
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);

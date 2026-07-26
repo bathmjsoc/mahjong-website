@@ -3,7 +3,7 @@ import { createSession } from "@/actions/sessions";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
-import { useTournamentContext } from "@/providers/TournamentProvider";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 
 type ResetSessionModalProps = {
   isOpen: boolean;
@@ -11,11 +11,12 @@ type ResetSessionModalProps = {
 };
 
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
-  const { tournamentId } = useTournamentContext();
+  const { currentTournament } = useTournaments();
+
   const [showSuccess, setShowSuccess] = useState(false);
 
   async function handleReset() {
-    await createSession(tournamentId);
+    await createSession(currentTournament);
     setShowSuccess(true);
     onClose();
   }

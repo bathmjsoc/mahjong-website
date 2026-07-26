@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchPlayers } from "@/actions/players";
-import { useTournamentContext } from "@/providers/TournamentProvider";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import type { Player } from "@/types/app.types";
 
 type UsePlayersType = {
@@ -10,7 +10,7 @@ type UsePlayersType = {
 };
 
 export function usePlayers(): UsePlayersType {
-  const { tournamentId } = useTournamentContext();
+  const { currentTournament } = useTournaments();
 
   const selectPlayers = useCallback((rawPlayers: Player[]) => {
     const players = [...rawPlayers].sort((a, b) =>
@@ -25,8 +25,11 @@ export function usePlayers(): UsePlayersType {
   }, []);
 
   const query = useSuspenseQuery({
-    queryKey: ["players", tournamentId],
-    queryFn: () => fetchPlayers(tournamentId),
+    queryKey: ["players", currentTournament?.id],
+    queryFn: () => {
+      if (!currentTournament) return [];
+      return fetchPlayers(currentTournament);
+    },
     select: selectPlayers,
   });
 

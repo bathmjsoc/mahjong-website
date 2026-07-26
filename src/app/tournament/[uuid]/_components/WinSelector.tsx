@@ -4,7 +4,6 @@ import { DropDown } from "@/elements/DropDown";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 import type {
   Player,
   PointsAnimationEvent,
@@ -21,8 +20,7 @@ type WinSelectorProps = {
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
-  const { tournamentId } = useTournamentContext();
-  const { scoringRules } = useTournaments();
+  const { currentTournament, scoringRules } = useTournaments();
 
   const faanOptions = scoringRules.map((rule) => rule.faan);
 
@@ -46,7 +44,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     faan: number | null,
     target?: Player | null,
   ) {
-    if (!currentSession || !occupant) return;
+    if (!currentTournament || !currentSession || !occupant) return;
 
     const winners: Player[] = [];
     const losers: Player[] = [];
@@ -77,7 +75,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     }
 
     await createLog(
-      tournamentId,
+      currentTournament,
       currentSession,
       faan,
       winType,

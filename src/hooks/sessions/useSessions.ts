@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchSessions } from "@/actions/sessions";
-import { useTournamentContext } from "@/providers/TournamentProvider";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import type { Session } from "@/types/app.types";
 
 type UseSessionsType = {
@@ -11,7 +11,7 @@ type UseSessionsType = {
 };
 
 export function useSessions(): UseSessionsType {
-  const { tournamentId } = useTournamentContext();
+  const { currentTournament } = useTournaments();
 
   const selectSessions = useCallback((rawSessions: Session[]) => {
     const sessions = [...rawSessions].sort(
@@ -29,8 +29,11 @@ export function useSessions(): UseSessionsType {
   }, []);
 
   const query = useSuspenseQuery({
-    queryKey: ["sessions", tournamentId],
-    queryFn: () => fetchSessions(tournamentId),
+    queryKey: ["sessions", currentTournament?.id],
+    queryFn: () => {
+      if (!currentTournament) return [];
+      return fetchSessions(currentTournament);
+    },
     select: selectSessions,
   });
 

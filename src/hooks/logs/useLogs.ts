@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPlayerScores } from "@/lib/scores";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { Log } from "@/types/app.types";
 
 type UseLogsType = {
@@ -14,8 +13,7 @@ type UseLogsType = {
 };
 
 export function useLogs(): UseLogsType {
-  const { tournamentId } = useTournamentContext();
-  const { scoringRules } = useTournaments();
+  const { currentTournament, scoringRules } = useTournaments();
 
   const selectLogs = useCallback(
     (rawLogs: Log[]) => {
@@ -40,8 +38,11 @@ export function useLogs(): UseLogsType {
   );
 
   const query = useSuspenseQuery({
-    queryKey: ["logs", tournamentId],
-    queryFn: () => fetchLogs(tournamentId),
+    queryKey: ["logs", currentTournament?.id],
+    queryFn: () => {
+      if (!currentTournament) return [];
+      return fetchLogs(currentTournament);
+    },
     select: selectLogs,
   });
 
