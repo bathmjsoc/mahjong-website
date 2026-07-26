@@ -39,12 +39,10 @@ export function useLogs(): UseLogsType {
     const enabledLogs = logs.filter((log) => !log.disabled);
     const overallScores = getPlayerScores(enabledLogs, scoringRules);
 
-    const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
+    const grouped = Map.groupBy(enabledLogs, (log) => log.session_id);
 
     const sessionScores: Record<string, Record<string, number>> = {};
-    for (const [sessionId, logs] of Object.entries(grouped)) {
-      if (!logs) continue;
-
+    for (const [sessionId, logs] of grouped) {
       sessionScores[sessionId] = getPlayerScores(logs, scoringRules);
     }
 
