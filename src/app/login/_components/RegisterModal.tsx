@@ -13,6 +13,10 @@ type RegisterModalProps = {
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
+    handleSignUp,
+    null,
+  );
 
   async function handleSignUp(prevState: ActionState, formData: FormData) {
     const result = await signUp(prevState, formData);
@@ -24,11 +28,6 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
     return result;
   }
-
-  const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    handleSignUp,
-    null,
-  );
 
   return (
     <>
