@@ -5,7 +5,7 @@ import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import { useTournaments } from "@/hooks/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
-import { useTournament } from "@/providers/TournamentProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
   table: Table;
@@ -16,7 +16,7 @@ type WinSelectorProps = {
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
-  const { tournamentId } = useTournament();
+  const { tournamentId } = useTournamentContext();
   const { tournamentsMap } = useTournaments();
 
   const tournament = tournamentsMap[tournamentId];

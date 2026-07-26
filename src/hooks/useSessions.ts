@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchSessions } from "@/actions/sessions";
 import type { Session } from "@/lib/types";
-import { useTournament } from "@/providers/TournamentProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseSessionsType = {
   currentSession: Session | null;
@@ -12,7 +12,7 @@ type UseSessionsType = {
 };
 
 export function useSessions(): UseSessionsType {
-  const { tournamentId } = useTournament();
+  const { tournamentId } = useTournamentContext();
 
   const queryKey = ["sessions", tournamentId];
   const query = useQuery({

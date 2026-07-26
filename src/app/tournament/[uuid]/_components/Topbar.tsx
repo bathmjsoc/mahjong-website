@@ -6,10 +6,10 @@ import { signOut } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
 import { TABS } from "@/lib/constants";
-import { useTournament } from "@/providers/TournamentProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function Topbar() {
-  const { tournamentId } = useTournament();
+  const { tournamentId } = useTournamentContext();
   const router = useRouter();
 
   return (
