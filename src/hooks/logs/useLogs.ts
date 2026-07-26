@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { fetchLogs } from "@/actions/logs";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPlayerScores } from "@/lib/scores";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { Log } from "@/types/app.types";
@@ -11,50 +11,44 @@ type UseLogsType = {
   logs: Log[];
   overallScores: Record<string, number>;
   sessionScores: Record<string, Record<string, number>>;
-  isLoading: boolean;
-  isError: boolean;
 };
 
 export function useLogs(): UseLogsType {
   const { tournamentId } = useTournamentContext();
-  const { scoringRules } = useCurrentTournament();
+  const { scoringRules } = useTournaments();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["logs", tournamentId],
-    queryFn: () => fetchLogs(tournamentId),
-    enabled: !!tournamentId,
-    select: (logs) => {
-      logs.sort(
+  const selectLogs = useCallback(
+    (rawLogs: Log[]) => {
+      const logs = [...rawLogs].sort(
         (a, b) =>
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
 
-      return logs;
+      const enabledLogs = logs.filter((log) => !log.disabled);
+      const overallScores = getPlayerScores(enabledLogs, scoringRules);
+
+      const grouped = Map.groupBy(enabledLogs, (log) => log.session_id);
+
+      const sessionScores: Record<string, Record<string, number>> = {};
+      for (const [sessionId, groupedLogs] of grouped) {
+        sessionScores[sessionId] = getPlayerScores(groupedLogs, scoringRules);
+      }
+
+      return { enabledLogs, logs, overallScores, sessionScores };
     },
+    [scoringRules],
+  );
+
+  const query = useSuspenseQuery({
+    queryKey: ["logs", tournamentId],
+    queryFn: () => fetchLogs(tournamentId),
+    select: selectLogs,
   });
 
-  const logs = data ?? [];
-
-  const { enabledLogs, overallScores, sessionScores } = useMemo(() => {
-    const enabledLogs = logs.filter((log) => !log.disabled);
-    const overallScores = getPlayerScores(enabledLogs, scoringRules);
-
-    const grouped = Map.groupBy(enabledLogs, (log) => log.session_id);
-
-    const sessionScores: Record<string, Record<string, number>> = {};
-    for (const [sessionId, logs] of grouped) {
-      sessionScores[sessionId] = getPlayerScores(logs, scoringRules);
-    }
-
-    return { enabledLogs, overallScores, sessionScores };
-  }, [logs, scoringRules]);
-
   return {
-    logs: logs,
-    enabledLogs: enabledLogs,
-    overallScores: overallScores,
-    sessionScores: sessionScores,
-    isLoading: isLoading,
-    isError: isError,
+    logs: query.data.logs,
+    enabledLogs: query.data.enabledLogs,
+    overallScores: query.data.overallScores,
+    sessionScores: query.data.sessionScores,
   };
 }

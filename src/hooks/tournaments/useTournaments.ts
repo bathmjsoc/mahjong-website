@@ -1,31 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { fetchTournaments } from "@/actions/tournaments";
-import type { Tournament } from "@/types/app.types";
+import { useTournamentContext } from "@/providers/TournamentProvider";
+import type { ScoringRule, Tournament } from "@/types/app.types";
 
 type UseTournamentsType = {
+  currentTournament: Tournament | null;
+  scoringRules: ScoringRule[];
   tournaments: Tournament[];
-  isLoading: boolean;
-  isError: boolean;
 };
 
 export function useTournaments(): UseTournamentsType {
-  const query = useQuery({
-    queryKey: ["tournaments"],
-    queryFn: fetchTournaments,
-    select: (tournaments) => {
-      tournaments.sort(
+  const { tournamentId } = useTournamentContext();
+
+  const selectTournaments = useCallback(
+    (rawTournaments: Tournament[]) => {
+      const tournaments = [...rawTournaments].sort(
         (a, b) =>
           new Date(b.last_updated).getTime() -
           new Date(a.last_updated).getTime(),
       );
 
-      return { tournaments };
+      const currentTournament =
+        tournaments.find((tournament) => tournament.id === tournamentId) ??
+        null;
+
+      const scoringRules = currentTournament?.scoring_rules ?? [];
+
+      return { currentTournament, scoringRules, tournaments };
     },
+    [tournamentId],
+  );
+
+  const query = useSuspenseQuery({
+    queryKey: ["tournaments"],
+    queryFn: fetchTournaments,
+    select: selectTournaments,
   });
 
   return {
-    tournaments: query.data?.tournaments ?? [],
-    isLoading: query.isLoading,
-    isError: query.isError,
+    currentTournament: query.data.currentTournament,
+    scoringRules: query.data.scoringRules,
+    tournaments: query.data.tournaments,
   };
 }

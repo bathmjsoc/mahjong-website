@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Table } from "@/types/app.types";
@@ -8,70 +9,67 @@ type UseTablesType = {
   duplicatePlayerIds: Set<string>;
   seatedPlayerIds: Set<string>;
   tables: Table[];
-  isLoading: boolean;
-  isError: boolean;
 };
 
 export function useTables(): UseTablesType {
   const { currentSession } = useSessions();
 
-  const query = useQuery({
+  const selectTables = useCallback((rawTables: Table[]) => {
+    const tables = [...rawTables].sort((a, b) => {
+      if (a.saved !== b.saved) {
+        return Number(a.saved) - Number(b.saved);
+      }
+
+      return a.number - b.number;
+    });
+
+    const availableTables: Table[] = [];
+    const duplicatePlayerIds = new Set<string>();
+    const seatedPlayerIds = new Set<string>();
+
+    for (const table of tables) {
+      if (table.saved) continue;
+      availableTables.push(table);
+
+      const SEAT_IDS = [
+        table.east_id,
+        table.south_id,
+        table.west_id,
+        table.north_id,
+      ] as const;
+
+      for (const id of SEAT_IDS) {
+        if (!id) continue;
+
+        if (seatedPlayerIds.has(id)) {
+          duplicatePlayerIds.add(id);
+        } else {
+          seatedPlayerIds.add(id);
+        }
+      }
+    }
+
+    return {
+      tables,
+      availableTables,
+      duplicatePlayerIds,
+      seatedPlayerIds,
+    };
+  }, []);
+
+  const query = useSuspenseQuery({
     queryKey: ["tables", currentSession?.id],
     queryFn: () => {
       if (!currentSession) return [];
       return fetchTables(currentSession);
     },
-    enabled: !!currentSession,
-    select: (tables) => {
-      tables.sort((a, b) => {
-        if (a.saved !== b.saved) {
-          return Number(a.saved) - Number(b.saved);
-        }
-
-        return a.number - b.number;
-      });
-
-      const availableTables: Table[] = [];
-      const duplicatePlayerIds = new Set<string>();
-      const seatedPlayerIds = new Set<string>();
-
-      for (const table of tables) {
-        if (table.saved) continue;
-        availableTables.push(table);
-
-        const SEAT_IDS = [
-          table.east_id,
-          table.south_id,
-          table.west_id,
-          table.north_id,
-        ] as const;
-
-        for (const id of SEAT_IDS) {
-          if (!id) continue;
-
-          if (seatedPlayerIds.has(id)) {
-            duplicatePlayerIds.add(id);
-          } else {
-            seatedPlayerIds.add(id);
-          }
-        }
-      }
-
-      return {
-        tables,
-        availableTables,
-        duplicatePlayerIds,
-        seatedPlayerIds,
-      };
-    },
+    select: selectTables,
   });
 
   return {
-    availableTables: query.data?.availableTables ?? [],
-    duplicatePlayerIds: query.data?.duplicatePlayerIds ?? new Set<string>(),
-    seatedPlayerIds: query.data?.seatedPlayerIds ?? new Set<string>(),
-    tables: query.data?.tables ?? [],
-    isLoading: query.isLoading,
-    isError: query.isError,
+    availableTables: query.data.availableTables,
+    duplicatePlayerIds: query.data.duplicatePlayerIds,
+    seatedPlayerIds: query.data.seatedPlayerIds,
+    tables: query.data.tables,
   };
 }

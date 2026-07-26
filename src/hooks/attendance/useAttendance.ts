@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
@@ -10,27 +10,16 @@ type UseAttendanceType = {
   availablePlayers: Player[];
   lockedPlayerIds: Set<string>;
   registeredPlayers: Player[];
-  isLoading: boolean;
-  isError: boolean;
 };
 
 export function useAttendance(): UseAttendanceType {
   const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["attendance", currentSession?.id],
-    queryFn: () => {
-      if (!currentSession) return [];
-      return fetchAttendance(currentSession);
-    },
-    enabled: !!currentSession,
-  });
+  const selectAttendance = useCallback(
+    (rawAttendance: Attendance[]) => {
+      const attendance = [...rawAttendance];
 
-  const attendance = data ?? [];
-
-  const { availablePlayers, lockedPlayerIds, registeredPlayers } =
-    useMemo(() => {
       const availablePlayers: Player[] = [];
       const lockedPlayerIds = new Set<string>();
       const registeredPlayers: Player[] = [];
@@ -55,18 +44,28 @@ export function useAttendance(): UseAttendanceType {
       registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
 
       return {
+        attendance,
         availablePlayers,
         lockedPlayerIds,
         registeredPlayers,
       };
-    }, [attendance, currentSession?.id, playerMap]);
+    },
+    [currentSession?.id, playerMap],
+  );
+
+  const query = useSuspenseQuery({
+    queryKey: ["attendance", currentSession?.id],
+    queryFn: () => {
+      if (!currentSession) return [];
+      return fetchAttendance(currentSession);
+    },
+    select: selectAttendance,
+  });
 
   return {
-    attendance: attendance,
-    availablePlayers: availablePlayers,
-    lockedPlayerIds: lockedPlayerIds,
-    registeredPlayers: registeredPlayers,
-    isLoading: isLoading,
-    isError: isError,
+    attendance: query.data.attendance,
+    availablePlayers: query.data.availablePlayers,
+    lockedPlayerIds: query.data.lockedPlayerIds,
+    registeredPlayers: query.data.registeredPlayers,
   };
 }
