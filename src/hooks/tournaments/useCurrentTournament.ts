@@ -3,14 +3,14 @@ import { fetchTournaments } from "@/actions/tournaments";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { ScoringRule, Tournament } from "@/types/app.types";
 
-type UseTournamentsType = {
+type UseCurrentTournamentType = {
   scoringRules: ScoringRule[];
   tournament: Tournament | null;
   isLoading: boolean;
   isError: boolean;
 };
 
-export function useTournament(): UseTournamentsType {
+export function useCurrentTournament(): UseCurrentTournamentType {
   const { tournamentId } = useTournamentContext();
 
   const query = useQuery({

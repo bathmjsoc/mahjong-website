@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 

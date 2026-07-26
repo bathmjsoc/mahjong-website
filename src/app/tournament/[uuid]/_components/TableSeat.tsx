@@ -5,7 +5,7 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
-import { useTournament } from "@/hooks/useTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import { getPointDeltas } from "@/lib/scores";
 import type {
   Player,
@@ -33,7 +33,7 @@ export function TableSeat({
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { playerMap } = usePlayers();
   const { duplicatePlayerIds } = useTables();
-  const { scoringRules } = useTournament();
+  const { scoringRules } = useCurrentTournament();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
