@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchTournaments } from "@/actions/tournaments";
 import { useTournamentContext } from "@/providers/TournamentProvider";
-import type { ScoringRule, Tournament } from "@/types/app.types";
+import type { ScoringRule } from "@/types/app.types";
 
 type UseCurrentTournamentType = {
   scoringRules: ScoringRule[];
-  tournament: Tournament | null;
   isLoading: boolean;
   isError: boolean;
 };
@@ -23,13 +22,12 @@ export function useCurrentTournament(): UseCurrentTournamentType {
 
       const scoringRules = tournament?.scoring_rules ?? [];
 
-      return { scoringRules, tournament };
+      return { scoringRules };
     },
   });
 
   return {
     scoringRules: query.data?.scoringRules ?? [],
-    tournament: query.data?.tournament ?? null,
     isLoading: query.isLoading,
     isError: query.isError,
   };

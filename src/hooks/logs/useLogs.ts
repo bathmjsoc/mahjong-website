@@ -17,7 +17,7 @@ type UseLogsType = {
 
 export function useLogs(): UseLogsType {
   const { tournamentId } = useTournamentContext();
-  const { tournament } = useCurrentTournament();
+  const { scoringRules } = useCurrentTournament();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["logs", tournamentId],
@@ -37,23 +37,19 @@ export function useLogs(): UseLogsType {
 
   const { enabledLogs, overallScores, sessionScores } = useMemo(() => {
     const enabledLogs = logs.filter((log) => !log.disabled);
-    const overallScores = getPlayerScores(
-      enabledLogs,
-      tournament?.scoring_rules ?? [],
-    );
+    const overallScores = getPlayerScores(enabledLogs, scoringRules);
 
     const grouped = Object.groupBy(enabledLogs, (log) => log.session_id);
 
     const sessionScores: Record<string, Record<string, number>> = {};
-    for (const sessionId in grouped) {
-      sessionScores[sessionId] = getPlayerScores(
-        grouped[sessionId] ?? [],
-        tournament?.scoring_rules ?? [],
-      );
+    for (const [sessionId, logs] of Object.entries(grouped)) {
+      if (!logs) continue;
+
+      sessionScores[sessionId] = getPlayerScores(logs, scoringRules);
     }
 
     return { enabledLogs, overallScores, sessionScores };
-  }, [logs, tournament?.scoring_rules]);
+  }, [logs, scoringRules]);
 
   return {
     logs: logs,
