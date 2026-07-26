@@ -8,4 +8,5 @@ services:
       - .env
     volumes:
       - .:/app  # Sync local code changes to the container
-      - /app/node_modules  # But avoid syncing local node_modules
+      - /app/.next  # But avoid syncing local .next
+      - /app/node_modules  # And local node_modules
