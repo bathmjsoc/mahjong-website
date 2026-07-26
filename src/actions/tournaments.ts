@@ -35,7 +35,7 @@ export async function fetchTournaments(): Promise<Tournament[]> {
     .from("tournaments")
     .select("*")
     .order("last_updated", { ascending: false })
-    .overrideTypes<Array<TournamentRow>>(); // Not ideal, but otherwise the typing breaks :(
+    .overrideTypes<TournamentRow[]>(); // Not ideal, but otherwise the typing breaks :(
 
   if (error)
     throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
