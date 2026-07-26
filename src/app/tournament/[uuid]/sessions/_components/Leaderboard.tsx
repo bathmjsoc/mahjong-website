@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { rankPlayers, scoreToColor } from "@/lib/scoring";
+import { rankPlayers, scoreToColor } from "@/lib/scores";
 import { formatPosition } from "@/lib/utils";
 import type { Player } from "@/types/app.types";
 

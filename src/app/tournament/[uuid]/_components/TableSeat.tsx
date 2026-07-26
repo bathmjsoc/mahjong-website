@@ -6,7 +6,7 @@ import { useAttendance } from "@/hooks/useAttendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useTables } from "@/hooks/useTables";
 import { useTournaments } from "@/hooks/useTournaments";
-import { getPointDeltas } from "@/lib/scoring";
+import { getPointDeltas } from "@/lib/scores";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type {
   Player,

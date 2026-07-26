@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/useTournaments";
-import { getPlayerScores } from "@/lib/scoring";
+import { getPlayerScores } from "@/lib/scores";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { Log } from "@/types/app.types";
 

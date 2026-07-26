@@ -1,7 +1,7 @@
 import { LineGraph } from "@/elements/LineGraph";
 import { useLogs } from "@/hooks/useLogs";
 import { useTournaments } from "@/hooks/useTournaments";
-import { getPointHistory } from "@/lib/scoring";
+import { getPointHistory } from "@/lib/scores";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { Player } from "@/types/app.types";
 
