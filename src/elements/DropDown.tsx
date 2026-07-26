@@ -28,6 +28,7 @@ export function DropDown({
   disabled = false,
 }: DropDownProps) {
   const parentClose = useContext(RootContext);
+
   const isNested = parentClose !== null;
 
   return (

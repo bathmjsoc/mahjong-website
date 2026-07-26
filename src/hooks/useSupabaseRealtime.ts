@@ -9,7 +9,7 @@ export function useSupabaseRealtime() {
   const { currentTournament } = useTournaments();
 
   const queryClient = useQueryClient();
-  
+
   const sessionId = currentSession?.id;
   const tournamentId = currentTournament?.id;
 

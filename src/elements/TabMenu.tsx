@@ -24,6 +24,7 @@ type TabLinkProps = ComponentProps<typeof Link>;
 
 export function TabLink({ children, href, className, ...props }: TabLinkProps) {
   const pathname = usePathname();
+
   const isActive = pathname === href;
 
   return (
