@@ -22,13 +22,15 @@ function TournamentRealtime({ children }: PropsWithChildren) {
   return children;
 }
 
+type TournamentProviderProps = {
+  tournamentId: string;
+  children: ReactNode;
+};
+
 export function TournamentProvider({
   tournamentId,
   children,
-}: {
-  tournamentId: string;
-  children: ReactNode;
-}) {
+}: TournamentProviderProps) {
   const value = useMemo(() => ({ tournamentId }), [tournamentId]);
 
   return (
