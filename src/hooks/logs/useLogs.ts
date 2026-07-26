@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { fetchLogs } from "@/actions/logs";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useTournament } from "@/hooks/useTournament";
 import { getPlayerScores } from "@/lib/scores";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type { Log } from "@/types/app.types";
@@ -17,9 +17,7 @@ type UseLogsType = {
 
 export function useLogs(): UseLogsType {
   const { tournamentId } = useTournamentContext();
-  const { tournamentsMap } = useTournaments();
-
-  const tournament = tournamentsMap[tournamentId];
+  const { tournament } = useTournament();
 
   const queryKey = ["logs", tournamentId];
   const { data, isLoading, isError } = useQuery({

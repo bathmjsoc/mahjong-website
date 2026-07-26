@@ -5,9 +5,8 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useTournament } from "@/hooks/useTournament";
 import { getPointDeltas } from "@/lib/scores";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 import type {
   Player,
   PointsAnimationEvent,
@@ -34,8 +33,7 @@ export function TableSeat({
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { playerMap } = usePlayers();
   const { duplicatePlayerIds } = useTables();
-  const { tournamentId } = useTournamentContext();
-  const { tournamentsMap } = useTournaments();
+  const { scoringRules } = useTournament();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
@@ -43,7 +41,6 @@ export function TableSeat({
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
   const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
   const occupant = (occupantId && playerMap[occupantId]) || null;
-  const tournament = tournamentsMap[tournamentId];
 
   useEffect(() => {
     if (!occupant?.id) return;
@@ -56,7 +53,6 @@ export function TableSeat({
       const { faan, winType, winners, losers }: PointsAnimationEvent =
         event.detail;
 
-      const scoringRules = tournament?.scoring_rules ?? [];
       const pointDeltas = getPointDeltas(faan, winType, scoringRules);
 
       if (winners.some((p) => p.id === occupant.id)) {
@@ -70,7 +66,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id, tournament?.scoring_rules]);
+  }, [occupant?.id, table.id, scoringRules]);
 
   async function handleSelect(player: Player | null) {
     if (!player) return;
