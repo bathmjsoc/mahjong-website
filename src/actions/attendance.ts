@@ -49,9 +49,8 @@ async function updateAttendance(
     .update(attendance)
     .match({ session_id: session.id, player_id: player.id });
 
-  if (error) {
+  if (error)
     throw new Error(`updateAttendance encountered an error: ${error.message}`);
-  }
 }
 
 export async function deregisterPlayer(
