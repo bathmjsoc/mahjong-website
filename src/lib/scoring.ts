@@ -78,3 +78,25 @@ export function getPointHistory(
 
   return scores;
 }
+
+/*
+ * Combines players with their scores and returns them in descending order
+ * */
+export function rankPlayers(
+  players: Player[],
+  scores: Record<string, number>,
+): [Player, number][] {
+  return players
+    .map((player) => ({ player: player, score: scores[player.id] ?? 0 }))
+    .sort((a, b) => b.score - a.score)
+    .map(({ player, score }) => [player, score]);
+}
+
+/*
+ * Maps a score to its corresponding Tailwind background color class
+ * */
+export function scoreToColor(score: number): string {
+  if (score < 0) return "bg-negative";
+  if (score > 0) return "bg-positive";
+  return "bg-neutral";
+}

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { BarChart } from "@/elements/BarChart";
 import { Modal } from "@/elements/Modal";
-import { rankPlayers } from "@/lib/utils";
+import { rankPlayers } from "@/lib/scoring";
 import type { Player } from "@/types/app.types";
 
 type ViewGraphModalProps = {
