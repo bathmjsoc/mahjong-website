@@ -24,6 +24,14 @@ export function useTables(): UseTablesType {
     },
     enabled: !!currentSession,
     select: (tables) => {
+      tables.sort((a, b) => {
+        if (a.saved !== b.saved) {
+          return Number(a.saved) - Number(b.saved);
+        }
+
+        return a.number - b.number;
+      });
+
       const availableTables: Table[] = [];
       const duplicatePlayerIds = new Set<string>();
       const seatedPlayerIds = new Set<string>();

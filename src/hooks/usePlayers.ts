@@ -19,6 +19,8 @@ export function usePlayers(): UsePlayersType {
     queryFn: () => fetchPlayers(tournamentId),
     enabled: !!tournamentId,
     select: (players) => {
+      players.sort((a, b) => a.name.localeCompare(b.name));
+
       const playerMap = Object.fromEntries(
         players.map((player) => [player.id, player]),
       );

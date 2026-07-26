@@ -24,8 +24,7 @@ export async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   const { data: players, error } = await supabase
     .from("players")
     .select("*")
-    .eq("tournament_id", tournamentId)
-    .order("name", { ascending: true });
+    .eq("tournament_id", tournamentId);
 
   if (error)
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);

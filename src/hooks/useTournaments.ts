@@ -16,6 +16,12 @@ export function useTournaments(): UseTournamentsType {
     queryKey,
     queryFn: fetchTournaments,
     select: (tournaments) => {
+      tournaments.sort(
+        (a, b) =>
+          new Date(b.last_updated).getTime() -
+          new Date(a.last_updated).getTime(),
+      );
+
       const tournamentsMap = Object.fromEntries(
         tournaments.map((tournament) => [tournament.id, tournament]),
       );

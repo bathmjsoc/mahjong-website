@@ -34,7 +34,6 @@ export async function fetchTournaments(): Promise<Tournament[]> {
   const { data: tournaments, error } = await supabase
     .from("tournaments")
     .select("*")
-    .order("last_updated", { ascending: false })
     .overrideTypes<TournamentRow[]>(); // Not ideal, but otherwise the typing breaks :(
 
   if (error)

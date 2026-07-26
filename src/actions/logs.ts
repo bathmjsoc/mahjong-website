@@ -34,8 +34,7 @@ export async function fetchLogs(tournamentId: string): Promise<Log[]> {
   const { data: logs, error } = await supabase
     .from("logs")
     .select("*")
-    .eq("tournament_id", tournamentId)
-    .order("timestamp", { ascending: false });
+    .eq("tournament_id", tournamentId);
 
   if (error)
     throw new Error(`fetchLogs encountered an error: ${error.message}`);

@@ -20,6 +20,11 @@ export function useSessions(): UseSessionsType {
     queryFn: () => fetchSessions(tournamentId),
     enabled: !!tournamentId,
     select: (sessions) => {
+      sessions.sort(
+        (a, b) =>
+          new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+      );
+
       const currentSession = sessions.at(-1) ?? null;
 
       const sessionMap = Object.fromEntries(

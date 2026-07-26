@@ -24,8 +24,7 @@ export async function fetchSessions(tournamentId: string): Promise<Session[]> {
   const { data: sessions, error } = await supabase
     .from("sessions")
     .select("*")
-    .eq("tournament_id", tournamentId)
-    .order("start_date", { ascending: true });
+    .eq("tournament_id", tournamentId);
 
   if (error)
     throw new Error(`fetchSessions encountered an error: ${error.message}`);

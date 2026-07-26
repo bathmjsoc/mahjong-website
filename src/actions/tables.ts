@@ -32,9 +32,7 @@ export async function fetchTables(session: Session): Promise<Table[]> {
   const { data: tables, error } = await supabase
     .from("tables")
     .select("*")
-    .eq("session_id", session.id)
-    .order("saved", { ascending: true })
-    .order("number", { ascending: true });
+    .eq("session_id", session.id);
 
   if (error)
     throw new Error(`fetchTables encountered an error: ${error.message}`);
