@@ -3,9 +3,9 @@
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { IconButton } from "@/elements/IconButton";
-import { useLogs } from "@/hooks/useLogs";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { useLogs } from "@/hooks/logs/useLogs";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import { normalizeText } from "@/lib/utils";
 import type { Log, LogSearchTag } from "@/types/app.types";
 import { LogList } from "./_components/LogList";

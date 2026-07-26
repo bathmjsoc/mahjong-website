@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { fetchAttendance } from "@/actions/attendance";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Attendance, Player } from "@/types/app.types";
 
 type UseAttendanceType = {

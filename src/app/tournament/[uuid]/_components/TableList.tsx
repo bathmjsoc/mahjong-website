@@ -2,7 +2,7 @@ import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
-import { useSessions } from "@/hooks/useSessions";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Table } from "@/types/app.types";
 import { TableSeat } from "./TableSeat";
 

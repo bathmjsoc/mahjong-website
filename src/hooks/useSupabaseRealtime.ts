@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useSessions } from "@/hooks/useSessions";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import { createClient } from "@/lib/supabase/client";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 

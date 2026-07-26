@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createPlayer } from "@/actions/players";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import { parseFormString } from "@/lib/utils";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 

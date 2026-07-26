@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
 import { createLog } from "@/actions/logs";
 import { DropDown } from "@/elements/DropDown";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import { useTournaments } from "@/hooks/useTournaments";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 import type {

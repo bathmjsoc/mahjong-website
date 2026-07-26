@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/types/app.types";
 import { PlayerAnalytics } from "./_components/PlayerAnalytics";
 
