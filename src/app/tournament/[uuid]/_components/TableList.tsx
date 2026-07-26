@@ -14,7 +14,7 @@ type TableListProps = {
 export function TableList({ tables, className }: TableListProps) {
   const { currentSession } = useSessions();
 
-  async function handleCreateTable(){
+  async function handleCreateTable() {
     if (!currentSession) return;
     await createTable(currentSession);
   }
@@ -32,10 +32,7 @@ export function TableList({ tables, className }: TableListProps) {
 
       {/* Add New Table Button */}
       <div className="flex size-70 items-center justify-center">
-        <FilledButton
-          onClick={handleCreateTable}
-          className="rounded-full p-3"
-        >
+        <FilledButton onClick={handleCreateTable} className="rounded-full p-3">
           <Plus className="size-7" />
         </FilledButton>
       </div>
