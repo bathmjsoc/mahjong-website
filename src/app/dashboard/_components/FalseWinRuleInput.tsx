@@ -1,5 +1,5 @@
 import { LabelledInput } from "@/elements/LabelledInput";
-import type { ScoringRule } from "@/lib/types";
+import type { ScoringRule } from "@/types/app.types";
 
 type FalseWinRuleEditorProps = {
   scoringRule: ScoringRule;

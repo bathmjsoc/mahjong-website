@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Session } from "@/lib/types";
+import type { Session } from "@/types/app.types";
 
 export async function createSession(
   tournamentId: string,

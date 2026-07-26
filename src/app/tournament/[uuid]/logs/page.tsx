@@ -6,8 +6,8 @@ import { IconButton } from "@/elements/IconButton";
 import { useLogs } from "@/hooks/useLogs";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
+import type { Log, LogSearchTag } from "@/types/app.types";
 import { LogList } from "./_components/LogList";
 import { LogSearchBar } from "./_components/LogSearchBar";
 

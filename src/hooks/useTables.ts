@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/useSessions";
-import type { Table } from "@/lib/types";
+import type { Table } from "@/types/app.types";
 
 type UseTablesType = {
   availableTables: Table[];

@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { ActionState } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import type { ActionState } from "@/types/app.types";
 
 export async function signUp(
   _: ActionState,

@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import type { Player } from "@/lib/types";
 import { formatPosition, rankPlayers, scoreToColor } from "@/lib/utils";
+import type { Player } from "@/types/app.types";
 
 type LeaderboardProps = {
   players: Player[];

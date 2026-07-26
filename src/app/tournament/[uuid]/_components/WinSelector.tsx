@@ -4,8 +4,13 @@ import { DropDown } from "@/elements/DropDown";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import { useTournaments } from "@/hooks/useTournaments";
-import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
+import type {
+  Player,
+  PointsAnimationEvent,
+  Table,
+  WinType,
+} from "@/types/app.types";
 
 type WinSelectorProps = {
   table: Table;

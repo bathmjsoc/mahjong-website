@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchSessions } from "@/actions/sessions";
-import type { Session } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
+import type { Session } from "@/types/app.types";
 
 type UseSessionsType = {
   currentSession: Session | null;

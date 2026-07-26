@@ -14,7 +14,7 @@ import { SearchCombobox } from "@/elements/SearchCombobox";
 import { useAttendance } from "@/hooks/useAttendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import type { Player } from "@/lib/types";
+import type { Player } from "@/types/app.types";
 import { CreatePlayerModal } from "./CreatePlayerModal";
 import { DeletePlayerModal } from "./DeletePlayerModal";
 import { EditPlayerModal } from "./EditPlayerModal";

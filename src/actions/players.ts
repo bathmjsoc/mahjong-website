@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player } from "@/lib/types";
+import type { Player } from "@/types/app.types";
 
 export async function createPlayer(
   tournamentId: string,

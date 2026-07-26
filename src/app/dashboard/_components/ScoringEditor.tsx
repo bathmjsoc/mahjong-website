@@ -1,7 +1,7 @@
 import { Minus, Plus } from "lucide-react";
 import { FilledButton } from "@/elements/FilledButton";
 import { DEFAULT_SCORING_RULE } from "@/lib/constants";
-import type { ScoringRule } from "@/lib/types";
+import type { ScoringRule } from "@/types/app.types";
 import { FalseWinRuleInput } from "./FalseWinRuleInput";
 import { ScoringRulesTable } from "./ScoringRulesTable";
 

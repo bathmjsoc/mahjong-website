@@ -5,7 +5,7 @@ import { IconButton } from "@/elements/IconButton";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
 import { WIN_TYPE_MAP } from "@/lib/constants";
-import type { Log } from "@/lib/types";
+import type { Log } from "@/types/app.types";
 
 type LogListProps = {
   logs: Log[];

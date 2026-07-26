@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchTournaments } from "@/actions/tournaments";
-import type { Tournament } from "@/lib/types";
+import type { Tournament } from "@/types/app.types";
 
 type UseTournamentsType = {
   tournamentsMap: Record<string, Tournament>;

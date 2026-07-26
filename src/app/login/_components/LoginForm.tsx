@@ -5,7 +5,7 @@ import { signIn } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { TextButton } from "@/elements/TextButton";
-import type { ActionState } from "@/lib/types";
+import type { ActionState } from "@/types/app.types";
 import { RegisterModal } from "./RegisterModal";
 
 export function LoginForm() {

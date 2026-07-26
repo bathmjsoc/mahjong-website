@@ -1,4 +1,4 @@
-import type { ScoringRule, WinType } from "@/lib/types";
+import type { ScoringRule, WinType } from "@/types/app.types";
 
 export const DEFAULT_SCORING_RULE: ScoringRule = {
   faan: 0,

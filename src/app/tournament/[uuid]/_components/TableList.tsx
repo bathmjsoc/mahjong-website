@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { useSessions } from "@/hooks/useSessions";
-import type { Table } from "@/lib/types";
+import type { Table } from "@/types/app.types";
 import { TableSeat } from "./TableSeat";
 
 type TableListProps = {

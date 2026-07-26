@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayers } from "@/hooks/usePlayers";
-import type { Player } from "@/lib/types";
+import type { Player } from "@/types/app.types";
 import { PlayerAnalytics } from "./_components/PlayerAnalytics";
 
 export default function AnalyticsPage() {

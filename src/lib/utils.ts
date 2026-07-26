@@ -1,5 +1,5 @@
 import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
-import type { Player, Session } from "@/lib/types";
+import type { Player, Session } from "@/types/app.types";
 
 /*
  * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")

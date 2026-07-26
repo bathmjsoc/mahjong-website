@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Log, Player, Session, WinType } from "@/lib/types";
+import type { Log, Player, Session, WinType } from "@/types/app.types";
 
 export async function createLog(
   tournamentId: string,

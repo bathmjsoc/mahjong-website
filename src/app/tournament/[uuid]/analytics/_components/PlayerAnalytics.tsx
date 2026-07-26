@@ -2,8 +2,8 @@ import { LineGraph } from "@/elements/LineGraph";
 import { useLogs } from "@/hooks/useLogs";
 import { useTournaments } from "@/hooks/useTournaments";
 import { getPointHistory } from "@/lib/scoring";
-import type { Player } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
+import type { Player } from "@/types/app.types";
 
 type PlayerAnalyticsProps = {
   player: Player;

@@ -1,9 +1,9 @@
 "use server";
 
 import { createSession } from "@/actions/sessions";
-import type { Tables } from "@/lib/database.types";
 import { createClient } from "@/lib/supabase/server";
-import type { ScoringRule, Tournament } from "@/lib/types";
+import type { ScoringRule, Tournament } from "@/types/app.types";
+import type { Tables } from "@/types/database.types";
 
 export async function createTournament(
   tournamentName: string,

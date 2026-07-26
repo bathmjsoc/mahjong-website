@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/usePlayers";
 import { useSessions } from "@/hooks/useSessions";
-import type { Attendance, Player } from "@/lib/types";
+import type { Attendance, Player } from "@/types/app.types";
 
 type UseAttendanceType = {
   attendance: Attendance[];

@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/useTournaments";
 import { getPlayerScores } from "@/lib/scoring";
-import type { Log } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
+import type { Log } from "@/types/app.types";
 
 type UseLogsType = {
   enabledLogs: Log[];

@@ -9,8 +9,8 @@ import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/useAttendance";
 import { useLogs } from "@/hooks/useLogs";
 import { useTables } from "@/hooks/useTables";
-import type { Player, Session } from "@/lib/types";
 import { rankPlayers, scoreToColor } from "@/lib/utils";
+import type { Player, Session } from "@/types/app.types";
 
 type PlayerListProps = {
   session: Session;
