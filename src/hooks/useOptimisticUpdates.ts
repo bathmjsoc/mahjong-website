@@ -3,6 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 type OptimisticMutationOptions<TVariables, TData> = {
   mutationFn: (variables: TVariables) => Promise<TData>;
@@ -21,13 +22,22 @@ export function useOptimisticMutation<TVariables, TData>({
     mutationFn: mutationFn,
     async onMutate(variables) {
       const queryKey = getQueryKey(variables);
+
       await queryClient.cancelQueries({ queryKey });
+      const previousData = queryClient.getQueryData(queryKey);
       optimisticUpdate(variables);
+
+      return { previousData, queryKey };
     },
-    onSettled(_data, _error, variables) {
-      void queryClient.invalidateQueries({
-        queryKey: getQueryKey(variables),
-      });
+    onError(_error, _variables, context) {
+      if (context?.previousData !== undefined) {
+        queryClient.setQueryData(context.queryKey, context.previousData);
+      }
+    },
+    onSettled(_data, _error, _variables, context) {
+      if (context?.queryKey) {
+        void queryClient.invalidateQueries({ queryKey: context.queryKey });
+      }
     },
   });
 }
