@@ -4,7 +4,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Session, Table, Tournament } from "@/lib/types";
+import type { Session, Tournament } from "@/lib/types";
 
 export function useSessionMutations() {
   const queryClient = useQueryClient();
@@ -27,8 +27,8 @@ export function useSessionMutations() {
 
   return {
     createSession(tournament: Tournament) {
-      const sessions = queryClient.getQueryData<Table[]>([
-        "tables",
+      const sessions = queryClient.getQueryData<Session[]>([
+        "sessions",
         tournament.id,
       ]);
 
