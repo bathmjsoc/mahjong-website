@@ -7,7 +7,7 @@ import { FilledButton } from "@/elements/FilledButton";
 import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
   const { data: tournaments } = useSuspenseQuery({
     queryKey: ["tournaments"],
     queryFn: fetchTournaments,
