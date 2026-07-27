@@ -8,6 +8,11 @@ import {
 } from "@/hooks/useOptimisticUpdates";
 import type { Attendance, Player, Session } from "@/lib/types";
 
+type RegisterAttendanceVariables = {
+  session: Session;
+  player: Player;
+};
+
 type UpdateAttendanceVariables = {
   session: Session;
   player: Player;
@@ -25,7 +30,10 @@ export function useAttendanceMutations() {
     getQueryKey: (attendance) => getAttendanceQueryKey(attendance.session_id),
   });
 
-  const registerMutation = useOptimisticMutation({
+  const registerMutation = useOptimisticMutation<
+    RegisterAttendanceVariables,
+    void
+  >({
     mutationFn: ({ session, player }: { session: Session; player: Player }) =>
       registerPlayerAction(session, player),
     getQueryKey: ({ session }) => getAttendanceQueryKey(session.id),
