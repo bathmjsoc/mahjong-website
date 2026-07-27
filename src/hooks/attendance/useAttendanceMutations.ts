@@ -15,20 +15,20 @@ type UpdateAttendanceVariables = {
 };
 
 export function useAttendanceMutations() {
-  const getAttendanceQueryKey = (attendance: Attendance) => [
+  const getAttendanceQueryKey = (sessionId: string) => [
     "attendance",
-    attendance.session_id,
+    sessionId,
   ];
 
   const { addItem, patchItem } = useCacheItems<Attendance>({
     getId: ({ session_id, player_id }) => `${session_id}:${player_id}`,
-    getQueryKey: getAttendanceQueryKey,
+    getQueryKey: (attendance) => getAttendanceQueryKey(attendance.session_id),
   });
 
   const registerMutation = useOptimisticMutation({
     mutationFn: ({ session, player }: { session: Session; player: Player }) =>
       registerPlayerAction(session, player),
-    getQueryKey: ({ session }) => ["attendance", session.id],
+    getQueryKey: ({ session }) => getAttendanceQueryKey(session.id),
     optimisticUpdate: ({ session, player }) =>
       addItem({
         session_id: session.id,
@@ -42,9 +42,7 @@ export function useAttendanceMutations() {
     {
       mutationFn: ({ session, player, changes }) =>
         updateAttendanceAction(session, player, changes),
-
-      getQueryKey: ({ session }) => ["attendance", session.id],
-
+      getQueryKey: ({ session }) => getAttendanceQueryKey(session.id),
       optimisticUpdate: ({ session, player, changes }) =>
         patchItem(
           {
