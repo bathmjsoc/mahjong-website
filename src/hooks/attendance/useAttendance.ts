@@ -20,9 +20,9 @@ export function useAttendance(): UseAttendanceType {
     (rawAttendance: Attendance[]) => {
       const attendance = [...rawAttendance];
 
-      const availablePlayers: Player[] = [];
+      const availablePlayers = [];
       const lockedPlayerIds = new Set<string>();
-      const registeredPlayers: Player[] = [];
+      const registeredPlayers = [];
 
       for (const entry of attendance) {
         if (entry.session_id !== currentSession?.id || !entry.registered) {

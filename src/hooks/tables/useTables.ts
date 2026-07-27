@@ -23,7 +23,7 @@ export function useTables(): UseTablesType {
       return a.number - b.number;
     });
 
-    const availableTables: Table[] = [];
+    const availableTables = [];
     const duplicatePlayerIds = new Set<string>();
     const seatedPlayerIds = new Set<string>();
 

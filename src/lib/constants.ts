@@ -1,6 +1,6 @@
-import type { ScoringRule, WinType } from "@/types/app.types";
+import type { WinType } from "@/types/app.types";
 
-export const DEFAULT_SCORING_RULE: ScoringRule = {
+export const DEFAULT_SCORING_RULE = {
   faan: 0,
   deltas: {
     打出: { winner: 0, loser: 0 },
@@ -9,7 +9,7 @@ export const DEFAULT_SCORING_RULE: ScoringRule = {
   },
 } as const;
 
-export const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
+export const DEFAULT_FALSE_WIN_RULE = {
   faan: null,
   deltas: {
     詐糊: { winner: 0, loser: 0 },
@@ -37,7 +37,7 @@ export const TABS = [
   { label: "Analytics", href: "/analytics" },
 ] as const;
 
-export const WIN_TYPE_MAP: Record<WinType, string> = {
+export const WIN_TYPE_MAP = {
   打出: "Throw",
   自摸: "Self-Draw",
   包自摸: "Special Case",

@@ -46,9 +46,9 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   ) {
     if (!currentTournament || !currentSession || !occupant) return;
 
-    const winners: Player[] = [];
-    const losers: Player[] = [];
-    const others: Player[] = [];
+    const winners = [];
+    const losers = [];
+    const others = [];
 
     switch (winType) {
       case "打出":
