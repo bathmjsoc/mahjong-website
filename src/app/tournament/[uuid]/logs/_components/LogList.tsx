@@ -1,7 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
+import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import { WIN_TYPE_MAP } from "@/lib/constants";
@@ -42,6 +42,7 @@ type LogRowProps = {
 };
 
 function LogRow({ log }: LogRowProps) {
+  const { disableLog } = useLogMutations();
   const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
