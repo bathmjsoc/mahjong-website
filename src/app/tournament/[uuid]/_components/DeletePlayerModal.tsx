@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { deletePlayer } from "@/actions/players";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/types/app.types";
 
@@ -13,6 +13,7 @@ type DeletePlayerModalProps = {
 };
 
 export function DeletePlayerModal({ isOpen, onClose }: DeletePlayerModalProps) {
+  const { deletePlayer } = usePlayerMutations();
   const { players } = usePlayers();
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -23,10 +24,10 @@ export function DeletePlayerModal({ isOpen, onClose }: DeletePlayerModalProps) {
     onClose();
   }
 
-  async function handleDelete() {
+  function handleDelete() {
     if (!selectedPlayer) return;
 
-    await deletePlayer(selectedPlayer);
+    deletePlayer(selectedPlayer);
     setDeletedName(selectedPlayer.name);
     handleClose();
   }

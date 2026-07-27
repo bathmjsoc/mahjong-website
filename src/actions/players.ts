@@ -26,15 +26,12 @@ export async function fetchPlayers(tournament: Tournament): Promise<Player[]> {
   return players ?? [];
 }
 
-export async function updatePlayer(
-  player: Player,
-  newName: string,
-): Promise<void> {
+export async function updatePlayer(player: Player): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase
     .from("players")
-    .update({ name: newName })
+    .update(player)
     .eq("id", player.id);
 
   if (error)
