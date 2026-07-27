@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Attendance, Player, Session } from "@/types/app.types";
+import type { Attendance, Player, Session } from "@/lib/types";
 
 export async function registerPlayer(
   session: Session,
@@ -37,7 +37,7 @@ export async function fetchAttendance(session: Session): Promise<Attendance[]> {
   return attendance ?? [];
 }
 
-async function updateAttendance(
+export async function updateAttendance(
   session: Session,
   player: Player,
   attendance: Partial<Attendance>,
@@ -51,25 +51,4 @@ async function updateAttendance(
 
   if (error)
     throw new Error(`updateAttendance encountered an error: ${error.message}`);
-}
-
-export async function deregisterPlayer(
-  session: Session,
-  player: Player,
-): Promise<void> {
-  await updateAttendance(session, player, { registered: false });
-}
-
-export async function lockPlayer(
-  session: Session,
-  player: Player,
-): Promise<void> {
-  await updateAttendance(session, player, { locked: true });
-}
-
-export async function unlockPlayer(
-  session: Session,
-  player: Player,
-): Promise<void> {
-  await updateAttendance(session, player, { locked: false });
 }

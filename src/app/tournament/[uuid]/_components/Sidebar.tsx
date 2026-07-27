@@ -7,14 +7,14 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { registerPlayer } from "@/actions/attendance";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Player } from "@/types/app.types";
+import type { Player } from "@/lib/types";
 import { CreatePlayerModal } from "./CreatePlayerModal";
 import { DeletePlayerModal } from "./DeletePlayerModal";
 import { EditPlayerModal } from "./EditPlayerModal";
@@ -25,6 +25,7 @@ type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
   const { registeredPlayers } = useAttendance();
+  const { registerPlayer } = useAttendanceMutations();
   const { players } = usePlayers();
   const { currentSession } = useSessions();
 
@@ -36,9 +37,9 @@ export function Sidebar() {
     return players.filter((player) => !registeredIds.has(player.id));
   }, [players, registeredPlayers]);
 
-  async function handleRegisterPlayer(player: Player) {
+  function handleRegisterPlayer(player: Player) {
     if (!currentSession) return;
-    await registerPlayer(currentSession, player);
+    registerPlayer(currentSession, player);
   }
 
   return (

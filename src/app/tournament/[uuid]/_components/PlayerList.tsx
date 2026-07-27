@@ -1,16 +1,12 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import {
-  deregisterPlayer,
-  lockPlayer,
-  unlockPlayer,
-} from "@/actions/attendance";
 import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTables } from "@/hooks/tables/useTables";
 import { rankPlayers, scoreToColor } from "@/lib/scores";
-import type { Player, Session } from "@/types/app.types";
+import type { Player, Session } from "@/lib/types";
 
 type PlayerListProps = {
   session: Session;
@@ -71,6 +67,9 @@ function PlayerRow({
   player,
   score,
 }: PlayerRowProps) {
+  const { deregisterPlayer, lockPlayer, unlockPlayer } =
+    useAttendanceMutations();
+
   const scoreColor = scoreToColor(score);
 
   function handleLockToggle() {
