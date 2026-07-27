@@ -17,9 +17,7 @@ export function getPlayerScores(
   const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
-    const scoringRule = ruleMap.get(log.faan);
-    const pointDelta = scoringRule?.deltas[log.win_type];
-
+    const pointDelta = ruleMap.get(log.faan)?.deltas[log.win_type];
     if (!pointDelta) continue;
 
     for (const winner of log.winner_ids) {
@@ -31,7 +29,7 @@ export function getPlayerScores(
     }
 
     for (const other of log.other_ids) {
-      scores[other] = scores[other] ?? 0;
+      scores[other] ??= 0;
     }
   }
 
