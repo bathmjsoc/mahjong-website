@@ -1,5 +1,6 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { fetchTournaments } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
@@ -7,7 +8,10 @@ import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 
 export default async function DashboardPage() {
-  const tournaments = await fetchTournaments();
+  const { data: tournaments } = useSuspenseQuery({
+    queryKey: ["tournaments"],
+    queryFn: fetchTournaments,
+  });
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
