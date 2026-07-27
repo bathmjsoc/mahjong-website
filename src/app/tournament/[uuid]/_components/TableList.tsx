@@ -1,8 +1,8 @@
 import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { useSessions } from "@/hooks/sessions/useSessions";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import type { Table } from "@/types/app.types";
 import { TableSeat } from "./TableSeat";
 
@@ -12,11 +12,12 @@ type TableListProps = {
 };
 
 export function TableList({ tables, className }: TableListProps) {
+  const { createTable } = useTableMutations();
   const { currentSession } = useSessions();
 
-  async function handleCreateTable() {
+  function handleCreateTable() {
     if (!currentSession) return;
-    await createTable(currentSession);
+    createTable(currentSession);
   }
 
   return (
@@ -45,6 +46,8 @@ type TableProps = {
 };
 
 function TableCard({ table }: TableProps) {
+  const { deleteTable, saveTable } = useTableMutations();
+
   return (
     <div
       className={twMerge(

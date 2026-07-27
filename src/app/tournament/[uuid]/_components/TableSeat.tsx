@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { updateTable } from "@/actions/tables";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointDeltas } from "@/lib/scores";
@@ -32,6 +32,7 @@ export function TableSeat({
 }: TableSeatProps) {
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { playerMap } = usePlayers();
+  const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
   const { scoringRules } = useTournaments();
 
@@ -68,10 +69,10 @@ export function TableSeat({
     return () => window.removeEventListener(eventName, handleAnimation);
   }, [occupant?.id, table.id, scoringRules]);
 
-  async function handleSelect(player: Player | null) {
+  function handleSelect(player: Player | null) {
     if (!player) return;
 
-    await updateTable(table, {
+    updateTable(table, {
       [wind]: player,
     });
   }
