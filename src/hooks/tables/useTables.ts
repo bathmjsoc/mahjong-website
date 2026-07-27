@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Table } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import type { Session, Table } from "@/lib/types";
 
 type UseTablesType = {
   availableTables: Table[];
@@ -72,4 +72,18 @@ export function useTables(): UseTablesType {
     seatedPlayerIds: query.data.seatedPlayerIds,
     tables: query.data.tables,
   };
+}
+
+async function fetchTables(session: Session): Promise<Table[]> {
+  const supabase = createClient();
+
+  const { data: tables, error } = await supabase
+    .from("tables")
+    .select("*")
+    .eq("session_id", session.id);
+
+  if (error)
+    throw new Error(`fetchTables encountered an error: ${error.message}`);
+
+  return tables ?? [];
 }

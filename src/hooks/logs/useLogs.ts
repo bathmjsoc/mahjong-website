@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPlayerScores } from "@/lib/scores";
-import type { Log } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import type { Log, Tournament } from "@/lib/types";
 
 type UseLogsType = {
   enabledLogs: Log[];
@@ -52,4 +52,18 @@ export function useLogs(): UseLogsType {
     overallScores: query.data.overallScores,
     sessionScores: query.data.sessionScores,
   };
+}
+
+async function fetchLogs(tournament: Tournament): Promise<Log[]> {
+  const supabase = createClient();
+
+  const { data: logs, error } = await supabase
+    .from("logs")
+    .select("*")
+    .eq("tournament_id", tournament.id);
+
+  if (error)
+    throw new Error(`fetchLogs encountered an error: ${error.message}`);
+
+  return logs ?? [];
 }

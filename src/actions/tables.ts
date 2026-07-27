@@ -20,20 +20,6 @@ export async function createTable(table: Table): Promise<Table> {
   return createdTable;
 }
 
-export async function fetchTables(session: Session): Promise<Table[]> {
-  const supabase = await createClient();
-
-  const { data: tables, error } = await supabase
-    .from("tables")
-    .select("*")
-    .eq("session_id", session.id);
-
-  if (error)
-    throw new Error(`fetchTables encountered an error: ${error.message}`);
-
-  return tables ?? [];
-}
-
 export async function updateTable(
   table: Table,
   players: Partial<Record<Wind, Player | null>>,

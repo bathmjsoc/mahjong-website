@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { fetchPlayers } from "@/actions/players";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import type { Player } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import type { Player, Tournament } from "@/lib/types";
 
 type UsePlayersType = {
   playerMap: Record<string, Player>;
@@ -37,4 +37,18 @@ export function usePlayers(): UsePlayersType {
     playerMap: query.data.playerMap,
     players: query.data.players,
   };
+}
+
+async function fetchPlayers(tournament: Tournament): Promise<Player[]> {
+  const supabase = createClient();
+
+  const { data: players, error } = await supabase
+    .from("players")
+    .select("*")
+    .eq("tournament_id", tournament.id);
+
+  if (error)
+    throw new Error(`fetchPlayers encountered an error: ${error.message}`);
+
+  return players ?? [];
 }

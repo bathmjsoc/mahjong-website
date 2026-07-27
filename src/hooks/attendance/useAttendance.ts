@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Attendance, Player } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import type { Attendance, Player, Session } from "@/lib/types";
 
 type UseAttendanceType = {
   attendance: Attendance[];
@@ -68,4 +68,18 @@ export function useAttendance(): UseAttendanceType {
     lockedPlayerIds: query.data.lockedPlayerIds,
     registeredPlayers: query.data.registeredPlayers,
   };
+}
+
+async function fetchAttendance(session: Session): Promise<Attendance[]> {
+  const supabase = createClient();
+
+  const { data: attendance, error } = await supabase
+    .from("attendance")
+    .select("*")
+    .eq("session_id", session.id);
+
+  if (error)
+    throw new Error(`fetchAttendance encountered an error: ${error.message}`);
+
+  return attendance ?? [];
 }

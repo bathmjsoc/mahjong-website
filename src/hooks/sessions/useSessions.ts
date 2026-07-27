@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { fetchSessions } from "@/actions/sessions";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import type { Session } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import type { Session, Tournament } from "@/lib/types";
 
 type UseSessionsType = {
   currentSession: Session | null;
@@ -42,4 +42,18 @@ export function useSessions(): UseSessionsType {
     sessionMap: query.data.sessionMap,
     sessions: query.data.sessions,
   };
+}
+
+async function fetchSessions(tournament: Tournament): Promise<Session[]> {
+  const supabase = createClient();
+
+  const { data: sessions, error } = await supabase
+    .from("sessions")
+    .select("*")
+    .eq("tournament_id", tournament.id);
+
+  if (error)
+    throw new Error(`fetchSessions encountered an error: ${error.message}`);
+
+  return sessions ?? [];
 }

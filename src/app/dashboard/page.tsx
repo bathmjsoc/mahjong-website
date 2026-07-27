@@ -2,8 +2,8 @@
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { fetchTournaments } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
+import { fetchTournaments } from "@/hooks/tournaments/useTournaments";
 import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 
