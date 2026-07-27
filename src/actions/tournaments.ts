@@ -18,7 +18,7 @@ export async function createTournament(
     .single();
 
   if (error)
-    throw new Error(`createTournament encountered an error: ${error?.message}`);
+    throw new Error(`createTournament encountered an error: ${error.message}`);
 
   const initialSession = {
     id: crypto.randomUUID(),
@@ -44,7 +44,7 @@ export async function fetchTournaments(): Promise<Tournament[]> {
     .overrideTypes<TournamentRow[]>(); // Not ideal, but otherwise the typing breaks :(
 
   if (error)
-    throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
+    throw new Error(`fetchTournaments encountered an error: ${error.message}`);
 
   return tournaments ?? [];
 }
@@ -60,7 +60,7 @@ export async function getTournamentName(tournamentId: string): Promise<string> {
 
   if (error)
     throw new Error(
-      `getTournamentName encountered an error: ${error?.message}`,
+      `getTournamentName encountered an error: ${error.message}`,
     );
 
   return tournament.name;
