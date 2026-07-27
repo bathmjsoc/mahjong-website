@@ -5,12 +5,15 @@ import { createClient } from "@/lib/supabase/server";
 import type { ScoringRule, Tournament } from "@/types/app.types";
 import type { Tables } from "@/types/database.types";
 
-export async function createTournament(tournament: Tournament): Promise<void> {
+export async function createTournament(
+  tournamentName: string,
+  scoringRules: ScoringRule[],
+): Promise<void> {
   const supabase = await createClient();
 
   const { data: createdTournament, error } = await supabase
     .from("tournaments")
-    .insert(tournament)
+    .insert({ name: tournamentName, scoring_rules: scoringRules })
     .select("id")
     .single();
 
