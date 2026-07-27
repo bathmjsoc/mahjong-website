@@ -15,7 +15,6 @@ import type { Player, Session, Table, Wind } from "@/lib/types";
 type UpdateTableVariables = {
   table: Table;
   players: Partial<Record<Wind, Player | null>>;
-  nextTable: Table;
 };
 
 export function useTableMutations() {
@@ -43,7 +42,17 @@ export function useTableMutations() {
   const updateMutation = useOptimisticMutation<UpdateTableVariables, void>({
     mutationFn: ({ table, players }) => updateTableAction(table, players),
     getQueryKey: ({ table }) => getTablesQueryKey(table),
-    optimisticUpdate: ({ nextTable }) => updateItem(nextTable),
+    optimisticUpdate: ({ table, players }) => {
+      const nextTable: Table = { ...table };
+
+      for (const wind of SEATS) {
+        if (wind in players) {
+          nextTable[`${wind}_id`] = players[wind]?.id ?? null;
+        }
+      }
+
+      updateItem(nextTable);
+    },
   });
 
   const deleteMutation = useOptimisticMutation({
@@ -73,15 +82,7 @@ export function useTableMutations() {
     },
 
     updateTable(table: Table, players: Partial<Record<Wind, Player | null>>) {
-      const nextTable: Table = { ...table };
-
-      for (const wind of SEATS) {
-        if (wind in players) {
-          nextTable[`${wind}_id`] = players[wind]?.id ?? null;
-        }
-      }
-
-      updateMutation.mutate({ table, players, nextTable });
+      updateMutation.mutate({ table, players });
     },
 
     deleteTable(table: Table) {
