@@ -7,7 +7,6 @@ import { useTournamentContext } from "@/providers/TournamentProvider";
 type UseTournamentsType = {
   currentTournament: Tournament | null;
   scoringRules: ScoringRule[];
-  tournaments: Tournament[];
 };
 
 export function useTournaments(): UseTournamentsType {
@@ -15,11 +14,7 @@ export function useTournaments(): UseTournamentsType {
 
   const selectTournaments = useCallback(
     (rawTournaments: Tournament[]) => {
-      const tournaments = [...rawTournaments].sort(
-        (a, b) =>
-          new Date(b.last_updated).getTime() -
-          new Date(a.last_updated).getTime(),
-      );
+      const tournaments = [...rawTournaments];
 
       const currentTournament =
         tournaments.find((tournament) => tournament.id === tournamentId) ??
@@ -27,7 +22,7 @@ export function useTournaments(): UseTournamentsType {
 
       const scoringRules = currentTournament?.scoring_rules ?? [];
 
-      return { currentTournament, scoringRules, tournaments };
+      return { currentTournament, scoringRules };
     },
     [tournamentId],
   );
@@ -41,6 +36,5 @@ export function useTournaments(): UseTournamentsType {
   return {
     currentTournament: query.data.currentTournament,
     scoringRules: query.data.scoringRules,
-    tournaments: query.data.tournaments,
   };
 }
