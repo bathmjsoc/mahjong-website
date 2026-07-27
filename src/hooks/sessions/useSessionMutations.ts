@@ -36,7 +36,7 @@ export function useSessionMutations() {
         id: crypto.randomUUID(),
         tournament_id: tournament.id,
         number: (sessions?.length ?? 0) + 1,
-        start_date: new Date().toDateString(),
+        start_date: new Date().toISOString().slice(0, 10),
       });
     },
   };
