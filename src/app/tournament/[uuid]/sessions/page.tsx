@@ -7,7 +7,7 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Session } from "@/types/app.types";
+import type { Session } from "@/lib/types";
 import { Leaderboard } from "./_components/Leaderboard";
 import { ViewGraphModal } from "./_components/ViewGraphModal";
 

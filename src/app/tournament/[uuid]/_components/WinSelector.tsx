@@ -4,12 +4,7 @@ import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import type {
-  Player,
-  PointsAnimationEvent,
-  Table,
-  WinType,
-} from "@/types/app.types";
+import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
   table: Table;

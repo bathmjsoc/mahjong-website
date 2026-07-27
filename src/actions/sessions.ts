@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Session, Tournament } from "@/types/app.types";
+import type { Session, Tournament } from "@/lib/types";
 
 export async function createSession(session: Session): Promise<void> {
   const supabase = await createClient();

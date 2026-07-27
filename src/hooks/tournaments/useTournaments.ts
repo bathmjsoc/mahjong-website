@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchTournaments } from "@/actions/tournaments";
+import type { ScoringRule, Tournament } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
-import type { ScoringRule, Tournament } from "@/types/app.types";
 
 type UseTournamentsType = {
   currentTournament: Tournament | null;

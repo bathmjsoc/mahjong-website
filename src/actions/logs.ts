@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Log, Tournament } from "@/types/app.types";
+import type { Log, Tournament } from "@/lib/types";
 
 export async function createLog(log: Log): Promise<void> {
   const supabase = await createClient();

@@ -2,8 +2,8 @@
 
 import { SEATS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
+import type { Player, Session, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
-import type { Player, Session, Table, Wind } from "@/types/app.types";
 
 export async function createTable(table: Table): Promise<Table> {
   const supabase = await createClient();

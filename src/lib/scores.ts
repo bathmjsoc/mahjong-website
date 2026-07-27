@@ -4,7 +4,7 @@ import type {
   PointDelta,
   ScoringRule,
   WinType,
-} from "@/types/app.types";
+} from "@/lib/types";
 
 /*
  * Calculates the cumulative score for each player from the provided logs and scoring rules

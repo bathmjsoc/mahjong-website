@@ -7,12 +7,7 @@ import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointDeltas } from "@/lib/scores";
-import type {
-  Player,
-  PointsAnimationEvent,
-  Table,
-  Wind,
-} from "@/types/app.types";
+import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 import { WinSelector } from "./WinSelector";
 
 type TableSeatProps = {

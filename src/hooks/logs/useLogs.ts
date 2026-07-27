@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { fetchLogs } from "@/actions/logs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPlayerScores } from "@/lib/scores";
-import type { Log } from "@/types/app.types";
+import type { Log } from "@/lib/types";
 
 type UseLogsType = {
   enabledLogs: Log[];

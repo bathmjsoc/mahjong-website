@@ -1,9 +1,9 @@
 "use server";
 
 import { createSession } from "@/actions/sessions";
+import type { Tables } from "@/lib/database.types";
 import { createClient } from "@/lib/supabase/server";
-import type { ScoringRule, Tournament } from "@/types/app.types";
-import type { Tables } from "@/types/database.types";
+import type { ScoringRule, Tournament } from "@/lib/types";
 
 export async function createTournament(
   tournamentName: string,
@@ -59,9 +59,7 @@ export async function getTournamentName(tournamentId: string): Promise<string> {
     .single();
 
   if (error)
-    throw new Error(
-      `getTournamentName encountered an error: ${error.message}`,
-    );
+    throw new Error(`getTournamentName encountered an error: ${error.message}`);
 
   return tournament.name;
 }

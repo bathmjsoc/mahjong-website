@@ -1,8 +1,8 @@
 import { Eye, EyeOff, Info } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { IconButton } from "@/elements/IconButton";
+import type { LogSearchTag } from "@/lib/types";
 import { normalizeText, parseFormString } from "@/lib/utils";
-import type { LogSearchTag } from "@/types/app.types";
 
 type LogSearchBarProps = {
   addTag: (tag: LogSearchTag) => void;

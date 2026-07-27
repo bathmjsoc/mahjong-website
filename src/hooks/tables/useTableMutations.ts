@@ -10,7 +10,7 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import { SEATS } from "@/lib/constants";
-import type { Player, Session, Table, Wind } from "@/types/app.types";
+import type { Player, Session, Table, Wind } from "@/lib/types";
 
 type UpdateTableVariables = {
   table: Table;

@@ -6,8 +6,8 @@ import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
+import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
-import type { Player } from "@/types/app.types";
 
 type EditPlayerModalProps = {
   isOpen: boolean;

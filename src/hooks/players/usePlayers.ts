@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchPlayers } from "@/actions/players";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import type { Player } from "@/types/app.types";
+import type { Player } from "@/lib/types";
 
 type UsePlayersType = {
   playerMap: Record<string, Player>;

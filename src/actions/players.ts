@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Tournament } from "@/types/app.types";
+import type { Player, Tournament } from "@/lib/types";
 
 export async function createPlayer(player: Player): Promise<void> {
   const supabase = await createClient();

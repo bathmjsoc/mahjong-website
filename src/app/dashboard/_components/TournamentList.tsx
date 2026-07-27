@@ -1,7 +1,7 @@
 import { Users } from "lucide-react";
 import Link from "next/link";
+import type { Tournament } from "@/lib/types";
 import { formatTimeAgo } from "@/lib/utils";
-import type { Tournament } from "@/types/app.types";
 
 type TournamentListProps = {
   tournaments: Tournament[];

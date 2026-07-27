@@ -5,7 +5,7 @@ import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import { WIN_TYPE_MAP } from "@/lib/constants";
-import type { Log } from "@/types/app.types";
+import type { Log } from "@/lib/types";
 
 type LogListProps = {
   logs: Log[];

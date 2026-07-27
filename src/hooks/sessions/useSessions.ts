@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchSessions } from "@/actions/sessions";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import type { Session } from "@/types/app.types";
+import type { Session } from "@/lib/types";
 
 type UseSessionsType = {
   currentSession: Session | null;

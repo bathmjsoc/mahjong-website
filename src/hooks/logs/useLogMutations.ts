@@ -6,13 +6,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type {
-  Log,
-  Player,
-  Session,
-  Tournament,
-  WinType,
-} from "@/types/app.types";
+import type { Log, Player, Session, Tournament, WinType } from "@/lib/types";
 
 export function useLogMutations() {
   const getLogsQueryKey = (log: Log) => ["logs", log.tournament_id];

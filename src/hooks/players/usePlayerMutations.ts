@@ -7,7 +7,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Player, Tournament } from "@/types/app.types";
+import type { Player, Tournament } from "@/lib/types";
 
 type UpdatePlayerVariables = {
   player: Player;

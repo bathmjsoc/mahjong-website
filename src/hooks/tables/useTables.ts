@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { fetchTables } from "@/actions/tables";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Table } from "@/types/app.types";
+import type { Table } from "@/lib/types";
 
 type UseTablesType = {
   availableTables: Table[];

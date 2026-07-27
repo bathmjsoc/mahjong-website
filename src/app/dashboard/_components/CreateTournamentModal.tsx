@@ -5,8 +5,8 @@ import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { DEFAULT_FALSE_WIN_RULE, DEFAULT_SCORING_RULE } from "@/lib/constants";
+import type { ScoringRule } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
-import type { ScoringRule } from "@/types/app.types";
 import { ScoringEditor } from "./ScoringEditor";
 
 type CreateTournamentModalProps = {

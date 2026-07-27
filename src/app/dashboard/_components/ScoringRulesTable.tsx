@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { WIN_TYPE_MAP, WIN_TYPES } from "@/lib/constants";
-import type { ScoringRule, WinType } from "@/types/app.types";
+import type { ScoringRule, WinType } from "@/lib/types";
 
 type ScoringRulesTableProps = {
   scoringRules: ScoringRule[];

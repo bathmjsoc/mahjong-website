@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { fetchAttendance } from "@/actions/attendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Attendance, Player } from "@/types/app.types";
+import type { Attendance, Player } from "@/lib/types";
 
 type UseAttendanceType = {
   attendance: Attendance[];
