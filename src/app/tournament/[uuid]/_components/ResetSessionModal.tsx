@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { createSession } from "@/actions/sessions";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
+import { useSessionMutations } from "@/hooks/sessions/useSessionMutations";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 
 type ResetSessionModalProps = {
@@ -11,12 +11,15 @@ type ResetSessionModalProps = {
 };
 
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
+  const { createSession } = useSessionMutations();
   const { currentTournament } = useTournaments();
 
   const [showSuccess, setShowSuccess] = useState(false);
 
-  async function handleReset() {
-    await createSession(currentTournament);
+  function handleReset() {
+    if (!currentTournament) return;
+
+    createSession(currentTournament);
     setShowSuccess(true);
     onClose();
   }
