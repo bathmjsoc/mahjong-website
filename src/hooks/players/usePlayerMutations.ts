@@ -9,11 +9,6 @@ import {
 } from "@/hooks/useOptimisticUpdates";
 import type { Player, Tournament } from "@/lib/types";
 
-type UpdatePlayerVariables = {
-  player: Player;
-  newName: string;
-};
-
 export function usePlayerMutations() {
   const getPlayersQueryKey = (player: Player) => [
     "players",
@@ -31,11 +26,10 @@ export function usePlayerMutations() {
     optimisticUpdate: addItem,
   });
 
-  const updateMutation = useOptimisticMutation<UpdatePlayerVariables, void>({
-    mutationFn: ({ player }) => updatePlayerAction(player),
-    getQueryKey: ({ player }) => getPlayersQueryKey(player),
-    optimisticUpdate: ({ player, newName }) =>
-      updateItem({ ...player, name: newName }),
+  const updateMutation = useOptimisticMutation({
+    mutationFn: updatePlayerAction,
+    getQueryKey: getPlayersQueryKey,
+    optimisticUpdate: updateItem,
   });
 
   const deleteMutation = useOptimisticMutation({
@@ -54,7 +48,7 @@ export function usePlayerMutations() {
     },
 
     updatePlayer(player: Player, newName: string) {
-      updateMutation.mutate({ player, newName });
+      updateMutation.mutate({ ...player, name: newName });
     },
 
     deletePlayer(player: Player) {
