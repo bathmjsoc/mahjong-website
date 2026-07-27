@@ -1,5 +1,3 @@
-import type { WinType } from "@/types/app.types";
-
 export const DEFAULT_SCORING_RULE = {
   faan: 0,
   deltas: {
