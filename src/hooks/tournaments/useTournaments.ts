@@ -13,10 +13,15 @@ export function useTournaments(): UseTournamentsType {
   const query = useSuspenseQuery({
     queryKey: ["tournament", tournamentId],
     queryFn: () => fetchTournamentById(tournamentId),
+    select: selectTournament,
   });
 
+  return query.data;
+}
+
+function selectTournament(tournament: Tournament): UseTournamentsType {
   return {
-    scoringRules: query.data.scoring_rules,
+    scoringRules: tournament.scoring_rules,
   };
 }
 
