@@ -55,36 +55,44 @@ export async function saveTable(table: Table): Promise<void> {
 
 export async function shuffleTables(
   session: Session,
-  availableTables: Table[],
-  availablePlayers: Player[],
+  tables: Table[],
+  players: Player[],
 ): Promise<void> {
-  const shuffledPlayers = shuffle(availablePlayers);
-  const neededTables = Math.ceil(shuffledPlayers.length / 4);
+  const supabase = await createClient();
 
-  // Delete existing tables
-  await Promise.all(availableTables.map(deleteTable));
+  const tablesToDelete = tables.map((table) => table.id);
+  if (tablesToDelete.length > 0) {
+    const { error } = await supabase
+      .from("tables")
+      .delete()
+      .in("id", tablesToDelete);
 
-  // Create new tables with available players
-  const createPromises = [];
-  while (createPromises.length < neededTables) {
+    if (error)
+      throw new Error(`shuffleTables encountered an error: ${error.message}`);
+  }
+
+  const shuffledPlayers = shuffle(players);
+  const tablesToCreate = [];
+
+  while (shuffledPlayers.length > 0) {
     const [east = null, south = null, west = null, north = null] =
       shuffledPlayers.splice(0, 4);
 
-    const table: Table = {
+    tablesToCreate.push({
       id: crypto.randomUUID(),
       session_id: session.id,
       east_id: east?.id ?? null,
       south_id: south?.id ?? null,
       west_id: west?.id ?? null,
       north_id: north?.id ?? null,
-      number: createPromises.length + 1,
+      number: tablesToCreate.length + 1,
       saved: false,
-    };
-
-    createPromises.push(createTable(table));
+    });
   }
+  const { error } = await supabase.from("tables").insert(tablesToCreate);
 
-  await Promise.all(createPromises);
+  if (error)
+    throw new Error(`shuffleTables encountered an error: ${error.message}`);
 }
 
 export async function deleteTable(table: Table): Promise<void> {
