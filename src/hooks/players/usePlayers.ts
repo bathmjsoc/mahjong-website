@@ -1,8 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { createClient } from "@/lib/supabase/client";
-import type { Player, Tournament } from "@/lib/types";
+import type { Player } from "@/lib/types";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UsePlayersType = {
   playerMap: Record<string, Player>;
@@ -10,42 +9,34 @@ type UsePlayersType = {
 };
 
 export function usePlayers(): UsePlayersType {
-  const { currentTournament } = useTournaments();
-
-  const selectPlayers = useCallback((rawPlayers: Player[]) => {
-    const players = [...rawPlayers].sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
-
-    const playerMap = Object.fromEntries(
-      players.map((player) => [player.id, player]),
-    );
-
-    return { players, playerMap };
-  }, []);
+  const { tournamentId } = useTournamentContext();
 
   const query = useSuspenseQuery({
-    queryKey: ["players", currentTournament?.id],
-    queryFn: () => {
-      if (!currentTournament) return [];
-      return fetchPlayers(currentTournament);
-    },
+    queryKey: ["players", tournamentId],
+    queryFn: () => fetchPlayers(tournamentId),
     select: selectPlayers,
   });
 
-  return {
-    playerMap: query.data.playerMap,
-    players: query.data.players,
-  };
+  return query.data;
 }
 
-async function fetchPlayers(tournament: Tournament): Promise<Player[]> {
+function selectPlayers(rawPlayers: Player[]): UsePlayersType {
+  const players = [...rawPlayers].sort((a, b) => a.name.localeCompare(b.name));
+
+  const playerMap = Object.fromEntries(
+    players.map((player) => [player.id, player]),
+  );
+
+  return { players, playerMap };
+}
+
+async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   const supabase = createClient();
 
   const { data: players, error } = await supabase
     .from("players")
     .select("*")
-    .eq("tournament_id", tournament.id);
+    .eq("tournament_id", tournamentId);
 
   if (error)
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);
