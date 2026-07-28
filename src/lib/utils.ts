@@ -50,7 +50,7 @@ export function shuffle<T>(items: T[]): T[] {
 /*
  * Normalizes text by removing whitespace and converting to lowercase for string comparison
  * */
-export function normalizeText(text: string) {
+export function normalizeText(text: string): string {
   return text.replace(/\s+/g, "").toLowerCase();
 }
 

@@ -55,7 +55,7 @@ export function getPointHistory(
   logs: Log[],
   player: Player,
   scoringRules: ScoringRule[],
-) {
+): number[] {
   const scores = [0];
   const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
