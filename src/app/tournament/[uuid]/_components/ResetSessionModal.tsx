@@ -11,8 +11,9 @@ type ResetSessionModalProps = {
 };
 
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
+  const tournamentId = useTournamentContext();
+
   const { createSession } = useSessionMutations();
-  const { tournamentId } = useTournamentContext();
 
   const [showSuccess, setShowSuccess] = useState(false);
 

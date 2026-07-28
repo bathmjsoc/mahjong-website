@@ -24,10 +24,11 @@ import { ResetSessionModal } from "./ResetSessionModal";
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
+  const sessionId = useSessionContext();
+
   const { registeredPlayerIds } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
   const { players } = usePlayers();
-  const { sessionId } = useSessionContext();
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);

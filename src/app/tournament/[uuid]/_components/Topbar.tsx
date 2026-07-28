@@ -15,7 +15,7 @@ const TABS = [
 ] as const;
 
 export function Topbar() {
-  const { tournamentId } = useTournamentContext();
+  const tournamentId = useTournamentContext();
 
   const router = useRouter();
 

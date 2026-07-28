@@ -14,9 +14,10 @@ import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
 export default function TournamentPage() {
+  const sessionId = useSessionContext();
+
   const { availablePlayerIds } = useAttendance();
   const { players } = usePlayers();
-  const { sessionId } = useSessionContext();
   const { availableTables, tables } = useTables();
 
   const [wind, setWind] = useState<string | null>(WINDS[0]);

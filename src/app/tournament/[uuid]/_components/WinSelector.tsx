@@ -14,11 +14,12 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
+  const sessionId = useSessionContext();
+  const tournamentId = useTournamentContext();
+
   const { scoringRules } = useTournaments();
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { sessionId } = useSessionContext();
-  const { tournamentId } = useTournamentContext();
 
   const faanOptions = scoringRules.map((rule) => rule.faan);
 

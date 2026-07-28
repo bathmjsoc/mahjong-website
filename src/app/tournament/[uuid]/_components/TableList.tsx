@@ -12,7 +12,8 @@ type TableListProps = {
 };
 
 export function TableList({ tables, className }: TableListProps) {
-  const { sessionId } = useSessionContext();
+  const sessionId = useSessionContext();
+
   const { createTable } = useTableMutations();
 
   function handleCreateTable() {

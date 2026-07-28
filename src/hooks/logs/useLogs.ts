@@ -13,7 +13,8 @@ type UseLogsType = {
 };
 
 export function useLogs(): UseLogsType {
-  const { tournamentId } = useTournamentContext();
+  const tournamentId = useTournamentContext();
+
   const { scoringRules } = useTournaments();
 
   const query = useSuspenseQuery({

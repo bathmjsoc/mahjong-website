@@ -11,10 +11,11 @@ import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 export function PlayerList() {
+  const sessionId = useSessionContext();
+
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { sessionScores } = useLogs();
   const { players } = usePlayers();
-  const { sessionId } = useSessionContext();
   const { seatedPlayerIds } = useTables();
 
   if (registeredPlayerIds.size === 0) {
@@ -62,9 +63,10 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
+  const sessionId = useSessionContext();
+
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
     useAttendanceMutations();
-  const { sessionId } = useSessionContext();
 
   function handleLockToggle() {
     isLocked ? unlockPlayer(sessionId, player) : lockPlayer(sessionId, player);

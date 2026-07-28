@@ -11,7 +11,7 @@ type UseAttendanceType = {
 };
 
 export function useAttendance(): UseAttendanceType {
-  const { sessionId } = useSessionContext();
+  const sessionId = useSessionContext();
 
   const query = useSuspenseQuery({
     queryKey: ["attendance", sessionId],

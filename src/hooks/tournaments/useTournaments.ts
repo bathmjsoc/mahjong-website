@@ -8,7 +8,7 @@ type UseTournamentsType = {
 };
 
 export function useTournaments(): UseTournamentsType {
-  const { tournamentId } = useTournamentContext();
+  const tournamentId = useTournamentContext();
 
   const query = useSuspenseQuery({
     queryKey: ["tournament", tournamentId],

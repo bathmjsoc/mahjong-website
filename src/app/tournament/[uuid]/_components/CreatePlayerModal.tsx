@@ -12,9 +12,10 @@ type CreatePlayerModalProps = {
 };
 
 export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
+  const tournamentId = useTournamentContext();
+
   const { createPlayer } = usePlayerMutations();
   const { players } = usePlayers();
-  const { tournamentId } = useTournamentContext();
 
   const [error, setError] = useState<string | null>(null);
 

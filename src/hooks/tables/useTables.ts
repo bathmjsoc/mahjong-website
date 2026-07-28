@@ -11,7 +11,7 @@ type UseTablesType = {
 };
 
 export function useTables(): UseTablesType {
-  const { sessionId } = useSessionContext();
+  const sessionId = useSessionContext();
 
   const query = useSuspenseQuery({
     queryKey: ["tables", sessionId],
