@@ -66,8 +66,6 @@ function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
     useAttendanceMutations();
   const { sessionId } = useSessionContext();
 
-  const scoreColor = scoreToColor(score);
-
   function handleLockToggle() {
     isLocked ? unlockPlayer(sessionId, player) : lockPlayer(sessionId, player);
   }
@@ -112,7 +110,10 @@ function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
       </td>
 
       <td
-        className={twMerge("border-2 border-secondary text-center", scoreColor)}
+        className={twMerge(
+          "border-2 border-secondary text-center",
+          scoreToColor(score),
+        )}
       >
         {score}
       </td>
