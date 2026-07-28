@@ -25,8 +25,8 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { lockedPlayerIds, registeredPlayers } = useAttendance();
-  const { playerMap } = usePlayers();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
+  const { playerMap, players } = usePlayers();
   const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
   const { scoringRules } = useTournaments();
@@ -34,9 +34,14 @@ export function TableSeat({
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
   const occupantId = table[`${wind}_id`];
-  const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
-  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
   const occupant = (occupantId && playerMap[occupantId]) || null;
+
+  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
+  const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
+
+  const registeredPlayers = players.filter(
+    (player) => !registeredPlayerIds.has(player.id),
+  );
 
   useEffect(() => {
     if (!occupant?.id) return;

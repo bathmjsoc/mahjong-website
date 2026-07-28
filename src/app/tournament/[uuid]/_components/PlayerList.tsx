@@ -4,21 +4,26 @@ import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { useLogs } from "@/hooks/logs/useLogs";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
 import { rankPlayers, scoreToColor } from "@/lib/scores";
 import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 export function PlayerList() {
-  const { lockedPlayerIds, registeredPlayers } = useAttendance();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { sessionScores } = useLogs();
+  const { players } = usePlayers();
   const { sessionId } = useSessionContext();
   const { seatedPlayerIds } = useTables();
 
-  if (registeredPlayers.length === 0) {
+  if (registeredPlayerIds.size === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
+  const registeredPlayers = players.filter(
+    (player) => !lockedPlayerIds.has(player.id),
+  );
   const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);
 
@@ -30,7 +35,7 @@ export function PlayerList() {
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
           <th className="w-7 text-[10px] opacity-66">
-            [{registeredPlayers.length}]
+            [{registeredPlayerIds.size}]
           </th>
         </tr>
       </thead>

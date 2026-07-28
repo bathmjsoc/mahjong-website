@@ -5,7 +5,7 @@ import {
   UserPen,
   UserPlus,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
@@ -24,7 +24,7 @@ import { ResetSessionModal } from "./ResetSessionModal";
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
-  const { registeredPlayers } = useAttendance();
+  const { registeredPlayerIds } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
   const { players } = usePlayers();
   const { sessionId } = useSessionContext();
@@ -32,10 +32,9 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const playerOptions = useMemo(() => {
-    const registeredIds = new Set(registeredPlayers.map((player) => player.id));
-    return players.filter((player) => !registeredIds.has(player.id));
-  }, [players, registeredPlayers]);
+  const playerOptions = players.filter(
+    (player) => !registeredPlayerIds.has(player.id),
+  );
 
   function handleRegisterPlayer(player: Player) {
     registerPlayer(sessionId, player);

@@ -6,6 +6,7 @@ import { shuffleTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
 import { WIND_MAP, WINDS } from "@/lib/constants";
 import { useSessionContext } from "@/providers/SessionProvider";
@@ -13,7 +14,8 @@ import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
 export default function TournamentPage() {
-  const { availablePlayers } = useAttendance();
+  const { availablePlayerIds } = useAttendance();
+  const { players } = usePlayers();
   const { sessionId } = useSessionContext();
   const { availableTables, tables } = useTables();
 
@@ -22,7 +24,11 @@ export default function TournamentPage() {
 
   async function handleShuffle() {
     startTransition(async () => {
-      await shuffleTables(sessionId, availableTables, availablePlayers);
+      await shuffleTables(
+        sessionId,
+        availableTables,
+        players.filter((player) => availablePlayerIds.has(player.id)),
+      );
     });
   }
 
