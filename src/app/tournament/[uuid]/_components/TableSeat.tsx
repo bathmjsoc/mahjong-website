@@ -65,8 +65,6 @@ export function TableSeat({
   }, [occupant?.id, table.id, scoringRules]);
 
   function handleSelect(player: Player | null) {
-    if (!player) return;
-
     updateTable(table, {
       [wind]: player,
     });
