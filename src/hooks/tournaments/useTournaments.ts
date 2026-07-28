@@ -4,7 +4,7 @@ import type { ScoringRule, SupabaseTournament, Tournament } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseTournamentsType = {
-  scoring_rules: ScoringRule[];
+  scoringRules: ScoringRule[];
 };
 
 export function useTournaments(): UseTournamentsType {
@@ -15,7 +15,9 @@ export function useTournaments(): UseTournamentsType {
     queryFn: () => fetchTournamentById(tournamentId),
   });
 
-  return query.data;
+  return {
+    scoringRules: query.data.scoring_rules,
+  };
 }
 
 export async function fetchTournamentById(
