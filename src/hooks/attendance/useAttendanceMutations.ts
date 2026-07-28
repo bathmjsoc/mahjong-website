@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import {
   registerPlayer as registerPlayerAction,
   updateAttendance as updateAttendanceAction,
@@ -21,14 +20,12 @@ type UpdateAttendanceVariables = {
 };
 
 export function useAttendanceMutations() {
-  const queryClient = useQueryClient();
-
   const getAttendanceQueryKey = (sessionId: string) => [
     "attendance",
     sessionId,
   ];
 
-  const { addItem, updateItem } = useCacheItems<Attendance>({
+  const { addItem, patchItem } = useCacheItems<Attendance>({
     getId: ({ session_id, player_id }) => `${session_id}:${player_id}`,
     getQueryKey: (attendance) => getAttendanceQueryKey(attendance.session_id),
   });
@@ -56,18 +53,7 @@ export function useAttendanceMutations() {
       getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
       optimisticUpdate: ({ sessionId, player, changes }) => {
         const queryKey = getAttendanceQueryKey(sessionId);
-        const previousData = queryClient.getQueryData<Attendance[]>(queryKey);
-
-        const existingAttendance = previousData?.find(
-          (attendance) => attendance.player_id === player.id,
-        );
-
-        if (existingAttendance) {
-          updateItem({
-            ...existingAttendance,
-            ...changes,
-          });
-        }
+        patchItem(player.id, queryKey, changes);
       },
     },
   );
