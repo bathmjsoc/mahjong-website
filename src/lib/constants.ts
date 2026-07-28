@@ -1,4 +1,13 @@
-export const DEFAULT_SCORING_RULE = {
+import type { ScoringRule, WinType } from "@/lib/types";
+
+export const DEFAULT_FALSE_WIN_RULE: ScoringRule = {
+  faan: null,
+  deltas: {
+    詐糊: { winner: 0, loser: 0 },
+  },
+} as const;
+
+export const DEFAULT_SCORING_RULE: ScoringRule = {
   faan: 0,
   deltas: {
     打出: { winner: 0, loser: 0 },
@@ -7,17 +16,12 @@ export const DEFAULT_SCORING_RULE = {
   },
 } as const;
 
-export const DEFAULT_FALSE_WIN_RULE = {
-  faan: null,
-  deltas: {
-    詐糊: { winner: 0, loser: 0 },
-  },
-} as const;
-
-export const RELATIVE_TIME_CUTOFFS: {
+type RelativeTimeCutoff = {
   unit: Intl.RelativeTimeFormatUnit;
   seconds: number;
-}[] = [
+};
+
+export const RELATIVE_TIME_CUTOFFS: RelativeTimeCutoff[] = [
   { unit: "year", seconds: 31536000 },
   { unit: "month", seconds: 2592000 },
   { unit: "week", seconds: 604800 },
@@ -26,14 +30,7 @@ export const RELATIVE_TIME_CUTOFFS: {
   { unit: "minute", seconds: 60 },
 ] as const;
 
-export const TABS = [
-  { label: "Tables", href: "" },
-  { label: "Logs", href: "/logs" },
-  { label: "Sessions", href: "/sessions" },
-  { label: "Analytics", href: "/analytics" },
-] as const;
-
-export const WIN_TYPE_MAP = {
+export const WIN_TYPE_MAP: Record<WinType, string> = {
   打出: "Throw",
   自摸: "Self-Draw",
   包自摸: "Special Case",
