@@ -3,7 +3,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
-import { fetchTournaments } from "@/hooks/tournaments/useTournaments";
+import { createClient } from "@/lib/supabase/client";
+import type { SupabaseTournament, Tournament } from "@/lib/types";
 import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 
@@ -32,4 +33,20 @@ export default function DashboardPage() {
       <TournamentList tournaments={tournaments} />
     </div>
   );
+}
+
+async function fetchTournaments(): Promise<Tournament[]> {
+  const supabase = createClient();
+
+  const { data: tournaments, error } = await supabase
+    .from("tournaments")
+    .select("*")
+    .order("last_updated", { ascending: false })
+    .overrideTypes<SupabaseTournament[]>();
+
+  if (error) {
+    throw new Error(`fetchTournaments encountered an error: ${error.message}`);
+  }
+
+  return tournaments ?? [];
 }
