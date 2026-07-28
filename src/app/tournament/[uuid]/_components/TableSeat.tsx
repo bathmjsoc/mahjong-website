@@ -6,7 +6,7 @@ import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { getPointDeltas } from "@/lib/scores";
+import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 import { WinSelector } from "./WinSelector";
 

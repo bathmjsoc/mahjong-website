@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { getPlayerScores } from "@/lib/scores";
+import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
 import type { Log, ScoringRule } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";

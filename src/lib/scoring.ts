@@ -61,7 +61,7 @@ export function getPointHistory(
 
   for (const log of logs) {
     const scoringRule = ruleMap.get(log.faan);
-    const prevPoints = scores.at(-1) ?? 0;
+    const prevPoints = scores[scores.length - 1];
 
     if (log.winner_ids.includes(player.id)) {
       const delta = scoringRule?.deltas?.[log.win_type]?.winner ?? 0;
@@ -85,9 +85,8 @@ export function rankPlayers(
   scores: Record<string, number>,
 ): [Player, number][] {
   return players
-    .map((player) => ({ player: player, score: scores[player.id] ?? 0 }))
-    .sort((a, b) => b.score - a.score)
-    .map(({ player, score }) => [player, score]);
+    .map((player): [Player, number] => [player, scores[player.id] ?? 0])
+    .sort((a, b) => b[1] - a[1]);
 }
 
 /*
