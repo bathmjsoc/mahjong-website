@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { signOut } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { TabLink, TabMenu } from "@/elements/TabMenu";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { TABS } from "@/lib/constants";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function Topbar() {
-  const { currentTournament } = useTournaments();
+  const { tournamentId } = useTournamentContext();
 
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export function Topbar() {
         {TABS.map(({ label, href }) => (
           <TabLink
             key={label}
-            href={`/tournament/${currentTournament?.id}${href}`}
+            href={`/tournament/${tournamentId}${href}`}
             className="w-30"
           >
             {label}
