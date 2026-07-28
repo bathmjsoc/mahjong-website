@@ -1,57 +1,17 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import { createClient } from "@/lib/supabase/client";
-import type { Attendance, Player } from "@/lib/types";
+import type { Attendance } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 type UseAttendanceType = {
   attendance: Attendance[];
-  availablePlayers: Player[];
+  availablePlayerIds: Set<string>;
   lockedPlayerIds: Set<string>;
-  registeredPlayers: Player[];
+  registeredPlayerIds: Set<string>;
 };
 
 export function useAttendance(): UseAttendanceType {
-  const { playerMap } = usePlayers();
   const { sessionId } = useSessionContext();
-
-  const selectAttendance = useCallback(
-    (rawAttendance: Attendance[]) => {
-      const attendance = [...rawAttendance];
-
-      const availablePlayers = [];
-      const lockedPlayerIds = new Set<string>();
-      const registeredPlayers = [];
-
-      for (const entry of attendance) {
-        if (entry.session_id !== sessionId || !entry.registered) {
-          continue;
-        }
-
-        const player = playerMap[entry.player_id];
-        if (!player) continue;
-
-        registeredPlayers.push(player);
-
-        if (entry.locked) {
-          lockedPlayerIds.add(player.id);
-        } else {
-          availablePlayers.push(player);
-        }
-      }
-
-      registeredPlayers.sort((a, b) => a.name.localeCompare(b.name));
-
-      return {
-        attendance,
-        availablePlayers,
-        lockedPlayerIds,
-        registeredPlayers,
-      };
-    },
-    [playerMap, sessionId],
-  );
 
   const query = useSuspenseQuery({
     queryKey: ["attendance", sessionId],
@@ -59,14 +19,35 @@ export function useAttendance(): UseAttendanceType {
     select: selectAttendance,
   });
 
-  return {
-    attendance: query.data.attendance,
-    availablePlayers: query.data.availablePlayers,
-    lockedPlayerIds: query.data.lockedPlayerIds,
-    registeredPlayers: query.data.registeredPlayers,
-  };
+  return query.data;
 }
 
+function selectAttendance(attendance: Attendance[]): UseAttendanceType {
+  const availablePlayerIds = new Set<string>();
+  const lockedPlayerIds = new Set<string>();
+  const registeredPlayerIds = new Set<string>();
+
+  for (const entry of attendance) {
+    if (!entry.registered) {
+      continue;
+    }
+
+    registeredPlayerIds.add(entry.player_id);
+
+    if (entry.locked) {
+      lockedPlayerIds.add(entry.player_id);
+    } else {
+      availablePlayerIds.add(entry.player_id);
+    }
+  }
+
+  return {
+    attendance,
+    availablePlayerIds,
+    lockedPlayerIds,
+    registeredPlayerIds,
+  };
+}
 async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
   const supabase = createClient();
 
