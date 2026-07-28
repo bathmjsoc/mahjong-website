@@ -25,10 +25,9 @@ export default function SessionsPage() {
 
   const activePlayers = players.filter((player) => player.id in scores);
 
-  function getSessionName(session: Session | null): string {
-    if (!session) return "Overall Standings"; // Special case
-
-    return `Session ${session.number} (${session.start_date})`;
+  function getSessionName(): string {
+    if (!selectedSession) return "Overall Standings"; // Special case
+    return `Session ${selectedSession.number} (${selectedSession.start_date})`;
   }
 
   return (
