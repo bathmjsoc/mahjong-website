@@ -73,16 +73,6 @@ export function useCacheItems<T>({
         );
       },
 
-      patchItem(item: T, changes: Partial<T>) {
-        const itemId = getId(item);
-
-        queryClient.setQueryData<T[]>(getQueryKey(item), (items = []) =>
-          items.map((current) =>
-            getId(current) === itemId ? { ...current, ...changes } : current,
-          ),
-        );
-      },
-
       removeItem(item: T) {
         const queryKey = getQueryKey(item);
         const itemId = getId(item);
