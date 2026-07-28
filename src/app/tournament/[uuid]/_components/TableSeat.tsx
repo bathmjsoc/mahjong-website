@@ -5,7 +5,7 @@ import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
-import { useCurrentTournament } from "@/hooks/useCurrentTournament";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointDeltas } from "@/lib/scores";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 import { WinSelector } from "./WinSelector";
@@ -29,7 +29,7 @@ export function TableSeat({
   const { playerMap } = usePlayers();
   const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
-  const { scoringRules } = useCurrentTournament();
+  const { scoringRules } = useTournaments();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { fetchTournamentById } from "@/hooks/useCurrentTournament";
+import { fetchTournamentById } from "@/hooks/tournaments/useTournaments";
 import { SessionProvider } from "@/providers/SessionProvider";
 import { TournamentProvider } from "@/providers/TournamentProvider";
 import { Topbar } from "./_components/Topbar";
