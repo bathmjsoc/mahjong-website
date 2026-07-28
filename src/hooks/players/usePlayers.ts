@@ -41,5 +41,5 @@ async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   if (error)
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);
 
-  return players ?? [];
+  return players;
 }

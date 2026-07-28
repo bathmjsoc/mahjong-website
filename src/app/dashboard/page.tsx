@@ -48,5 +48,5 @@ async function fetchTournaments(): Promise<Tournament[]> {
     throw new Error(`fetchTournaments encountered an error: ${error.message}`);
   }
 
-  return tournaments ?? [];
+  return tournaments;
 }

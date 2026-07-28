@@ -60,5 +60,5 @@ async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
     throw new Error(`fetchAttendance encountered an error: ${error.message}`);
   }
 
-  return attendance ?? [];
+  return attendance;
 }

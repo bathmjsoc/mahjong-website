@@ -76,5 +76,5 @@ async function fetchTables(sessionId: string): Promise<Table[]> {
     throw new Error(`fetchTables encountered an error: ${error.message}`);
   }
 
-  return tables ?? [];
+  return tables;
 }

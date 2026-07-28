@@ -43,5 +43,5 @@ async function fetchSessions(tournamentId: string): Promise<Session[]> {
   if (error)
     throw new Error(`fetchSessions encountered an error: ${error.message}`);
 
-  return sessions ?? [];
+  return sessions;
 }

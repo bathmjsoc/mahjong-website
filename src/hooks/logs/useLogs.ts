@@ -55,5 +55,5 @@ async function fetchLogs(tournamentId: string): Promise<Log[]> {
     throw new Error(`fetchLogs encountered an error: ${error.message}`);
   }
 
-  return logs ?? [];
+  return logs;
 }
