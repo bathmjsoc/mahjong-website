@@ -1,26 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  type PropsWithChildren,
-  type ReactNode,
-  useContext,
-  useMemo,
-} from "react";
-import { useRealtimeSubscriptions } from "@/hooks/useRealtimeSubscriptions";
+import { createContext, type ReactNode, useContext } from "react";
+import { useRelatimeTournamentSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
-type TournamentContextValue = {
-  tournamentId: string;
-};
-
-const TournamentContext = createContext<TournamentContextValue | undefined>(
-  undefined,
-);
-
-function TournamentRealtime({ children }: PropsWithChildren) {
-  useRealtimeSubscriptions();
-  return children;
-}
+const TournamentContext = createContext<string | undefined>(undefined);
 
 type TournamentProviderProps = {
   tournamentId: string;
@@ -31,11 +14,11 @@ export function TournamentProvider({
   tournamentId,
   children,
 }: TournamentProviderProps) {
-  const value = useMemo(() => ({ tournamentId }), [tournamentId]);
+  useRelatimeTournamentSubscriptions(tournamentId);
 
   return (
-    <TournamentContext.Provider value={value}>
-      <TournamentRealtime>{children}</TournamentRealtime>
+    <TournamentContext.Provider value={tournamentId}>
+      {children}
     </TournamentContext.Provider>
   );
 }

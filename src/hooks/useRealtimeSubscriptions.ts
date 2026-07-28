@@ -1,13 +1,51 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useSessionContext } from "@/providers/SessionProvider";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
-export function useRealtimeSubscriptions() {
-  const { sessionId } = useSessionContext();
-  const { tournamentId } = useTournamentContext();
+export function useRelatimeSessionSubscriptions(sessionId: string) {
+  const queryClient = useQueryClient();
 
+  useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase.channel(`session:${sessionId}`);
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "attendance",
+        filter: `session_id=eq.${sessionId}`,
+      },
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: ["attendance", sessionId],
+        }),
+    );
+
+    channel.on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "tables",
+        filter: `session_id=eq.${sessionId}`,
+      },
+      () =>
+        queryClient.invalidateQueries({
+          queryKey: ["tables", sessionId],
+        }),
+    );
+
+    channel.subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [queryClient, sessionId]);
+}
+
+export function useRelatimeTournamentSubscriptions(tournamentId: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -55,43 +93,4 @@ export function useRealtimeSubscriptions() {
       void supabase.removeChannel(channel);
     };
   }, [queryClient, tournamentId]);
-
-  useEffect(() => {
-    const supabase = createClient();
-    const channel = supabase.channel(`session:${sessionId}`);
-
-    channel.on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "attendance",
-        filter: `session_id=eq.${sessionId}`,
-      },
-      () =>
-        queryClient.invalidateQueries({
-          queryKey: ["attendance", sessionId],
-        }),
-    );
-
-    channel.on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "tables",
-        filter: `session_id=eq.${sessionId}`,
-      },
-      () =>
-        queryClient.invalidateQueries({
-          queryKey: ["tables", sessionId],
-        }),
-    );
-
-    channel.subscribe();
-
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [queryClient, sessionId]);
 }

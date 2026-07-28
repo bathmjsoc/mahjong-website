@@ -1,36 +1,25 @@
 "use client";
 
-import {
-  createContext,
-  type PropsWithChildren,
-  useContext,
-  useMemo,
-} from "react";
+import { createContext, type PropsWithChildren, useContext } from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
+import { useRelatimeSessionSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
-type SessionContextValue = {
-  sessionId: string;
-};
-
-const SessionContext = createContext<SessionContextValue | undefined>(
-  undefined,
-);
+const SessionContext = createContext<string | undefined>(undefined);
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const { sessions } = useSessions();
   const latestSession = sessions.at(-1);
 
-  const value = useMemo(
-    () => ({ sessionId: latestSession?.id ?? "" }),
-    [latestSession?.id],
-  );
-
   if (!latestSession) {
     throw new Error("No sessions found!");
   }
 
+  useRelatimeSessionSubscriptions(latestSession.id);
+
   return (
-    <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+    <SessionContext.Provider value={latestSession.id}>
+      {children}
+    </SessionContext.Provider>
   );
 }
 
