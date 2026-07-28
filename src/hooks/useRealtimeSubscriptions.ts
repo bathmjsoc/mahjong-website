@@ -2,10 +2,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function useRelatimeSessionSubscriptions(sessionId: string) {
+export function useRelatimeSessionSubscriptions(sessionId: string | undefined) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    if (!sessionId) return;
+
     const supabase = createClient();
     const channel = supabase.channel(`session:${sessionId}`);
 

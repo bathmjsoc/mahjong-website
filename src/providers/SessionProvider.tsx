@@ -10,11 +10,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const { sessions } = useSessions();
   const latestSession = sessions.at(-1);
 
+  useRelatimeSessionSubscriptions(latestSession?.id);
+
   if (!latestSession) {
     return null;
   }
-
-  useRelatimeSessionSubscriptions(latestSession.id);
 
   return <SessionContext value={latestSession.id}>{children}</SessionContext>;
 }
