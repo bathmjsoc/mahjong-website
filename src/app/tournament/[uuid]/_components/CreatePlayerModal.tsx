@@ -3,7 +3,7 @@ import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
+import { useCurrentTournament } from "@/hooks/useCurrentTournament";
 import { parseFormString } from "@/lib/utils";
 
 type CreatePlayerModalProps = {
@@ -14,7 +14,7 @@ type CreatePlayerModalProps = {
 export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
   const { createPlayer } = usePlayerMutations();
   const { players } = usePlayers();
-  const { currentTournament } = useTournaments();
+  const { currentTournament } = useCurrentTournament();
 
   const [error, setError] = useState<string | null>(null);
 

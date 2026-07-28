@@ -3,7 +3,7 @@ import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
+import { useCurrentTournament } from "@/hooks/useCurrentTournament";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
@@ -16,7 +16,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
   const { currentSession } = useSessions();
-  const { currentTournament, scoringRules } = useTournaments();
+  const { currentTournament, scoringRules } = useCurrentTournament();
 
   const faanOptions = scoringRules.map((rule) => rule.faan);
 
