@@ -3,8 +3,8 @@ import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useCurrentTournament } from "@/hooks/useCurrentTournament";
 import { parseFormString } from "@/lib/utils";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
@@ -14,7 +14,7 @@ type CreatePlayerModalProps = {
 export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
   const { createPlayer } = usePlayerMutations();
   const { players } = usePlayers();
-  const { currentTournament } = useCurrentTournament();
+  const { tournamentId } = useTournamentContext();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -24,8 +24,6 @@ export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
   }
 
   function handleSubmit(formData: FormData) {
-    if (!currentTournament) return;
-
     const playerName = parseFormString(formData, "playerName");
 
     if (!playerName) {
@@ -38,7 +36,7 @@ export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
       return;
     }
 
-    createPlayer(currentTournament, playerName);
+    createPlayer(tournamentId, playerName);
     handleClose();
   }
 

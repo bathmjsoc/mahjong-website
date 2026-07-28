@@ -6,25 +6,23 @@ import { shuffleTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
-import { useSessions } from "@/hooks/sessions/useSessions";
 import { useTables } from "@/hooks/tables/useTables";
 import { WIND_MAP, WINDS } from "@/lib/constants";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
 export default function TournamentPage() {
   const { availablePlayers } = useAttendance();
-  const { currentSession } = useSessions();
+  const { sessionId } = useSessionContext();
   const { availableTables, tables } = useTables();
 
   const [wind, setWind] = useState<string | null>(WINDS[0]);
   const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
-    if (!currentSession) return;
-
     startTransition(async () => {
-      await shuffleTables(currentSession, availableTables, availablePlayers);
+      await shuffleTables(sessionId, availableTables, availablePlayers);
     });
   }
 

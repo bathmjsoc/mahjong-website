@@ -6,22 +6,20 @@ import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutation
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTables } from "@/hooks/tables/useTables";
 import { rankPlayers, scoreToColor } from "@/lib/scores";
-import type { Player, Session } from "@/lib/types";
+import type { Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 
-type PlayerListProps = {
-  session: Session;
-};
-
-export function PlayerList({ session }: PlayerListProps) {
+export function PlayerList() {
   const { lockedPlayerIds, registeredPlayers } = useAttendance();
   const { sessionScores } = useLogs();
+  const { sessionId } = useSessionContext();
   const { seatedPlayerIds } = useTables();
 
   if (registeredPlayers.length === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
-  const scores = sessionScores[session.id] ?? {};
+  const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);
 
   return (
@@ -39,7 +37,6 @@ export function PlayerList({ session }: PlayerListProps) {
       <tbody>
         {rankedPlayers.map(([player, score]) => (
           <PlayerRow
-            session={session}
             key={player.id}
             player={player}
             score={score}
@@ -53,27 +50,21 @@ export function PlayerList({ session }: PlayerListProps) {
 }
 
 type PlayerRowProps = {
-  session: Session;
   isLocked: boolean;
   isUnseated: boolean;
   player: Player;
   score: number;
 };
 
-function PlayerRow({
-  session,
-  isLocked,
-  isUnseated,
-  player,
-  score,
-}: PlayerRowProps) {
+function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
     useAttendanceMutations();
+  const { sessionId } = useSessionContext();
 
   const scoreColor = scoreToColor(score);
 
   function handleLockToggle() {
-    isLocked ? unlockPlayer(session, player) : lockPlayer(session, player);
+    isLocked ? unlockPlayer(sessionId, player) : lockPlayer(sessionId, player);
   }
 
   return (
@@ -125,7 +116,7 @@ function PlayerRow({
       <td>
         <IconButton
           title="Deregister Player"
-          onClick={() => deregisterPlayer(session, player)}
+          onClick={() => deregisterPlayer(sessionId, player)}
           className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />

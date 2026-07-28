@@ -7,7 +7,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Player, Tournament } from "@/lib/types";
+import type { Player } from "@/lib/types";
 
 export function usePlayerMutations() {
   const getPlayersQueryKey = (player: Player) => [
@@ -39,10 +39,10 @@ export function usePlayerMutations() {
   });
 
   return {
-    createPlayer(tournament: Tournament, playerName: string) {
+    createPlayer(tournamentId: string, playerName: string) {
       createMutation.mutate({
         id: crypto.randomUUID(),
-        tournament_id: tournament.id,
+        tournament_id: tournamentId,
         name: playerName,
       });
     },

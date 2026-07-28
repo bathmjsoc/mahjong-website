@@ -6,7 +6,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Log, Player, Session, Tournament, WinType } from "@/lib/types";
+import type { Log, Player, WinType } from "@/lib/types";
 
 export function useLogMutations() {
   const getLogsQueryKey = (log: Log) => ["logs", log.tournament_id];
@@ -30,8 +30,8 @@ export function useLogMutations() {
 
   return {
     createLog(
-      tournament: Tournament,
-      session: Session,
+      tournamentId: string,
+      sessionId: string,
       faan: number | null,
       winType: WinType,
       winners: Player[],
@@ -40,8 +40,8 @@ export function useLogMutations() {
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
-        tournament_id: tournament.id,
-        session_id: session.id,
+        tournament_id: tournamentId,
+        session_id: sessionId,
         faan: faan,
         win_type: winType,
         winner_ids: winners.map((player) => player.id),

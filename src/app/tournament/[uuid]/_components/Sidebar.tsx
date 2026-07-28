@@ -13,8 +13,8 @@ import { SearchCombobox } from "@/elements/SearchCombobox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { CreatePlayerModal } from "./CreatePlayerModal";
 import { DeletePlayerModal } from "./DeletePlayerModal";
 import { EditPlayerModal } from "./EditPlayerModal";
@@ -27,7 +27,7 @@ export function Sidebar() {
   const { registeredPlayers } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
   const { players } = usePlayers();
-  const { currentSession } = useSessions();
+  const { sessionId } = useSessionContext();
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -38,8 +38,7 @@ export function Sidebar() {
   }, [players, registeredPlayers]);
 
   function handleRegisterPlayer(player: Player) {
-    if (!currentSession) return;
-    registerPlayer(currentSession, player);
+    registerPlayer(sessionId, player);
   }
 
   return (
@@ -97,7 +96,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            {currentSession && <PlayerList session={currentSession} />}
+            <PlayerList />
           </div>
         </div>
 

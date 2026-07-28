@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Session, Table, Wind } from "@/lib/types";
+import type { Player, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 
 export async function createTable(table: Table): Promise<Table> {
@@ -54,7 +54,7 @@ export async function saveTable(table: Table): Promise<void> {
 }
 
 export async function shuffleTables(
-  session: Session,
+  sessionId: string,
   tables: Table[],
   players: Player[],
 ): Promise<void> {
@@ -80,7 +80,7 @@ export async function shuffleTables(
 
     tablesToCreate.push({
       id: crypto.randomUUID(),
-      session_id: session.id,
+      session_id: sessionId,
       east_id: east?.id ?? null,
       south_id: south?.id ?? null,
       west_id: west?.id ?? null,

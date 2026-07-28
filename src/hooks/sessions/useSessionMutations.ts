@@ -4,7 +4,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Session, Tournament } from "@/lib/types";
+import type { Session } from "@/lib/types";
 
 export function useSessionMutations() {
   const queryClient = useQueryClient();
@@ -26,15 +26,15 @@ export function useSessionMutations() {
   });
 
   return {
-    createSession(tournament: Tournament) {
+    createSession(tournamentId: string) {
       const sessions = queryClient.getQueryData<Session[]>([
         "sessions",
-        tournament.id,
+        tournamentId,
       ]);
 
       createMutation.mutate({
         id: crypto.randomUUID(),
-        tournament_id: tournament.id,
+        tournament_id: tournamentId,
         number: (sessions?.length ?? 0) + 1,
         start_date: new Date().toISOString().slice(0, 10),
       });

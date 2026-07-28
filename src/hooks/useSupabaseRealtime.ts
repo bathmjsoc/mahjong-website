@@ -1,21 +1,16 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useSessions } from "@/hooks/sessions/useSessions";
-import { useCurrentTournament } from "@/hooks/useCurrentTournament";
 import { createClient } from "@/lib/supabase/client";
+import { useSessionContext } from "@/providers/SessionProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function useSupabaseRealtime() {
-  const { currentSession } = useSessions();
-  const { currentTournament } = useCurrentTournament();
+  const { sessionId } = useSessionContext();
+  const { tournamentId } = useTournamentContext();
 
   const queryClient = useQueryClient();
 
-  const sessionId = currentSession?.id;
-  const tournamentId = currentTournament?.id;
-
   useEffect(() => {
-    if (!tournamentId) return;
-
     const supabase = createClient();
     const channel = supabase.channel(`tournament:${tournamentId}`);
 
@@ -62,8 +57,6 @@ export function useSupabaseRealtime() {
   }, [queryClient, tournamentId]);
 
   useEffect(() => {
-    if (!sessionId) return;
-
     const supabase = createClient();
     const channel = supabase.channel(`session:${sessionId}`);
 

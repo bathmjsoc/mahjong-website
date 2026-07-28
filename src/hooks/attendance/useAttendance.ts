@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useSessions } from "@/hooks/sessions/useSessions";
 import { createClient } from "@/lib/supabase/client";
-import type { Attendance, Player, Session } from "@/lib/types";
+import type { Attendance, Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 
 type UseAttendanceType = {
   attendance: Attendance[];
@@ -13,8 +13,8 @@ type UseAttendanceType = {
 };
 
 export function useAttendance(): UseAttendanceType {
-  const { currentSession } = useSessions();
   const { playerMap } = usePlayers();
+  const { sessionId } = useSessionContext();
 
   const selectAttendance = useCallback(
     (rawAttendance: Attendance[]) => {
@@ -25,7 +25,7 @@ export function useAttendance(): UseAttendanceType {
       const registeredPlayers = [];
 
       for (const entry of attendance) {
-        if (entry.session_id !== currentSession?.id || !entry.registered) {
+        if (entry.session_id !== sessionId || !entry.registered) {
           continue;
         }
 
@@ -50,15 +50,12 @@ export function useAttendance(): UseAttendanceType {
         registeredPlayers,
       };
     },
-    [currentSession?.id, playerMap],
+    [playerMap, sessionId],
   );
 
   const query = useSuspenseQuery({
-    queryKey: ["attendance", currentSession?.id],
-    queryFn: () => {
-      if (!currentSession) return [];
-      return fetchAttendance(currentSession);
-    },
+    queryKey: ["attendance", sessionId],
+    queryFn: () => fetchAttendance(sessionId),
     select: selectAttendance,
   });
 
@@ -70,16 +67,17 @@ export function useAttendance(): UseAttendanceType {
   };
 }
 
-async function fetchAttendance(session: Session): Promise<Attendance[]> {
+async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
   const supabase = createClient();
 
   const { data: attendance, error } = await supabase
     .from("attendance")
     .select("*")
-    .eq("session_id", session.id);
+    .eq("session_id", sessionId);
 
-  if (error)
+  if (error) {
     throw new Error(`fetchAttendance encountered an error: ${error.message}`);
+  }
 
   return attendance ?? [];
 }

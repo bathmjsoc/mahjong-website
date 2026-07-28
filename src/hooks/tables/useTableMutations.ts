@@ -9,7 +9,7 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Player, Session, Table, Wind } from "@/lib/types";
+import type { Player, Table, Wind } from "@/lib/types";
 
 type UpdateTableVariables = {
   table: Table;
@@ -60,12 +60,12 @@ export function useTableMutations() {
   });
 
   return {
-    createTable(session: Session) {
-      const tables = queryClient.getQueryData<Table[]>(["tables", session.id]);
+    createTable(sessionId: string) {
+      const tables = queryClient.getQueryData<Table[]>(["tables", sessionId]);
 
       createMutation.mutate({
         id: crypto.randomUUID(),
-        session_id: session.id,
+        session_id: sessionId,
         east_id: null,
         south_id: null,
         west_id: null,

@@ -2,9 +2,10 @@ import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useSessions } from "@/hooks/sessions/useSessions";
 import { useCurrentTournament } from "@/hooks/useCurrentTournament";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
   table: Table;
@@ -13,10 +14,11 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
+  const { scoringRules } = useCurrentTournament();
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { currentSession } = useSessions();
-  const { currentTournament, scoringRules } = useCurrentTournament();
+  const { sessionId } = useSessionContext();
+  const { tournamentId } = useTournamentContext();
 
   const faanOptions = scoringRules.map((rule) => rule.faan);
 
@@ -40,7 +42,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     faan: number | null,
     target?: Player | null,
   ) {
-    if (!currentTournament || !currentSession || !occupant) return;
+    if (!occupant) return;
 
     const winners = [];
     const losers = [];
@@ -70,15 +72,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    createLog(
-      currentTournament,
-      currentSession,
-      faan,
-      winType,
-      winners,
-      losers,
-      others,
-    );
+    createLog(tournamentId, sessionId, faan, winType, winners, losers, others);
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {

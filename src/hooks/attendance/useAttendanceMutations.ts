@@ -7,15 +7,15 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import type { Attendance, Player, Session } from "@/lib/types";
+import type { Attendance, Player } from "@/lib/types";
 
 type RegisterAttendanceVariables = {
-  session: Session;
+  sessionId: string;
   player: Player;
 };
 
 type UpdateAttendanceVariables = {
-  session: Session;
+  sessionId: string;
   player: Player;
   changes: Partial<Attendance>;
 };
@@ -37,12 +37,17 @@ export function useAttendanceMutations() {
     RegisterAttendanceVariables,
     void
   >({
-    mutationFn: ({ session, player }: { session: Session; player: Player }) =>
-      registerPlayerAction(session, player),
-    getQueryKey: ({ session }) => getAttendanceQueryKey(session.id),
-    optimisticUpdate: ({ session, player }) =>
+    mutationFn: ({
+      sessionId,
+      player,
+    }: {
+      sessionId: string;
+      player: Player;
+    }) => registerPlayerAction(sessionId, player),
+    getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
+    optimisticUpdate: ({ sessionId, player }) =>
       addItem({
-        session_id: session.id,
+        session_id: sessionId,
         player_id: player.id,
         registered: true,
         locked: false,
@@ -51,11 +56,11 @@ export function useAttendanceMutations() {
 
   const updateMutation = useOptimisticMutation<UpdateAttendanceVariables, void>(
     {
-      mutationFn: ({ session, player, changes }) =>
-        updateAttendanceAction(session, player, changes),
-      getQueryKey: ({ session }) => getAttendanceQueryKey(session.id),
-      optimisticUpdate: ({ session, player, changes }) => {
-        const queryKey = getAttendanceQueryKey(session.id);
+      mutationFn: ({ sessionId, player, changes }) =>
+        updateAttendanceAction(sessionId, player, changes),
+      getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
+      optimisticUpdate: ({ sessionId, player, changes }) => {
+        const queryKey = getAttendanceQueryKey(sessionId);
         const previousData = queryClient.getQueryData<Attendance[]>(queryKey);
 
         const existingAttendance = previousData?.find(
@@ -73,13 +78,13 @@ export function useAttendanceMutations() {
   );
 
   return {
-    registerPlayer(session: Session, player: Player) {
-      registerMutation.mutate({ session, player });
+    registerPlayer(sessionId: string, player: Player) {
+      registerMutation.mutate({ sessionId, player });
     },
 
-    deregisterPlayer(session: Session, player: Player) {
+    deregisterPlayer(sessionId: string, player: Player) {
       updateMutation.mutate({
-        session,
+        sessionId,
         player,
         changes: {
           registered: false,
@@ -87,9 +92,9 @@ export function useAttendanceMutations() {
       });
     },
 
-    lockPlayer(session: Session, player: Player) {
+    lockPlayer(sessionId: string, player: Player) {
       updateMutation.mutate({
-        session,
+        sessionId,
         player,
         changes: {
           locked: true,
@@ -97,9 +102,9 @@ export function useAttendanceMutations() {
       });
     },
 
-    unlockPlayer(session: Session, player: Player) {
+    unlockPlayer(sessionId: string, player: Player) {
       updateMutation.mutate({
-        session,
+        sessionId,
         player,
         changes: {
           locked: false,

@@ -1,17 +1,17 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Attendance, Player, Session } from "@/lib/types";
+import type { Attendance, Player } from "@/lib/types";
 
 export async function registerPlayer(
-  session: Session,
+  sessionId: string,
   player: Player,
 ): Promise<void> {
   const supabase = await createClient();
 
   const { error } = await supabase.from("attendance").upsert(
     {
-      session_id: session.id,
+      session_id: sessionId,
       player_id: player.id,
       registered: true,
       locked: false,
@@ -24,7 +24,7 @@ export async function registerPlayer(
 }
 
 export async function updateAttendance(
-  session: Session,
+  sessionId: string,
   player: Player,
   attendance: Partial<Attendance>,
 ): Promise<void> {
@@ -33,7 +33,7 @@ export async function updateAttendance(
   const { error } = await supabase
     .from("attendance")
     .update(attendance)
-    .match({ session_id: session.id, player_id: player.id });
+    .match({ session_id: sessionId, player_id: player.id });
 
   if (error)
     throw new Error(`updateAttendance encountered an error: ${error.message}`);
