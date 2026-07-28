@@ -16,11 +16,7 @@ export function TournamentProvider({
 }: TournamentProviderProps) {
   useRelatimeTournamentSubscriptions(tournamentId);
 
-  return (
-    <TournamentContext.Provider value={tournamentId}>
-      {children}
-    </TournamentContext.Provider>
-  );
+  return <TournamentContext value={tournamentId}>{children}</TournamentContext>;
 }
 
 export function useTournamentContext() {

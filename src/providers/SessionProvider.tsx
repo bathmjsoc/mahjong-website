@@ -16,11 +16,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   useRelatimeSessionSubscriptions(latestSession.id);
 
-  return (
-    <SessionContext.Provider value={latestSession.id}>
-      {children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext value={latestSession.id}>{children}</SessionContext>;
 }
 
 export function useSessionContext() {
