@@ -26,8 +26,8 @@ export function useLogs(): UseLogsType {
 }
 
 function selectLogs(rawLogs: Log[], scoringRules: ScoringRule[]): UseLogsType {
-  const logs = [...rawLogs].sort(
-    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  const logs = rawLogs.toSorted(
+    (a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp),
   );
 
   const enabledLogs = logs.filter((log) => !log.disabled);

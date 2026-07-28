@@ -21,9 +21,8 @@ export function useSessions(): UseSessionsType {
 }
 
 function selectSessions(rawSessions: Session[]): UseSessionsType {
-  const sessions = [...rawSessions].sort(
-    (a, b) =>
-      new Date(a.start_date).getTime() - new Date(b.start_date).getTime(),
+  const sessions = rawSessions.toSorted(
+    (a, b) => Date.parse(a.start_date) - Date.parse(b.start_date),
   );
 
   const sessionMap = Object.fromEntries(

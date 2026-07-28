@@ -23,7 +23,7 @@ export function useTables(): UseTablesType {
 }
 
 function selectTables(rawTables: Table[]): UseTablesType {
-  const tables = [...rawTables].sort((a, b) => {
+  const tables = rawTables.toSorted((a, b) => {
     if (a.saved !== b.saved) {
       return Number(a.saved) - Number(b.saved);
     }
