@@ -27,15 +27,13 @@ export function useSessionMutations() {
 
   return {
     createSession(tournamentId: string) {
-      const sessions = queryClient.getQueryData<Session[]>([
-        "sessions",
-        tournamentId,
-      ]);
+      const sessions =
+        queryClient.getQueryData<Session[]>(["sessions", tournamentId]) ?? [];
 
       createMutation.mutate({
         id: crypto.randomUUID(),
         tournament_id: tournamentId,
-        number: (sessions?.length ?? 0) + 1,
+        number: sessions.length + 1,
         start_date: new Date().toISOString().slice(0, 10),
       });
     },
