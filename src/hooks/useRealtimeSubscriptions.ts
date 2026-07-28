@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useSessionContext } from "@/providers/SessionProvider";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
-export function useSupabaseRealtime() {
+export function useRealtimeSubscriptions() {
   const { sessionId } = useSessionContext();
   const { tournamentId } = useTournamentContext();
 

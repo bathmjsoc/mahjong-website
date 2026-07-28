@@ -7,7 +7,7 @@ import {
   useContext,
   useMemo,
 } from "react";
-import { useSupabaseRealtime } from "@/hooks/useSupabaseRealtime";
+import { useRealtimeSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
 type TournamentContextValue = {
   tournamentId: string;
@@ -18,7 +18,7 @@ const TournamentContext = createContext<TournamentContextValue | undefined>(
 );
 
 function TournamentRealtime({ children }: PropsWithChildren) {
-  useSupabaseRealtime();
+  useRealtimeSubscriptions();
   return children;
 }
 
