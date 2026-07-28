@@ -3,11 +3,10 @@ import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
 /*
  * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")
  * */
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 export function formatTimeAgo(timestamp: string): string {
   const timestampTime = new Date(timestamp).getTime();
   const delta = Math.round((timestampTime - Date.now()) / 1000);
-
-  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
   for (const cutoff of RELATIVE_TIME_CUTOFFS) {
     if (Math.abs(delta) >= cutoff.seconds) {
@@ -21,8 +20,8 @@ export function formatTimeAgo(timestamp: string): string {
 /*
  * Appends an ordinal suffix to a number (e.g., 1 -> 1st, 2 -> 2nd)
  * */
+const pluralRules = new Intl.PluralRules("en", { type: "ordinal" });
 export function formatPosition(number: number): string {
-  const rules = new Intl.PluralRules("en", { type: "ordinal" });
   const suffixes: Record<string, string> = {
     one: "st",
     two: "nd",
@@ -30,7 +29,7 @@ export function formatPosition(number: number): string {
     other: "th",
   };
 
-  return `${number}${suffixes[rules.select(number)]}`;
+  return `${number}${suffixes[pluralRules.select(number)]}`;
 }
 
 /*
