@@ -34,11 +34,6 @@ export function useOptimisticMutation<TVariables, TData>({
         queryClient.setQueryData(context.queryKey, context.previousData);
       }
     },
-    onSettled(_data, _error, _variables, context) {
-      if (context?.queryKey) {
-        void queryClient.invalidateQueries({ queryKey: context.queryKey });
-      }
-    },
   });
 }
 
