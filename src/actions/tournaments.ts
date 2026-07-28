@@ -28,18 +28,3 @@ export async function createTournament(
 
   await createSession(initialSession);
 }
-
-export async function getTournamentName(tournamentId: string): Promise<string> {
-  const supabase = await createClient();
-
-  const { data: tournament, error } = await supabase
-    .from("tournaments")
-    .select("name")
-    .eq("id", tournamentId)
-    .single();
-
-  if (error)
-    throw new Error(`getTournamentName encountered an error: ${error.message}`);
-
-  return tournament.name;
-}
