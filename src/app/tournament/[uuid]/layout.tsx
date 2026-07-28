@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import { createClient } from "@/lib/supabase/server";
+import { fetchTournamentById } from "@/hooks/useCurrentTournament";
+import { SessionProvider } from "@/providers/SessionProvider";
 import { TournamentProvider } from "@/providers/TournamentProvider";
 import { Topbar } from "./_components/Topbar";
 
@@ -16,25 +17,11 @@ export async function generateMetadata({
   const { uuid: tournamentId } = await params;
 
   try {
-    return { title: await getTournamentName(tournamentId) };
+    const tournament = await fetchTournamentById(tournamentId);
+    return { title: tournament.name };
   } catch {
     return {};
   }
-}
-
-async function getTournamentName(tournamentId: string): Promise<string> {
-  const supabase = await createClient();
-
-  const { data: tournament, error } = await supabase
-    .from("tournaments")
-    .select("name")
-    .eq("id", tournamentId)
-    .single();
-
-  if (error)
-    throw new Error(`getTournamentName encountered an error: ${error.message}`);
-
-  return tournament.name;
 }
 
 export default async function TournamentLayout({
@@ -44,15 +31,17 @@ export default async function TournamentLayout({
   const { uuid: tournamentId } = await params;
 
   try {
-    await getTournamentName(tournamentId);
+    await fetchTournamentById(tournamentId);
   } catch {
     notFound();
   }
 
   return (
     <TournamentProvider tournamentId={tournamentId}>
-      <Topbar />
-      {children}
+      <SessionProvider>
+        <Topbar />
+        {children}
+      </SessionProvider>
     </TournamentProvider>
   );
 }
