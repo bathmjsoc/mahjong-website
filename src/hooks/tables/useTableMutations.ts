@@ -13,7 +13,7 @@ import type { Player, Table, Wind } from "@/lib/types";
 
 type UpdateTableVariables = {
   table: Table;
-  players: Partial<Record<Wind, Player | null>>;
+  seats: Partial<Record<Wind, Player | null>>;
 };
 
 export function useTableMutations() {
@@ -39,15 +39,15 @@ export function useTableMutations() {
   });
 
   const updateMutation = useOptimisticMutation<UpdateTableVariables, void>({
-    mutationFn: ({ table, players }) => updateTableAction(table, players),
+    mutationFn: ({ table, seats }) => updateTableAction(table, seats),
     getQueryKey: ({ table }) => getTablesQueryKey(table),
-    optimisticUpdate: ({ table, players }) => {
+    optimisticUpdate: ({ table, seats }) => {
       const nextTable: Table = { ...table };
 
-      if ("east" in players) nextTable.east_id = players.east?.id ?? null;
-      if ("south" in players) nextTable.south_id = players.south?.id ?? null;
-      if ("west" in players) nextTable.west_id = players.west?.id ?? null;
-      if ("north" in players) nextTable.north_id = players.north?.id ?? null;
+      if ("east" in seats) nextTable.east_id = seats.east?.id ?? null;
+      if ("south" in seats) nextTable.south_id = seats.south?.id ?? null;
+      if ("west" in seats) nextTable.west_id = seats.west?.id ?? null;
+      if ("north" in seats) nextTable.north_id = seats.north?.id ?? null;
 
       updateItem(nextTable);
     },
@@ -79,8 +79,8 @@ export function useTableMutations() {
       saveMutation.mutate(table);
     },
 
-    updateTable(table: Table, players: Partial<Record<Wind, Player | null>>) {
-      updateMutation.mutate({ table, players });
+    updateTable(table: Table, seats: Partial<Record<Wind, Player | null>>) {
+      updateMutation.mutate({ table, seats });
     },
 
     deleteTable(table: Table) {

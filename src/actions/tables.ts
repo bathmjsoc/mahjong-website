@@ -21,15 +21,15 @@ export async function createTable(table: Table): Promise<Table> {
 
 export async function updateTable(
   table: Table,
-  players: Partial<Record<Wind, Player | null>>,
+  seats: Partial<Record<Wind, Player | null>>,
 ): Promise<void> {
   const supabase = await createClient();
 
   const payload: Partial<Table> = {};
-  if ("east" in players) payload.east_id = players.east?.id ?? null;
-  if ("south" in players) payload.south_id = players.south?.id ?? null;
-  if ("west" in players) payload.west_id = players.west?.id ?? null;
-  if ("north" in players) payload.north_id = players.north?.id ?? null;
+  if ("east" in seats) payload.east_id = seats.east?.id ?? null;
+  if ("south" in seats) payload.south_id = seats.south?.id ?? null;
+  if ("west" in seats) payload.west_id = seats.west?.id ?? null;
+  if ("north" in seats) payload.north_id = seats.north?.id ?? null;
 
   const { error } = await supabase
     .from("tables")
