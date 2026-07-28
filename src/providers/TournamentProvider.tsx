@@ -9,11 +9,11 @@ import {
 } from "react";
 import { useSupabaseRealtime } from "@/hooks/useSupabaseRealtime";
 
-type TournamentContextType = {
+type TournamentContextValue = {
   tournamentId: string;
 };
 
-const TournamentContext = createContext<TournamentContextType | undefined>(
+const TournamentContext = createContext<TournamentContextValue | undefined>(
   undefined,
 );
 
@@ -41,13 +41,13 @@ export function TournamentProvider({
 }
 
 export function useTournamentContext() {
-  const context = useContext(TournamentContext);
+  const value = useContext(TournamentContext);
 
-  if (!context) {
+  if (!value) {
     throw new Error(
       "useTournamentContext must be used within TournamentProvider!",
     );
   }
 
-  return context;
+  return value;
 }
