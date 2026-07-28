@@ -1,6 +1,5 @@
 "use server";
 
-import { SEATS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import type { Player, Session, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
@@ -26,12 +25,11 @@ export async function updateTable(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Partial<Record<`${Wind}_id`, string | null>> = {};
-  for (const wind of SEATS) {
-    if (wind in players) {
-      payload[`${wind}_id`] = players[wind]?.id ?? null;
-    }
-  }
+  const payload: Partial<Table> = {};
+  if ("east" in players) payload.east_id = players.east?.id ?? null;
+  if ("south" in players) payload.south_id = players.south?.id ?? null;
+  if ("west" in players) payload.west_id = players.west?.id ?? null;
+  if ("north" in players) payload.north_id = players.north?.id ?? null;
 
   const { error } = await supabase
     .from("tables")

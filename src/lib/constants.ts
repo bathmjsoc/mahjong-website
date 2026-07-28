@@ -26,8 +26,6 @@ export const RELATIVE_TIME_CUTOFFS: {
   { unit: "minute", seconds: 60 },
 ] as const;
 
-export const SEATS = ["east", "south", "west", "north"] as const;
-
 export const TABS = [
   { label: "Tables", href: "" },
   { label: "Logs", href: "/logs" },

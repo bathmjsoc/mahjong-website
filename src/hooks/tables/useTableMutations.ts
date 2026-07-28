@@ -9,7 +9,6 @@ import {
   useCacheItems,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
-import { SEATS } from "@/lib/constants";
 import type { Player, Session, Table, Wind } from "@/lib/types";
 
 type UpdateTableVariables = {
@@ -45,11 +44,10 @@ export function useTableMutations() {
     optimisticUpdate: ({ table, players }) => {
       const nextTable: Table = { ...table };
 
-      for (const wind of SEATS) {
-        if (wind in players) {
-          nextTable[`${wind}_id`] = players[wind]?.id ?? null;
-        }
-      }
+      if ("east" in players) nextTable.east_id = players.east?.id ?? null;
+      if ("south" in players) nextTable.south_id = players.south?.id ?? null;
+      if ("west" in players) nextTable.west_id = players.west?.id ?? null;
+      if ("north" in players) nextTable.north_id = players.north?.id ?? null;
 
       updateItem(nextTable);
     },
