@@ -11,7 +11,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const latestSession = sessions.at(-1);
 
   if (!latestSession) {
-    throw new Error("No sessions found!");
+    return null;
   }
 
   useRelatimeSessionSubscriptions(latestSession.id);
