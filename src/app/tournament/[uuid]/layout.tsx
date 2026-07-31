@@ -11,7 +11,7 @@ type TournamentLayoutProps = {
   params: Promise<{ uuid: string }>;
 };
 
-const getTournamentName = cache(async (tournamentId: string) => {
+const getTournamentName = cache(async (tournamentId: string): Promise<string> => {
   const supabase = await createClient();
   const { data: tournament, error } = await supabase
     .from("tournaments")
