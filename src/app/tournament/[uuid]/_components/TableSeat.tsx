@@ -40,7 +40,7 @@ export function TableSeat({
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
 
   const registeredPlayers = players.filter(
-    (player) => !registeredPlayerIds.has(player.id),
+    (player) => registeredPlayerIds.has(player.id),
   );
 
   useEffect(() => {
