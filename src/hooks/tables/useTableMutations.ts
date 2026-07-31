@@ -35,7 +35,7 @@ export function useTableMutations() {
   const saveMutation = useOptimisticMutation({
     mutationFn: saveTableAction,
     getQueryKey: getTablesQueryKey,
-    optimisticUpdate: (table) => updateItem({ ...table, saved: true }),
+    optimisticUpdate: addItem,
   });
 
   const updateMutation = useOptimisticMutation<UpdateTableVariables, void>({
@@ -77,7 +77,11 @@ export function useTableMutations() {
     },
 
     saveTable(table: Table) {
-      saveMutation.mutate(table);
+      saveMutation.mutate({
+        ...table,
+        id: crypto.randomUUID(),
+        saved: true,
+      });
     },
 
     updateTable(table: Table, seats: Partial<Record<Wind, Player | null>>) {
