@@ -24,8 +24,8 @@ export default function LogsPage() {
   const tagFilters = useMemo(
     () => ({
       session: (log: Log, tag: LogSearchTag) => {
-        const session = sessionMap[log.session_id];
-        return session.number === parseInt(tag.value, 10);
+        const session = sessionMap.get(log.session_id);
+        return session?.number === parseInt(tag.value, 10);
       },
 
       type: (log: Log, tag: LogSearchTag) => {

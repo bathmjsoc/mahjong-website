@@ -4,7 +4,7 @@ import type { Session } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseSessionsType = {
-  sessionMap: Record<string, Session>;
+  sessionMap: Map<string, Session>;
   sessions: Session[];
 };
 
@@ -25,7 +25,7 @@ function selectSessions(rawSessions: Session[]): UseSessionsType {
     (a, b) => Date.parse(a.start_date) - Date.parse(b.start_date),
   );
 
-  const sessionMap = Object.fromEntries(
+  const sessionMap = new Map(
     sessions.map((session) => [session.id, session]),
   );
 

@@ -54,7 +54,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
-        {sessionMap[log.session_id].number}
+        {sessionMap.get(log.session_id)?.number}
       </td>
 
       <td
