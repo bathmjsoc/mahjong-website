@@ -83,7 +83,7 @@ function LogRow({ log }: LogRowProps) {
         )}
       >
         {log.winner_ids
-          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .map((id) => playerMap.get(id)?.name ?? "N/A")
           .join(", ")}
       </td>
 
@@ -94,7 +94,7 @@ function LogRow({ log }: LogRowProps) {
         )}
       >
         {log.loser_ids
-          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .map((id) => playerMap.get(id)?.name ?? "N/A")
           .join(", ")}
       </td>
 

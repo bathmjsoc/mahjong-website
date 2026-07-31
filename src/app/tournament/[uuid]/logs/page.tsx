@@ -38,12 +38,12 @@ export default function LogsPage() {
 
       player: (log: Log, tag: LogSearchTag) => {
         const isWinner = log.winner_ids.some((id) => {
-          const playerName = playerMap[id]?.name ?? "";
+          const playerName = playerMap.get(id)?.name ?? "";
           return normalizeText(playerName) === normalizeText(tag.value);
         });
 
         const isLoser = log.loser_ids.some((id) => {
-          const playerName = playerMap[id]?.name ?? "";
+          const playerName = playerMap.get(id)?.name ?? "";
           return normalizeText(playerName) === normalizeText(tag.value);
         });
 

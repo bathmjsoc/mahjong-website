@@ -34,7 +34,8 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
     for (const id of SEAT_IDS) {
       if (!id || id === occupant.id) continue;
-      opponents.push(playerMap[id]);
+      const player = playerMap.get(id);
+      if (player) opponents.push(player);
     }
   }
 

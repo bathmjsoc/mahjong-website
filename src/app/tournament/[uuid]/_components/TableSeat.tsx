@@ -34,7 +34,7 @@ export function TableSeat({
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
   const occupantId = table[`${wind}_id`];
-  const occupant = (occupantId && playerMap[occupantId]) || null;
+  const occupant = (occupantId && playerMap.get(occupantId)) || null;
 
   const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
