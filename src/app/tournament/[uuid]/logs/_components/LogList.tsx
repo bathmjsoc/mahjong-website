@@ -54,7 +54,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
-        {sessionMap.get(log.session_id)?.number}
+        {sessionMap.get(log.session_id)?.number ?? "N/A"}
       </td>
 
       <td
@@ -93,9 +93,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.loser_ids
-          .map((id) => playerMap.get(id)?.name ?? "N/A")
-          .join(", ")}
+        {log.loser_ids.map((id) => playerMap.get(id)?.name ?? "N/A").join(", ")}
       </td>
 
       <td>

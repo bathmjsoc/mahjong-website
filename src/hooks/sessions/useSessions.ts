@@ -25,9 +25,7 @@ function selectSessions(rawSessions: Session[]): UseSessionsType {
     (a, b) => Date.parse(a.start_date) - Date.parse(b.start_date),
   );
 
-  const sessionMap = new Map(
-    sessions.map((session) => [session.id, session]),
-  );
+  const sessionMap = new Map(sessions.map((session) => [session.id, session]));
 
   return { sessions, sessionMap };
 }
