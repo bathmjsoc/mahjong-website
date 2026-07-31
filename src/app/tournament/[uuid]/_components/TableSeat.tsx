@@ -29,7 +29,7 @@ export function TableSeat({
   const { playerMap, players } = usePlayers();
   const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
-  const { scoringRules } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
@@ -54,7 +54,7 @@ export function TableSeat({
       const { faan, winType, winners, losers }: PointsAnimationEvent =
         event.detail;
 
-      const pointDeltas = getPointDeltas(faan, winType, scoringRules);
+      const pointDeltas = getPointDeltas(faan, winType, scoringRulesMap);
 
       if (winners.some((p) => p.id === occupant.id)) {
         setAnimationPoints(pointDeltas.winner);
@@ -67,7 +67,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id, scoringRules]);
+  }, [occupant?.id, table.id, scoringRulesMap]);
 
   function handleSelect(player: Player | null) {
     updateTable(table, {

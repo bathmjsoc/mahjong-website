@@ -15,30 +15,33 @@ type UseLogsType = {
 export function useLogs(): UseLogsType {
   const tournamentId = useTournamentContext();
 
-  const { scoringRules } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
 
   const query = useSuspenseQuery({
     queryKey: ["logs", tournamentId],
     queryFn: () => fetchLogs(tournamentId),
-    select: (logs) => selectLogs(logs, scoringRules),
+    select: (logs) => selectLogs(logs, scoringRulesMap),
   });
 
   return query.data;
 }
 
-function selectLogs(rawLogs: Log[], scoringRules: ScoringRule[]): UseLogsType {
+function selectLogs(
+  rawLogs: Log[],
+  scoringRulesMap: Map<number | null, ScoringRule>,
+): UseLogsType {
   const logs = rawLogs.toSorted(
     (a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp),
   );
 
   const enabledLogs = logs.filter((log) => !log.disabled);
-  const overallScores = getPlayerScores(enabledLogs, scoringRules);
+  const overallScores = getPlayerScores(enabledLogs, scoringRulesMap);
 
   const grouped = Map.groupBy(enabledLogs, (log) => log.session_id);
 
   const sessionScores: Record<string, Record<string, number>> = {};
   for (const [sessionId, groupedLogs] of grouped) {
-    sessionScores[sessionId] = getPlayerScores(groupedLogs, scoringRules);
+    sessionScores[sessionId] = getPlayerScores(groupedLogs, scoringRulesMap);
   }
 
   return { enabledLogs, logs, overallScores, sessionScores };

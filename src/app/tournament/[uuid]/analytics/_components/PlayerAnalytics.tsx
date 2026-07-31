@@ -10,9 +10,9 @@ type PlayerAnalyticsProps = {
 
 export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
   const { enabledLogs } = useLogs();
-  const { scoringRules } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
 
-  const scores = getPointHistory(enabledLogs, player, scoringRules);
+  const scores = getPointHistory(enabledLogs, player, scoringRulesMap);
 
   const data = {
     name: player.name,

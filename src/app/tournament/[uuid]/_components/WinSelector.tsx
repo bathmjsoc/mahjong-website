@@ -17,11 +17,11 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const sessionId = useSessionContext();
   const tournamentId = useTournamentContext();
 
-  const { scoringRules } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
 
-  const faanOptions = scoringRules.map((rule) => rule.faan);
+  const faanOptions = scoringRulesMap.keys();
 
   const opponents: Player[] = [];
   if (occupant) {

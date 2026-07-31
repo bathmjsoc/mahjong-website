@@ -4,7 +4,7 @@ import type { ScoringRule, SupabaseTournament, Tournament } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseTournamentsType = {
-  scoringRules: ScoringRule[];
+  scoringRulesMap: Map<number | null, ScoringRule>;
 };
 
 export function useTournaments(): UseTournamentsType {
@@ -20,8 +20,12 @@ export function useTournaments(): UseTournamentsType {
 }
 
 function selectTournament(tournament: Tournament): UseTournamentsType {
+  const scoringRulesMap = new Map(
+    tournament.scoring_rules.map((rule) => [rule.faan, rule]),
+  );
+
   return {
-    scoringRules: tournament.scoring_rules,
+    scoringRulesMap,
   };
 }
 
