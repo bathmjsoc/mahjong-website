@@ -54,10 +54,7 @@ export function useCacheItems<T>({
     addItem(item: T) {
       const queryKey = getQueryKey(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) => [
-        ...items,
-        item,
-      ]);
+      queryClient.setQueryData<T[]>(queryKey, (items = []) => [...items, item]);
     },
 
     updateItem(item: T) {
@@ -85,5 +82,5 @@ export function useCacheItems<T>({
         items.filter((current) => getId(current) !== itemId),
       );
     },
-  }
+  };
 }
