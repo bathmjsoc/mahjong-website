@@ -36,8 +36,9 @@ export function TableSeat({
   const occupantId = table[`${wind}_id`];
   const occupant = (occupantId && playerMap.get(occupantId)) || null;
 
-  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
+  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
+  const isRegistered = !!occupantId && registeredPlayerIds.has(occupantId);
 
   const registeredPlayers = players.filter((player) =>
     registeredPlayerIds.has(player.id),
@@ -82,7 +83,7 @@ export function TableSeat({
           "flex items-center justify-between gap-1 bg-primary text-secondary",
           "w-50 shrink-0 rounded-full p-1 transition duration-300",
           isLocked && "ring-2 ring-neutral",
-          isDuplicate && "ring-2 ring-negative",
+          (isDuplicate || !isRegistered) && "ring-2 ring-negative",
           tableClassName,
         )}
       >
