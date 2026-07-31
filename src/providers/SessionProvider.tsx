@@ -1,22 +1,32 @@
 "use client";
 
-import { createContext, type PropsWithChildren, useContext } from "react";
+import {
+  createContext,
+  type PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
 import { useRealtimeSessionSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
 const SessionContext = createContext<string | undefined>(undefined);
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const { sessions } = useSessions();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
+  const { sessions } = useSessions();
   const latestSession = sessions.at(-1);
   useRealtimeSessionSubscriptions(latestSession?.id);
 
-  if (!latestSession) {
+  if (!isMounted || !latestSession) {
     return null;
+  } else {
+    return <SessionContext value={latestSession.id}>{children}</SessionContext>;
   }
-
-  return <SessionContext value={latestSession.id}>{children}</SessionContext>;
 }
 
 export function useSessionContext() {

@@ -39,8 +39,8 @@ export function TableSeat({
   const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
 
-  const registeredPlayers = players.filter(
-    (player) => registeredPlayerIds.has(player.id),
+  const registeredPlayers = players.filter((player) =>
+    registeredPlayerIds.has(player.id),
   );
 
   useEffect(() => {
