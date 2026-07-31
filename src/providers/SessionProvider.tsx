@@ -8,8 +8,8 @@ const SessionContext = createContext<string | undefined>(undefined);
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const { sessions } = useSessions();
+  
   const latestSession = sessions.at(-1);
-
   useRealtimeSessionSubscriptions(latestSession?.id);
 
   if (!latestSession) {
