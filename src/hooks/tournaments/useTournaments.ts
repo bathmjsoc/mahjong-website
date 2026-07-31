@@ -25,9 +25,7 @@ function selectTournament(tournament: Tournament): UseTournamentsType {
   };
 }
 
-export async function fetchTournamentById(
-  tournamentId: string,
-): Promise<Tournament> {
+async function fetchTournamentById(tournamentId: string): Promise<Tournament> {
   const supabase = createClient();
 
   const { data: tournament, error } = await supabase

@@ -11,20 +11,24 @@ type TournamentLayoutProps = {
   params: Promise<{ uuid: string }>;
 };
 
-const getTournamentName = cache(async (tournamentId: string): Promise<string> => {
-  const supabase = await createClient();
-  const { data: tournament, error } = await supabase
-    .from("tournaments")
-    .select("name")
-    .eq("id", tournamentId)
-    .single();
+const getTournamentName = cache(
+  async (tournamentId: string): Promise<string> => {
+    const supabase = await createClient();
+    const { data: tournament, error } = await supabase
+      .from("tournaments")
+      .select("name")
+      .eq("id", tournamentId)
+      .single();
 
-  if (error) {
-    throw new Error(`getTournamentName encountered an error: ${error.message}`);
-  }
+    if (error) {
+      throw new Error(
+        `getTournamentName encountered an error: ${error.message}`,
+      );
+    }
 
-  return tournament.name;
-});
+    return tournament.name;
+  },
+);
 
 export async function generateMetadata({
   params,
