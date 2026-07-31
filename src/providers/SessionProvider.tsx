@@ -2,7 +2,7 @@
 
 import { createContext, type PropsWithChildren, useContext } from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import { useRelatimeSessionSubscriptions } from "@/hooks/useRealtimeSubscriptions";
+import { useRealtimeSessionSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
 const SessionContext = createContext<string | undefined>(undefined);
 
@@ -10,7 +10,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const { sessions } = useSessions();
   const latestSession = sessions.at(-1);
 
-  useRelatimeSessionSubscriptions(latestSession?.id);
+  useRealtimeSessionSubscriptions(latestSession?.id);
 
   if (!latestSession) {
     return null;

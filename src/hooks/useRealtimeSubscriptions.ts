@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function useRelatimeSessionSubscriptions(sessionId: string | undefined) {
+export function useRealtimeSessionSubscriptions(sessionId: string | undefined) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function useRelatimeSessionSubscriptions(sessionId: string | undefined) {
   }, [queryClient, sessionId]);
 }
 
-export function useRelatimeTournamentSubscriptions(tournamentId: string) {
+export function useRealtimeTournamentSubscriptions(tournamentId: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
