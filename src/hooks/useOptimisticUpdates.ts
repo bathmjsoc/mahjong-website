@@ -3,7 +3,6 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useMemo } from "react";
 
 type OptimisticMutationOptions<TVariables, TData> = {
   mutationFn: (variables: TVariables) => Promise<TData>;
@@ -48,43 +47,40 @@ export function useCacheItems<T>({
 }: CachedItemsOptions<T>) {
   const queryClient = useQueryClient();
 
-  return useMemo(
-    () => ({
-      addItem(item: T) {
-        const queryKey = getQueryKey(item);
+  return {
+    addItem(item: T) {
+      const queryKey = getQueryKey(item);
 
-        queryClient.setQueryData<T[]>(queryKey, (items = []) => [
-          ...items,
-          item,
-        ]);
-      },
+      queryClient.setQueryData<T[]>(queryKey, (items = []) => [
+        ...items,
+        item,
+      ]);
+    },
 
-      updateItem(item: T) {
-        const queryKey = getQueryKey(item);
-        const itemId = getId(item);
+    updateItem(item: T) {
+      const queryKey = getQueryKey(item);
+      const itemId = getId(item);
 
-        queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-          items.map((current) => (getId(current) === itemId ? item : current)),
-        );
-      },
+      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
+        items.map((current) => (getId(current) === itemId ? item : current)),
+      );
+    },
 
-      patchItem(id: string, queryKey: QueryKey, changes: Partial<T>) {
-        queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-          items.map((current) =>
-            getId(current) === id ? { ...current, ...changes } : current,
-          ),
-        );
-      },
+    patchItem(id: string, queryKey: QueryKey, changes: Partial<T>) {
+      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
+        items.map((current) =>
+          getId(current) === id ? { ...current, ...changes } : current,
+        ),
+      );
+    },
 
-      removeItem(item: T) {
-        const queryKey = getQueryKey(item);
-        const itemId = getId(item);
+    removeItem(item: T) {
+      const queryKey = getQueryKey(item);
+      const itemId = getId(item);
 
-        queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-          items.filter((current) => getId(current) !== itemId),
-        );
-      },
-    }),
-    [getId, getQueryKey, queryClient],
-  );
+      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
+        items.filter((current) => getId(current) !== itemId),
+      );
+    },
+  }
 }
