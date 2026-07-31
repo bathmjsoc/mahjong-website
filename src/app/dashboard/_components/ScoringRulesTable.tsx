@@ -26,7 +26,7 @@ export function ScoringRulesTable({
             <th
               key={winType}
               colSpan={2}
-              title={WIN_TYPE_MAP[winType]}
+              title={WIN_TYPE_MAP[winType] ?? "N/A"}
               className="border-secondary border-l"
             >
               {winType}

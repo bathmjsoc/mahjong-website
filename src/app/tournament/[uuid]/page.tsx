@@ -38,7 +38,7 @@ export default function TournamentPage() {
       <Sidebar />
 
       <div
-        title={wind ? WIND_MAP[wind] : ""}
+        title={wind ? WIND_MAP[wind] : "N/A"}
         className="absolute top-20 right-5 rounded-2xl bg-primary"
       >
         <RoundedListbox<string>
@@ -47,7 +47,7 @@ export default function TournamentPage() {
           onChange={setWind}
           getOptionLabel={(wind) => wind}
           getOptionKey={(wind) => wind}
-          getOptionTooltip={(wind) => WIND_MAP[wind]}
+          getOptionTooltip={(wind) => WIND_MAP[wind] ?? "N/A"}
           buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
         />
       </div>
