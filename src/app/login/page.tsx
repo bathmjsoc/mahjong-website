@@ -1,3 +1,5 @@
+"use client";
+
 import { CreditsBanner } from "./_components/CreditsBanner";
 import { LoginForm } from "./_components/LoginForm";
 
