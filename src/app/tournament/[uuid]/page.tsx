@@ -24,12 +24,12 @@ export default function TournamentPage() {
   const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
+    const availablePlayers = players.filter((player) =>
+      availablePlayerIds.has(player.id),
+    );
+
     startTransition(async () => {
-      await shuffleTables(
-        sessionId,
-        availableTables,
-        players.filter((player) => availablePlayerIds.has(player.id)),
-      );
+      await shuffleTables(sessionId, availableTables, availablePlayers);
     });
   }
 
