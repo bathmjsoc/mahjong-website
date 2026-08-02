@@ -1,7 +1,9 @@
 "use client";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { LogOut } from "lucide-react";
 import { useState } from "react";
+import { signOut } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { createClient } from "@/lib/supabase/client";
 import type { SupabaseTournament, Tournament } from "@/lib/types";
@@ -18,6 +20,13 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col items-center gap-10 p-10">
+      <FilledButton
+        onClick={signOut}
+        className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
+      >
+        <LogOut className="size-5" />
+      </FilledButton>
+
       <FilledButton
         onClick={() => setIsCreateModalOpen(true)}
         className="w-sm py-3"
