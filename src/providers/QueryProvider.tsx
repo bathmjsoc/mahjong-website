@@ -1,9 +1,10 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { type PropsWithChildren, useState } from "react";
+import { type PropsWithChildren, useEffect, useState } from "react";
 
 export function QueryProvider({ children }: PropsWithChildren) {
+  const [isMounted, setIsMounted] = useState(false);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -14,6 +15,14 @@ export function QueryProvider({ children }: PropsWithChildren) {
         },
       }),
   );
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
