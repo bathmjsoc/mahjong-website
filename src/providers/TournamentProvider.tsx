@@ -19,14 +19,14 @@ export function TournamentProvider({
   return <TournamentContext value={tournamentId}>{children}</TournamentContext>;
 }
 
-export function useTournamentContext() {
-  const value = useContext(TournamentContext);
+export function useTournamentContext(): string {
+  const context = useContext(TournamentContext);
 
-  if (!value) {
+  if (!context) {
     throw new Error(
-      "useTournamentContext must be used within TournamentProvider!",
+      "useTournamentContext must be used within a <TournamentProvider/>!",
     );
   }
 
-  return value;
+  return context;
 }
