@@ -1,6 +1,6 @@
-// ---------- Database Types ----------
 import type { Tables } from "@/lib/database.types";
 
+// ---------- Database Types ----------
 export type Attendance = {
   session_id: string;
   player_id: string;
