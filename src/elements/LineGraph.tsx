@@ -65,7 +65,7 @@ export function LineGraph({
       type="line"
       series={series}
       options={options}
-      className="h-full w-full rounded-xl border-2 border-primary bg-secondary px-3"
+      className="size-full rounded-xl border-2 border-primary bg-secondary px-3"
     />
   );
 }

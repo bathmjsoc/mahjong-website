@@ -26,7 +26,7 @@ export function LabelledInput({
       <span
         className={twMerge(
           "bg-primary text-secondary",
-          "absolute top-px left-1/2 -translate-x-1/2 -translate-y-1/2",
+          "-translate-1/2 absolute top-px left-1/2",
           "pointer-events-none rounded-full px-1 text-xs",
           labelClassName,
         )}
