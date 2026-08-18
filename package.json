@@ -5,8 +5,7 @@
     "build": "next build",
     "dev": "next dev",
     "format": "biome format --write",
-    "lint": "biome check --write .",
-    "updates": "npx npm-check-updates"
+    "lint": "biome check --write ."
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
