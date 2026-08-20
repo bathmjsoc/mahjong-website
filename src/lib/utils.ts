@@ -5,8 +5,7 @@ import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
  * */
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 export function formatTimeAgo(timestamp: string): string {
-  const timestampTime = new Date(timestamp).getTime();
-  const delta = Math.round((timestampTime - Date.now()) / 1000);
+  const delta = Math.round((Date.parse(timestamp) - Date.now()) / 1000);
 
   for (const cutoff of RELATIVE_TIME_CUTOFFS) {
     if (Math.abs(delta) >= cutoff.seconds) {
