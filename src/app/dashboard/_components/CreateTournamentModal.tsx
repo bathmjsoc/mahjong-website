@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { createTournament } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
@@ -21,6 +21,7 @@ export function CreateTournamentModal({
   const queryClient = useQueryClient();
 
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, startTransition] = useTransition();
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     DEFAULT_FALSE_WIN_RULE,
   );
@@ -36,10 +37,18 @@ export function CreateTournamentModal({
       return;
     }
 
-    await createTournament(tournamentName, [...scoringRules, falseWinRule]);
-    await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+    const faans = scoringRules.map((rule) => rule.faan);
 
-    handleClose();
+    if (new Set(faans).size !== faans.length) {
+      setError("Duplicate Faan values are not allowed.");
+      return;
+    }
+
+    startTransition(async () => {
+      await createTournament(tournamentName, [...scoringRules, falseWinRule]);
+      await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+      handleClose();
+    });
   }
 
   function handleClose() {
@@ -81,7 +90,7 @@ export function CreateTournamentModal({
           setFalseWinRule={setFalseWinRule}
         />
 
-        <FilledButton type="submit" className="w-sm">
+        <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
           Create Tournament
         </FilledButton>
       </form>
