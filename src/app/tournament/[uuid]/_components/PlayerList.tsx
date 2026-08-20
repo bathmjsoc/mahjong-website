@@ -22,8 +22,8 @@ export function PlayerList() {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
-  const registeredPlayers = players.filter(
-    (player) => registeredPlayerIds.has(player.id),
+  const registeredPlayers = players.filter((player) =>
+    registeredPlayerIds.has(player.id),
   );
   const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);

@@ -13,7 +13,7 @@ import { useSessionContext } from "@/providers/SessionProvider";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
-type WindKey = typeof WINDS[number];
+type WindKey = (typeof WINDS)[number];
 
 export default function TournamentPage() {
   const sessionId = useSessionContext();
