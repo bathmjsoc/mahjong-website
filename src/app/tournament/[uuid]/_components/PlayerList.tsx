@@ -1,31 +1,31 @@
 import { LockKeyhole, LockKeyholeOpen, X } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import {
-  deregisterPlayer,
-  lockPlayer,
-  unlockPlayer,
-} from "@/actions/attendance";
 import { IconButton } from "@/elements/IconButton";
-import { useAttendance } from "@/hooks/useAttendance";
-import { useLogs } from "@/hooks/useLogs";
-import { useTables } from "@/hooks/useTables";
-import type { Player, Session } from "@/lib/types";
-import { rankPlayers, scoreToColor } from "@/lib/utils";
+import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
+import { useLogs } from "@/hooks/logs/useLogs";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTables } from "@/hooks/tables/useTables";
+import { rankPlayers, scoreToColor } from "@/lib/scoring";
+import type { Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 
-type PlayerListProps = {
-  session: Session;
-};
+export function PlayerList() {
+  const sessionId = useSessionContext();
 
-export function PlayerList({ session }: PlayerListProps) {
-  const { lockedPlayerIds, registeredPlayers } = useAttendance();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { sessionScores } = useLogs();
+  const { players } = usePlayers();
   const { seatedPlayerIds } = useTables();
 
-  if (registeredPlayers.length === 0) {
+  if (registeredPlayerIds.size === 0) {
     return <span className="text-xs italic">No players registered.</span>;
   }
 
-  const scores = sessionScores[session.id] ?? {};
+  const registeredPlayers = players.filter((player) =>
+    registeredPlayerIds.has(player.id),
+  );
+  const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);
 
   return (
@@ -36,14 +36,13 @@ export function PlayerList({ session }: PlayerListProps) {
           <th className="w-68">Name</th>
           <th className="w-20">Score</th>
           <th className="w-7 text-[10px] opacity-66">
-            [{registeredPlayers.length}]
+            [{registeredPlayerIds.size}]
           </th>
         </tr>
       </thead>
       <tbody>
         {rankedPlayers.map(([player, score]) => (
           <PlayerRow
-            session={session}
             key={player.id}
             player={player}
             score={score}
@@ -57,24 +56,20 @@ export function PlayerList({ session }: PlayerListProps) {
 }
 
 type PlayerRowProps = {
-  session: Session;
   isLocked: boolean;
   isUnseated: boolean;
   player: Player;
   score: number;
 };
 
-function PlayerRow({
-  session,
-  isLocked,
-  isUnseated,
-  player,
-  score,
-}: PlayerRowProps) {
-  const scoreColor = scoreToColor(score);
+function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
+  const sessionId = useSessionContext();
+
+  const { deregisterPlayer, lockPlayer, unlockPlayer } =
+    useAttendanceMutations();
 
   function handleLockToggle() {
-    isLocked ? unlockPlayer(session, player) : lockPlayer(session, player);
+    isLocked ? unlockPlayer(sessionId, player) : lockPlayer(sessionId, player);
   }
 
   return (
@@ -117,7 +112,10 @@ function PlayerRow({
       </td>
 
       <td
-        className={twMerge("border-2 border-secondary text-center", scoreColor)}
+        className={twMerge(
+          "border-2 border-secondary text-center",
+          scoreToColor(score),
+        )}
       >
         {score}
       </td>
@@ -126,7 +124,7 @@ function PlayerRow({
       <td>
         <IconButton
           title="Deregister Player"
-          onClick={() => deregisterPlayer(session, player)}
+          onClick={() => deregisterPlayer(sessionId, player)}
           className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />

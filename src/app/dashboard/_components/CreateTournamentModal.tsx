@@ -62,9 +62,7 @@ export function CreateTournamentModal({
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Tournament">
       <form
         action={handleSubmit}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") e.preventDefault();
-        }}
+        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
         className="flex h-150 w-2xl flex-col items-center justify-center gap-4"
       >
         <div className="flex flex-col gap-3">

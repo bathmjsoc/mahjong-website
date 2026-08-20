@@ -4,11 +4,10 @@ import { ChartColumn } from "lucide-react";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { useLogs } from "@/hooks/useLogs";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { useLogs } from "@/hooks/logs/useLogs";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Session } from "@/lib/types";
-import { getSessionName } from "@/lib/utils";
 import { Leaderboard } from "./_components/Leaderboard";
 import { ViewGraphModal } from "./_components/ViewGraphModal";
 
@@ -20,12 +19,16 @@ export default function SessionsPage() {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
-  const isOverall = selectedSession === null;
-  const scores = isOverall
-    ? overallScores
-    : (sessionScores[selectedSession.id] ?? {});
+  const scores = selectedSession
+    ? (sessionScores[selectedSession.id] ?? {})
+    : overallScores;
 
   const activePlayers = players.filter((player) => player.id in scores);
+
+  function getSessionName(session: Session | null): string {
+    if (!session) return "Overall Standings"; // Special case
+    return `Session ${session.number} (${session.start_date})`;
+  }
 
   return (
     <>

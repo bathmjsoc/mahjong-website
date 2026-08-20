@@ -5,16 +5,16 @@ import {
   UserPen,
   UserPlus,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { registerPlayer } from "@/actions/attendance";
 import { FilledButton } from "@/elements/FilledButton";
 import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
-import { useAttendance } from "@/hooks/useAttendance";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { CreatePlayerModal } from "./CreatePlayerModal";
 import { DeletePlayerModal } from "./DeletePlayerModal";
 import { EditPlayerModal } from "./EditPlayerModal";
@@ -24,21 +24,21 @@ import { ResetSessionModal } from "./ResetSessionModal";
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
 export function Sidebar() {
-  const { registeredPlayers } = useAttendance();
+  const sessionId = useSessionContext();
+
+  const { registeredPlayerIds } = useAttendance();
+  const { registerPlayer } = useAttendanceMutations();
   const { players } = usePlayers();
-  const { currentSession } = useSessions();
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const playerOptions = useMemo(() => {
-    const registeredIds = new Set(registeredPlayers.map((player) => player.id));
-    return players.filter((player) => !registeredIds.has(player.id));
-  }, [players, registeredPlayers]);
+  const playerOptions = players.filter(
+    (player) => !registeredPlayerIds.has(player.id),
+  );
 
-  async function handleRegisterPlayer(player: Player) {
-    if (!currentSession) return;
-    await registerPlayer(currentSession, player);
+  function handleRegisterPlayer(player: Player) {
+    registerPlayer(sessionId, player);
   }
 
   return (
@@ -96,7 +96,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            {currentSession && <PlayerList session={currentSession} />}
+            <PlayerList />
           </div>
         </div>
 

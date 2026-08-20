@@ -3,9 +3,9 @@
 import { X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { IconButton } from "@/elements/IconButton";
-import { useLogs } from "@/hooks/useLogs";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { useLogs } from "@/hooks/logs/useLogs";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
 import { LogList } from "./_components/LogList";
@@ -24,8 +24,8 @@ export default function LogsPage() {
   const tagFilters = useMemo(
     () => ({
       session: (log: Log, tag: LogSearchTag) => {
-        const session = sessionMap[log.session_id];
-        return session.number === parseInt(tag.value, 10);
+        const session = sessionMap.get(log.session_id);
+        return session?.number === parseInt(tag.value, 10);
       },
 
       type: (log: Log, tag: LogSearchTag) => {
@@ -38,12 +38,12 @@ export default function LogsPage() {
 
       player: (log: Log, tag: LogSearchTag) => {
         const isWinner = log.winner_ids.some((id) => {
-          const playerName = playerMap[id]?.name ?? "";
+          const playerName = playerMap.get(id)?.name ?? "";
           return normalizeText(playerName) === normalizeText(tag.value);
         });
 
         const isLoser = log.loser_ids.some((id) => {
-          const playerName = playerMap[id]?.name ?? "";
+          const playerName = playerMap.get(id)?.name ?? "";
           return normalizeText(playerName) === normalizeText(tag.value);
         });
 

@@ -11,15 +11,13 @@ import type {
  */
 export function getPlayerScores(
   logs: Log[],
-  scoringRules: ScoringRule[],
+  scoringRulesMap: Map<number | null, ScoringRule>,
 ): Record<string, number> {
   const scores: Record<string, number> = {};
-  const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
-    const scoringRule = ruleMap.get(log.faan);
+    const scoringRule = scoringRulesMap.get(log.faan);
     const pointDelta = scoringRule?.deltas[log.win_type];
-
     if (!pointDelta) continue;
 
     for (const winner of log.winner_ids) {
@@ -31,7 +29,7 @@ export function getPlayerScores(
     }
 
     for (const other of log.other_ids) {
-      scores[other] = scores[other] ?? 0;
+      scores[other] ??= 0;
     }
   }
 
@@ -44,9 +42,9 @@ export function getPlayerScores(
 export function getPointDeltas(
   faan: number | null,
   winType: WinType,
-  scoringRules: ScoringRule[],
+  scoringRulesMap: Map<number | null, ScoringRule>,
 ): PointDelta {
-  const scoringRule = scoringRules.find((rule) => rule.faan === faan);
+  const scoringRule = scoringRulesMap.get(faan);
   return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 }
 
@@ -56,25 +54,45 @@ export function getPointDeltas(
 export function getPointHistory(
   logs: Log[],
   player: Player,
-  scoringRules: ScoringRule[],
-) {
+  scoringRulesMap: Map<number | null, ScoringRule>,
+): number[] {
   const scores = [0];
-  const ruleMap = new Map(scoringRules.map((rule) => [rule.faan, rule]));
 
   for (const log of logs) {
-    const scoringRule = ruleMap.get(log.faan);
-    const prevPoints = scores.at(-1) ?? 0;
+    const scoringRule = scoringRulesMap.get(log.faan);
+    const previousPoints = scores.at(-1) ?? 0;
 
     if (log.winner_ids.includes(player.id)) {
       const delta = scoringRule?.deltas?.[log.win_type]?.winner ?? 0;
-      scores.push(prevPoints + delta);
+      scores.push(previousPoints + delta);
     } else if (log.loser_ids.includes(player.id)) {
       const delta = scoringRule?.deltas?.[log.win_type]?.loser ?? 0;
-      scores.push(prevPoints + delta);
+      scores.push(previousPoints + delta);
     } else if (log.other_ids.includes(player.id)) {
-      scores.push(prevPoints);
+      scores.push(previousPoints);
     }
   }
 
   return scores;
+}
+
+/*
+ * Combines players with their scores and returns them in descending order
+ * */
+export function rankPlayers(
+  players: Player[],
+  scores: Record<string, number>,
+): [Player, number][] {
+  return players
+    .map((player): [Player, number] => [player, scores[player.id] ?? 0])
+    .sort((a, b) => b[1] - a[1]);
+}
+
+/*
+ * Maps a score to its corresponding Tailwind background color class
+ * */
+export function scoreToColor(score: number): string {
+  if (score < 0) return "bg-negative";
+  if (score > 0) return "bg-positive";
+  return "bg-neutral";
 }

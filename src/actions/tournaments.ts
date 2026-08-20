@@ -1,9 +1,8 @@
 "use server";
 
 import { createSession } from "@/actions/sessions";
-import type { Tables } from "@/lib/database.types";
 import { createClient } from "@/lib/supabase/server";
-import type { ScoringRule, Tournament } from "@/lib/types";
+import type { ScoringRule } from "@/lib/types";
 
 export async function createTournament(
   tournamentName: string,
@@ -11,51 +10,21 @@ export async function createTournament(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const { data: tournament, error } = await supabase
+  const { data: createdTournament, error } = await supabase
     .from("tournaments")
     .insert({ name: tournamentName, scoring_rules: scoringRules })
     .select("id")
     .single();
 
   if (error)
-    throw new Error(`createTournament encountered an error: ${error?.message}`);
+    throw new Error(`createTournament encountered an error: ${error.message}`);
 
-  await createSession(tournament.id);
-}
+  const initialSession = {
+    id: crypto.randomUUID(),
+    tournament_id: createdTournament.id,
+    number: 1,
+    start_date: new Date().toISOString().slice(0, 10),
+  };
 
-// Supabase stores `scoring_rules` as jsonb so we need to override it with the correct type
-type TournamentRow = Omit<Tables<"tournaments">, "scoring_rules"> & {
-  scoring_rules: ScoringRule[];
-};
-
-export async function fetchTournaments(): Promise<Tournament[]> {
-  const supabase = await createClient();
-
-  const { data: tournaments, error } = await supabase
-    .from("tournaments")
-    .select("*")
-    .order("last_updated", { ascending: false })
-    .overrideTypes<Array<TournamentRow>>(); // Not ideal, but otherwise the typing breaks :(
-
-  if (error)
-    throw new Error(`fetchTournaments encountered an error: ${error?.message}`);
-
-  return tournaments ?? [];
-}
-
-export async function getTournamentName(tournamentId: string): Promise<string> {
-  const supabase = await createClient();
-
-  const { data: tournament, error } = await supabase
-    .from("tournaments")
-    .select("name")
-    .eq("id", tournamentId)
-    .single();
-
-  if (error)
-    throw new Error(
-      `getTournamentName encountered an error: ${error?.message}`,
-    );
-
-  return tournament.name;
+  await createSession(initialSession);
 }

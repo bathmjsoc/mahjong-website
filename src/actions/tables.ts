@@ -1,69 +1,35 @@
 "use server";
 
-import { SEATS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Session, Table, Wind } from "@/lib/types";
+import type { Player, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 
-export async function createTable(session: Session): Promise<Table> {
+export async function createTable(table: Table): Promise<Table> {
   const supabase = await createClient();
 
-  const { data: latestTable, error: fetchError } = await supabase
+  const { data: createdTable, error } = await supabase
     .from("tables")
-    .select("number")
-    .eq("session_id", session.id)
-    .order("number", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fetchError)
-    throw new Error(`createTable encountered an error: ${fetchError.message}`);
-
-  const nextNumber = latestTable ? latestTable.number + 1 : 1;
-
-  const { data: newTable, error: insertError } = await supabase
-    .from("tables")
-    .insert({
-      session_id: session.id,
-      number: nextNumber,
-    })
+    .insert(table)
     .select()
     .single();
 
-  if (insertError)
-    throw new Error(`createTable encountered an error: ${insertError.message}`);
-
-  return newTable;
-}
-
-export async function fetchTables(session: Session): Promise<Table[]> {
-  const supabase = await createClient();
-
-  const { data: tables, error } = await supabase
-    .from("tables")
-    .select("*")
-    .eq("session_id", session.id)
-    .order("saved", { ascending: true })
-    .order("number", { ascending: true });
-
   if (error)
-    throw new Error(`fetchTables encountered an error: ${error.message}`);
+    throw new Error(`createTable encountered an error: ${error.message}`);
 
-  return tables ?? [];
+  return createdTable;
 }
 
 export async function updateTable(
   table: Table,
-  players: Partial<Record<Wind, Player | null>>,
+  seats: Partial<Record<Wind, Player | null>>,
 ): Promise<void> {
   const supabase = await createClient();
 
-  const payload: Partial<Record<`${Wind}_id`, string | null>> = {};
-  for (const wind of SEATS) {
-    if (wind in players) {
-      payload[`${wind}_id`] = players[wind]?.id ?? null;
-    }
-  }
+  const payload: Partial<Table> = {};
+  if ("east" in seats) payload.east_id = seats.east?.id ?? null;
+  if ("south" in seats) payload.south_id = seats.south?.id ?? null;
+  if ("west" in seats) payload.west_id = seats.west?.id ?? null;
+  if ("north" in seats) payload.north_id = seats.north?.id ?? null;
 
   const { error } = await supabase
     .from("tables")
@@ -88,31 +54,45 @@ export async function saveTable(table: Table): Promise<void> {
 }
 
 export async function shuffleTables(
-  session: Session,
-  availableTables: Table[],
-  availablePlayers: Player[],
+  sessionId: string,
+  tables: Table[],
+  players: Player[],
 ): Promise<void> {
-  const shuffledPlayers = shuffle(availablePlayers);
-  const neededTables = Math.ceil(availablePlayers.length / 4);
+  const supabase = await createClient();
 
-  if (availableTables.length > neededTables) {
-    const tablesToDelete = availableTables.splice(neededTables);
-    await Promise.all(tablesToDelete.map(deleteTable));
+  const tablesToDelete = tables.map((table) => table.id);
+  if (tablesToDelete.length > 0) {
+    const { error } = await supabase
+      .from("tables")
+      .delete()
+      .in("id", tablesToDelete);
+
+    if (error)
+      throw new Error(`shuffleTables encountered an error: ${error.message}`);
   }
 
-  while (availableTables.length < neededTables) {
-    const tableToCreate = await createTable(session);
-    availableTables.push(tableToCreate);
-  }
+  const shuffledPlayers = shuffle(players);
+  const tablesToCreate = [];
 
-  const updatePromises = availableTables.map((table) => {
+  while (shuffledPlayers.length > 0) {
     const [east = null, south = null, west = null, north = null] =
       shuffledPlayers.splice(0, 4);
 
-    return updateTable(table, { east, south, west, north });
-  });
+    tablesToCreate.push({
+      id: crypto.randomUUID(),
+      session_id: sessionId,
+      east_id: east?.id ?? null,
+      south_id: south?.id ?? null,
+      west_id: west?.id ?? null,
+      north_id: north?.id ?? null,
+      number: tablesToCreate.length + 1,
+      saved: false,
+    });
+  }
+  const { error } = await supabase.from("tables").insert(tablesToCreate);
 
-  await Promise.all(updatePromises);
+  if (error)
+    throw new Error(`shuffleTables encountered an error: ${error.message}`);
 }
 
 export async function deleteTable(table: Table): Promise<void> {
