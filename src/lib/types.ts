@@ -1,3 +1,5 @@
+import type { Tables } from "@/lib/database.types";
+
 // ---------- Database Types ----------
 export type Attendance = {
   session_id: string;
@@ -83,3 +85,11 @@ export type ScoringRule = {
 export type Wind = "east" | "south" | "west" | "north";
 
 export type WinType = "打出" | "自摸" | "包自摸" | "詐糊";
+
+// ---------- Supabase Overrides ----------
+export type SupabaseTournament = Omit<
+  Tables<"tournaments">,
+  "scoring_rules"
+> & {
+  scoring_rules: ScoringRule[];
+};

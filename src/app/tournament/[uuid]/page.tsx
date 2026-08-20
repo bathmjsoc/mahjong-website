@@ -5,26 +5,33 @@ import { useState, useTransition } from "react";
 import { shuffleTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { useAttendance } from "@/hooks/useAttendance";
-import { useSessions } from "@/hooks/useSessions";
-import { useTables } from "@/hooks/useTables";
+import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTables } from "@/hooks/tables/useTables";
 import { WIND_MAP, WINDS } from "@/lib/constants";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
+type WindKey = (typeof WINDS)[number];
+
 export default function TournamentPage() {
-  const { availablePlayers } = useAttendance();
-  const { currentSession } = useSessions();
+  const sessionId = useSessionContext();
+
+  const { availablePlayerIds } = useAttendance();
+  const { players } = usePlayers();
   const { availableTables, tables } = useTables();
 
-  const [wind, setWind] = useState<string | null>(WINDS[0]);
+  const [wind, setWind] = useState<WindKey | null>(WINDS[0]);
   const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
-    if (!currentSession) return;
+    const availablePlayers = players.filter((player) =>
+      availablePlayerIds.has(player.id),
+    );
 
     startTransition(async () => {
-      await shuffleTables(currentSession, availableTables, availablePlayers);
+      await shuffleTables(sessionId, availableTables, availablePlayers);
     });
   }
 
@@ -33,16 +40,16 @@ export default function TournamentPage() {
       <Sidebar />
 
       <div
-        title={wind ? WIND_MAP[wind] : ""}
+        title={wind ? WIND_MAP[wind] : "N/A"}
         className="absolute top-20 right-5 rounded-2xl bg-primary"
       >
-        <RoundedListbox<string>
+        <RoundedListbox<WindKey>
           value={wind}
           options={WINDS}
           onChange={setWind}
           getOptionLabel={(wind) => wind}
           getOptionKey={(wind) => wind}
-          getOptionTooltip={(wind) => WIND_MAP[wind]}
+          getOptionTooltip={(wind) => WIND_MAP[wind] ?? "N/A"}
           buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
         />
       </div>

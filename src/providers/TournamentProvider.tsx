@@ -1,26 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  type PropsWithChildren,
-  type ReactNode,
-  useContext,
-  useMemo,
-} from "react";
-import { useSupabaseRealtime } from "@/hooks/useSupabaseRealtime";
+import { createContext, type ReactNode, useContext } from "react";
+import { useRealtimeTournamentSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
-type TournamentContextType = {
-  tournamentId: string;
-};
-
-const TournamentContext = createContext<TournamentContextType | undefined>(
-  undefined,
-);
-
-function TournamentRealtime({ children }: PropsWithChildren) {
-  useSupabaseRealtime();
-  return children;
-}
+const TournamentContext = createContext<string | undefined>(undefined);
 
 type TournamentProviderProps = {
   tournamentId: string;
@@ -31,21 +14,17 @@ export function TournamentProvider({
   tournamentId,
   children,
 }: TournamentProviderProps) {
-  const value = useMemo(() => ({ tournamentId }), [tournamentId]);
+  useRealtimeTournamentSubscriptions(tournamentId);
 
-  return (
-    <TournamentContext.Provider value={value}>
-      <TournamentRealtime>{children}</TournamentRealtime>
-    </TournamentContext.Provider>
-  );
+  return <TournamentContext value={tournamentId}>{children}</TournamentContext>;
 }
 
-export function useTournamentContext() {
+export function useTournamentContext(): string {
   const context = useContext(TournamentContext);
 
   if (!context) {
     throw new Error(
-      "useTournamentContext must be used within TournamentProvider!",
+      "useTournamentContext must be used within a <TournamentProvider/>!",
     );
   }
 

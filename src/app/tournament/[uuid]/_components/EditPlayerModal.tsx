@@ -1,11 +1,11 @@
 import { type ChangeEvent, useState } from "react";
-import { updatePlayer } from "@/actions/players";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
 
@@ -15,6 +15,7 @@ type EditPlayerModalProps = {
 };
 
 export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
+  const { updatePlayer } = usePlayerMutations();
   const { players } = usePlayers();
 
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +41,7 @@ export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
     setNewName(e.target.value);
   }
 
-  async function handleSubmit(formData: FormData) {
+  function handleSubmit(formData: FormData) {
     if (!selectedPlayer) return;
 
     const updatedName = parseFormString(formData, "updatedName");
@@ -60,7 +61,7 @@ export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
       return;
     }
 
-    await updatePlayer(selectedPlayer, updatedName);
+    updatePlayer(selectedPlayer, updatedName);
 
     setNotification(`"${selectedPlayer.name}" renamed to "${updatedName}".`);
     handleClose();

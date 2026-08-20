@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { updateTable } from "@/actions/tables";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { useAttendance } from "@/hooks/useAttendance";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useTables } from "@/hooks/useTables";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useAttendance } from "@/hooks/attendance/useAttendance";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
+import { useTables } from "@/hooks/tables/useTables";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 import { WinSelector } from "./WinSelector";
 
 type TableSeatProps = {
@@ -26,19 +25,24 @@ export function TableSeat({
   tableClassName,
   buttonClassName,
 }: TableSeatProps) {
-  const { lockedPlayerIds, registeredPlayers } = useAttendance();
-  const { playerMap } = usePlayers();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
+  const { playerMap, players } = usePlayers();
+  const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
-  const { tournamentId } = useTournamentContext();
-  const { tournamentsMap } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
   const occupantId = table[`${wind}_id`];
+  const occupant = (occupantId && playerMap.get(occupantId)) || null;
+
   const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
   const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
-  const occupant = (occupantId && playerMap[occupantId]) || null;
-  const tournament = tournamentsMap[tournamentId];
+  const isRegistered = !!occupantId && registeredPlayerIds.has(occupantId);
+
+  const registeredPlayers = players.filter((player) =>
+    registeredPlayerIds.has(player.id),
+  );
 
   useEffect(() => {
     if (!occupant?.id) return;
@@ -51,8 +55,7 @@ export function TableSeat({
       const { faan, winType, winners, losers }: PointsAnimationEvent =
         event.detail;
 
-      const scoringRules = tournament?.scoring_rules ?? [];
-      const pointDeltas = getPointDeltas(faan, winType, scoringRules);
+      const pointDeltas = getPointDeltas(faan, winType, scoringRulesMap);
 
       if (winners.some((p) => p.id === occupant.id)) {
         setAnimationPoints(pointDeltas.winner);
@@ -65,12 +68,10 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id, tournament?.scoring_rules]);
+  }, [occupant?.id, table.id, scoringRulesMap]);
 
-  async function handleSelect(player: Player | null) {
-    if (!player) return;
-
-    await updateTable(table, {
+  function handleSelect(player: Player | null) {
+    updateTable(table, {
       [wind]: player,
     });
   }
@@ -82,7 +83,7 @@ export function TableSeat({
           "flex items-center justify-between gap-1 bg-primary text-secondary",
           "w-50 shrink-0 rounded-full p-1 transition duration-300",
           isLocked && "ring-2 ring-neutral",
-          isDuplicate && "ring-2 ring-negative",
+          (isDuplicate || !isRegistered) && "ring-2 ring-negative",
           tableClassName,
         )}
       >

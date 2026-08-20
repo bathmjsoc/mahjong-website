@@ -43,10 +43,8 @@ export function RoundedListbox<T>({
       <ListboxButton
         disabled={disabled}
         className={twMerge(
-          isPlaceholder
-            ? "bg-secondary text-negative"
-            : "bg-secondary text-primary",
-          "w-full cursor-pointer truncate text-center font-bold outline-none",
+          isPlaceholder ? "text-negative" : "text-primary",
+          "w-full cursor-pointer truncate bg-secondary text-center font-bold outline-none",
           "transition duration-300 enabled:hover:bg-secondary/75 disabled:cursor-not-allowed",
           buttonClassName,
         )}

@@ -1,9 +1,9 @@
 import { Archive, Plus, Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { createTable, deleteTable, saveTable } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
-import { useSessions } from "@/hooks/useSessions";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import type { Table } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { TableSeat } from "./TableSeat";
 
 type TableListProps = {
@@ -12,7 +12,13 @@ type TableListProps = {
 };
 
 export function TableList({ tables, className }: TableListProps) {
-  const { currentSession } = useSessions();
+  const sessionId = useSessionContext();
+
+  const { createTable } = useTableMutations();
+
+  function handleCreateTable() {
+    createTable(sessionId);
+  }
 
   return (
     <div
@@ -27,13 +33,7 @@ export function TableList({ tables, className }: TableListProps) {
 
       {/* Add New Table Button */}
       <div className="flex size-70 items-center justify-center">
-        <FilledButton
-          onClick={async () => {
-            if (!currentSession) return;
-            await createTable(currentSession);
-          }}
-          className="rounded-full p-3"
-        >
+        <FilledButton onClick={handleCreateTable} className="rounded-full p-3">
           <Plus className="size-7" />
         </FilledButton>
       </div>
@@ -46,6 +46,8 @@ type TableProps = {
 };
 
 function TableCard({ table }: TableProps) {
+  const { deleteTable, saveTable } = useTableMutations();
+
   return (
     <div
       className={twMerge(

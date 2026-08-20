@@ -1,10 +1,10 @@
 import { twMerge } from "tailwind-merge";
-import { createLog } from "@/actions/logs";
 import { DropDown } from "@/elements/DropDown";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useLogMutations } from "@/hooks/logs/useLogMutations";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
@@ -14,13 +14,16 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
-  const { playerMap } = usePlayers();
-  const { currentSession } = useSessions();
-  const { tournamentId } = useTournamentContext();
-  const { tournamentsMap } = useTournaments();
+  const sessionId = useSessionContext();
+  const tournamentId = useTournamentContext();
 
-  const tournament = tournamentsMap[tournamentId];
-  const faanOptions = tournament?.scoring_rules?.map((rule) => rule.faan) ?? [];
+  const { scoringRulesMap } = useTournaments();
+  const { createLog } = useLogMutations();
+  const { playerMap } = usePlayers();
+
+  const faanOptions = Array.from(scoringRulesMap.keys()).filter(
+    (key) => key !== null,
+  );
 
   const opponents: Player[] = [];
   if (occupant) {
@@ -33,7 +36,8 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
     for (const id of SEAT_IDS) {
       if (!id || id === occupant.id) continue;
-      opponents.push(playerMap[id]);
+      const player = playerMap.get(id);
+      if (player) opponents.push(player);
     }
   }
 
@@ -42,11 +46,11 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     faan: number | null,
     target?: Player | null,
   ) {
-    if (!currentSession || !occupant) return;
+    if (!occupant) return;
 
-    const winners: Player[] = [];
-    const losers: Player[] = [];
-    const others: Player[] = [];
+    const winners = [];
+    const losers = [];
+    const others = [];
 
     switch (winType) {
       case "打出":
@@ -72,15 +76,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    await createLog(
-      tournamentId,
-      currentSession,
-      faan,
-      winType,
-      winners,
-      losers,
-      others,
-    );
+    createLog(tournamentId, sessionId, faan, winType, winners, losers, others);
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {

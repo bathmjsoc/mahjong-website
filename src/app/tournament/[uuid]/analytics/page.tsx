@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
-import { usePlayers } from "@/hooks/usePlayers";
+import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 import { PlayerAnalytics } from "./_components/PlayerAnalytics";
 
@@ -20,7 +20,7 @@ export default function AnalyticsPage() {
         getOptionLabel={(player) => player.name}
         placeholder="Select a player..."
         getOptionKey={(player) => player.id}
-        buttonClassName="border-primary border-2 h-10 rounded-lg w-sm"
+        buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
       />
 
       {selectedPlayer && <PlayerAnalytics player={selectedPlayer} />}

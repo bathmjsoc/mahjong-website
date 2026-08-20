@@ -1,9 +1,8 @@
 import { LineGraph } from "@/elements/LineGraph";
-import { useLogs } from "@/hooks/useLogs";
-import { useTournaments } from "@/hooks/useTournaments";
+import { useLogs } from "@/hooks/logs/useLogs";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointHistory } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type PlayerAnalyticsProps = {
   player: Player;
@@ -11,15 +10,9 @@ type PlayerAnalyticsProps = {
 
 export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
   const { enabledLogs } = useLogs();
-  const { tournamentId } = useTournamentContext();
-  const { tournamentsMap } = useTournaments();
+  const { scoringRulesMap } = useTournaments();
 
-  const tournament = tournamentsMap[tournamentId];
-  const scores = getPointHistory(
-    enabledLogs,
-    player,
-    tournament?.scoring_rules,
-  );
+  const scores = getPointHistory(enabledLogs, player, scoringRulesMap);
 
   const data = {
     name: player.name,

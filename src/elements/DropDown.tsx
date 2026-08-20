@@ -28,6 +28,7 @@ export function DropDown({
   disabled = false,
 }: DropDownProps) {
   const parentClose = useContext(RootContext);
+
   const isNested = parentClose !== null;
 
   return (
@@ -36,7 +37,7 @@ export function DropDown({
         const rootClose = parentClose ?? close;
 
         return (
-          <RootContext.Provider value={rootClose}>
+          <RootContext value={rootClose}>
             <PopoverButton
               title={tooltip}
               disabled={disabled}
@@ -70,7 +71,7 @@ export function DropDown({
                 {children}
               </PopoverPanel>
             )}
-          </RootContext.Provider>
+          </RootContext>
         );
       }}
     </Popover>

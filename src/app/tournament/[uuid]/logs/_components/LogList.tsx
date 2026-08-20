@@ -1,9 +1,9 @@
 import { Trash2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { disableLog } from "@/actions/logs";
 import { IconButton } from "@/elements/IconButton";
-import { usePlayers } from "@/hooks/usePlayers";
-import { useSessions } from "@/hooks/useSessions";
+import { useLogMutations } from "@/hooks/logs/useLogMutations";
+import { usePlayers } from "@/hooks/players/usePlayers";
+import { useSessions } from "@/hooks/sessions/useSessions";
 import { WIN_TYPE_MAP } from "@/lib/constants";
 import type { Log } from "@/lib/types";
 
@@ -42,6 +42,7 @@ type LogRowProps = {
 };
 
 function LogRow({ log }: LogRowProps) {
+  const { disableLog } = useLogMutations();
   const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
@@ -53,7 +54,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
-        {sessionMap[log.session_id].number}
+        {sessionMap.get(log.session_id)?.number ?? "N/A"}
       </td>
 
       <td
@@ -66,7 +67,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
-        title={WIN_TYPE_MAP[log.win_type]}
+        title={WIN_TYPE_MAP[log.win_type] ?? "N/A"}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
@@ -82,7 +83,7 @@ function LogRow({ log }: LogRowProps) {
         )}
       >
         {log.winner_ids
-          .map((id) => playerMap[id]?.name ?? "[DELETED]")
+          .map((id) => playerMap.get(id)?.name ?? "N/A")
           .join(", ")}
       </td>
 
@@ -92,9 +93,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.loser_ids
-          .map((id) => playerMap[id]?.name ?? "[DELETED]")
-          .join(", ")}
+        {log.loser_ids.map((id) => playerMap.get(id)?.name ?? "N/A").join(", ")}
       </td>
 
       <td>
