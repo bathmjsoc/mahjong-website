@@ -23,7 +23,7 @@ export function PlayerList() {
   }
 
   const registeredPlayers = players.filter(
-    (player) => !lockedPlayerIds.has(player.id),
+    (player) => registeredPlayerIds.has(player.id),
   );
   const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);
