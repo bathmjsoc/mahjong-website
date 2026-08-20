@@ -44,6 +44,6 @@ export const WIND_MAP = {
   南: "South",
   西: "West",
   北: "North",
-} as const satisfies Record<string, string>;
+} as const satisfies Record<(typeof WINDS)[number], string>;
 
 export const WINDS = ["東", "南", "西", "北"] as const;
