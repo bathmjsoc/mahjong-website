@@ -37,6 +37,13 @@ export function CreateTournamentModal({
       return;
     }
 
+    const faans = scoringRules.map((rule) => rule.faan);
+
+    if (new Set(faans).size !== faans.length) {
+      setError("Duplicate Faan values are not allowed.");
+      return;
+    }
+
     startTransition(async () => {
       await createTournament(tournamentName, [...scoringRules, falseWinRule]);
       await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
