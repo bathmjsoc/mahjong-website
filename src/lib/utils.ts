@@ -61,7 +61,7 @@ export function parseFormString(
   key: string,
 ): string | null {
   const value = formData.get(key);
-  if (typeof value !== "string" || !value.trim()) return null;
+  if (typeof value !== "string") return null;
 
-  return value.trim();
+  return value.trim() || null;
 }
