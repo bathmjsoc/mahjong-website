@@ -93,7 +93,7 @@ export async function shuffleTables(
   availablePlayers: Player[],
 ): Promise<void> {
   const shuffledPlayers = shuffle(availablePlayers);
-  const neededTables = Math.floor(availablePlayers.length / 4);
+  const neededTables = Math.ceil(availablePlayers.length / 4);
 
   if (availableTables.length > neededTables) {
     const tablesToDelete = availableTables.splice(neededTables);
