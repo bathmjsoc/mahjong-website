@@ -13,6 +13,8 @@ import { useSessionContext } from "@/providers/SessionProvider";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
 
+type WindKey = typeof WINDS[number];
+
 export default function TournamentPage() {
   const sessionId = useSessionContext();
 
@@ -20,7 +22,7 @@ export default function TournamentPage() {
   const { players } = usePlayers();
   const { availableTables, tables } = useTables();
 
-  const [wind, setWind] = useState<string | null>(WINDS[0]);
+  const [wind, setWind] = useState<WindKey | null>(WINDS[0]);
   const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
@@ -41,7 +43,7 @@ export default function TournamentPage() {
         title={wind ? WIND_MAP[wind] : "N/A"}
         className="absolute top-20 right-5 rounded-2xl bg-primary"
       >
-        <RoundedListbox<string>
+        <RoundedListbox<WindKey>
           value={wind}
           options={WINDS}
           onChange={setWind}
