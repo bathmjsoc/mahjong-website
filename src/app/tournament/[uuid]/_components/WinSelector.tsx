@@ -21,7 +21,9 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
 
-  const faanOptions = scoringRulesMap.keys();
+  const faanOptions = Array.from(scoringRulesMap.keys()).filter(
+    (key) => key !== null,
+  );
 
   const opponents: Player[] = [];
   if (occupant) {
