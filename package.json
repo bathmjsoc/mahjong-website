@@ -2,8 +2,6 @@
   "name": "mahjong-website",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
     "format": "biome format --write",
     "lint": "biome check --write ."
   },
