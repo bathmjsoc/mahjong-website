@@ -58,7 +58,7 @@ export function DropDown({
             </PopoverButton>
             {!disabled && (
               <PopoverPanel
-                anchor={`${isNested ? "right start" : "bottom"}`}
+                anchor={isNested ? "right start" : "bottom"}
                 className={twMerge(
                   "bg-secondary text-primary",
                   "border-2 border-primary outline-none",
