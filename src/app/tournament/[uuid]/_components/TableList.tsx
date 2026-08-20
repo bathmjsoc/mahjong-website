@@ -51,7 +51,7 @@ function TableCard({ table }: TableProps) {
   return (
     <div
       className={twMerge(
-        "grid h-70 w-70 grid-cols-5 grid-rows-5",
+        "grid size-70 grid-cols-5 grid-rows-5",
         table.saved && "opacity-50",
       )}
     >
