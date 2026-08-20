@@ -63,6 +63,7 @@ export function useTableMutations() {
     createTable(sessionId: string) {
       const tables =
         queryClient.getQueryData<Table[]>(["tables", sessionId]) ?? [];
+      const nextNumber = tables.filter((table) => !table.saved).length + 1;
 
       createMutation.mutate({
         id: crypto.randomUUID(),
@@ -71,7 +72,7 @@ export function useTableMutations() {
         south_id: null,
         west_id: null,
         north_id: null,
-        number: tables.length + 1,
+        number: nextNumber,
         saved: false,
       });
     },
