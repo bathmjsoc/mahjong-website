@@ -21,8 +21,8 @@ export function useSessions(): UseSessionsType {
 }
 
 function selectSessions(rawSessions: Session[]): UseSessionsType {
-  const sessions = rawSessions.toSorted(
-    (a, b) => Date.parse(a.start_date) - Date.parse(b.start_date),
+  const sessions = rawSessions.toSorted((a, b) =>
+    a.start_date.localeCompare(b.start_date),
   );
 
   const sessionMap = new Map(sessions.map((session) => [session.id, session]));

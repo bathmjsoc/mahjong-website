@@ -30,8 +30,8 @@ function selectLogs(
   rawLogs: Log[],
   scoringRulesMap: Map<number | null, ScoringRule>,
 ): UseLogsType {
-  const logs = rawLogs.toSorted(
-    (a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp),
+  const logs = rawLogs.toSorted((a, b) =>
+    b.timestamp.localeCompare(a.timestamp),
   );
 
   const enabledLogs = logs.filter((log) => !log.disabled);
