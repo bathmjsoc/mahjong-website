@@ -96,11 +96,13 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   }
 
   function getFaanOptions(winType: WinType, player: Player | null) {
+    const handTypes = [...tournament.hand_types, "Other"];
+
     return faanOptions.map((faan) => {
       if (faan === maxFaan) {
         return (
           <DropDown title={String(faan)} key={faan}>
-            {tournament.hand_types.map((handType) => (
+            {handTypes.map((handType) => (
               <DropDown.Item
                 key={handType}
                 onClick={() => handleWin(winType, faan, player, handType)}
