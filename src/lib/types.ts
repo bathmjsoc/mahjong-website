@@ -17,6 +17,7 @@ export type Log = {
   winner_ids: string[];
   loser_ids: string[];
   other_ids: string[];
+  hand_type: string | null;
   timestamp: string;
   disabled: boolean;
 };
@@ -52,6 +53,7 @@ export type Tournament = {
   last_updated: string;
   player_count: number;
   scoring_rules: ScoringRule[];
+  hand_types: string[];
 };
 
 // ---------- Other Types ----------

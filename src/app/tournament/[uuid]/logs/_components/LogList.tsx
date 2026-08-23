@@ -58,6 +58,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
+        title={log.hand_type ?? undefined}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",

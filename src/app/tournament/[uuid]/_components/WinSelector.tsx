@@ -17,13 +17,14 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const sessionId = useSessionContext();
   const tournamentId = useTournamentContext();
 
-  const { scoringRulesMap } = useTournaments();
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
+  const { scoringRulesMap, tournament } = useTournaments();
 
   const faanOptions = Array.from(scoringRulesMap.keys()).filter(
     (key) => key !== null,
   );
+  const maxFaan = Math.max(...faanOptions);
 
   const opponents: Player[] = [];
   if (occupant) {
@@ -36,21 +37,23 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
     for (const id of SEAT_IDS) {
       if (!id || id === occupant.id) continue;
+
       const player = playerMap.get(id);
       if (player) opponents.push(player);
     }
   }
 
-  async function handleWin(
+  function handleWin(
     winType: WinType,
     faan: number | null,
     target?: Player | null,
+    handType?: string | null,
   ) {
     if (!occupant) return;
 
-    const winners = [];
-    const losers = [];
-    const others = [];
+    const winners: Player[] = [];
+    const losers: Player[] = [];
+    const others: Player[] = [];
 
     switch (winType) {
       case "打出":
@@ -59,9 +62,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         if (target) losers.push(target);
 
         for (const player of opponents) {
-          if (player.id !== target?.id) {
-            others.push(player);
-          }
+          if (player.id !== target?.id) others.push(player);
         }
         break;
 
@@ -76,7 +77,16 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    createLog(tournamentId, sessionId, faan, winType, winners, losers, others);
+    createLog(
+      tournamentId,
+      sessionId,
+      faan,
+      winType,
+      winners,
+      losers,
+      others,
+      handType,
+    );
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
@@ -85,59 +95,69 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     );
   }
 
+  function getFaanOptions(winType: WinType, player: Player | null) {
+    return faanOptions.map((faan) => {
+      if (faan === maxFaan) {
+        return (
+          <DropDown title={String(faan)} key={faan}>
+            {tournament.hand_types.map((handType) => (
+              <DropDown.Item
+                key={handType}
+                onClick={() => handleWin(winType, faan, player, handType)}
+              >
+                {handType}
+              </DropDown.Item>
+            ))}
+          </DropDown>
+        );
+      }
+
+      return (
+        <DropDown.Item
+          key={faan}
+          onClick={() => handleWin(winType, faan, player)}
+        >
+          {faan}
+        </DropDown.Item>
+      );
+    });
+  }
+
   return (
     <DropDown
       title="食"
       buttonClassName={twMerge("rounded-full size-8", className)}
       tooltip="Record Win"
-      disabled={!occupant}
+      disabled={!occupant || !opponents.length}
     >
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
           <DropDown key={player.id} title={player.name}>
-            {faanOptions.map((faan) => (
-              <DropDown.Item
-                key={faan}
-                onClick={() => handleWin("打出", faan, player)}
-              >
-                {faan}
-              </DropDown.Item>
-            ))}
+            {getFaanOptions("打出", player)}
           </DropDown>
         ))}
       </DropDown>
 
       <DropDown title="自摸 (Self-Draw)">
-        {faanOptions.map((faan) => (
-          <DropDown.Item key={faan} onClick={() => handleWin("自摸", faan)}>
-            {faan}
-          </DropDown.Item>
-        ))}
+        {getFaanOptions("自摸", null)}
       </DropDown>
 
       <DropDown title="包自摸 (Special Case)">
         {opponents.map((player) => (
           <DropDown key={player.id} title={player.name}>
-            {faanOptions.map((faan) => (
-              <DropDown.Item
-                key={faan}
-                onClick={() => handleWin("包自摸", faan, player)}
-              >
-                {faan}
-              </DropDown.Item>
-            ))}
+            {getFaanOptions("包自摸", player)}
           </DropDown>
         ))}
       </DropDown>
 
-      <div className="border-primary border-t">
-        <DropDown.Item
-          onClick={() => handleWin("詐糊", null)}
-          className="text-negative"
-        >
-          詐糊 (False Win)
-        </DropDown.Item>
-      </div>
+      <div className="border-primary border-t" />
+
+      <DropDown.Item
+        onClick={() => handleWin("詐糊", null)}
+        className="text-negative"
+      >
+        詐糊 (False Win)
+      </DropDown.Item>
     </DropDown>
   );
 }
