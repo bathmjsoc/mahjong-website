@@ -37,9 +37,9 @@ export function CreateTournamentModal({
       return;
     }
 
-    const faans = scoringRules.map((rule) => rule.faan);
+    const faanOptions = scoringRules.map((rule) => rule.faan);
 
-    if (new Set(faans).size !== faans.length) {
+    if (new Set(faanOptions).size !== faanOptions.length) {
       setError("Duplicate Faan values are not allowed.");
       return;
     }
