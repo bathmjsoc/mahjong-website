@@ -47,7 +47,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     winType: WinType,
     faan: number | null,
     target?: Player | null,
-    handType?: string | null,
+    handType: string | null = null,
   ) {
     if (!occupant) return;
 
