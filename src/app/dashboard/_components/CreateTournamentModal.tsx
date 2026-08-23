@@ -45,7 +45,10 @@ export function CreateTournamentModal({
       return;
     }
 
-    const handTypes = boomHands.split(",").map((handType) => handType.trim());
+    const handTypes = boomHands
+      .split(",")
+      .map((handType) => handType.trim())
+      .filter((handType) => handType.length > 0);
 
     startTransition(async () => {
       await createTournament(
