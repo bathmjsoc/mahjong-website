@@ -69,6 +69,7 @@ export type Database = {
         Row: {
           disabled: boolean;
           faan: number | null;
+          hand_type: string | null;
           id: string;
           loser_ids: string[];
           other_ids: string[];
@@ -81,6 +82,7 @@ export type Database = {
         Insert: {
           disabled?: boolean;
           faan?: number | null;
+          hand_type?: string | null;
           id?: string;
           loser_ids: string[];
           other_ids: string[];
@@ -93,6 +95,7 @@ export type Database = {
         Update: {
           disabled?: boolean;
           faan?: number | null;
+          hand_type?: string | null;
           id?: string;
           loser_ids?: string[];
           other_ids?: string[];
@@ -245,6 +248,7 @@ export type Database = {
       };
       tournaments: {
         Row: {
+          hand_types: string[];
           id: string;
           last_updated: string;
           name: string;
@@ -253,6 +257,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          hand_types: string[];
           id?: string;
           last_updated?: string;
           name: string;
@@ -261,6 +266,7 @@ export type Database = {
           user_id?: string;
         };
         Update: {
+          hand_types?: string[];
           id?: string;
           last_updated?: string;
           name?: string;

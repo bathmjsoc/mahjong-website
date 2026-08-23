@@ -37,6 +37,7 @@ export function useLogMutations() {
       winners: Player[],
       losers: Player[],
       others: Player[],
+      handType: string | null,
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
@@ -47,6 +48,7 @@ export function useLogMutations() {
         winner_ids: winners.map((player) => player.id),
         loser_ids: losers.map((player) => player.id),
         other_ids: others.map((player) => player.id),
+        hand_type: handType,
         timestamp: new Date().toISOString(),
         disabled: false,
       });

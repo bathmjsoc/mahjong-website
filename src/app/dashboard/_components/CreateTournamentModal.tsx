@@ -7,6 +7,7 @@ import { Modal } from "@/elements/Modal";
 import { DEFAULT_FALSE_WIN_RULE, DEFAULT_SCORING_RULE } from "@/lib/constants";
 import type { ScoringRule } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { BoomHandEditor } from "./BoomHandEditor";
 import { ScoringEditor } from "./ScoringEditor";
 
 type CreateTournamentModalProps = {
@@ -20,8 +21,8 @@ export function CreateTournamentModal({
 }: CreateTournamentModalProps) {
   const queryClient = useQueryClient();
 
+  const [boomHands, setBoomHands] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, startTransition] = useTransition();
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     DEFAULT_FALSE_WIN_RULE,
   );
@@ -29,23 +30,32 @@ export function CreateTournamentModal({
     DEFAULT_SCORING_RULE,
   ]);
 
-  async function handleSubmit(formData: FormData) {
-    const tournamentName = parseFormString(formData, "tournamentName");
+  const [isSubmitting, startTransition] = useTransition();
 
+  function handleSubmit(formData: FormData) {
+    const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
       setError("Tournament Name is required");
       return;
     }
 
-    const faans = scoringRules.map((rule) => rule.faan);
-
-    if (new Set(faans).size !== faans.length) {
+    const faanOptions = scoringRules.map((rule) => rule.faan);
+    if (new Set(faanOptions).size !== faanOptions.length) {
       setError("Duplicate Faan values are not allowed.");
       return;
     }
 
+    const handTypes = boomHands
+      .split(",")
+      .map((handType) => handType.trim())
+      .filter((handType) => handType.length > 0);
+
     startTransition(async () => {
-      await createTournament(tournamentName, [...scoringRules, falseWinRule]);
+      await createTournament(
+        tournamentName,
+        [...scoringRules, falseWinRule],
+        handTypes,
+      );
       await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
       handleClose();
     });
@@ -55,6 +65,7 @@ export function CreateTournamentModal({
     setError(null);
     setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
     setScoringRules([DEFAULT_SCORING_RULE]);
+    setBoomHands("");
     onClose();
   }
 
@@ -63,7 +74,7 @@ export function CreateTournamentModal({
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-150 w-2xl flex-col items-center justify-center gap-4"
+        className="flex h-200 w-2xl flex-col items-center justify-center gap-4"
       >
         <div className="flex flex-col gap-3">
           <LabelledInput
@@ -89,6 +100,8 @@ export function CreateTournamentModal({
           falseWinRule={falseWinRule}
           setFalseWinRule={setFalseWinRule}
         />
+
+        <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
         <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
           Create Tournament

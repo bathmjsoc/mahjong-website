@@ -51,7 +51,7 @@ async function fetchTournaments(): Promise<Tournament[]> {
     .from("tournaments")
     .select("*")
     .order("last_updated", { ascending: false })
-    .overrideTypes<SupabaseTournament[]>();
+    .overrideTypes<SupabaseTournament[], { merge: false }>();
 
   if (error) {
     throw new Error(`fetchTournaments encountered an error: ${error.message}`);

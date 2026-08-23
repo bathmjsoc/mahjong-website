@@ -7,12 +7,17 @@ import type { ScoringRule } from "@/lib/types";
 export async function createTournament(
   tournamentName: string,
   scoringRules: ScoringRule[],
+  handTypes: string[],
 ): Promise<void> {
   const supabase = await createClient();
 
   const { data: createdTournament, error } = await supabase
     .from("tournaments")
-    .insert({ name: tournamentName, scoring_rules: scoringRules })
+    .insert({
+      name: tournamentName,
+      scoring_rules: scoringRules,
+      hand_types: handTypes,
+    })
     .select("id")
     .single();
 

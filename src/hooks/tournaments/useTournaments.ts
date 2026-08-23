@@ -5,6 +5,7 @@ import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseTournamentsType = {
   scoringRulesMap: Map<number | null, ScoringRule>;
+  tournament: Tournament;
 };
 
 export function useTournaments(): UseTournamentsType {
@@ -24,9 +25,7 @@ function selectTournament(tournament: Tournament): UseTournamentsType {
     tournament.scoring_rules.map((rule) => [rule.faan, rule]),
   );
 
-  return {
-    scoringRulesMap,
-  };
+  return { scoringRulesMap, tournament };
 }
 
 async function fetchTournamentById(tournamentId: string): Promise<Tournament> {
@@ -37,7 +36,7 @@ async function fetchTournamentById(tournamentId: string): Promise<Tournament> {
     .select("*")
     .eq("id", tournamentId)
     .single()
-    .overrideTypes<SupabaseTournament>();
+    .overrideTypes<SupabaseTournament, { merge: false }>();
 
   if (error) {
     throw new Error(
