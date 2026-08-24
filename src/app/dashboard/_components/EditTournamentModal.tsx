@@ -1,14 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
 import { updateTournament } from "@/actions/tournaments";
-import { BoomHandEditor } from "@/app/dashboard/_components/BoomHandEditor";
-import { ScoringEditor } from "@/app/dashboard/_components/ScoringEditor";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { DEFAULT_FALSE_WIN_RULE } from "@/lib/constants";
 import type { ScoringRule, Tournament } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { BoomHandEditor } from "./BoomHandEditor";
+import { ScoringEditor } from "./ScoringEditor";
 
 type EditTournamentModalProps = {
   isOpen: boolean;
