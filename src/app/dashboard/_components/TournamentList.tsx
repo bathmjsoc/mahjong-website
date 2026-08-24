@@ -1,7 +1,10 @@
-import { Users } from "lucide-react";
+import { PencilRuler, Play, Users } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
 import { formatTimeAgo } from "@/lib/utils";
+import { EditTournamentModal } from "./EditTournamentModal";
 
 type TournamentListProps = {
   tournaments: Tournament[];
@@ -28,24 +31,41 @@ type TournamentCardProps = {
 };
 
 function TournamentCard({ tournament }: TournamentCardProps) {
-  return (
-    <Link
-      href={`/tournament/${tournament.id}`}
-      className="flex flex-col gap-10 rounded-lg bg-primary p-3 text-secondary transition duration-300 hover:scale-97 active:scale-95"
-    >
-      {/* Tournament Name */}
-      <span title={tournament.name} className="text-lg">
-        {tournament.name}
-      </span>
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-      {/* Tournament Information */}
-      <div className="flex items-center justify-between text-xs">
-        <div className="flex items-center justify-center gap-1">
-          <Users className="size-4" />
-          {tournament.player_count}
+  return (
+    <>
+      <div className="flex flex-col justify-between gap-3 rounded-lg bg-primary p-3 text-secondary">
+        <span className="line-clamp-2 text-lg">{tournament.name}</span>
+
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between gap-1">
+              <Users className="size-4" />
+              {tournament.player_count}
+            </div>
+            Updated {formatTimeAgo(tournament.last_updated)}
+          </div>
+
+          <div className="flex gap-3">
+            <Link href={`/tournament/${tournament.id}`} className="flex-1">
+              <FilledButton className="flex w-full items-center justify-center">
+                <Play className="size-5" />
+              </FilledButton>
+            </Link>
+
+            <FilledButton onClick={() => setIsEditModalOpen(true)}>
+              <PencilRuler className="size-5" />
+            </FilledButton>
+          </div>
         </div>
-        Updated {formatTimeAgo(tournament.last_updated)}
       </div>
-    </Link>
+
+      <EditTournamentModal
+        isOpen={isEditModalOpen}
+        tournament={tournament}
+        onClose={() => setIsEditModalOpen(false)}
+      />
+    </>
   );
 }

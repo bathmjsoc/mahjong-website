@@ -2,7 +2,7 @@
 
 import { createSession } from "@/actions/sessions";
 import { createClient } from "@/lib/supabase/server";
-import type { ScoringRule } from "@/lib/types";
+import type { ScoringRule, Tournament } from "@/lib/types";
 
 export async function createTournament(
   tournamentName: string,
@@ -32,4 +32,16 @@ export async function createTournament(
   };
 
   await createSession(initialSession);
+}
+
+export async function updateTournament(tournament: Tournament): Promise<void> {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("tournaments")
+    .update(tournament)
+    .eq("id", tournament.id);
+
+  if (error)
+    throw new Error(`updateTournament encountered an error: ${error.message}`);
 }
