@@ -36,9 +36,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
   return (
     <>
       <div className="flex flex-col justify-between gap-3 rounded-lg bg-primary p-3 text-secondary">
-        <span className="line-clamp-2 text-lg">
-          {tournament.name}
-        </span>
+        <span className="line-clamp-2 text-lg">{tournament.name}</span>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between text-xs">
