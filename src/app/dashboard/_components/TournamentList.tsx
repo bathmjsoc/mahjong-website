@@ -1,10 +1,10 @@
 import { PencilRuler, Play, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { EditTournamentModal } from "@/app/dashboard/_components/EditTournamentModal";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
 import { formatTimeAgo } from "@/lib/utils";
+import { EditTournamentModal } from "./EditTournamentModal";
 
 type TournamentListProps = {
   tournaments: Tournament[];
