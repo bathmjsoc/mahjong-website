@@ -3,12 +3,12 @@ import Chart from "react-apexcharts";
 import { twMerge } from "tailwind-merge";
 import type { ChartData } from "@/lib/types";
 
-type BarChartProps = {
+type LineGraphProps = {
   data: ChartData[];
   className?: string;
 };
 
-export function BarChart({ data, className }: BarChartProps) {
+export function LineChart({ data, className }: LineGraphProps) {
   const series = data.map((item) => ({
     name: item.title,
     data: Object.entries(item.data).map(([name, data]) => ({
@@ -17,41 +17,43 @@ export function BarChart({ data, className }: BarChartProps) {
     })),
   }));
 
+  const colors = data.map((item) => {
+    return item.color ?? "var(--color-accent)";
+  });
+
   const options: ApexOptions = {
     chart: {
-      type: "bar",
+      type: "line",
       fontFamily: "inherit",
       zoom: { enabled: false },
     },
-    dataLabels: {
-      enabled: true,
-      offsetX: 25,
-      style: { colors: ["#000"] },
-    },
+    colors: colors,
     grid: {
       padding: {
-        left: 50,
-        right: 50,
+        right: 30,
       },
     },
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        dataLabels: {
-          position: "top",
-        },
+    stroke: { curve: "smooth", width: 3 },
+    xaxis: {
+      labels: {
+        style: { colors: "var(--color-primary)" },
+        rotate: -90,
       },
+      axisBorder: { color: "var(--color-primary)" },
+      axisTicks: { color: "var(--color-primary)" },
     },
-    tooltip: { enabled: false },
+    yaxis: {
+      labels: { style: { colors: "var(--color-primary)" } },
+    },
   };
 
   return (
     <Chart
-      type="bar"
+      type="line"
       series={series}
       options={options}
       className={twMerge(
-        "rounded-xl border-2·border-primary bg-secondary",
+        "rounded-xl border-2 border-primary bg-secondary",
         className,
       )}
     />
