@@ -51,6 +51,7 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
   return (
     <div>
       <Chart
+        // @ts-ignore: "sunburst" a valid type (but is missing from the list)
         type="sunburst"
         series={series}
         options={options}
