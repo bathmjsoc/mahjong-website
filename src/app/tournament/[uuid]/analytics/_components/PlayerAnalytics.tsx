@@ -40,9 +40,9 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
   ];
 
   return (
-    <div className="flex w-2xl flex-col">
-      <LineChart data={scoreData} />
-      <SunburstChart data={gameResultsData} />
+    <div className="flex gap-5">
+      <LineChart data={scoreData} className="h-100 w-150" />
+      <SunburstChart data={gameResultsData} className="size-100" />
     </div>
   );
 }
