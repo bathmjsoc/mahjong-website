@@ -28,7 +28,7 @@ export function ViewGraphModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="View Graph">
-      <div className="w-xl p-2">
+      <div className="w-xl p-2" style={{ height: rankedPlayers.length * 15 }}>
         <BarChart data={rankedPlayerData} />
       </div>
     </Modal>
