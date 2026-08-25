@@ -1,4 +1,4 @@
-import { LineGraph } from "@/elements/LineGraph";
+import { LineChart } from "@/elements/LineChart";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointHistory } from "@/lib/scoring";
@@ -13,18 +13,20 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
   const { scoringRulesMap } = useTournaments();
 
   const scores = getPointHistory(enabledLogs, player, scoringRulesMap);
+  const scoreData = [
+    {
+      title: player.name,
+      data: Object.fromEntries(
+        scores.map((score, index) => [`Game ${index}`, score]),
+      ),
+    },
+  ];
 
-  const data = {
-    name: player.name,
-    points: scores.map((score, index) => ({
-      x: `Game ${index}`,
-      y: score,
-    })),
-  };
 
   return (
-    <div className="w-2xl">
-      <LineGraph data={[data]} />
+    <div className="flex w-2xl flex-col">
+      <LineChart data={scoreData} />
+      <SunburstChart data={gameResultsData} />
     </div>
   );
 }
