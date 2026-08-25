@@ -50,6 +50,8 @@ export function BarChart({ data, className }: BarChartProps) {
       type="bar"
       series={series}
       options={options}
+      height="100%"
+      width="100%"
       className={twMerge(
         "rounded-xl border-2·border-primary bg-secondary",
         className,
