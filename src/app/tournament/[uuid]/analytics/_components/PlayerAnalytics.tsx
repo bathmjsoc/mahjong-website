@@ -41,8 +41,19 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
 
   return (
     <div className="flex gap-5">
-      <LineChart data={scoreData} className="h-100 w-150" />
-      <SunburstChart data={gameResultsData} className="size-100" />
+      <div className="flex flex-col gap-1">
+        <div className="rounded-xl bg-primary p-1 text-center text-secondary text-sm">
+          Score History
+        </div>
+        <LineChart data={scoreData} className="h-90 w-160" />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <div className="rounded-xl bg-primary p-1 text-center text-secondary text-sm">
+          Game Outcomes
+        </div>
+        <SunburstChart data={gameResultsData} className="size-90" />
+      </div>
     </div>
   );
 }
