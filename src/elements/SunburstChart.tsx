@@ -51,7 +51,7 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
   return (
     <div>
       <Chart
-        // @ts-expect-error: "sunburst" a valid type (but is missing from the list)
+        // @ts-expect-error: "sunburst" is a valid type (but is missing from the list)
         type="sunburst"
         series={series}
         options={options}
