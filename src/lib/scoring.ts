@@ -100,7 +100,7 @@ export function scoreToColor(score: number): string {
 /*
  * Calculate the number of wins/losses/others (and their subtypes) for a player from the provided logs
  */
-export function getGameResults(logs: Log[], player: Player) {
+export function getGameResults(logs: Log[], player: Player): GameResults {
   const counts = {
     wins: { 打出: 0, 自摸: 0, 包自摸: 0, 詐糊: 0 },
     losses: { 打出: 0, 自摸: 0, 包自摸: 0, 詐糊: 0 },
@@ -119,3 +119,9 @@ export function getGameResults(logs: Log[], player: Player) {
 
   return counts;
 }
+
+type GameResults = {
+  wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+};
