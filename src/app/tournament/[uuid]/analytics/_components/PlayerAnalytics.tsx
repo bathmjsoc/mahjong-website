@@ -1,7 +1,8 @@
 import { LineChart } from "@/elements/LineChart";
+import { SunburstChart } from "@/elements/SunburstChart";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { getPointHistory } from "@/lib/scoring";
+import { getGameResults, getPointHistory } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 
 type PlayerAnalyticsProps = {
@@ -22,6 +23,21 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
     },
   ];
 
+  const gameResults = getGameResults(enabledLogs, player);
+  const gameResultsData = [
+    {
+      title: "Wins",
+      data: gameResults.wins,
+    },
+    {
+      title: "Losses",
+      data: gameResults.losses,
+    },
+    {
+      title: "Others",
+      data: gameResults.others,
+    },
+  ];
 
   return (
     <div className="flex w-2xl flex-col">

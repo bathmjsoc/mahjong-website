@@ -96,3 +96,26 @@ export function scoreToColor(score: number): string {
   if (score > 0) return "bg-positive";
   return "bg-neutral";
 }
+
+/*
+ * Calculate the number of wins/losses/others (and their subtypes) for a player from the provided logs
+ */
+export function getGameResults(logs: Log[], player: Player) {
+  const counts = {
+    wins: { 打出: 0, 自摸: 0, 包自摸: 0, 詐糊: 0 },
+    losses: { 打出: 0, 自摸: 0, 包自摸: 0, 詐糊: 0 },
+    others: { 打出: 0, 自摸: 0, 包自摸: 0, 詐糊: 0 },
+  };
+
+  for (const log of logs) {
+    if (log.winner_ids.includes(player.id)) {
+      counts.wins[log.win_type]++;
+    } else if (log.loser_ids.includes(player.id)) {
+      counts.losses[log.win_type]++;
+    } else if (log.other_ids.includes(player.id)) {
+      counts.others[log.win_type]++;
+    }
+  }
+
+  return counts;
+}
