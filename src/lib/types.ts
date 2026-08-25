@@ -62,6 +62,12 @@ export type ActionState = {
   success?: boolean;
 } | null;
 
+export type ChartData = {
+  title: string;
+  data: Record<string, number>;
+  color?: string;
+};
+
 export type LogSearchTag = {
   id: string;
   label: string;
