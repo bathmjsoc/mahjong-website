@@ -45,19 +45,17 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
   };
 
   return (
-    <div>
-      <Chart
-        // @ts-expect-error: "sunburst" is a valid type (but is missing from the list)
-        type="sunburst"
-        series={series}
-        options={options}
-        height="100%"
-        width="100%"
-        className={twMerge(
-          "rounded-xl border-2 border-primary bg-secondary",
-          className,
-        )}
-      />
-    </div>
+    <Chart
+      // @ts-expect-error: "sunburst" is a valid type (but is missing from the list)
+      type="sunburst"
+      series={series}
+      options={options}
+      height="100%"
+      width="100%"
+      className={twMerge(
+        "rounded-xl border-2 border-primary bg-secondary",
+        className,
+      )}
+    />
   );
 }

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { LineChart } from "@/elements/LineChart";
 import { SunburstChart } from "@/elements/SunburstChart";
 import { useLogs } from "@/hooks/logs/useLogs";
@@ -44,19 +45,27 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
 
   return (
     <div className="flex gap-5">
-      <div className="flex flex-col gap-1">
-        <div className="rounded-xl bg-primary p-1 text-center text-secondary text-sm">
-          Score History
-        </div>
+      <AnalyticsCard title="Score History">
         <LineChart data={scoreData} className="h-90 w-160" />
-      </div>
+      </AnalyticsCard>
 
-      <div className="flex flex-col gap-1">
-        <div className="rounded-xl bg-primary p-1 text-center text-secondary text-sm">
-          Game Outcomes
-        </div>
+      <AnalyticsCard title="Game Outcomes">
         <SunburstChart data={gameResultsData} className="size-90" />
-      </div>
+      </AnalyticsCard>
+    </div>
+  );
+}
+
+type AnalyticsCardProps = {
+  title: string;
+  children: ReactNode;
+};
+
+export function AnalyticsCard({ title, children }: AnalyticsCardProps) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-primary p-2">
+      <span className="text-secondary text-sm">{title}</span>
+      <div>{children}</div>
     </div>
   );
 }
