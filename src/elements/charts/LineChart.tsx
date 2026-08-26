@@ -27,8 +27,8 @@ export function LineChart({ data, className }: LineGraphProps) {
       fontFamily: "inherit",
       zoom: { enabled: false },
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     colors: colors,
     grid: {
