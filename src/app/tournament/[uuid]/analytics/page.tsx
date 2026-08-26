@@ -4,7 +4,8 @@ import { useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
-import { PlayerAnalytics } from "./_components/PlayerAnalytics";
+import { GameResultsCard } from "./_components/GameResultsCard";
+import { ScoreHistoryCard } from "./_components/ScoreHistoryCard";
 
 export default function AnalyticsPage() {
   const { players } = usePlayers();
@@ -23,7 +24,12 @@ export default function AnalyticsPage() {
         buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
       />
 
-      {selectedPlayer && <PlayerAnalytics player={selectedPlayer} />}
+      {selectedPlayer && (
+        <div className="flex items-start gap-5">
+          <ScoreHistoryCard player={selectedPlayer} />
+          <GameResultsCard player={selectedPlayer} />
+        </div>
+      )}
     </div>
   );
 }
