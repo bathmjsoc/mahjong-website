@@ -28,14 +28,17 @@ export function PlayerAnalytics({ player }: PlayerAnalyticsProps) {
     {
       title: "Wins",
       data: gameResults.wins,
+      color: "var(--color-positive)",
     },
     {
       title: "Losses",
       data: gameResults.losses,
+      color: "var(--color-negative)",
     },
     {
       title: "Others",
       data: gameResults.others,
+      color: "var(--color-info)",
     },
   ];
 

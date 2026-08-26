@@ -11,20 +11,16 @@ type SunburstChartProps = {
 export function SunburstChart({ data, className }: SunburstChartProps) {
   const series = [
     {
-      data: data.map((item) => {
-        let total = 0;
-
-        const children = Object.entries(item.data).map(([title, data]) => {
-          total += data;
-          return { x: title, y: data };
-        });
-
-        return {
-          x: item.title,
-          y: total,
-          children,
-        };
-      }),
+      data: data.map((item) => ({
+        x: item.title,
+        y: Object.values(item.data).reduce((total, value) => total + value, 0),
+        color: item.color,
+        children: Object.entries(item.data).map(([title, value]) => ({
+          x: title,
+          y: value,
+          color: `color-mix(in srgb, ${item.color}, transparent)`,
+        })),
+      })),
     },
   ];
 
