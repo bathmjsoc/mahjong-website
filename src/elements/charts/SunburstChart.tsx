@@ -28,11 +28,6 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
     chart: {
       type: "sunburst",
       fontFamily: "inherit",
-      zoom: { enabled: false },
-    },
-    dataLabels: {
-      enabled: true,
-      style: { colors: ["#000"] },
     },
     legend: {
       show: false,
@@ -41,6 +36,9 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
       sunburst: {
         innerSize: "33%",
       },
+    },
+    stroke: {
+      colors: ["var(--color-secondary)"],
     },
   };
 
