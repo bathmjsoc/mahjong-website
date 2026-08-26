@@ -39,11 +39,8 @@ export function LineChart({ data, className }: LineGraphProps) {
     stroke: { curve: "smooth", width: 3 },
     xaxis: {
       labels: {
-        style: { colors: "var(--color-primary)" },
-        rotate: -90,
+        show: false,
       },
-      axisBorder: { color: "var(--color-primary)" },
-      axisTicks: { color: "var(--color-primary)" },
     },
     yaxis: {
       labels: { style: { colors: "var(--color-primary)" } },
