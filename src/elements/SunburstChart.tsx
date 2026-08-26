@@ -39,7 +39,7 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
     },
     plotOptions: {
       sunburst: {
-        innerSize: "25%",
+        innerSize: "33%",
       },
     },
   };
