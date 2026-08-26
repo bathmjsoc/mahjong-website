@@ -13,7 +13,7 @@ export function AnalyticsCard({
 }: AnalyticsCardProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-1 rounded-xl bg-primary p-2">
-      <span className="text-secondary text-sm">{title}</span>
+      <span className="text-secondary">{title}</span>
       <div className={className}>{children}</div>
     </div>
   );
