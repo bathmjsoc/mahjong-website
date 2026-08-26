@@ -1,4 +1,4 @@
-import { BarChart } from "@/elements/BarChart";
+import { BarChart } from "@/elements/charts/BarChart";
 import { Modal } from "@/elements/Modal";
 import { rankPlayers } from "@/lib/scoring";
 import type { Player } from "@/lib/types";

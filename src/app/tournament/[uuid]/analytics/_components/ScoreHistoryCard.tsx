@@ -1,4 +1,4 @@
-import { LineChart } from "@/elements/LineChart";
+import { LineChart } from "@/elements/charts/LineChart";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPointHistory } from "@/lib/scoring";

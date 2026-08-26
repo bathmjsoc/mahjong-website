@@ -1,4 +1,4 @@
-import { SunburstChart } from "@/elements/SunburstChart";
+import { SunburstChart } from "@/elements/charts/SunburstChart";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { getGameResults } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
