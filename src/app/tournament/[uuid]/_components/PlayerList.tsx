@@ -14,7 +14,7 @@ export function PlayerList() {
   const sessionId = useSessionContext();
 
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
-  const { sessionScores } = useLogs();
+  const { overallScores, sessionScores } = useLogs();
   const { players } = usePlayers();
   const { seatedPlayerIds } = useTables();
 
@@ -27,6 +27,7 @@ export function PlayerList() {
   );
   const scores = sessionScores[sessionId] ?? {};
   const rankedPlayers = rankPlayers(registeredPlayers, scores);
+  const firstPlacePlayer = rankPlayers(players, overallScores)[0][0];
 
   return (
     <table>
@@ -48,6 +49,7 @@ export function PlayerList() {
             score={score}
             isLocked={lockedPlayerIds.has(player.id)}
             isUnseated={!seatedPlayerIds.has(player.id)}
+            isFirstPlace={player.id === firstPlacePlayer.id}
           />
         ))}
       </tbody>
@@ -56,13 +58,20 @@ export function PlayerList() {
 }
 
 type PlayerRowProps = {
-  isLocked: boolean;
-  isUnseated: boolean;
   player: Player;
   score: number;
+  isLocked: boolean;
+  isUnseated: boolean;
+  isFirstPlace: boolean;
 };
 
-function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
+function PlayerRow({
+  player,
+  score,
+  isLocked,
+  isUnseated,
+  isFirstPlace,
+}: PlayerRowProps) {
   const sessionId = useSessionContext();
 
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
@@ -102,12 +111,16 @@ function PlayerRow({ isLocked, isUnseated, player, score }: PlayerRowProps) {
 
       <td
         className={twMerge(
-          "border-2 border-secondary px-2 py-1 text-left text-secondary",
-          "transition duration-300",
+          "relative border-2 border-secondary px-2 py-1 text-left",
+          "text-secondary transition duration-300",
           isUnseated && "text-negative",
           isLocked && "text-neutral",
         )}
       >
+        {isFirstPlace && (
+          <span className="absolute -top-3 -left-3 -rotate-45">👑</span>
+        )}
+
         {player.name}
       </td>
 
