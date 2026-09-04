@@ -3,7 +3,7 @@ WORKDIR /app/
 
 # Install dependencies first to use Docker caching
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 # Copy remaining files into the container
 COPY . .
