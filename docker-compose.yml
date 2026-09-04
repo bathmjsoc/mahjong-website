@@ -10,3 +10,4 @@ services:
       - .:/app  # Sync local code changes to the container
       - /app/.next  # But avoid syncing local .next
       - /app/node_modules  # And local node_modules
+    command: sh -c "npm ci && npm run dev"
