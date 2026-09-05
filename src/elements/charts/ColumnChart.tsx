@@ -16,20 +16,15 @@ export function ColumnChart({ data, title }: ColumnChartProps) {
     })),
   }));
 
-  const colors = data.map((item) => {
-    return item.color ?? "var(--color-accent)";
-  });
-
   const options: ApexOptions = {
     chart: {
       type: "bar",
       fontFamily: "inherit",
-      zoom: { enabled: false },
       toolbar: {
         show: false,
       },
     },
-    colors: colors,
+    colors: ["var(--color-accent)"],
     dataLabels: {
       enabled: false,
     },

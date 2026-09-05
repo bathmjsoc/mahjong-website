@@ -16,21 +16,22 @@ export function LineChart({ data, title }: LineGraphProps) {
     })),
   }));
 
-  const colors = data.map((item) => {
-    return item.color ?? "var(--color-accent)";
-  });
-
   const options: ApexOptions = {
     chart: {
       type: "line",
       fontFamily: "inherit",
-      zoom: { enabled: false },
       toolbar: {
         show: false,
       },
+      zoom: {
+        enabled: false
+      },
     },
-    colors: colors,
-    stroke: { curve: "smooth", width: 3 },
+    colors: ["var(--color-accent)"],
+    stroke: {
+      curve: "smooth",
+      width: 3
+    },
     title: {
       text: title,
       align: "center",
