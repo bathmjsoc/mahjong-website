@@ -15,29 +15,17 @@ export function BarChart({ data }: BarChartProps) {
     })),
   }));
 
-  const colors = data.map((item) => {
-    return item.color ?? "var(--color-accent)";
-  });
-
   const options: ApexOptions = {
     chart: {
       type: "bar",
-      fontFamily: "inherit",
-      zoom: { enabled: false },
-      toolbar: {
-        show: false,
-      },
+      fontFamily: "Helvetica",
     },
-    colors: colors,
+    colors: ["#285d33"],
     dataLabels: {
       enabled: true,
       offsetX: 25,
-      style: { colors: ["#000"] },
-    },
-    grid: {
-      padding: {
-        left: 50,
-        right: 50,
+      style: {
+        colors: ["#35363a"],
       },
     },
     plotOptions: {
@@ -50,7 +38,9 @@ export function BarChart({ data }: BarChartProps) {
         },
       },
     },
-    tooltip: { enabled: false },
+    tooltip: {
+      enabled: false,
+    },
   };
 
   return (
