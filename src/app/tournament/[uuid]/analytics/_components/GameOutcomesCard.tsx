@@ -30,7 +30,7 @@ export function GameOutcomesCard({ player }: GameOutcomesCardProps) {
   ];
 
   return (
-    <div className="size-90">
+    <div className="h-85 w-100">
       <SunburstChart data={gameResultsData} title="GAME OUTCOMES" />
     </div>
   );

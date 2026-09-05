@@ -28,9 +28,9 @@ export default function AnalyticsPage() {
       />
 
       {selectedPlayer && (
-        <div className="flex items-center gap-5">
-          <div className="flex flex-col items-center gap-5">
-            <div className="flex items-center gap-5">
+        <div className="flex gap-5">
+          <div className="flex flex-col gap-5">
+            <div className="flex gap-5">
               <div className="rounded-lg bg-primary p-5">
                 <RankingCard player={selectedPlayer} />
               </div>
