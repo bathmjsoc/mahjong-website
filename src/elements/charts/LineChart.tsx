@@ -24,13 +24,13 @@ export function LineChart({ data, title }: LineGraphProps) {
         show: false,
       },
       zoom: {
-        enabled: false
+        enabled: false,
       },
     },
     colors: ["var(--color-accent)"],
     stroke: {
       curve: "smooth",
-      width: 3
+      width: 3,
     },
     title: {
       text: title,
