@@ -1,14 +1,12 @@
 import type { ApexOptions } from "apexcharts";
-import Chart from "react-apexcharts";
-import { twMerge } from "tailwind-merge";
+import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
 
 type BarChartProps = {
   data: ChartData[];
-  className?: string;
 };
 
-export function BarChart({ data, className }: BarChartProps) {
+export function BarChart({ data }: BarChartProps) {
   const series = data.map((item) => ({
     name: item.title,
     data: Object.entries(item.data).map(([name, data]) => ({
@@ -17,12 +15,20 @@ export function BarChart({ data, className }: BarChartProps) {
     })),
   }));
 
+  const colors = data.map((item) => {
+    return item.color ?? "var(--color-accent)";
+  });
+
   const options: ApexOptions = {
     chart: {
       type: "bar",
       fontFamily: "inherit",
       zoom: { enabled: false },
+      toolbar: {
+        show: false,
+      },
     },
+    colors: colors,
     dataLabels: {
       enabled: true,
       offsetX: 25,
@@ -37,6 +43,8 @@ export function BarChart({ data, className }: BarChartProps) {
     plotOptions: {
       bar: {
         horizontal: true,
+        borderRadius: 5,
+        borderRadiusApplication: "end",
         dataLabels: {
           position: "top",
         },
@@ -46,16 +54,13 @@ export function BarChart({ data, className }: BarChartProps) {
   };
 
   return (
-    <Chart
+    <ReactApexChart
       type="bar"
       series={series}
       options={options}
       height="100%"
       width="100%"
-      className={twMerge(
-        "rounded-xl border-2 border-primary bg-secondary",
-        className,
-      )}
+      className="rounded-lg bg-secondary"
     />
   );
 }
