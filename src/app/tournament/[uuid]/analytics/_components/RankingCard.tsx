@@ -2,25 +2,45 @@ import { ArrowDown, ArrowUp, Minus, Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
+import { getPlayerScores } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
+import { useSessionContext } from "@/providers/SessionProvider";
 
 type RankingCardProps = {
   player: Player;
 };
 
 export function RankingCard({ player }: RankingCardProps) {
-  const { overallScores } = useLogs();
-  const { players } = usePlayers();
+  const sessionId = useSessionContext();
 
-  const selectedPlayerScore = overallScores[player.id] ?? 0;
+  const { enabledLogs, overallScores } = useLogs();
+  const { players } = usePlayers();
+  const { scoringRulesMap } = useTournaments();
+
+  // Current Position
+  const playerScore = overallScores[player.id] ?? 0;
+
   const position =
-    players.filter(
-      (player) => (overallScores[player.id] ?? 0) > selectedPlayerScore,
-    ).length + 1;
+    players.filter((player) => (overallScores[player.id] ?? 0) > playerScore)
+      .length + 1;
+
   const suffix = getOrdinalSuffix(position);
 
-  const trend = getSessionTrend(0); // TODO: Determine trend
+  // Previous Position
+  const previousLogs = enabledLogs.filter(
+    (log) => log.session_id !== sessionId,
+  );
+  const previousScores = getPlayerScores(previousLogs, scoringRulesMap);
+  const previousPlayerScore = previousScores[player.id] ?? 0;
+
+  const previousPosition =
+    players.filter(
+      (player) => (previousScores[player.id] ?? 0) > previousPlayerScore,
+    ).length + 1;
+
+  const trend = getSessionTrend(previousPosition - position);
 
   function getSessionTrend(trend: number) {
     if (trend > 0) {
