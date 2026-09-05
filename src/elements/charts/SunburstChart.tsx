@@ -1,14 +1,13 @@
 import type { ApexOptions } from "apexcharts";
-import Chart from "react-apexcharts";
-import { twMerge } from "tailwind-merge";
+import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
 
 type SunburstChartProps = {
   data: ChartData[];
-  className?: string;
+  title?: string;
 };
 
-export function SunburstChart({ data, className }: SunburstChartProps) {
+export function SunburstChart({ data, title }: SunburstChartProps) {
   const series = [
     {
       data: data.map((item) => ({
@@ -18,7 +17,7 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
         children: Object.entries(item.data).map(([title, value]) => ({
           x: title,
           y: value,
-          color: `color-mix(in srgb, ${item.color}, transparent)`,
+          color: `color-mix(in srgb, ${item.color}, transparent 66%)`,
         })),
       })),
     },
@@ -28,6 +27,7 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
     chart: {
       type: "sunburst",
       fontFamily: "inherit",
+      foreColor: "var(--color-secondary)",
     },
     legend: {
       show: false,
@@ -40,20 +40,25 @@ export function SunburstChart({ data, className }: SunburstChartProps) {
     stroke: {
       colors: ["var(--color-secondary)"],
     },
+    title: {
+      text: title,
+      align: "center",
+      style: {
+        fontSize: "20px",
+        fontWeight: "bold",
+      },
+    },
   };
 
   return (
-    <Chart
+    <ReactApexChart
       // @ts-expect-error: "sunburst" is a valid type (but is missing from the list)
       type="sunburst"
       series={series}
       options={options}
       height="100%"
       width="100%"
-      className={twMerge(
-        "rounded-xl border-2 border-primary bg-secondary",
-        className,
-      )}
+      className="text-secondary"
     />
   );
 }

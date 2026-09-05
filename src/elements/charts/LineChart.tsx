@@ -1,14 +1,13 @@
 import type { ApexOptions } from "apexcharts";
-import Chart from "react-apexcharts";
-import { twMerge } from "tailwind-merge";
+import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
 
 type LineGraphProps = {
   data: ChartData[];
-  className?: string;
+  title?: string;
 };
 
-export function LineChart({ data, className }: LineGraphProps) {
+export function LineChart({ data, title }: LineGraphProps) {
   const series = data.map((item) => ({
     name: item.title,
     data: Object.entries(item.data).map(([name, data]) => ({
@@ -31,33 +30,34 @@ export function LineChart({ data, className }: LineGraphProps) {
       },
     },
     colors: colors,
-    grid: {
-      padding: {
-        right: 30,
+    stroke: { curve: "smooth", width: 3 },
+    title: {
+      text: title,
+      align: "center",
+      offsetY: 5,
+      style: {
+        fontSize: "20px",
+        fontWeight: "bold",
       },
     },
-    stroke: { curve: "smooth", width: 3 },
     xaxis: {
+      axisTicks: {
+        show: false,
+      },
       labels: {
         show: false,
       },
     },
-    yaxis: {
-      labels: { style: { colors: "var(--color-primary)" } },
-    },
   };
 
   return (
-    <Chart
+    <ReactApexChart
       type="line"
       series={series}
       options={options}
       height="100%"
       width="100%"
-      className={twMerge(
-        "rounded-xl border-2 border-primary bg-secondary",
-        className,
-      )}
+      className="rounded-lg bg-secondary"
     />
   );
 }
