@@ -49,6 +49,12 @@
   }
 }
 
+@layer components {
+  .apexcharts-menu {
+    color: var(--color-primary); /* Otherwise text is white-on-white */
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
 
