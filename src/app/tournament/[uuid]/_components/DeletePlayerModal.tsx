@@ -55,11 +55,11 @@ export function DeletePlayerModal({ isOpen, onClose }: DeletePlayerModalProps) {
           )}
 
           <FilledButton
-            className="bg-negative"
+            className="bg-negative uppercase"
             onClick={handleDelete}
             disabled={!selectedPlayer}
           >
-            DELETE PLAYER
+            Delete Player
           </FilledButton>
         </div>
       </Modal>
