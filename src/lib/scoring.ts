@@ -125,3 +125,21 @@ type GameResults = {
   losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
   others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
 };
+
+/*
+ * Calculate the number of wins for each faan value for a player from the provided logs
+ */
+export function countFaanFrequency(
+  logs: Log[],
+  player: Player,
+): Record<number, number> {
+  const counts: Record<number, number> = {};
+
+  for (const log of logs) {
+    if (log.winner_ids.includes(player.id) && log.faan != null) {
+      counts[log.faan] = (counts[log.faan] ?? 0) + 1;
+    }
+  }
+
+  return counts;
+}
