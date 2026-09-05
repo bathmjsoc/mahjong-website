@@ -17,10 +17,10 @@ export function formatTimeAgo(timestamp: string): string {
 }
 
 /*
- * Appends an ordinal suffix to a number (e.g., 1 -> 1st, 2 -> 2nd)
+ * Returns the ordinal suffix for a number (e.g., 1 -> st, 2 -> nd)
  * */
 const pluralRules = new Intl.PluralRules("en", { type: "ordinal" });
-export function formatPosition(number: number): string {
+export function getOrdinalSuffix(number: number): string {
   const suffixes: Record<string, string> = {
     one: "st",
     two: "nd",
@@ -28,7 +28,7 @@ export function formatPosition(number: number): string {
     other: "th",
   };
 
-  return `${number}${suffixes[pluralRules.select(number)]}`;
+  return suffixes[pluralRules.select(number)];
 }
 
 /*
