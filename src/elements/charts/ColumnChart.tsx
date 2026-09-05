@@ -5,7 +5,6 @@ import type { ChartData } from "@/lib/types";
 type ColumnChartProps = {
   data: ChartData[];
   title?: string;
-  className?: string;
 };
 
 export function ColumnChart({ data, title }: ColumnChartProps) {
