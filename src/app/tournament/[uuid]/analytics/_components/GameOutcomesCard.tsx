@@ -2,37 +2,36 @@ import { SunburstChart } from "@/elements/charts/SunburstChart";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { getGameResults } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
-import { AnalyticsCard } from "./PlayerAnalytics";
 
-type GameResultsCardProps = {
+type GameOutcomesCardProps = {
   player: Player;
 };
 
-export function GameResultsCard({ player }: GameResultsCardProps) {
+export function GameOutcomesCard({ player }: GameOutcomesCardProps) {
   const { enabledLogs } = useLogs();
 
   const gameResults = getGameResults(enabledLogs, player);
   const gameResultsData = [
     {
-      title: "Wins",
+      title: "WINS",
       data: gameResults.wins,
       color: "var(--color-positive)",
     },
     {
-      title: "Losses",
+      title: "LOSSES",
       data: gameResults.losses,
       color: "var(--color-negative)",
     },
     {
-      title: "Others",
+      title: "OTHERS",
       data: gameResults.others,
       color: "var(--color-info)",
     },
   ];
 
   return (
-    <AnalyticsCard title="Game Outcomes">
-      <SunburstChart data={gameResultsData} className="size-90" />
-    </AnalyticsCard>
+    <div className="size-90">
+      <SunburstChart data={gameResultsData} title="GAME OUTCOMES" />
+    </div>
   );
 }
