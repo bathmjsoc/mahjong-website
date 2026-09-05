@@ -1,3 +1,4 @@
+import confetti from "canvas-confetti";
 import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
@@ -93,6 +94,19 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         detail: { faan, winType, winners, losers, others },
       }),
     );
+
+    if (faan === maxFaan) {
+      triggerConfetti();
+    }
+  }
+
+  function triggerConfetti() {
+    confetti({
+      particleCount: 500,
+      spread: 360,
+      shapes: [confetti.shapeFromText({ text: "🀄" })],
+      scalar: 2,
+    });
   }
 
   function getFaanOptions(winType: WinType, player: Player | null) {
