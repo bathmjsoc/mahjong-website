@@ -2,8 +2,6 @@ import { ArrowDown, ArrowUp, Minus, Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { getPlayerScores } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
 import { useSessionContext } from "@/providers/SessionProvider";
@@ -15,13 +13,11 @@ type RankingCardProps = {
 export function RankingCard({ player }: RankingCardProps) {
   const sessionId = useSessionContext();
 
-  const { enabledLogs, overallScores } = useLogs();
+  const { overallScores, sessionScores } = useLogs();
   const { players } = usePlayers();
-  const { scoringRulesMap } = useTournaments();
 
   // Current Position
   const playerScore = overallScores[player.id] ?? 0;
-
   const position =
     players.filter((player) => (overallScores[player.id] ?? 0) > playerScore)
       .length + 1;
@@ -29,18 +25,29 @@ export function RankingCard({ player }: RankingCardProps) {
   const suffix = getOrdinalSuffix(position);
 
   // Previous Position
-  const previousLogs = enabledLogs.filter(
-    (log) => log.session_id !== sessionId,
-  );
-  const previousScores = getPlayerScores(previousLogs, scoringRulesMap);
+  const previousScores = getPreviousSessionScores();
   const previousPlayerScore = previousScores[player.id] ?? 0;
-
   const previousPosition =
     players.filter(
       (player) => (previousScores[player.id] ?? 0) > previousPlayerScore,
     ).length + 1;
 
   const trend = getSessionTrend(previousPosition - position);
+  const LucideIcon = trend.icon;
+
+  function getPreviousSessionScores() {
+    const previousScores: Record<string, number> = {};
+
+    for (const [id, scores] of Object.entries(sessionScores)) {
+      if (id === sessionId) continue;
+
+      for (const [playerId, score] of Object.entries(scores)) {
+        previousScores[playerId] = (previousScores[playerId] ?? 0) + score;
+      }
+    }
+
+    return previousScores;
+  }
 
   function getSessionTrend(trend: number) {
     if (trend > 0) {
@@ -64,7 +71,6 @@ export function RankingCard({ player }: RankingCardProps) {
     }
   }
 
-  const LucideIcon = trend.icon;
   return (
     <div className="flex h-85 w-45 flex-col items-center justify-center gap-5 text-secondary">
       <div className="flex size-40 items-center justify-center rounded-full bg-accent/30 shadow-[0_0_30px] shadow-accent/50 ring-2 ring-accent/60 brightness-150">
