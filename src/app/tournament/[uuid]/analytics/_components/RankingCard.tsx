@@ -72,7 +72,7 @@ export function RankingCard({ player }: RankingCardProps) {
   }
 
   return (
-    <div className="flex h-85 w-45 flex-col items-center justify-center gap-5 text-secondary">
+    <div className="flex h-90 w-45 flex-col items-center justify-center gap-5 text-secondary">
       <div className="flex size-40 items-center justify-center rounded-full bg-accent/30 shadow-[0_0_30px] shadow-accent/50 ring-2 ring-accent/60 brightness-150">
         <Trophy className="size-20" strokeWidth={1.5} />
       </div>

@@ -45,9 +45,14 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-5 rounded-lg bg-primary p-5">
-            <ScoreHistoryCard player={selectedPlayer} />
-            <FaanFrequencyCard player={selectedPlayer} />
+          <div className="flex flex-col gap-5">
+            <div className="rounded-lg bg-primary p-5">
+              <ScoreHistoryCard player={selectedPlayer} />
+            </div>
+
+            <div className="rounded-lg bg-primary p-5">
+              <FaanFrequencyCard player={selectedPlayer} />
+            </div>
           </div>
         </div>
       )}
