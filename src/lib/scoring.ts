@@ -132,7 +132,7 @@ export function countFaanFrequency(
   const counts: Record<number, number> = {};
 
   for (const log of logs) {
-    if (log.winner_ids.includes(player.id) && log.faan != null) {
+    if (log.winner_ids.includes(player.id) && log.faan !== null) {
       counts[log.faan] = (counts[log.faan] ?? 0) + 1;
     }
   }
