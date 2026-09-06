@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
+import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 import { FaanFrequencyCard } from "./_components/FaanFrequencyCard";
@@ -11,15 +12,18 @@ import { ScoreHistoryCard } from "./_components/ScoreHistoryCard";
 import { StatisticsCard } from "./_components/StatisticsCard";
 
 export default function AnalyticsPage() {
+  const { overallScores } = useLogs();
   const { players } = usePlayers();
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+
+  const activePlayers = players.filter((player) => player.id in overallScores);
 
   return (
     <div className="flex flex-col items-center gap-10 py-10">
       <RoundedListbox<Player>
         value={selectedPlayer}
-        options={players}
+        options={activePlayers}
         onChange={setSelectedPlayer}
         getOptionLabel={(player) => player.name}
         placeholder="Select a player..."
