@@ -16,7 +16,7 @@ export default function AnalyticsPage() {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   return (
-    <div className="flex flex-col items-center gap-7 py-10">
+    <div className="flex flex-col items-center gap-10 py-10">
       <RoundedListbox<Player>
         value={selectedPlayer}
         options={players}
