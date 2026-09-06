@@ -90,6 +90,8 @@ export type ScoringRule = {
   deltas: Partial<Record<WinType, PointDelta>>;
 };
 
+export type ScoringRulesMap = Map<number | null, ScoringRule>;
+
 export type Wind = "east" | "south" | "west" | "north";
 
 export type WinType = "打出" | "自摸" | "包自摸" | "詐糊";

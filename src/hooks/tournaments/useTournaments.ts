@@ -1,10 +1,14 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import type { ScoringRule, SupabaseTournament, Tournament } from "@/lib/types";
+import type {
+  ScoringRulesMap,
+  SupabaseTournament,
+  Tournament,
+} from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseTournamentsType = {
-  scoringRulesMap: Map<number | null, ScoringRule>;
+  scoringRulesMap: ScoringRulesMap;
   tournament: Tournament;
 };
 
