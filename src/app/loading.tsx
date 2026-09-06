@@ -25,8 +25,8 @@ export default function Loading() {
             className={twMerge(
               "absolute flex h-26 w-20 items-center justify-center text-[145px] transition duration-500",
               index === activeTile
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-2"
+                ? "translate-y-0 opacity-100"
+                : "translate-y-2 opacity-0",
             )}
           >
             {tile}

@@ -1,4 +1,4 @@
-import type { Tables } from "@/lib/database.types";
+import type { Tables } from "./supabase/database.types";
 
 // ---------- Database Types ----------
 export type Attendance = {
@@ -62,6 +62,12 @@ export type ActionState = {
   success?: boolean;
 } | null;
 
+export type ChartData = {
+  title: string;
+  data: Record<string, number>;
+  color?: string;
+};
+
 export type LogSearchTag = {
   id: string;
   label: string;
@@ -83,6 +89,8 @@ export type ScoringRule = {
   faan: number | null;
   deltas: Partial<Record<WinType, PointDelta>>;
 };
+
+export type ScoringRulesMap = Map<number | null, ScoringRule>;
 
 export type Wind = "east" | "south" | "west" | "north";
 

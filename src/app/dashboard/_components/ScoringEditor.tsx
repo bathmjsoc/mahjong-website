@@ -30,7 +30,7 @@ export function ScoringEditor({
 
   return (
     <>
-      <div className="w-full rounded bg-white/10 p-2 text-center text-sm">
+      <div className="w-full rounded bg-secondary/15 p-2 text-center text-sm">
         Scoring Rules
       </div>
 

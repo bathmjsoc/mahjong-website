@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
-import type { Log, ScoringRule } from "@/lib/types";
+import type { Log, ScoringRulesMap } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseLogsType = {
@@ -28,7 +28,7 @@ export function useLogs(): UseLogsType {
 
 function selectLogs(
   rawLogs: Log[],
-  scoringRulesMap: Map<number | null, ScoringRule>,
+  scoringRulesMap: ScoringRulesMap,
 ): UseLogsType {
   const logs = rawLogs.toSorted((a, b) =>
     b.timestamp.localeCompare(a.timestamp),

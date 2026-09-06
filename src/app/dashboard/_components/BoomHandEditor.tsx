@@ -9,7 +9,7 @@ export function BoomHandEditor({
 }: BoomHandEditorProps) {
   return (
     <>
-      <div className="w-full rounded bg-white/10 p-2 text-center text-sm">
+      <div className="w-full rounded bg-secondary/15 p-2 text-center text-sm">
         Boom Hands
       </div>
 

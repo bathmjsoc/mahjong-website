@@ -1,5 +1,4 @@
-import { useMemo } from "react";
-import { BarChart } from "@/elements/BarChart";
+import { BarChart } from "@/elements/charts/BarChart";
 import { Modal } from "@/elements/Modal";
 import { rankPlayers } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
@@ -17,17 +16,23 @@ export function ViewGraphModal({
   isOpen,
   onClose,
 }: ViewGraphModalProps) {
-  const data = useMemo(() => {
-    return rankPlayers(players, scores).map(([player, score]) => ({
-      label: player.name,
-      value: score,
-    }));
-  }, [players, scores]);
+  const rankedPlayers = rankPlayers(players, scores);
+  const rankedPlayerData = [
+    {
+      title: "Score",
+      data: Object.fromEntries(
+        rankedPlayers.map(([player, score]) => [player.name, score]),
+      ),
+    },
+  ];
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="View Graph">
-      <div className="w-xl p-2">
-        <BarChart data={data} className="rounded-xl" />
+      <div
+        className="w-xl"
+        style={{ height: Math.max(rankedPlayers.length * 30, 400) }}
+      >
+        <BarChart data={rankedPlayerData} />
       </div>
     </Modal>
   );

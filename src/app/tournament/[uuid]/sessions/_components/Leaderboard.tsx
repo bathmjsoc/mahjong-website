@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { rankPlayers, scoreToColor } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
-import { formatPosition } from "@/lib/utils";
+import { getOrdinalSuffix } from "@/lib/utils";
 
 type LeaderboardProps = {
   players: Player[];
@@ -47,12 +47,15 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player, position, score }: PlayerRowProps) {
-  const formattedPosition = formatPosition(position);
+  const suffix = getOrdinalSuffix(position);
   const scoreColor = scoreToColor(score);
 
   return (
     <tr className="text-center text-primary text-sm">
-      <td className="border-l">{formattedPosition}</td>
+      <td className="border-l">
+        {position}
+        {suffix}
+      </td>
 
       <td>{player.name}</td>
 
