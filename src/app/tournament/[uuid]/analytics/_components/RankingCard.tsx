@@ -54,19 +54,19 @@ export function RankingCard({ player }: RankingCardProps) {
       return {
         icon: ArrowUp,
         textColor: "text-positive",
-        fillColor: "bg-positive/15",
+        fillColor: "bg-positive/30",
       };
     } else if (trend < 0) {
       return {
         icon: ArrowDown,
         textColor: "text-negative",
-        fillColor: "bg-negative/15",
+        fillColor: "bg-negative/30",
       };
     } else {
       return {
         icon: Minus,
         textColor: "text-neutral",
-        fillColor: "bg-neutral/15",
+        fillColor: "bg-neutral/30",
       };
     }
   }
