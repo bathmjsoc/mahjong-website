@@ -15,7 +15,7 @@ export function usePlayerMutations() {
     player.tournament_id,
   ];
 
-  const { addItem, updateItem, removeItem } = useCacheItems<Player>({
+  const { addItem, updateItem } = useCacheItems<Player>({
     getId: (player) => player.id,
     getQueryKey: getPlayersQueryKey,
   });
@@ -35,7 +35,7 @@ export function usePlayerMutations() {
   const deleteMutation = useOptimisticMutation({
     mutationFn: deletePlayerAction,
     getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: removeItem,
+    optimisticUpdate: (player) => updateItem({ ...player, deleted: true }),
   });
 
   return {
@@ -44,6 +44,7 @@ export function usePlayerMutations() {
         id: crypto.randomUUID(),
         tournament_id: tournamentId,
         name: playerName,
+        deleted: false,
       });
     },
 
