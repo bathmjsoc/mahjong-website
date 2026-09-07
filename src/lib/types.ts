@@ -26,6 +26,7 @@ export type Player = {
   id: string;
   tournament_id: string;
   name: string;
+  deleted: boolean;
 };
 
 export type Session = {

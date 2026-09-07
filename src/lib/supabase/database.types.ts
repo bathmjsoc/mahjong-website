@@ -124,16 +124,19 @@ export type Database = {
       };
       players: {
         Row: {
+          deleted: boolean;
           id: string;
           name: string;
           tournament_id: string;
         };
         Insert: {
+          deleted?: boolean;
           id?: string;
           name: string;
           tournament_id: string;
         };
         Update: {
+          deleted?: boolean;
           id?: string;
           name?: string;
           tournament_id?: string;

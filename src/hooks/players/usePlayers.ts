@@ -21,7 +21,9 @@ export function usePlayers(): UsePlayersType {
 }
 
 function selectPlayers(rawPlayers: Player[]): UsePlayersType {
-  const players = rawPlayers.toSorted((a, b) => a.name.localeCompare(b.name));
+  const players = rawPlayers
+    .filter((player) => !player.deleted)
+    .toSorted((a, b) => a.name.localeCompare(b.name));
 
   const playerMap = new Map(players.map((player) => [player.id, player]));
 
