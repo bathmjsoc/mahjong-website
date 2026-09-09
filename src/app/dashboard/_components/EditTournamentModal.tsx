@@ -1,9 +1,8 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { updateTournament } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
+import { useTournamentMutations } from "@/hooks/tournaments/useTournamentMutations";
 import { DEFAULT_FALSE_WIN_RULE } from "@/lib/constants";
 import type { ScoringRule, Tournament } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
@@ -21,7 +20,7 @@ export function EditTournamentModal({
   tournament,
   onClose,
 }: EditTournamentModalProps) {
-  const queryClient = useQueryClient();
+  const { updateTournament } = useTournamentMutations();
 
   const [boomHands, setBoomHands] = useState(tournament.hand_types.join(", "));
   const [error, setError] = useState<string | null>(null);
@@ -53,16 +52,9 @@ export function EditTournamentModal({
       .map((handType) => handType.trim())
       .filter((handType) => handType.length > 0);
 
-    startTransition(async () => {
-      const updatedTournament = {
-        ...tournament,
-        name: tournamentName,
-        scoring_rules: [...scoringRules, falseWinRule],
-        hand_types: handTypes,
-      };
-
-      await updateTournament(updatedTournament);
-      await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+    startTransition(() => {
+      const rules = [...scoringRules, falseWinRule];
+      updateTournament(tournament, tournamentName, rules, handTypes);
       onClose();
     });
   }

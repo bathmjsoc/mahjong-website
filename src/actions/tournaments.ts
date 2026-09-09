@@ -2,22 +2,14 @@
 
 import { createSession } from "@/actions/sessions";
 import { createClient } from "@/lib/supabase/server";
-import type { ScoringRule, Tournament } from "@/lib/types";
+import type { Tournament } from "@/lib/types";
 
-export async function createTournament(
-  tournamentName: string,
-  scoringRules: ScoringRule[],
-  handTypes: string[],
-): Promise<void> {
+export async function createTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
 
   const { data: createdTournament, error } = await supabase
     .from("tournaments")
-    .insert({
-      name: tournamentName,
-      scoring_rules: scoringRules,
-      hand_types: handTypes,
-    })
+    .insert(tournament)
     .select("id")
     .single();
 
