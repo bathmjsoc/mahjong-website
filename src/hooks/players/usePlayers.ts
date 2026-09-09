@@ -6,6 +6,7 @@ import { useTournamentContext } from "@/providers/TournamentProvider";
 type UsePlayersType = {
   playerMap: Map<string, Player>;
   players: Player[];
+  playersWithDeleted: Player[];
 };
 
 export function usePlayers(): UsePlayersType {
@@ -21,13 +22,15 @@ export function usePlayers(): UsePlayersType {
 }
 
 function selectPlayers(rawPlayers: Player[]): UsePlayersType {
-  const players = rawPlayers
-    .filter((player) => !player.deleted)
-    .toSorted((a, b) => a.name.localeCompare(b.name));
+  const playersWithDeleted = rawPlayers.toSorted((a, b) =>
+    a.name.localeCompare(b.name),
+  );
+
+  const players = playersWithDeleted.filter((player) => !player.deleted);
 
   const playerMap = new Map(players.map((player) => [player.id, player]));
 
-  return { players, playerMap };
+  return { players, playersWithDeleted, playerMap };
 }
 
 async function fetchPlayers(tournamentId: string): Promise<Player[]> {
