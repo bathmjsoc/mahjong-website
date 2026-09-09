@@ -5,7 +5,6 @@ import { useSessionContext } from "@/providers/SessionProvider";
 
 type UseAttendanceType = {
   attendance: Attendance[];
-  availablePlayerIds: Set<string>;
   lockedPlayerIds: Set<string>;
   registeredPlayerIds: Set<string>;
 };
@@ -23,31 +22,26 @@ export function useAttendance(): UseAttendanceType {
 }
 
 function selectAttendance(attendance: Attendance[]): UseAttendanceType {
-  const availablePlayerIds = new Set<string>();
   const lockedPlayerIds = new Set<string>();
   const registeredPlayerIds = new Set<string>();
 
   for (const entry of attendance) {
-    if (!entry.registered) {
-      continue;
-    }
+    if (!entry.registered) continue;
 
     registeredPlayerIds.add(entry.player_id);
 
     if (entry.locked) {
       lockedPlayerIds.add(entry.player_id);
-    } else {
-      availablePlayerIds.add(entry.player_id);
     }
   }
 
   return {
     attendance,
-    availablePlayerIds,
     lockedPlayerIds,
     registeredPlayerIds,
   };
 }
+
 async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
   const supabase = createClient();
 
