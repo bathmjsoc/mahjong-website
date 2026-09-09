@@ -9,8 +9,7 @@ import {
 } from "lucide-react";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import { getPointDeltas } from "@/lib/scoring";
+import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
 
 type StatisticsCardProps = {
@@ -18,155 +17,24 @@ type StatisticsCardProps = {
 };
 
 export function StatisticsCard({ player }: StatisticsCardProps) {
-  const { enabledLogs, sessionScores } = useLogs();
+  const { enabledLogs } = useLogs();
   const { players } = usePlayers();
-  const { scoringRulesMap } = useTournaments();
 
-  const gameStatistics = calculateGameStatistics();
-  const pointsStatistics = calculatePointsStatistics();
-  const sessionStatistics = calculateSessionStatistics();
+  const {
+    calculateGameStatistics,
+    calculatePointStatistics,
+    calculateSessionStatistics,
+  } = useStatistics();
+
+  const gameStatistics = calculateGameStatistics(enabledLogs, players, player);
+  const pointsStatistics = calculatePointStatistics(
+    enabledLogs,
+    players,
+    player,
+  );
+  const sessionStatistics = calculateSessionStatistics(players, player);
 
   const playerCount = players.length;
-
-  function calculateGameStatistics() {
-    const playerTotals: Record<string, number> = Object.fromEntries(
-      players.map((player) => [player.id, 0]),
-    );
-
-    for (const log of enabledLogs) {
-      for (const player of log.winner_ids) {
-        if (player in playerTotals) playerTotals[player]++;
-      }
-      for (const player of log.loser_ids) {
-        if (player in playerTotals) playerTotals[player]++;
-      }
-      for (const player of log.other_ids) {
-        if (player in playerTotals) playerTotals[player]++;
-      }
-    }
-
-    const currentPlayerGames = playerTotals[player.id] ?? 0;
-    const allPlayerGames = players.map(
-      (player) => playerTotals[player.id] ?? 0,
-    );
-
-    const gamesPlayed = currentPlayerGames;
-    const gamesPlayedRank =
-      allPlayerGames.filter((games) => {
-        return games > currentPlayerGames;
-      }).length + 1;
-
-    return {
-      games_played: {
-        value: gamesPlayed,
-        ranking: gamesPlayedRank,
-      },
-    };
-  }
-
-  function calculatePointsStatistics() {
-    function avg(values: number[]) {
-      if (!values.length) return 0;
-      return values.reduce((sum, value) => sum + value, 0) / values.length;
-    }
-
-    function stdDev(values: number[]) {
-      const mean = avg(values);
-      const variance = avg(values.map((value) => (value - mean) ** 2));
-      return Math.sqrt(variance);
-    }
-
-    function getMetrics(player: Player) {
-      const pointsWon: number[] = [];
-      const pointsLost: number[] = [];
-
-      for (const log of enabledLogs) {
-        const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
-
-        if (log.winner_ids.includes(player.id)) {
-          pointsWon.push(delta.winner);
-        } else if (log.loser_ids.includes(player.id)) {
-          pointsLost.push(delta.loser);
-        }
-      }
-
-      return {
-        avg_won: avg(pointsWon),
-        avg_lost: avg(pointsLost),
-        std_dev: stdDev([...pointsWon, ...pointsLost]),
-      };
-    }
-
-    const currentPlayerMetrics = getMetrics(player);
-    const allPlayerMetrics = players.map((player) => getMetrics(player));
-
-    const averagePointsWon = currentPlayerMetrics.avg_won;
-    const averagePointsWonRank =
-      allPlayerMetrics.filter((metrics) => {
-        return metrics.avg_won > averagePointsWon;
-      }).length + 1;
-
-    const averagePointsLost = currentPlayerMetrics.avg_lost;
-    const averagePointsLostRank =
-      allPlayerMetrics.filter((metrics) => {
-        return metrics.avg_lost < averagePointsLost;
-      }).length + 1;
-
-    const standardDeviation = currentPlayerMetrics.std_dev;
-    const standardDeviationRank =
-      allPlayerMetrics.filter((metrics) => {
-        return metrics.std_dev < standardDeviation;
-      }).length + 1;
-
-    return {
-      average_points_won: {
-        value: averagePointsWon,
-        ranking: averagePointsWonRank,
-      },
-      average_points_lost: {
-        value: averagePointsLost,
-        ranking: averagePointsLostRank,
-      },
-      standard_deviation: {
-        value: standardDeviation,
-        ranking: standardDeviationRank,
-      },
-    };
-  }
-
-  function calculateSessionStatistics() {
-    function getScores(id: string) {
-      return Object.values(sessionScores)
-        .map((session) => session[id])
-        .filter((score) => score !== undefined);
-    }
-
-    const currentPlayerScores = getScores(player.id);
-    const allPlayerScores = players.map((player) => getScores(player.id));
-
-    const lowestSessionScore = Math.min(...currentPlayerScores);
-    const lowestSessionScoreRank =
-      allPlayerScores.filter((scores) => {
-        return scores.length > 0 && Math.min(...scores) < lowestSessionScore;
-      }).length + 1;
-
-    const highestSessionScore = Math.max(...currentPlayerScores);
-    const highestSessionScoreRank =
-      allPlayerScores.filter((scores) => {
-        return scores.length > 0 && Math.max(...scores) > highestSessionScore;
-      }).length + 1;
-
-    return {
-      highest_session_score: {
-        value: highestSessionScore,
-        ranking: highestSessionScoreRank,
-      },
-      lowest_session_score: {
-        value: lowestSessionScore,
-        ranking: lowestSessionScoreRank,
-      },
-    };
-  }
 
   return (
     <div className="flex gap-5">

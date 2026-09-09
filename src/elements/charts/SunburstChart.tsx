@@ -1,6 +1,7 @@
 import type { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
+import { sum } from "@/lib/utils";
 
 type SunburstChartProps = {
   data: ChartData[];
@@ -12,7 +13,7 @@ export function SunburstChart({ data, title }: SunburstChartProps) {
     {
       data: data.map((item) => ({
         x: item.title,
-        y: Object.values(item.data).reduce((total, value) => total + value, 0),
+        y: sum(Object.values(item.data)),
         color: item.color,
         children: Object.entries(item.data).map(([title, value]) => ({
           x: title,

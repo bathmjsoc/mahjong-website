@@ -96,20 +96,16 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     );
 
     if (faan === maxFaan) {
-      triggerConfetti();
+      confetti({
+        particleCount: 500,
+        spread: 360,
+        shapes: [confetti.shapeFromText({ text: "🀄" })],
+        scalar: 2,
+      });
     }
   }
 
-  function triggerConfetti() {
-    confetti({
-      particleCount: 500,
-      spread: 360,
-      shapes: [confetti.shapeFromText({ text: "🀄" })],
-      scalar: 2,
-    });
-  }
-
-  function getFaanOptions(winType: WinType, player: Player | null) {
+  function renderFaanOptions(winType: WinType, player: Player | null) {
     const handTypes = [...tournament.hand_types, "Other"];
 
     return faanOptions.map((faan) => {
@@ -149,19 +145,19 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
           <DropDown key={player.id} title={player.name}>
-            {getFaanOptions("打出", player)}
+            {renderFaanOptions("打出", player)}
           </DropDown>
         ))}
       </DropDown>
 
       <DropDown title="自摸 (Self-Draw)">
-        {getFaanOptions("自摸", null)}
+        {renderFaanOptions("自摸", null)}
       </DropDown>
 
       <DropDown title="包自摸 (Special Case)">
         {opponents.map((player) => (
           <DropDown key={player.id} title={player.name}>
-            {getFaanOptions("包自摸", player)}
+            {renderFaanOptions("包自摸", player)}
           </DropDown>
         ))}
       </DropDown>

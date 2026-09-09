@@ -2,7 +2,7 @@ import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
 
 /*
  * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")
- * */
+ */
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 export function formatTimeAgo(timestamp: string): string {
   const delta = Math.round((Date.parse(timestamp) - Date.now()) / 1000);
@@ -18,7 +18,7 @@ export function formatTimeAgo(timestamp: string): string {
 
 /*
  * Returns the ordinal suffix for a number (e.g., 1 -> st, 2 -> nd)
- * */
+ */
 const pluralRules = new Intl.PluralRules("en", { type: "ordinal" });
 export function getOrdinalSuffix(number: number): string {
   const suffixes: Record<string, string> = {
@@ -33,7 +33,7 @@ export function getOrdinalSuffix(number: number): string {
 
 /*
  * Returns a new array with the same items in a random order
- * */
+ */
 export function shuffle<T>(items: T[]): T[] {
   const result = [...items];
 
@@ -47,7 +47,7 @@ export function shuffle<T>(items: T[]): T[] {
 
 /*
  * Normalizes text by removing whitespace and converting to lowercase for string comparison
- * */
+ */
 export function normalizeText(text: string): string {
   return text.replace(/\s+/g, "").toLowerCase();
 }
@@ -63,4 +63,30 @@ export function parseFormString(
   if (typeof value !== "string") return null;
 
   return value.trim() || null;
+}
+
+/*
+ * Calculates the average of an array of numbers
+ */
+export function avg(values: number[]): number {
+  if (!values.length) return 0;
+
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+/*
+ * Calculates the standard deviation of an array of numbers
+ */
+export function stdDev(values: number[]): number {
+  const mean = avg(values);
+  const variance = avg(values.map((value) => (value - mean) ** 2));
+
+  return Math.sqrt(variance);
+}
+
+/*
+ * Calculates the sum of an array of numbers
+ */
+export function sum(values: number[]): number {
+  return values.reduce((sum, value) => sum + value, 0);
 }
