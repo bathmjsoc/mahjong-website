@@ -1,14 +1,16 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Shuffle } from "lucide-react";
 import { useState, useTransition } from "react";
-import { shuffleTables } from "@/actions/tables";
+import { createTables, deleteTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
 import { WIND_MAP, WINDS } from "@/lib/constants";
+import { shuffle } from "@/lib/utils";
 import { useSessionContext } from "@/providers/SessionProvider";
 import { Sidebar } from "./_components/Sidebar";
 import { TableList } from "./_components/TableList";
@@ -16,9 +18,10 @@ import { TableList } from "./_components/TableList";
 type WindKey = (typeof WINDS)[number];
 
 export default function TournamentPage() {
+  const queryClient = useQueryClient();
   const sessionId = useSessionContext();
 
-  const { lockedPlayerIds } = useAttendance();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { players } = usePlayers();
   const { tables } = useTables();
 
@@ -28,11 +31,36 @@ export default function TournamentPage() {
   async function handleShuffle() {
     const availableTables = tables.filter((table) => !table.saved);
     const availablePlayers = players.filter(
-      (player) => !lockedPlayerIds.has(player.id),
+      (player) =>
+        registeredPlayerIds.has(player.id) && !lockedPlayerIds.has(player.id),
     );
 
     startTransition(async () => {
-      await shuffleTables(sessionId, availableTables, availablePlayers);
+      await deleteTables(...availableTables);
+
+      const shuffledPlayers = shuffle(availablePlayers);
+      const newTables = [];
+
+      while (shuffledPlayers.length > 0) {
+        const [east = null, south = null, west = null, north = null] =
+          shuffledPlayers.splice(0, 4);
+
+        newTables.push({
+          id: crypto.randomUUID(),
+          session_id: sessionId,
+          east_id: east?.id ?? null,
+          south_id: south?.id ?? null,
+          west_id: west?.id ?? null,
+          north_id: north?.id ?? null,
+          number: newTables.length + 1,
+          saved: false,
+        });
+      }
+
+      await createTables(...newTables);
+      await queryClient.invalidateQueries({
+        queryKey: ["tables", sessionId],
+      });
     });
   }
 

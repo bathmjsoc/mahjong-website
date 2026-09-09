@@ -1,9 +1,8 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useState, useTransition } from "react";
-import { createTournament } from "@/actions/tournaments";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
+import { useTournamentMutations } from "@/hooks/tournaments/useTournamentMutations";
 import { DEFAULT_FALSE_WIN_RULE, DEFAULT_SCORING_RULE } from "@/lib/constants";
 import type { ScoringRule } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
@@ -19,7 +18,7 @@ export function CreateTournamentModal({
   isOpen,
   onClose,
 }: CreateTournamentModalProps) {
-  const queryClient = useQueryClient();
+  const { createTournament } = useTournamentMutations();
 
   const [boomHands, setBoomHands] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -50,13 +49,9 @@ export function CreateTournamentModal({
       .map((handType) => handType.trim())
       .filter((handType) => handType.length > 0);
 
-    startTransition(async () => {
-      await createTournament(
-        tournamentName,
-        [...scoringRules, falseWinRule],
-        handTypes,
-      );
-      await queryClient.invalidateQueries({ queryKey: ["tournaments"] });
+    startTransition(() => {
+      const rules = [...scoringRules, falseWinRule];
+      createTournament(tournamentName, rules, handTypes);
       handleClose();
     });
   }

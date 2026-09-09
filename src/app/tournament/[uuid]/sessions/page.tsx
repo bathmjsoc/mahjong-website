@@ -67,7 +67,7 @@ export default function SessionsPage() {
         <div className="flex w-sm gap-2">
           <FilledButton
             className="flex w-full items-center justify-center gap-2 text-sm"
-            disabled={!activePlayers.length}
+            disabled={activePlayers.length === 0}
             onClick={() => setIsGraphModalOpen(true)}
           >
             <ChartColumn className="size-5" />

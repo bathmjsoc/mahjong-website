@@ -2,20 +2,25 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Player, Table, Wind } from "@/lib/types";
-import { shuffle } from "@/lib/utils";
 
-export async function createTable(table: Table): Promise<Table> {
+export async function createTables(...tables: Table[]): Promise<Table[]> {
   const supabase = await createClient();
 
-  const { data: createdTable, error } = await supabase
+  if (tables.length === 0) return [];
+
+  const { data: createdTables, error } = await supabase
     .from("tables")
-    .insert(table)
-    .select()
-    .single();
+    .insert(tables)
+    .select();
 
   if (error)
-    throw new Error(`createTable encountered an error: ${error.message}`);
+    throw new Error(`createTables encountered an error: ${error.message}`);
 
+  return createdTables;
+}
+
+export async function createTable(table: Table): Promise<Table> {
+  const [createdTable] = await createTables(table);
   return createdTable;
 }
 
@@ -53,53 +58,18 @@ export async function saveTable(table: Table): Promise<void> {
     throw new Error(`saveTable encountered an error: ${error.message}`);
 }
 
-export async function shuffleTables(
-  sessionId: string,
-  tables: Table[],
-  players: Player[],
-): Promise<void> {
+export async function deleteTables(...tables: Table[]): Promise<void> {
   const supabase = await createClient();
 
-  const tablesToDelete = tables.map((table) => table.id);
-  if (tablesToDelete.length > 0) {
-    const { error } = await supabase
-      .from("tables")
-      .delete()
-      .in("id", tablesToDelete);
+  const tableIds = tables.map((table) => table.id);
+  if (tableIds.length === 0) return;
 
-    if (error)
-      throw new Error(`shuffleTables encountered an error: ${error.message}`);
-  }
-
-  const shuffledPlayers = shuffle(players);
-  const tablesToCreate = [];
-
-  while (shuffledPlayers.length > 0) {
-    const [east = null, south = null, west = null, north = null] =
-      shuffledPlayers.splice(0, 4);
-
-    tablesToCreate.push({
-      id: crypto.randomUUID(),
-      session_id: sessionId,
-      east_id: east?.id ?? null,
-      south_id: south?.id ?? null,
-      west_id: west?.id ?? null,
-      north_id: north?.id ?? null,
-      number: tablesToCreate.length + 1,
-      saved: false,
-    });
-  }
-  const { error } = await supabase.from("tables").insert(tablesToCreate);
+  const { error } = await supabase.from("tables").delete().in("id", tableIds);
 
   if (error)
-    throw new Error(`shuffleTables encountered an error: ${error.message}`);
+    throw new Error(`deleteTables encountered an error: ${error.message}`);
 }
 
 export async function deleteTable(table: Table): Promise<void> {
-  const supabase = await createClient();
-
-  const { error } = await supabase.from("tables").delete().eq("id", table.id);
-
-  if (error)
-    throw new Error(`deleteTable encountered an error: ${error.message}`);
+  return deleteTables(table);
 }
