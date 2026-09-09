@@ -9,10 +9,10 @@ type ScoreHistoryCardProps = {
 };
 
 export function ScoreHistoryCard({ player }: ScoreHistoryCardProps) {
-  const { enabledLogs } = useLogs();
+  const { logs } = useLogs();
   const { scoringRulesMap } = useTournaments();
 
-  const scores = getPointHistory(enabledLogs, player, scoringRulesMap);
+  const scores = getPointHistory(logs, player, scoringRulesMap);
   const scoreData = [
     {
       title: player.name,

@@ -12,14 +12,14 @@ import { LogList } from "./_components/LogList";
 import { LogSearchBar } from "./_components/LogSearchBar";
 
 export default function LogsPage() {
-  const { enabledLogs, logs } = useLogs();
+  const { logs, logsWithDisabled } = useLogs();
   const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
   const [showDisabledLogs, setShowDisabledLogs] = useState(false);
   const [tags, setTags] = useState<LogSearchTag[]>([]);
 
-  const baseLogs = showDisabledLogs ? logs : enabledLogs;
+  const baseLogs = showDisabledLogs ? logsWithDisabled : logs;
 
   const tagFilters = useMemo(
     () => ({

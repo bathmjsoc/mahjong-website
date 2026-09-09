@@ -8,9 +8,9 @@ type FaanFrequencyCardProps = {
 };
 
 export function FaanFrequencyCard({ player }: FaanFrequencyCardProps) {
-  const { enabledLogs } = useLogs();
+  const { logs } = useLogs();
 
-  const faanFrequency = countFaanFrequency(enabledLogs, player);
+  const faanFrequency = countFaanFrequency(logs, player);
   const faanFrequencyData = [
     {
       title: "Frequency",

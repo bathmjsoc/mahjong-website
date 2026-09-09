@@ -17,7 +17,7 @@ type StatisticsCardProps = {
 };
 
 export function StatisticsCard({ player }: StatisticsCardProps) {
-  const { enabledLogs } = useLogs();
+  const { logs } = useLogs();
   const { players } = usePlayers();
 
   const {
@@ -26,12 +26,8 @@ export function StatisticsCard({ player }: StatisticsCardProps) {
     calculateSessionStatistics,
   } = useStatistics();
 
-  const gameStatistics = calculateGameStatistics(enabledLogs, players, player);
-  const pointsStatistics = calculatePointStatistics(
-    enabledLogs,
-    players,
-    player,
-  );
+  const gameStatistics = calculateGameStatistics(logs, players, player);
+  const pointsStatistics = calculatePointStatistics(logs, players, player);
   const sessionStatistics = calculateSessionStatistics(players, player);
 
   const playerCount = players.length;
