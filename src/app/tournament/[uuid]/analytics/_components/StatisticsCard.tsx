@@ -9,12 +9,7 @@ import {
 } from "lucide-react";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
-import {
-  calculateGameStatistics,
-  calculatePointsStatistics,
-  calculateSessionStatistics,
-} from "@/lib/statistics";
+import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
 
 type StatisticsCardProps = {
@@ -22,22 +17,22 @@ type StatisticsCardProps = {
 };
 
 export function StatisticsCard({ player }: StatisticsCardProps) {
-  const { enabledLogs, sessionScores } = useLogs();
+  const { enabledLogs } = useLogs();
   const { players } = usePlayers();
-  const { scoringRulesMap } = useTournaments();
+
+  const {
+    calculateGameStatistics,
+    calculatePointStatistics,
+    calculateSessionStatistics,
+  } = useStatistics();
 
   const gameStatistics = calculateGameStatistics(enabledLogs, players, player);
-  const pointsStatistics = calculatePointsStatistics(
+  const pointsStatistics = calculatePointStatistics(
     enabledLogs,
     players,
     player,
-    scoringRulesMap,
   );
-  const sessionStatistics = calculateSessionStatistics(
-    sessionScores,
-    players,
-    player,
-  );
+  const sessionStatistics = calculateSessionStatistics(players, player);
 
   const playerCount = players.length;
 

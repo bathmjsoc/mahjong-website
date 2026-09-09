@@ -1,29 +1,19 @@
 import { ArrowDown, ArrowUp, Minus, Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { calculateRankingStatistics } from "@/lib/statistics";
+import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
-import { useSessionContext } from "@/providers/SessionProvider";
 
 type RankingCardProps = {
   player: Player;
 };
 
 export function RankingCard({ player }: RankingCardProps) {
-  const sessionId = useSessionContext();
-
-  const { overallScores, sessionScores } = useLogs();
   const { players } = usePlayers();
 
-  const rankingStatistics = calculateRankingStatistics(
-    player,
-    players,
-    overallScores,
-    sessionScores,
-    sessionId,
-  );
+  const { calculateRankingStatistics } = useStatistics();
+  const rankingStatistics = calculateRankingStatistics(players, player);
 
   function getSessionTrend(currentRank: number, previousRank: number) {
     if (currentRank < previousRank) {

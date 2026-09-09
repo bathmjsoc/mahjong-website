@@ -42,7 +42,7 @@ export function calculateGameStatistics(
   };
 }
 
-export function calculatePointsStatistics(
+export function calculatePointStatistics(
   logs: Log[],
   players: Player[],
   player: Player,
