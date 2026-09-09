@@ -64,3 +64,22 @@ export function parseFormString(
 
   return value.trim() || null;
 }
+
+/*
+ * Calculates the average of an array of numbers
+ */
+export function avg(values: number[]): number {
+  if (!values.length) return 0;
+
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+/*
+ * Calculates the standard deviation of an array of numbers
+ */
+export function stdDev(values: number[]): number {
+  const mean = avg(values);
+  const variance = avg(values.map((value) => (value - mean) ** 2));
+
+  return Math.sqrt(variance);
+}
