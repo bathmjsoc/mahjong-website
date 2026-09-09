@@ -12,7 +12,7 @@ import { useSessionContext } from "@/providers/SessionProvider";
 export function useStatistics() {
   const sessionId = useSessionContext();
 
-  const { sessionScores, overallScores } = useLogs();
+  const { overallScores, sessionScores } = useLogs();
   const { scoringRulesMap } = useTournaments();
 
   return {

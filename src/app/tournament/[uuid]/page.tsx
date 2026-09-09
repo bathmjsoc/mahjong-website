@@ -18,16 +18,17 @@ type WindKey = (typeof WINDS)[number];
 export default function TournamentPage() {
   const sessionId = useSessionContext();
 
-  const { availablePlayerIds } = useAttendance();
+  const { lockedPlayerIds } = useAttendance();
   const { players } = usePlayers();
-  const { availableTables, tables } = useTables();
+  const { tables } = useTables();
 
   const [wind, setWind] = useState<WindKey | null>(WINDS[0]);
   const [isShaking, startTransition] = useTransition();
 
   async function handleShuffle() {
-    const availablePlayers = players.filter((player) =>
-      availablePlayerIds.has(player.id),
+    const availableTables = tables.filter((table) => !table.saved);
+    const availablePlayers = players.filter(
+      (player) => !lockedPlayerIds.has(player.id),
     );
 
     startTransition(async () => {

@@ -4,7 +4,6 @@ import type { Table } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 type UseTablesType = {
-  availableTables: Table[];
   duplicatePlayerIds: Set<string>;
   seatedPlayerIds: Set<string>;
   tables: Table[];
@@ -30,13 +29,11 @@ function selectTables(rawTables: Table[]): UseTablesType {
     return a.number - b.number;
   });
 
-  const availableTables = [];
   const duplicatePlayerIds = new Set<string>();
   const seatedPlayerIds = new Set<string>();
 
   for (const table of tables) {
     if (table.saved) continue;
-    availableTables.push(table);
 
     const seatIds = [
       table.east_id,
@@ -58,7 +55,6 @@ function selectTables(rawTables: Table[]): UseTablesType {
 
   return {
     tables,
-    availableTables,
     duplicatePlayerIds,
     seatedPlayerIds,
   };
