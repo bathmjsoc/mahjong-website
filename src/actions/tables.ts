@@ -58,10 +58,6 @@ export async function saveTable(table: Table): Promise<void> {
     throw new Error(`saveTable encountered an error: ${error.message}`);
 }
 
-export async function deleteTable(table: Table): Promise<void> {
-  return deleteTables(table);
-}
-
 export async function deleteTables(...tables: Table[]): Promise<void> {
   const supabase = await createClient();
 
@@ -72,4 +68,8 @@ export async function deleteTables(...tables: Table[]): Promise<void> {
 
   if (error)
     throw new Error(`deleteTables encountered an error: ${error.message}`);
+}
+
+export async function deleteTable(table: Table): Promise<void> {
+  return deleteTables(table);
 }
