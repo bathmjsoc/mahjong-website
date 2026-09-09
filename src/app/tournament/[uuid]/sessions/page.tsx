@@ -12,8 +12,8 @@ import { Leaderboard } from "./_components/Leaderboard";
 import { ViewGraphModal } from "./_components/ViewGraphModal";
 
 export default function SessionsPage() {
-  const { logs, overallScores, sessionScores } = useLogs();
-  const { players } = usePlayers();
+  const { logsWithDisabled, overallScores, sessionScores } = useLogs();
+  const { players, playersWithDeleted } = usePlayers();
   const { sessions } = useSessions();
 
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
@@ -32,8 +32,8 @@ export default function SessionsPage() {
 
   function handleDownloadJSON() {
     const data = {
-      logs: logs,
-      players: players,
+      logs: logsWithDisabled,
+      players: playersWithDeleted,
       sessions: sessions,
     };
 

@@ -8,9 +8,9 @@ type GameOutcomesCardProps = {
 };
 
 export function GameOutcomesCard({ player }: GameOutcomesCardProps) {
-  const { enabledLogs } = useLogs();
+  const { logs } = useLogs();
 
-  const gameResults = getGameResults(enabledLogs, player);
+  const gameResults = getGameResults(logs, player);
   const gameResultsData = [
     {
       title: "WINS",

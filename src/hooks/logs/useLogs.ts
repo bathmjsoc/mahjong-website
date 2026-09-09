@@ -6,8 +6,8 @@ import type { Log, ScoringRulesMap } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseLogsType = {
-  enabledLogs: Log[];
   logs: Log[];
+  logsWithDisabled: Log[];
   overallScores: Record<string, number>;
   sessionScores: Record<string, Record<string, number>>;
 };
@@ -30,21 +30,21 @@ function selectLogs(
   rawLogs: Log[],
   scoringRulesMap: ScoringRulesMap,
 ): UseLogsType {
-  const logs = rawLogs.toSorted((a, b) =>
+  const logsWithDisabled = rawLogs.toSorted((a, b) =>
     b.timestamp.localeCompare(a.timestamp),
   );
 
-  const enabledLogs = logs.filter((log) => !log.disabled);
-  const overallScores = getPlayerScores(enabledLogs, scoringRulesMap);
+  const logs = logsWithDisabled.filter((log) => !log.disabled);
+  const overallScores = getPlayerScores(logs, scoringRulesMap);
 
-  const grouped = Map.groupBy(enabledLogs, (log) => log.session_id);
+  const grouped = Map.groupBy(logs, (log) => log.session_id);
 
   const sessionScores: Record<string, Record<string, number>> = {};
   for (const [sessionId, groupedLogs] of grouped) {
     sessionScores[sessionId] = getPlayerScores(groupedLogs, scoringRulesMap);
   }
 
-  return { enabledLogs, logs, overallScores, sessionScores };
+  return { logs, logsWithDisabled, overallScores, sessionScores };
 }
 
 async function fetchLogs(tournamentId: string): Promise<Log[]> {

@@ -1,6 +1,5 @@
 import { ArrowDown, ArrowUp, Minus, Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
@@ -10,10 +9,9 @@ type RankingCardProps = {
 };
 
 export function RankingCard({ player }: RankingCardProps) {
-  const { players } = usePlayers();
-
   const { calculateRankingStatistics } = useStatistics();
-  const rankingStatistics = calculateRankingStatistics(players, player);
+
+  const rankingStatistics = calculateRankingStatistics(player);
 
   function getSessionTrend(currentRank: number, previousRank: number) {
     if (currentRank < previousRank) {
