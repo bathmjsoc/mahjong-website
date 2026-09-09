@@ -13,24 +13,24 @@ type SessionProviderProps = {
 export function SessionProvider({ children }: SessionProviderProps) {
   const { sessions } = useSessions();
 
-  const latestSession = sessions.at(-1);
-  if (!latestSession) {
+  const sessionId = sessions.at(-1)?.id;
+  if (!sessionId) {
     throw new Error("No session was found, but one should exist.");
   }
 
   useRealtimeSessionSubscriptions(latestSession.id);
 
-  return <SessionContext value={latestSession.id}>{children}</SessionContext>;
+  return <SessionContext value={sessionId}>{children}</SessionContext>;
 }
 
 export function useSessionContext(): string {
-  const context = useContext(SessionContext);
+  const sessionId = useContext(SessionContext);
 
-  if (!context) {
+  if (!sessionId) {
     throw new Error(
       "useSessionContext must be used within a <SessionProvider/>!",
     );
   }
 
-  return context;
+  return sessionId;
 }
