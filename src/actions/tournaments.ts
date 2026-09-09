@@ -7,9 +7,18 @@ import type { Tournament } from "@/lib/types";
 export async function createTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated!");
+
   const { data: createdTournament, error } = await supabase
     .from("tournaments")
-    .insert(tournament)
+    .insert({
+      ...tournament,
+      user_id: user.id, // Replace the client-side dummy value with the true UUID
+    })
     .select("id")
     .single();
 
