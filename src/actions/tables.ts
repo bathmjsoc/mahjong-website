@@ -60,16 +60,7 @@ export async function shuffleTables(
 ): Promise<void> {
   const supabase = await createClient();
 
-  const tablesToDelete = tables.map((table) => table.id);
-  if (tablesToDelete.length > 0) {
-    const { error } = await supabase
-      .from("tables")
-      .delete()
-      .in("id", tablesToDelete);
-
-    if (error)
-      throw new Error(`shuffleTables encountered an error: ${error.message}`);
-  }
+  await deleteTables(...tables);
 
   const shuffledPlayers = shuffle(players);
   const tablesToCreate = [];
@@ -89,6 +80,7 @@ export async function shuffleTables(
       saved: false,
     });
   }
+
   const { error } = await supabase.from("tables").insert(tablesToCreate);
 
   if (error)
@@ -96,10 +88,17 @@ export async function shuffleTables(
 }
 
 export async function deleteTable(table: Table): Promise<void> {
+  return deleteTables(table);
+}
+
+export async function deleteTables(...tables: Table[]): Promise<void> {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("tables").delete().eq("id", table.id);
+  const tableIds = tables.map((table) => table.id);
+  if (tableIds.length === 0) return;
+
+  const { error } = await supabase.from("tables").delete().in("id", tableIds);
 
   if (error)
-    throw new Error(`deleteTable encountered an error: ${error.message}`);
+    throw new Error(`deleteTables encountered an error: ${error.message}`);
 }
