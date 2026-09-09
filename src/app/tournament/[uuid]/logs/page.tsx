@@ -61,15 +61,15 @@ export default function LogsPage() {
     );
   }, [baseLogs, tagFilters, tags]);
 
-  function addTag(tag: LogSearchTag) {
+  function handleAddTag(tag: LogSearchTag) {
     setTags((tags) => [...tags, tag]);
   }
 
-  function removeTag(id: string) {
+  function handleRemoveTag(id: string) {
     setTags((tags) => tags.filter((tag) => tag.id !== id));
   }
 
-  function toggleDisabledLogs() {
+  function handleToggleDisabledLogs() {
     setShowDisabledLogs((showDisabledLogs) => !showDisabledLogs);
   }
 
@@ -77,14 +77,14 @@ export default function LogsPage() {
     <div className="flex flex-col items-center gap-10 p-10">
       <div className="flex flex-col items-center justify-center gap-2">
         <LogSearchBar
-          addTag={addTag}
+          addTag={handleAddTag}
           showDisabledLogs={showDisabledLogs}
-          toggleDisabledLogs={toggleDisabledLogs}
+          toggleDisabledLogs={handleToggleDisabledLogs}
         />
 
         <div className="flex w-xl flex-wrap items-center justify-center gap-2">
           {tags.map((tag) => (
-            <Tag key={tag.id} tag={tag} removeTag={removeTag} />
+            <Tag key={tag.id} tag={tag} removeTag={handleRemoveTag} />
           ))}
         </div>
       </div>

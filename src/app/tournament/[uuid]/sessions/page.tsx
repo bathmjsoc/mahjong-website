@@ -30,7 +30,7 @@ export default function SessionsPage() {
     return `Session ${session.number} (${session.start_date})`;
   }
 
-  function downloadJSON() {
+  function handleDownloadJSON() {
     const data = {
       players: players,
       logs: logs,
@@ -75,7 +75,7 @@ export default function SessionsPage() {
 
           <FilledButton
             className="flex w-full items-center justify-center gap-2 text-sm"
-            onClick={downloadJSON}
+            onClick={handleDownloadJSON}
           >
             <Download className="size-5" />
             Download Logs
