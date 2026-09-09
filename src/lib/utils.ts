@@ -83,3 +83,10 @@ export function stdDev(values: number[]): number {
 
   return Math.sqrt(variance);
 }
+
+/*
+ * Calculates the sum of an array of numbers
+ */
+export function sum(values: number[]): number {
+  return values.reduce((sum, value) => sum + value, 0);
+}
