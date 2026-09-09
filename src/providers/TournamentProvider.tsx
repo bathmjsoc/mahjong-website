@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, type ReactNode, useContext } from "react";
-import { useRealtimeTournamentSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
 const TournamentContext = createContext<string | undefined>(undefined);
 
@@ -14,8 +13,6 @@ export function TournamentProvider({
   tournamentId,
   children,
 }: TournamentProviderProps) {
-  useRealtimeTournamentSubscriptions(tournamentId);
-
   return <TournamentContext value={tournamentId}>{children}</TournamentContext>;
 }
 

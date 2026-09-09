@@ -2,7 +2,6 @@
 
 import { createContext, type ReactNode, useContext } from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import { useRealtimeSessionSubscriptions } from "@/hooks/useRealtimeSubscriptions";
 
 const SessionContext = createContext<string | undefined>(undefined);
 
@@ -17,8 +16,6 @@ export function SessionProvider({ children }: SessionProviderProps) {
   if (!sessionId) {
     throw new Error("No session was found, but one should exist.");
   }
-
-  useRealtimeSessionSubscriptions(latestSession.id);
 
   return <SessionContext value={sessionId}>{children}</SessionContext>;
 }
