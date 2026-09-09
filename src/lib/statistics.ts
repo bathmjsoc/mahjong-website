@@ -59,11 +59,11 @@ export function calculatePointStatistics(
     const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
 
     for (const playerId of log.winner_ids) {
-      pointsWon[playerId].push(delta.winner);
+      pointsWon[playerId]?.push(delta.winner);
     }
 
     for (const playerId of log.loser_ids) {
-      pointsLost[playerId].push(delta.loser);
+      pointsLost[playerId]?.push(delta.loser);
     }
   }
 
