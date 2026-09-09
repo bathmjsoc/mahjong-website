@@ -4,18 +4,24 @@ import { createClient } from "@/lib/supabase/server";
 import type { Player, Table, Wind } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 
-export async function createTable(table: Table): Promise<Table> {
+export async function createTables(...tables: Table[]): Promise<Table[]> {
   const supabase = await createClient();
 
-  const { data: createdTable, error } = await supabase
+  if (tables.length === 0) return [];
+
+  const { data: createdTables, error } = await supabase
     .from("tables")
-    .insert(table)
-    .select()
-    .single();
+    .insert(tables)
+    .select();
 
   if (error)
-    throw new Error(`createTable encountered an error: ${error.message}`);
+    throw new Error(`createTables encountered an error: ${error.message}`);
 
+  return createdTables;
+}
+
+export async function createTable(table: Table): Promise<Table> {
+  const [createdTable] = await createTables(table);
   return createdTable;
 }
 
@@ -58,8 +64,6 @@ export async function shuffleTables(
   tables: Table[],
   players: Player[],
 ): Promise<void> {
-  const supabase = await createClient();
-
   await deleteTables(...tables);
 
   const shuffledPlayers = shuffle(players);
@@ -81,10 +85,7 @@ export async function shuffleTables(
     });
   }
 
-  const { error } = await supabase.from("tables").insert(tablesToCreate);
-
-  if (error)
-    throw new Error(`shuffleTables encountered an error: ${error.message}`);
+  await createTables(...tablesToCreate);
 }
 
 export async function deleteTable(table: Table): Promise<void> {
