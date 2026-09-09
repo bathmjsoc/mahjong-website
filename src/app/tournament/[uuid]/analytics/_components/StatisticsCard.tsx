@@ -7,7 +7,6 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
@@ -17,18 +16,16 @@ type StatisticsCardProps = {
 };
 
 export function StatisticsCard({ player }: StatisticsCardProps) {
-  const { logs } = useLogs();
   const { players } = usePlayers();
-
   const {
     calculateGameStatistics,
     calculatePointStatistics,
     calculateSessionStatistics,
   } = useStatistics();
 
-  const gameStatistics = calculateGameStatistics(logs, players, player);
-  const pointsStatistics = calculatePointStatistics(logs, players, player);
-  const sessionStatistics = calculateSessionStatistics(players, player);
+  const gameStatistics = calculateGameStatistics(player);
+  const pointsStatistics = calculatePointStatistics(player);
+  const sessionStatistics = calculateSessionStatistics(player);
 
   const playerCount = players.length;
 
