@@ -36,7 +36,7 @@ export function useTournamentMutations() {
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
-        user_id: "dummy", // A real ID is securely assigned by Supabase
+        user_id: "dummy", // The true UUID is assigned in the server action
         name: tournamentName,
         last_updated: new Date().toISOString(),
         player_count: 0,
