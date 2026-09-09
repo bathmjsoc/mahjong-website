@@ -20,7 +20,7 @@ export default function TournamentPage() {
   const queryClient = useQueryClient();
   const sessionId = useSessionContext();
 
-  const { lockedPlayerIds } = useAttendance();
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { players } = usePlayers();
   const { tables } = useTables();
 
@@ -30,7 +30,8 @@ export default function TournamentPage() {
   async function handleShuffle() {
     const availableTables = tables.filter((table) => !table.saved);
     const availablePlayers = players.filter(
-      (player) => !lockedPlayerIds.has(player.id),
+      (player) =>
+        registeredPlayerIds.has(player.id) && !lockedPlayerIds.has(player.id),
     );
 
     startTransition(async () => {
