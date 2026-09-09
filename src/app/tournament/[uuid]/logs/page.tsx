@@ -54,7 +54,7 @@ export default function LogsPage() {
   );
 
   const filteredLogs = useMemo(() => {
-    if (!tags.length) return baseLogs;
+    if (tags.length === 0) return baseLogs;
 
     return baseLogs.filter((log) =>
       tags.every((tag) => tagFilters[tag.key](log, tag)),

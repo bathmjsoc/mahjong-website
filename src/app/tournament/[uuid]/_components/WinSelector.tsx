@@ -140,7 +140,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       title="食"
       buttonClassName={twMerge("rounded-full size-8", className)}
       tooltip="Record Win"
-      disabled={!occupant || !opponents.length}
+      disabled={!occupant || opponents.length === 0}
     >
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
