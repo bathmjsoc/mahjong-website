@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Shuffle } from "lucide-react";
 import { useState, useTransition } from "react";
 import { shuffleTables } from "@/actions/tables";
@@ -16,6 +17,7 @@ import { TableList } from "./_components/TableList";
 type WindKey = (typeof WINDS)[number];
 
 export default function TournamentPage() {
+  const queryClient = useQueryClient();
   const sessionId = useSessionContext();
 
   const { lockedPlayerIds } = useAttendance();
@@ -33,6 +35,9 @@ export default function TournamentPage() {
 
     startTransition(async () => {
       await shuffleTables(sessionId, availableTables, availablePlayers);
+      await queryClient.invalidateQueries({
+        queryKey: ["tables", sessionId],
+      });
     });
   }
 
