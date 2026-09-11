@@ -26,10 +26,6 @@ export function useStatistics() {
       return calculatePointStatistics(logs, players, player, scoringRulesMap);
     },
 
-    calculateSessionStatistics: (player: Player) => {
-      return calculateSessionStatistics(sessionScores, players, player);
-    },
-
     calculateRankingStatistics: (player: Player) => {
       return calculateRankingStatistics(
         player,
@@ -38,6 +34,10 @@ export function useStatistics() {
         sessionScores,
         sessionId,
       );
+    },
+
+    calculateSessionStatistics: (player: Player) => {
+      return calculateSessionStatistics(sessionScores, players, player);
     },
   };
 }
