@@ -8,7 +8,6 @@ export async function registerPlayer(
   player: Player,
 ): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase.from("attendance").upsert(
     {
       session_id: sessionId,
@@ -19,8 +18,9 @@ export async function registerPlayer(
     { onConflict: "session_id, player_id" },
   );
 
-  if (error)
+  if (error) {
     throw new Error(`registerPlayer encountered an error: ${error.message}`);
+  }
 }
 
 export async function updateAttendance(
@@ -29,12 +29,12 @@ export async function updateAttendance(
   attendance: Partial<Attendance>,
 ): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase
     .from("attendance")
     .update(attendance)
     .match({ session_id: sessionId, player_id: player.id });
 
-  if (error)
+  if (error) {
     throw new Error(`updateAttendance encountered an error: ${error.message}`);
+  }
 }

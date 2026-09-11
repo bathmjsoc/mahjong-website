@@ -4,17 +4,17 @@ import { createClient } from "@/lib/supabase/server";
 import type { Player, Table, Wind } from "@/lib/types";
 
 export async function createTables(...tables: Table[]): Promise<Table[]> {
-  const supabase = await createClient();
-
   if (tables.length === 0) return [];
 
+  const supabase = await createClient();
   const { data: createdTables, error } = await supabase
     .from("tables")
     .insert(tables)
     .select();
 
-  if (error)
+  if (error) {
     throw new Error(`createTables encountered an error: ${error.message}`);
+  }
 
   return createdTables;
 }
@@ -28,34 +28,35 @@ export async function updateTable(
   table: Table,
   seats: Partial<Record<Wind, Player | null>>,
 ): Promise<void> {
-  const supabase = await createClient();
-
   const payload: Partial<Table> = {};
   if ("east" in seats) payload.east_id = seats.east?.id ?? null;
   if ("south" in seats) payload.south_id = seats.south?.id ?? null;
   if ("west" in seats) payload.west_id = seats.west?.id ?? null;
   if ("north" in seats) payload.north_id = seats.north?.id ?? null;
 
+  const supabase = await createClient();
   const { error } = await supabase
     .from("tables")
     .update(payload)
     .eq("id", table.id);
 
-  if (error)
+  if (error) {
     throw new Error(`updateTable encountered an error: ${error.message}`);
+  }
 }
 
 export async function saveTable(table: Table): Promise<void> {
-  const supabase = await createClient();
+  const { id, ...tableData } = table; // Extract the UUID so we insert rather than update
 
-  const { id, ...tableData } = table;
+  const supabase = await createClient();
   const { error } = await supabase.from("tables").insert({
     ...tableData,
     saved: true,
   });
 
-  if (error)
+  if (error) {
     throw new Error(`saveTable encountered an error: ${error.message}`);
+  }
 }
 
 export async function deleteTables(...tables: Table[]): Promise<void> {
