@@ -72,6 +72,6 @@ export async function deleteTables(tables: Table[]): Promise<void> {
   }
 }
 
-export function deleteTable(table: Table): Promise<void> {
+export async function deleteTable(table: Table): Promise<void> {
   return deleteTables([table]);
 }
