@@ -1,4 +1,3 @@
-import { ArrowDown, ArrowUp, type LucideIcon, Minus } from "lucide-react";
 import { getPointDeltas } from "@/lib/scoring";
 import type { Log, Player, ScoringRulesMap } from "@/lib/types";
 import { avg, stdDev } from "@/lib/utils";
@@ -217,35 +216,4 @@ export function calculateRankingStatistics(
       ranking: previousStandingRank,
     },
   };
-}
-
-type Trend = {
-  icon: LucideIcon;
-  textColor: string;
-  fillColor: string;
-};
-
-export function getSessionTrend(
-  currentRank: number,
-  previousRank: number,
-): Trend {
-  if (currentRank < previousRank) {
-    return {
-      icon: ArrowUp,
-      textColor: "text-positive",
-      fillColor: "bg-positive/30",
-    };
-  } else if (currentRank > previousRank) {
-    return {
-      icon: ArrowDown,
-      textColor: "text-negative",
-      fillColor: "bg-negative/30",
-    };
-  } else {
-    return {
-      icon: Minus,
-      textColor: "text-neutral",
-      fillColor: "bg-neutral/30",
-    };
-  }
 }
