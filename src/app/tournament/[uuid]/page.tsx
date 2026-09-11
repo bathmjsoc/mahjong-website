@@ -36,10 +36,10 @@ export default function TournamentPage() {
     );
 
     startTransition(async () => {
-      await deleteTable(availableTables);
-
       const shuffledPlayers = shuffle(availablePlayers);
       const newTables = [];
+
+      await deleteTables(availableTables);
 
       while (shuffledPlayers.length > 0) {
         const [east = null, south = null, west = null, north = null] =
