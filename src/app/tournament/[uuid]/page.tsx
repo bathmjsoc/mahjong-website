@@ -39,8 +39,6 @@ export default function TournamentPage() {
       const shuffledPlayers = shuffle(availablePlayers);
       const newTables = [];
 
-      await deleteTables(availableTables);
-
       while (shuffledPlayers.length > 0) {
         const [east = null, south = null, west = null, north = null] =
           shuffledPlayers.splice(0, 4);
@@ -57,6 +55,7 @@ export default function TournamentPage() {
         });
       }
 
+      await deleteTables(availableTables);
       await createTables(newTables);
       await queryClient.invalidateQueries({
         queryKey: ["tables", sessionId],
