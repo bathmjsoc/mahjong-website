@@ -3,7 +3,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Shuffle } from "lucide-react";
 import { useState, useTransition } from "react";
-import { createTables, deleteTable } from "@/actions/tables";
+import { createTables, deleteTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
@@ -57,7 +57,7 @@ export default function TournamentPage() {
         });
       }
 
-      await createTables(...newTables);
+      await createTables(newTables);
       await queryClient.invalidateQueries({
         queryKey: ["tables", sessionId],
       });
