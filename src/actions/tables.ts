@@ -59,18 +59,18 @@ export async function saveTable(table: Table): Promise<void> {
   }
 }
 
-export async function deleteTables(...tables: Table[]): Promise<void> {
-  const supabase = await createClient();
-
+export async function deleteTable(table: Table): Promise<void>;
+export async function deleteTable(tables: Table[]): Promise<void>;
+export async function deleteTable(input: Table | Table[]): Promise<void> {
+  const tables = Array.isArray(input) ? input : [input];
   const tableIds = tables.map((table) => table.id);
+
   if (tableIds.length === 0) return;
 
+  const supabase = await createClient();
   const { error } = await supabase.from("tables").delete().in("id", tableIds);
 
-  if (error)
+  if (error) {
     throw new Error(`deleteTables encountered an error: ${error.message}`);
-}
-
-export async function deleteTable(table: Table): Promise<void> {
-  return deleteTables(table);
+  }
 }
