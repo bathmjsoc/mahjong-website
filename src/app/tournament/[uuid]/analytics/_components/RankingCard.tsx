@@ -1,7 +1,7 @@
 import { Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useStatistics } from "@/hooks/useStatistics";
-import { getSessionTrend } from "@/lib/scoring";
+import { getSessionTrend } from "@/lib/helpers";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
 
