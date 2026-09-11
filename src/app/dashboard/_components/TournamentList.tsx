@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
-import { formatTimeAgo } from "@/lib/utils";
+import { formatRelativeTime } from "@/lib/utils";
 import { EditTournamentModal } from "./EditTournamentModal";
 
 type TournamentListProps = {
@@ -44,7 +44,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
               <Users className="size-4" />
               {tournament.player_count}
             </div>
-            Updated {formatTimeAgo(tournament.last_updated)}
+            Updated {formatRelativeTime(tournament.last_updated)}
           </div>
 
           <div className="flex gap-3">

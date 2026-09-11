@@ -4,7 +4,7 @@ import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
  * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")
  */
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-export function formatTimeAgo(timestamp: string): string {
+export function formatRelativeTime(timestamp: string): string {
   const delta = Math.round((Date.parse(timestamp) - Date.now()) / 1000);
 
   for (const cutoff of RELATIVE_TIME_CUTOFFS) {
