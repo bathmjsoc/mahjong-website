@@ -6,12 +6,11 @@ import type { Tournament } from "@/lib/types";
 
 export async function createTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Not authenticated!");
+  if (!user) return;
 
   const { data: createdTournament, error } = await supabase
     .from("tournaments")
@@ -22,8 +21,9 @@ export async function createTournament(tournament: Tournament): Promise<void> {
     .select("id")
     .single();
 
-  if (error)
+  if (error) {
     throw new Error(`createTournament encountered an error: ${error.message}`);
+  }
 
   const initialSession = {
     id: crypto.randomUUID(),
@@ -37,12 +37,12 @@ export async function createTournament(tournament: Tournament): Promise<void> {
 
 export async function updateTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase
     .from("tournaments")
     .update(tournament)
     .eq("id", tournament.id);
 
-  if (error)
+  if (error) {
     throw new Error(`updateTournament encountered an error: ${error.message}`);
+  }
 }

@@ -8,12 +8,12 @@ import {
 } from "@/hooks/useOptimisticUpdates";
 import type { Attendance, Player } from "@/lib/types";
 
-type RegisterAttendanceVariables = {
+type RegisterAttendanceType = {
   sessionId: string;
   player: Player;
 };
 
-type UpdateAttendanceVariables = {
+type UpdateAttendanceType = {
   sessionId: string;
   player: Player;
   changes: Partial<Attendance>;
@@ -30,10 +30,7 @@ export function useAttendanceMutations() {
     getQueryKey: (attendance) => getAttendanceQueryKey(attendance.session_id),
   });
 
-  const registerMutation = useOptimisticMutation<
-    RegisterAttendanceVariables,
-    void
-  >({
+  const registerMutation = useOptimisticMutation<RegisterAttendanceType, void>({
     mutationFn: ({ sessionId, player }) =>
       registerPlayerAction(sessionId, player),
     getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
@@ -46,17 +43,15 @@ export function useAttendanceMutations() {
       }),
   });
 
-  const updateMutation = useOptimisticMutation<UpdateAttendanceVariables, void>(
-    {
-      mutationFn: ({ sessionId, player, changes }) =>
-        updateAttendanceAction(sessionId, player, changes),
-      getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
-      optimisticUpdate: ({ sessionId, player, changes }) => {
-        const queryKey = getAttendanceQueryKey(sessionId);
-        patchItem(player.id, queryKey, changes);
-      },
+  const updateMutation = useOptimisticMutation<UpdateAttendanceType, void>({
+    mutationFn: ({ sessionId, player, changes }) =>
+      updateAttendanceAction(sessionId, player, changes),
+    getQueryKey: ({ sessionId }) => getAttendanceQueryKey(sessionId),
+    optimisticUpdate: ({ sessionId, player, changes }) => {
+      const queryKey = getAttendanceQueryKey(sessionId);
+      patchItem(player.id, queryKey, changes);
     },
-  );
+  });
 
   return {
     registerPlayer(sessionId: string, player: Player) {

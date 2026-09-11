@@ -27,7 +27,7 @@ function selectSessions(rawSessions: Session[]): UseSessionsType {
 
   const sessionMap = new Map(sessions.map((session) => [session.id, session]));
 
-  return { sessions, sessionMap };
+  return { sessionMap, sessions };
 }
 
 async function fetchSessions(tournamentId: string): Promise<Session[]> {

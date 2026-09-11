@@ -6,7 +6,8 @@ import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutation
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
-import { rankPlayers, scoreToColor } from "@/lib/scoring";
+import { scoreToColor } from "@/lib/helpers";
+import { rankPlayers } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 

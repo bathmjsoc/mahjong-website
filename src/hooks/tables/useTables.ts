@@ -54,9 +54,9 @@ function selectTables(rawTables: Table[]): UseTablesType {
   }
 
   return {
-    tables,
     duplicatePlayerIds,
     seatedPlayerIds,
+    tables,
   };
 }
 

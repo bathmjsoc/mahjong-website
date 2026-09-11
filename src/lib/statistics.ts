@@ -143,15 +143,13 @@ export function calculateSessionStatistics(
   const currentScores = scoresByPlayer[player.id];
   const allScores = players.map((player) => scoresByPlayer[player.id]);
 
-  const highestSessionScore =
-    currentScores.length > 0 ? Math.max(...currentScores) : 0;
+  const highestSessionScore = Math.max(...currentScores);
   const highestSessionScoreRank =
     allScores.filter((scores) => {
       return scores.length > 0 && Math.max(...scores) > highestSessionScore;
     }).length + 1;
 
-  const lowestSessionScore =
-    currentScores.length > 0 ? Math.min(...currentScores) : 0;
+  const lowestSessionScore = Math.min(...currentScores);
   const lowestSessionScoreRank =
     allScores.filter((scores) => {
       return scores.length > 0 && Math.min(...scores) < lowestSessionScore;

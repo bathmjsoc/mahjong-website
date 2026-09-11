@@ -36,8 +36,6 @@ export default function TournamentPage() {
     );
 
     startTransition(async () => {
-      await deleteTables(...availableTables);
-
       const shuffledPlayers = shuffle(availablePlayers);
       const newTables = [];
 
@@ -57,7 +55,8 @@ export default function TournamentPage() {
         });
       }
 
-      await createTables(...newTables);
+      await deleteTables(availableTables);
+      await createTables(newTables);
       await queryClient.invalidateQueries({
         queryKey: ["tables", sessionId],
       });

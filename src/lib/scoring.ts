@@ -85,15 +85,6 @@ export function rankPlayers(
 }
 
 /*
- * Maps a score to its corresponding Tailwind background color class
- */
-export function scoreToColor(score: number): string {
-  if (score < 0) return "bg-negative";
-  if (score > 0) return "bg-positive";
-  return "bg-neutral";
-}
-
-/*
  * Calculate the number of wins/losses/others (and their subtypes) for a player from the provided logs
  */
 export function getGameResults(logs: Log[], player: Player): GameResults {

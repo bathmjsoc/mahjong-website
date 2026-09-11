@@ -7,6 +7,7 @@ import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
+import { getSessionName } from "@/lib/helpers";
 import type { Session } from "@/lib/types";
 import { Leaderboard } from "./_components/Leaderboard";
 import { ViewGraphModal } from "./_components/ViewGraphModal";
@@ -24,11 +25,6 @@ export default function SessionsPage() {
     : overallScores;
 
   const activePlayers = players.filter((player) => player.id in scores);
-
-  function getSessionName(session: Session | null): string {
-    if (!session) return "Overall Standings"; // Special case
-    return `Session ${session.number} (${session.start_date})`;
-  }
 
   function handleDownloadJSON() {
     const data = {

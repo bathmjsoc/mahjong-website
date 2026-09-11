@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import { rankPlayers, scoreToColor } from "@/lib/scoring";
+import { scoreToColor } from "@/lib/helpers";
+import { rankPlayers } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
 

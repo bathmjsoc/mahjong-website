@@ -12,7 +12,7 @@ type UseTournamentsType = {
   tournament: Tournament;
 };
 
-export function useTournaments(): UseTournamentsType {
+export function useTournament(): UseTournamentsType {
   const tournamentId = useTournamentContext();
 
   const query = useSuspenseQuery({

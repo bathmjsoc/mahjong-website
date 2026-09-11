@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
+import { useTournament } from "@/hooks/tournaments/useTournament";
 import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
 import type { Log, ScoringRulesMap } from "@/lib/types";
@@ -15,7 +15,7 @@ type UseLogsType = {
 export function useLogs(): UseLogsType {
   const tournamentId = useTournamentContext();
 
-  const { scoringRulesMap } = useTournaments();
+  const { scoringRulesMap } = useTournament();
 
   const query = useSuspenseQuery({
     queryKey: ["logs", tournamentId],
@@ -36,7 +36,6 @@ function selectLogs(
 
   const logs = logsWithDisabled.filter((log) => !log.disabled);
   const overallScores = getPlayerScores(logs, scoringRulesMap);
-
   const grouped = Map.groupBy(logs, (log) => log.session_id);
 
   const sessionScores: Record<string, Record<string, number>> = {};

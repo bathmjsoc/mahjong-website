@@ -11,7 +11,7 @@ import {
 } from "@/hooks/useOptimisticUpdates";
 import type { Player, Table, Wind } from "@/lib/types";
 
-type UpdateTableVariables = {
+type UpdateTableType = {
   table: Table;
   seats: Partial<Record<Wind, Player | null>>;
 };
@@ -38,7 +38,7 @@ export function useTableMutations() {
     optimisticUpdate: addItem,
   });
 
-  const updateMutation = useOptimisticMutation<UpdateTableVariables, void>({
+  const updateMutation = useOptimisticMutation<UpdateTableType, void>({
     mutationFn: ({ table, seats }) => updateTableAction(table, seats),
     getQueryKey: ({ table }) => getTablesQueryKey(table),
     optimisticUpdate: ({ table, seats }) => {

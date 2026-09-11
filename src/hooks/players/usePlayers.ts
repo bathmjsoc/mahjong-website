@@ -27,10 +27,9 @@ function selectPlayers(rawPlayers: Player[]): UsePlayersType {
   );
 
   const players = playersWithDeleted.filter((player) => !player.deleted);
-
   const playerMap = new Map(players.map((player) => [player.id, player]));
 
-  return { players, playersWithDeleted, playerMap };
+  return { playerMap, players, playersWithDeleted };
 }
 
 async function fetchPlayers(tournamentId: string): Promise<Player[]> {

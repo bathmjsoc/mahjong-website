@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournaments } from "@/hooks/tournaments/useTournaments";
+import { useTournament } from "@/hooks/tournaments/useTournament";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 import { useTournamentContext } from "@/providers/TournamentProvider";
@@ -20,7 +20,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { scoringRulesMap, tournament } = useTournaments();
+  const { scoringRulesMap, tournament } = useTournament();
 
   const faanOptions = Array.from(scoringRulesMap.keys()).filter(
     (key) => key !== null,

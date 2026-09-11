@@ -5,33 +5,33 @@ import type { Player } from "@/lib/types";
 
 export async function createPlayer(player: Player): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase.from("players").insert(player);
 
-  if (error)
+  if (error) {
     throw new Error(`createPlayer encountered an error: ${error.message}`);
+  }
 }
 
 export async function updatePlayer(player: Player): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase
     .from("players")
     .update(player)
     .eq("id", player.id);
 
-  if (error)
+  if (error) {
     throw new Error(`updatePlayer encountered an error: ${error.message}`);
+  }
 }
 
 export async function deletePlayer(player: Player): Promise<void> {
   const supabase = await createClient();
-
   const { error } = await supabase
     .from("players")
     .update({ deleted: true })
     .eq("id", player.id);
 
-  if (error)
+  if (error) {
     throw new Error(`deletePlayer encountered an error: ${error.message}`);
+  }
 }
