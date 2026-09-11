@@ -1,6 +1,7 @@
-import { ArrowDown, ArrowUp, Minus, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useStatistics } from "@/hooks/useStatistics";
+import { getSessionTrend } from "@/lib/statistics";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
 
@@ -12,29 +13,6 @@ export function RankingCard({ player }: RankingCardProps) {
   const { calculateRankingStatistics } = useStatistics();
 
   const rankingStatistics = calculateRankingStatistics(player);
-
-  function getSessionTrend(currentRank: number, previousRank: number) {
-    if (currentRank < previousRank) {
-      return {
-        icon: ArrowUp,
-        textColor: "text-positive",
-        fillColor: "bg-positive/30",
-      };
-    } else if (currentRank > previousRank) {
-      return {
-        icon: ArrowDown,
-        textColor: "text-negative",
-        fillColor: "bg-negative/30",
-      };
-    } else {
-      return {
-        icon: Minus,
-        textColor: "text-neutral",
-        fillColor: "bg-neutral/30",
-      };
-    }
-  }
-
   const currentRank = rankingStatistics.current_standing.ranking;
   const previousRank = rankingStatistics.previous_standing.ranking;
 
