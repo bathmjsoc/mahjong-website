@@ -36,7 +36,6 @@ function selectLogs(
 
   const logs = logsWithDisabled.filter((log) => !log.disabled);
   const overallScores = getPlayerScores(logs, scoringRulesMap);
-
   const grouped = Map.groupBy(logs, (log) => log.session_id);
 
   const sessionScores: Record<string, Record<string, number>> = {};
