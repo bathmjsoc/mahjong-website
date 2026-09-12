@@ -38,8 +38,9 @@ async function fetchSessions(tournamentId: string): Promise<Session[]> {
     .select("*")
     .eq("tournament_id", tournamentId);
 
-  if (error)
+  if (error) {
     throw new Error(`fetchSessions encountered an error: ${error.message}`);
+  }
 
   return sessions;
 }

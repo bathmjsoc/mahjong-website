@@ -17,7 +17,7 @@ export function useTournament(): UseTournamentsType {
 
   const query = useSuspenseQuery({
     queryKey: ["tournament", tournamentId],
-    queryFn: () => fetchTournamentById(tournamentId),
+    queryFn: () => fetchTournament(tournamentId),
     select: selectTournament,
   });
 
@@ -32,7 +32,7 @@ function selectTournament(tournament: Tournament): UseTournamentsType {
   return { scoringRulesMap, tournament };
 }
 
-async function fetchTournamentById(tournamentId: string): Promise<Tournament> {
+async function fetchTournament(tournamentId: string): Promise<Tournament> {
   const supabase = createClient();
 
   const { data: tournament, error } = await supabase
@@ -43,9 +43,7 @@ async function fetchTournamentById(tournamentId: string): Promise<Tournament> {
     .overrideTypes<SupabaseTournament, { merge: false }>();
 
   if (error) {
-    throw new Error(
-      `fetchTournamentById encountered an error: ${error.message}`,
-    );
+    throw new Error(`fetchTournament encountered an error: ${error.message}`);
   }
 
   return tournament;
