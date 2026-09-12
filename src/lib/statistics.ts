@@ -17,13 +17,9 @@ export function calculateGameStatistics(
   );
 
   for (const log of logs) {
-    for (const playerId of [
-      ...log.winner_ids,
-      ...log.loser_ids,
-      ...log.other_ids,
-    ]) {
-      gamesPlayed[playerId]++;
-    }
+    for (const playerId of log.winner_ids) gamesPlayed[playerId]++;
+    for (const playerId of log.loser_ids) gamesPlayed[playerId]++;
+    for (const playerId of log.other_ids) gamesPlayed[playerId]++;
   }
 
   const currentGamesPlayed = gamesPlayed[player.id];
@@ -134,9 +130,7 @@ export function calculateSessionStatistics(
 
   for (const session of Object.values(sessionScores)) {
     for (const [playerId, score] of Object.entries(session)) {
-      if (scoresByPlayer[playerId]) {
-        scoresByPlayer[playerId].push(score);
-      }
+      scoresByPlayer[playerId]?.push(score);
     }
   }
 

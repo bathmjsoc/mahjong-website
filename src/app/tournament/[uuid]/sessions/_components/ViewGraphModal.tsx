@@ -1,6 +1,6 @@
 import { BarChart } from "@/elements/charts/BarChart";
 import { Modal } from "@/elements/Modal";
-import { rankPlayers } from "@/lib/scoring";
+import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 
 type ViewGraphModalProps = {
@@ -16,12 +16,12 @@ export function ViewGraphModal({
   isOpen,
   onClose,
 }: ViewGraphModalProps) {
-  const rankedPlayers = rankPlayers(players, scores);
+  const rankedPlayers = sortPlayersByScore(players, scores);
   const rankedPlayerData = [
     {
       title: "Score",
       data: Object.fromEntries(
-        rankedPlayers.map(([player, score]) => [player.name, score]),
+        rankedPlayers.map((player) => [player.name, scores[player.id] ?? 0]),
       ),
     },
   ];

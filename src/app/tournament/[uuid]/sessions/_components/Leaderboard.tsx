@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { scoreToColor } from "@/lib/helpers";
-import { rankPlayers } from "@/lib/scoring";
+import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { getOrdinalSuffix } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
     );
   }
 
-  const rankedPlayers = rankPlayers(players, scores);
+  const rankedPlayers = sortPlayersByScore(players, scores);
 
   return (
     <table className="table-fixed border border-primary">
@@ -28,11 +28,11 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
         </tr>
       </thead>
       <tbody className="divide-y divide-primary">
-        {rankedPlayers.map(([player, score], index) => (
+        {rankedPlayers.map((player, index) => (
           <PlayerRow
             key={player.id}
             player={player}
-            score={score}
+            score={scores[player.id] ?? 0}
             position={index + 1}
           />
         ))}

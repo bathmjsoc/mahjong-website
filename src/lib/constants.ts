@@ -1,5 +1,10 @@
 import type { ScoringRule, WinType } from "@/lib/types";
 
+type RelativeTimeCutoff = {
+  unit: Intl.RelativeTimeFormatUnit;
+  seconds: number;
+};
+
 export const DEFAULT_FALSE_WIN_RULE = {
   faan: null,
   deltas: {
@@ -15,11 +20,6 @@ export const DEFAULT_SCORING_RULE = {
     包自摸: { winner: 0, loser: 0 },
   },
 } as const satisfies ScoringRule;
-
-type RelativeTimeCutoff = {
-  unit: Intl.RelativeTimeFormatUnit;
-  seconds: number;
-};
 
 export const RELATIVE_TIME_CUTOFFS = [
   { unit: "year", seconds: 31536000 },

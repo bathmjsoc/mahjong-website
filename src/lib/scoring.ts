@@ -6,6 +6,12 @@ import type {
   WinType,
 } from "@/lib/types";
 
+type GameResults = {
+  wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+};
+
 /*
  * Calculates the cumulative score for each player from the provided logs and scoring rules
  */
@@ -27,7 +33,7 @@ export function getPlayerScores(
     }
 
     for (const other of log.other_ids) {
-      scores[other] ??= 0;
+      scores[other] = scores[other] ?? 0;
     }
   }
 
@@ -57,8 +63,8 @@ export function getPointHistory(
   const scores = [0];
 
   for (const log of logs) {
-    const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
     const previousPoints = scores.at(-1) ?? 0;
+    const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
 
     if (log.winner_ids.includes(player.id)) {
       scores.push(previousPoints + delta.winner);
@@ -73,15 +79,13 @@ export function getPointHistory(
 }
 
 /*
- * Combines players with their scores and returns them in descending order
+ * Sorts the provided players by their provided scores (in descending order)
  */
-export function rankPlayers(
+export function sortPlayersByScore(
   players: Player[],
   scores: Record<string, number>,
-): [Player, number][] {
-  return players
-    .map((player): [Player, number] => [player, scores[player.id] ?? 0])
-    .sort((a, b) => b[1] - a[1]);
+): Player[] {
+  return players.sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
 }
 
 /*
@@ -106,12 +110,6 @@ export function getGameResults(logs: Log[], player: Player): GameResults {
 
   return counts;
 }
-
-type GameResults = {
-  wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-};
 
 /*
  * Calculate the number of wins for each faan value for a player from the provided logs

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, use } from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
 
 const SessionContext = createContext<string | undefined>(undefined);
@@ -13,6 +13,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
   const { sessions } = useSessions();
 
   const sessionId = sessions.at(-1)?.id;
+
   if (!sessionId) {
     throw new Error("No session was found, but one should exist.");
   }
@@ -21,7 +22,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
 }
 
 export function useSessionContext(): string {
-  const sessionId = useContext(SessionContext);
+  const sessionId = use(SessionContext);
 
   if (!sessionId) {
     throw new Error(

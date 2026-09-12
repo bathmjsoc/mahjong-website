@@ -7,7 +7,7 @@ import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
 import { scoreToColor } from "@/lib/helpers";
-import { rankPlayers } from "@/lib/scoring";
+import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
@@ -27,8 +27,8 @@ export function PlayerList() {
     registeredPlayerIds.has(player.id),
   );
   const scores = sessionScores[sessionId] ?? {};
-  const rankedPlayers = rankPlayers(registeredPlayers, scores);
-  const firstPlacePlayer = rankPlayers(players, overallScores)[0][0];
+  const rankedPlayers = sortPlayersByScore(registeredPlayers, scores);
+  const firstPlacePlayer = sortPlayersByScore(players, overallScores)[0];
 
   return (
     <table>
@@ -43,11 +43,11 @@ export function PlayerList() {
         </tr>
       </thead>
       <tbody>
-        {rankedPlayers.map(([player, score]) => (
+        {rankedPlayers.map((player) => (
           <PlayerRow
             key={player.id}
             player={player}
-            score={score}
+            score={scores[player.id] ?? 0}
             isLocked={lockedPlayerIds.has(player.id)}
             isUnseated={!seatedPlayerIds.has(player.id)}
             isFirstPlace={player.id === firstPlacePlayer.id}
