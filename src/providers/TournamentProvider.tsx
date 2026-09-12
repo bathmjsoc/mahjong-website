@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, use } from "react";
 
 const TournamentContext = createContext<string | undefined>(undefined);
 
@@ -17,7 +17,7 @@ export function TournamentProvider({
 }
 
 export function useTournamentContext(): string {
-  const tournamentId = useContext(TournamentContext);
+  const tournamentId = use(TournamentContext);
 
   if (!tournamentId) {
     throw new Error(
