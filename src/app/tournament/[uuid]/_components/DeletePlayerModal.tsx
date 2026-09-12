@@ -4,17 +4,20 @@ import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 
 type DeletePlayerModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  players: Player[];
 };
 
-export function DeletePlayerModal({ isOpen, onClose }: DeletePlayerModalProps) {
+export function DeletePlayerModal({
+  isOpen,
+  onClose,
+  players,
+}: DeletePlayerModalProps) {
   const { deletePlayer } = usePlayerMutations();
-  const { players } = usePlayers();
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [deletedName, setDeletedName] = useState("");

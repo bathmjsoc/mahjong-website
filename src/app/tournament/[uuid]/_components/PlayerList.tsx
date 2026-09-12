@@ -4,19 +4,21 @@ import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { useLogs } from "@/hooks/logs/useLogs";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTables } from "@/hooks/tables/useTables";
 import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
-export function PlayerList() {
+type PlayerListProps = {
+  players: Player[];
+};
+
+export function PlayerList({ players }: PlayerListProps) {
   const sessionId = useSessionContext();
 
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { overallScores, sessionScores } = useLogs();
-  const { players } = usePlayers();
   const { seatedPlayerIds } = useTables();
 
   if (registeredPlayerIds.size === 0) {

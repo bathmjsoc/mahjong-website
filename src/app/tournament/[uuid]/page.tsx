@@ -65,7 +65,7 @@ export default function TournamentPage() {
 
   return (
     <div className="flex min-h-dvh">
-      <Sidebar />
+      <Sidebar players={players} />
 
       <div
         title={wind ? WIND_MAP[wind] : "N/A"}

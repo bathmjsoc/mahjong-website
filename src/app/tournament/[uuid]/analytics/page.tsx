@@ -12,7 +12,7 @@ import { ScoreHistoryCard } from "./_components/ScoreHistoryCard";
 import { StatisticsCard } from "./_components/StatisticsCard";
 
 export default function AnalyticsPage() {
-  const { overallScores } = useLogs();
+  const { logs, overallScores } = useLogs();
   const { players } = usePlayers();
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -40,22 +40,25 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="rounded-lg bg-primary p-5">
-                <GameOutcomesCard player={selectedPlayer} />
+                <GameOutcomesCard logs={logs} player={selectedPlayer} />
               </div>
             </div>
 
             <div className="rounded-lg bg-primary p-5">
-              <StatisticsCard player={selectedPlayer} />
+              <StatisticsCard
+                player={selectedPlayer}
+                playerCount={players.length}
+              />
             </div>
           </div>
 
           <div className="flex flex-col gap-5">
             <div className="rounded-lg bg-primary p-5">
-              <ScoreHistoryCard player={selectedPlayer} />
+              <ScoreHistoryCard logs={logs} player={selectedPlayer} />
             </div>
 
             <div className="rounded-lg bg-primary p-5">
-              <FaanFrequencyCard player={selectedPlayer} />
+              <FaanFrequencyCard logs={logs} player={selectedPlayer} />
             </div>
           </div>
         </div>

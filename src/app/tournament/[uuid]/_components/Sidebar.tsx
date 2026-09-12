@@ -12,7 +12,6 @@ import { IconButton } from "@/elements/IconButton";
 import { SearchCombobox } from "@/elements/SearchCombobox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 import { CreatePlayerModal } from "./CreatePlayerModal";
@@ -23,12 +22,15 @@ import { ResetSessionModal } from "./ResetSessionModal";
 
 type ModalType = "create" | "edit" | "delete" | "reset" | null;
 
-export function Sidebar() {
+type SidebarProps = {
+  players: Player[];
+};
+
+export function Sidebar({ players }: SidebarProps) {
   const sessionId = useSessionContext();
 
   const { registeredPlayerIds } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
-  const { players } = usePlayers();
 
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -96,7 +98,7 @@ export function Sidebar() {
               </IconButton>
             </div>
 
-            <PlayerList />
+            <PlayerList players={players} />
           </div>
         </div>
 
@@ -117,20 +119,23 @@ export function Sidebar() {
       <CreatePlayerModal
         isOpen={activeModal === "create"}
         onClose={() => setActiveModal(null)}
+        players={players}
+      />
+
+      <EditPlayerModal
+        isOpen={activeModal === "edit"}
+        onClose={() => setActiveModal(null)}
+        players={players}
       />
 
       <DeletePlayerModal
         isOpen={activeModal === "delete"}
         onClose={() => setActiveModal(null)}
+        players={players}
       />
 
       <ResetSessionModal
         isOpen={activeModal === "reset"}
-        onClose={() => setActiveModal(null)}
-      />
-
-      <EditPlayerModal
-        isOpen={activeModal === "edit"}
         onClose={() => setActiveModal(null)}
       />
     </>
