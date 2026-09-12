@@ -9,10 +9,9 @@ import {
 import type { Player } from "@/lib/types";
 
 export function usePlayerMutations() {
-  const getPlayersQueryKey = (player: Player) => [
-    "players",
-    player.tournament_id,
-  ];
+  const getPlayersQueryKey = (player: Player) => {
+    return ["players", player.tournament_id];
+  };
 
   const { addItem, updateItem } = useCacheItems<Player>({
     getId: (player) => player.id,

@@ -9,7 +9,9 @@ import {
 import type { Log, Player, WinType } from "@/lib/types";
 
 export function useLogMutations() {
-  const getLogsQueryKey = (log: Log) => ["logs", log.tournament_id];
+  const getLogsQueryKey = (log: Log) => {
+    return ["logs", log.tournament_id];
+  };
 
   const { addItem, updateItem } = useCacheItems<Log>({
     getId: (log) => log.id,

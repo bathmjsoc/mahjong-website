@@ -9,7 +9,9 @@ import {
 import type { ScoringRule, Tournament } from "@/lib/types";
 
 export function useTournamentMutations() {
-  const getTournamentsQueryKey = () => ["tournaments"];
+  const getTournamentsQueryKey = () => {
+    return ["tournaments"];
+  };
 
   const { addItem, updateItem } = useCacheItems<Tournament>({
     getId: (tournament) => tournament.id,
