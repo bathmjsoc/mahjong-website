@@ -22,13 +22,13 @@ export function Topbar() {
   return (
     <div className="z-50 flex h-15 items-center justify-between bg-accent px-5">
       <TabMenu>
-        {TABS.map(({ label, href }) => (
+        {TABS.map((tab) => (
           <TabLink
-            key={label}
-            href={`/tournament/${tournamentId}${href}`}
+            key={tab.label}
+            href={`/tournament/${tournamentId}${tab.href}`}
             className="w-30"
           >
-            {label}
+            {tab.label}
           </TabLink>
         ))}
       </TabMenu>
