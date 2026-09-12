@@ -1,10 +1,15 @@
 import { ArrowDown, ArrowUp, type LucideIcon, Minus } from "lucide-react";
+import type { Session } from "@/lib/types";
+
+type Trend = {
+  icon: LucideIcon;
+  textColor: string;
+  fillColor: string;
+};
 
 /*
  * Maps the trend between the previous and current sessions to its corresponding Lucide icon and Tailwind color class
  */
-import type { Session } from "@/lib/types";
-
 export function getSessionTrend(
   currentRank: number,
   previousRank: number,
@@ -29,12 +34,6 @@ export function getSessionTrend(
     };
   }
 }
-
-type Trend = {
-  icon: LucideIcon;
-  textColor: string;
-  fillColor: string;
-};
 
 /*
  * Maps a score to its corresponding Tailwind background color class
