@@ -3,25 +3,19 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Table } from "@/lib/types";
 
-export async function createTables(tables: Table[]): Promise<Table[]> {
-  if (tables.length === 0) return [];
+export async function createTables(tables: Table[]): Promise<void> {
+  if (tables.length === 0) return;
 
   const supabase = await createClient();
-  const { data: createdTables, error } = await supabase
-    .from("tables")
-    .insert(tables)
-    .select();
+  const { error } = await supabase.from("tables").insert(tables);
 
   if (error) {
     throw new Error(`createTables encountered an error: ${error.message}`);
   }
-
-  return createdTables;
 }
 
-export async function createTable(table: Table): Promise<Table> {
-  const [createdTable] = await createTables([table]);
-  return createdTable;
+export async function createTable(table: Table): Promise<void> {
+  return createTables([table]);
 }
 
 export async function updateTable(table: Table): Promise<void> {
