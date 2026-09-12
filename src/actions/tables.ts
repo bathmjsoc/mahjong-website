@@ -37,11 +37,16 @@ export async function updateTable(table: Table): Promise<void> {
 }
 
 export async function deleteTables(tables: Table[]): Promise<void> {
-  const tableIds = tables.map((table) => table.id);
-  if (tableIds.length === 0) return;
+  if (tables.length === 0) return;
 
   const supabase = await createClient();
-  const { error } = await supabase.from("tables").delete().in("id", tableIds);
+  const { error } = await supabase
+    .from("tables")
+    .delete()
+    .in(
+      "id",
+      tables.map((table) => table.id),
+    );
 
   if (error) {
     throw new Error(`deleteTables encountered an error: ${error.message}`);
