@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  createTable as createTableAction,
-  deleteTable as deleteTableAction,
+  createTables as createTableAction,
+  deleteTables as deleteTableAction,
   updateTable as updateTableAction,
 } from "@/actions/tables";
 import {

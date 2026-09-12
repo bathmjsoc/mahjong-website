@@ -3,7 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Table } from "@/lib/types";
 
-export async function createTables(tables: Table[]): Promise<void> {
+export async function createTables(payload: Table | Table[]): Promise<void> {
+  const tables = Array.isArray(payload) ? payload : [payload];
   if (tables.length === 0) return;
 
   const supabase = await createClient();
@@ -12,10 +13,6 @@ export async function createTables(tables: Table[]): Promise<void> {
   if (error) {
     throw new Error(`createTables encountered an error: ${error.message}`);
   }
-}
-
-export async function createTable(table: Table): Promise<void> {
-  return createTables([table]);
 }
 
 export async function updateTable(table: Table): Promise<void> {
@@ -30,7 +27,8 @@ export async function updateTable(table: Table): Promise<void> {
   }
 }
 
-export async function deleteTables(tables: Table[]): Promise<void> {
+export async function deleteTables(payload: Table | Table[]): Promise<void> {
+  const tables = Array.isArray(payload) ? payload : [payload];
   if (tables.length === 0) return;
 
   const supabase = await createClient();
@@ -45,8 +43,4 @@ export async function deleteTables(tables: Table[]): Promise<void> {
   if (error) {
     throw new Error(`deleteTables encountered an error: ${error.message}`);
   }
-}
-
-export async function deleteTable(table: Table): Promise<void> {
-  return deleteTables([table]);
 }
