@@ -1,15 +1,13 @@
 import { ColumnChart } from "@/elements/charts/ColumnChart";
-import { useLogs } from "@/hooks/logs/useLogs";
 import { countFaanFrequency } from "@/lib/scoring";
-import type { Player } from "@/lib/types";
+import type { Log, Player } from "@/lib/types";
 
 type FaanFrequencyCardProps = {
+  logs: Log[];
   player: Player;
 };
 
-export function FaanFrequencyCard({ player }: FaanFrequencyCardProps) {
-  const { logs } = useLogs();
-
+export function FaanFrequencyCard({ logs, player }: FaanFrequencyCardProps) {
   const faanFrequency = countFaanFrequency(logs, player);
   const faanFrequencyData = [
     {

@@ -7,16 +7,15 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import { useStatistics } from "@/hooks/useStatistics";
 import type { Player } from "@/lib/types";
 
 type StatisticsCardProps = {
   player: Player;
+  playerCount: number;
 };
 
-export function StatisticsCard({ player }: StatisticsCardProps) {
-  const { players } = usePlayers();
+export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
   const {
     calculateGameStatistics,
     calculatePointStatistics,
@@ -26,8 +25,6 @@ export function StatisticsCard({ player }: StatisticsCardProps) {
   const gameStatistics = calculateGameStatistics(player);
   const pointsStatistics = calculatePointStatistics(player);
   const sessionStatistics = calculateSessionStatistics(player);
-
-  const playerCount = players.length;
 
   return (
     <div className="flex gap-5">

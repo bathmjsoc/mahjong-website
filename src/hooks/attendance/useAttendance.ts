@@ -35,11 +35,7 @@ function selectAttendance(attendance: Attendance[]): UseAttendanceType {
     }
   }
 
-  return {
-    attendance,
-    lockedPlayerIds,
-    registeredPlayerIds,
-  };
+  return { attendance, lockedPlayerIds, registeredPlayerIds };
 }
 
 async function fetchAttendance(sessionId: string): Promise<Attendance[]> {

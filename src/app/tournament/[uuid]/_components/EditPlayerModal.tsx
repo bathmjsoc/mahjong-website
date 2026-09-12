@@ -5,18 +5,21 @@ import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
-import { usePlayers } from "@/hooks/players/usePlayers";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  players: Player[];
 };
 
-export function EditPlayerModal({ isOpen, onClose }: EditPlayerModalProps) {
+export function EditPlayerModal({
+  isOpen,
+  onClose,
+  players,
+}: EditPlayerModalProps) {
   const { updatePlayer } = usePlayerMutations();
-  const { players } = usePlayers();
 
   const [error, setError] = useState<string | null>(null);
   const [newName, setNewName] = useState("");

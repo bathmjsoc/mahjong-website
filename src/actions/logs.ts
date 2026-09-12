@@ -12,14 +12,11 @@ export async function createLog(log: Log): Promise<void> {
   }
 }
 
-export async function disableLog(log: Log): Promise<void> {
+export async function updateLog(log: Log): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("logs")
-    .update({ disabled: true })
-    .eq("id", log.id);
+  const { error } = await supabase.from("logs").update(log).eq("id", log.id);
 
   if (error) {
-    throw new Error(`disableLog encountered an error: ${error.message}`);
+    throw new Error(`updateLog encountered an error: ${error.message}`);
   }
 }

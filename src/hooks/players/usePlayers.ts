@@ -40,8 +40,9 @@ async function fetchPlayers(tournamentId: string): Promise<Player[]> {
     .select("*")
     .eq("tournament_id", tournamentId);
 
-  if (error)
+  if (error) {
     throw new Error(`fetchPlayers encountered an error: ${error.message}`);
+  }
 
   return players;
 }

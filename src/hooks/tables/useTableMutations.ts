@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  createTable as createTableAction,
-  deleteTable as deleteTableAction,
-  saveTable as saveTableAction,
+  createTables as createTableAction,
+  deleteTables as deleteTableAction,
   updateTable as updateTableAction,
 } from "@/actions/tables";
 import {
@@ -10,11 +9,6 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Player, Table, Wind } from "@/lib/types";
-
-type UpdateTableType = {
-  table: Table;
-  seats: Partial<Record<Wind, Player | null>>;
-};
 
 export function useTableMutations() {
   const queryClient = useQueryClient();
@@ -33,24 +27,15 @@ export function useTableMutations() {
   });
 
   const saveMutation = useOptimisticMutation({
-    mutationFn: saveTableAction,
+    mutationFn: createTableAction,
     getQueryKey: getTablesQueryKey,
     optimisticUpdate: addItem,
   });
 
-  const updateMutation = useOptimisticMutation<UpdateTableType, void>({
-    mutationFn: ({ table, seats }) => updateTableAction(table, seats),
-    getQueryKey: ({ table }) => getTablesQueryKey(table),
-    optimisticUpdate: ({ table, seats }) => {
-      const nextTable: Table = { ...table };
-
-      if ("east" in seats) nextTable.east_id = seats.east?.id ?? null;
-      if ("south" in seats) nextTable.south_id = seats.south?.id ?? null;
-      if ("west" in seats) nextTable.west_id = seats.west?.id ?? null;
-      if ("north" in seats) nextTable.north_id = seats.north?.id ?? null;
-
-      updateItem(nextTable);
-    },
+  const updateMutation = useOptimisticMutation({
+    mutationFn: updateTableAction,
+    getQueryKey: getTablesQueryKey,
+    optimisticUpdate: updateItem,
   });
 
   const deleteMutation = useOptimisticMutation({
@@ -80,13 +65,20 @@ export function useTableMutations() {
     saveTable(table: Table) {
       saveMutation.mutate({
         ...table,
-        id: crypto.randomUUID(),
+        id: crypto.randomUUID(), // Assign a new UUID to create a copy of the table
         saved: true,
       });
     },
 
     updateTable(table: Table, seats: Partial<Record<Wind, Player | null>>) {
-      updateMutation.mutate({ table, seats });
+      const updatedTable = { ...table };
+
+      if ("east" in seats) updatedTable.east_id = seats.east?.id ?? null;
+      if ("south" in seats) updatedTable.south_id = seats.south?.id ?? null;
+      if ("west" in seats) updatedTable.west_id = seats.west?.id ?? null;
+      if ("north" in seats) updatedTable.north_id = seats.north?.id ?? null;
+
+      updateMutation.mutate(updatedTable);
     },
 
     deleteTable(table: Table) {

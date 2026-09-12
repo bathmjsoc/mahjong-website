@@ -2,20 +2,24 @@ import { useState } from "react";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
-import { usePlayers } from "@/hooks/players/usePlayers";
+import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  players: Player[];
 };
 
-export function CreatePlayerModal({ isOpen, onClose }: CreatePlayerModalProps) {
+export function CreatePlayerModal({
+  isOpen,
+  onClose,
+  players,
+}: CreatePlayerModalProps) {
   const tournamentId = useTournamentContext();
 
   const { createPlayer } = usePlayerMutations();
-  const { players } = usePlayers();
 
   const [error, setError] = useState<string | null>(null);
 

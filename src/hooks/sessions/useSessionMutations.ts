@@ -9,10 +9,9 @@ import type { Session } from "@/lib/types";
 export function useSessionMutations() {
   const queryClient = useQueryClient();
 
-  const getSessionsQueryKey = (session: Session) => [
-    "sessions",
-    session.tournament_id,
-  ];
+  const getSessionsQueryKey = (session: Session) => {
+    return ["sessions", session.tournament_id];
+  };
 
   const { addItem } = useCacheItems<Session>({
     getId: (session) => session.id,

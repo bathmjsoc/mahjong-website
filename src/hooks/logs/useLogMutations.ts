@@ -1,6 +1,6 @@
 import {
   createLog as createLogAction,
-  disableLog as disableLogAction,
+  updateLog as updateLogAction,
 } from "@/actions/logs";
 import {
   useCacheItems,
@@ -9,7 +9,9 @@ import {
 import type { Log, Player, WinType } from "@/lib/types";
 
 export function useLogMutations() {
-  const getLogsQueryKey = (log: Log) => ["logs", log.tournament_id];
+  const getLogsQueryKey = (log: Log) => {
+    return ["logs", log.tournament_id];
+  };
 
   const { addItem, updateItem } = useCacheItems<Log>({
     getId: (log) => log.id,
@@ -23,9 +25,9 @@ export function useLogMutations() {
   });
 
   const disableMutation = useOptimisticMutation({
-    mutationFn: disableLogAction,
+    mutationFn: updateLogAction,
     getQueryKey: getLogsQueryKey,
-    optimisticUpdate: (log) => updateItem({ ...log, disabled: true }),
+    optimisticUpdate: updateItem,
   });
 
   return {
@@ -55,7 +57,7 @@ export function useLogMutations() {
     },
 
     disableLog(log: Log) {
-      disableMutation.mutate(log);
+      disableMutation.mutate({ ...log, disabled: true });
     },
   };
 }

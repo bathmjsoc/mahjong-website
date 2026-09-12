@@ -1,6 +1,5 @@
 import {
   createPlayer as createPlayerAction,
-  deletePlayer as deletePlayerAction,
   updatePlayer as updatePlayerAction,
 } from "@/actions/players";
 import {
@@ -10,10 +9,9 @@ import {
 import type { Player } from "@/lib/types";
 
 export function usePlayerMutations() {
-  const getPlayersQueryKey = (player: Player) => [
-    "players",
-    player.tournament_id,
-  ];
+  const getPlayersQueryKey = (player: Player) => {
+    return ["players", player.tournament_id];
+  };
 
   const { addItem, updateItem } = useCacheItems<Player>({
     getId: (player) => player.id,
@@ -33,9 +31,9 @@ export function usePlayerMutations() {
   });
 
   const deleteMutation = useOptimisticMutation({
-    mutationFn: deletePlayerAction,
+    mutationFn: updatePlayerAction,
     getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: (player) => updateItem({ ...player, deleted: true }),
+    optimisticUpdate: updateItem,
   });
 
   return {
@@ -53,7 +51,7 @@ export function usePlayerMutations() {
     },
 
     deletePlayer(player: Player) {
-      deleteMutation.mutate(player);
+      deleteMutation.mutate({ ...player, deleted: true });
     },
   };
 }

@@ -1,15 +1,13 @@
 import { SunburstChart } from "@/elements/charts/SunburstChart";
-import { useLogs } from "@/hooks/logs/useLogs";
 import { getGameResults } from "@/lib/scoring";
-import type { Player } from "@/lib/types";
+import type { Log, Player } from "@/lib/types";
 
 type GameOutcomesCardProps = {
+  logs: Log[];
   player: Player;
 };
 
-export function GameOutcomesCard({ player }: GameOutcomesCardProps) {
-  const { logs } = useLogs();
-
+export function GameOutcomesCard({ logs, player }: GameOutcomesCardProps) {
   const gameResults = getGameResults(logs, player);
   const gameResultsData = [
     {
