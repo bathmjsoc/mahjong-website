@@ -79,15 +79,13 @@ export function getPointHistory(
 }
 
 /*
- * Combines players with their scores and returns them in descending order
+ * Sorts the provided players by their provided scores (in descending order)
  */
-export function rankPlayers(
+export function sortPlayersByScore(
   players: Player[],
   scores: Record<string, number>,
-): [Player, number][] {
-  return players
-    .map((player): [Player, number] => [player, scores[player.id] ?? 0])
-    .sort((a, b) => b[1] - a[1]);
+): Player[] {
+  return players.sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
 }
 
 /*
