@@ -23,15 +23,3 @@ export async function updatePlayer(player: Player): Promise<void> {
     throw new Error(`updatePlayer encountered an error: ${error.message}`);
   }
 }
-
-export async function deletePlayer(player: Player): Promise<void> {
-  const supabase = await createClient();
-  const { error } = await supabase
-    .from("players")
-    .update({ deleted: true })
-    .eq("id", player.id);
-
-  if (error) {
-    throw new Error(`deletePlayer encountered an error: ${error.message}`);
-  }
-}

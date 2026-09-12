@@ -1,6 +1,5 @@
 import {
   createPlayer as createPlayerAction,
-  deletePlayer as deletePlayerAction,
   updatePlayer as updatePlayerAction,
 } from "@/actions/players";
 import {
@@ -33,9 +32,9 @@ export function usePlayerMutations() {
   });
 
   const deleteMutation = useOptimisticMutation({
-    mutationFn: deletePlayerAction,
+    mutationFn: updatePlayerAction,
     getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: (player) => updateItem({ ...player, deleted: true }),
+    optimisticUpdate: updateItem,
   });
 
   return {
@@ -53,7 +52,7 @@ export function usePlayerMutations() {
     },
 
     deletePlayer(player: Player) {
-      deleteMutation.mutate(player);
+      deleteMutation.mutate({ ...player, deleted: true });
     },
   };
 }
