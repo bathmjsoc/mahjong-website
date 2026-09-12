@@ -9,7 +9,6 @@ export async function createTournament(tournament: Tournament): Promise<void> {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
   if (!user) return;
 
   const { data: createdTournament, error } = await supabase

@@ -22,9 +22,7 @@ export function QueryProvider({ children }: PropsWithChildren) {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    return null;
-  }
+  if (!isMounted) return null;
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -61,7 +61,6 @@ export async function saveTable(table: Table): Promise<void> {
 
 export async function deleteTables(tables: Table[]): Promise<void> {
   const tableIds = tables.map((table) => table.id);
-
   if (tableIds.length === 0) return;
 
   const supabase = await createClient();
