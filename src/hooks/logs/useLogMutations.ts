@@ -1,6 +1,6 @@
 import {
   createLog as createLogAction,
-  disableLog as disableLogAction,
+  updateLog as updateLogAction,
 } from "@/actions/logs";
 import {
   useCacheItems,
@@ -23,9 +23,9 @@ export function useLogMutations() {
   });
 
   const disableMutation = useOptimisticMutation({
-    mutationFn: disableLogAction,
+    mutationFn: updateLogAction,
     getQueryKey: getLogsQueryKey,
-    optimisticUpdate: (log) => updateItem({ ...log, disabled: true }),
+    optimisticUpdate: updateItem,
   });
 
   return {
@@ -55,7 +55,7 @@ export function useLogMutations() {
     },
 
     disableLog(log: Log) {
-      disableMutation.mutate(log);
+      disableMutation.mutate({ ...log, disabled: true });
     },
   };
 }
