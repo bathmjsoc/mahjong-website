@@ -3,11 +3,11 @@ services:
     container_name: mahjong-website
     build: .
     ports:
-      - "3000:3000"  # Connects the container to localhost:3000
+      - "3000:3000"
     env_file:
       - .env
     volumes:
-      - .:/app  # Sync local code changes to the container
-      - /app/.next  # But avoid syncing local .next
-      - /app/node_modules  # And local node_modules
+      - .:/app
+      - /app/.next
+      - /app/node_modules
     command: sh -c "npm ci && npm run dev"
