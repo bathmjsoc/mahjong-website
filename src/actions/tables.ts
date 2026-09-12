@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import type { Player, Table, Wind } from "@/lib/types";
+import type { Table } from "@/lib/types";
 
 export async function createTables(tables: Table[]): Promise<Table[]> {
   if (tables.length === 0) return [];
@@ -24,20 +24,11 @@ export async function createTable(table: Table): Promise<Table> {
   return createdTable;
 }
 
-export async function updateTable(
-  table: Table,
-  seats: Partial<Record<Wind, Player | null>>,
-): Promise<void> {
-  const payload: Partial<Table> = {};
-  if ("east" in seats) payload.east_id = seats.east?.id ?? null;
-  if ("south" in seats) payload.south_id = seats.south?.id ?? null;
-  if ("west" in seats) payload.west_id = seats.west?.id ?? null;
-  if ("north" in seats) payload.north_id = seats.north?.id ?? null;
-
+export async function updateTable(table: Table): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase
     .from("tables")
-    .update(payload)
+    .update(table)
     .eq("id", table.id);
 
   if (error) {
