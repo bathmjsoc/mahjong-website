@@ -45,20 +45,6 @@ export async function updateTable(
   }
 }
 
-export async function saveTable(table: Table): Promise<void> {
-  const { id, ...tableData } = table; // Extract the UUID so we insert rather than update
-
-  const supabase = await createClient();
-  const { error } = await supabase.from("tables").insert({
-    ...tableData,
-    saved: true,
-  });
-
-  if (error) {
-    throw new Error(`saveTable encountered an error: ${error.message}`);
-  }
-}
-
 export async function deleteTables(tables: Table[]): Promise<void> {
   const tableIds = tables.map((table) => table.id);
   if (tableIds.length === 0) return;

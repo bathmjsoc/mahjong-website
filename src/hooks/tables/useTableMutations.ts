@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   createTable as createTableAction,
   deleteTable as deleteTableAction,
-  saveTable as saveTableAction,
   updateTable as updateTableAction,
 } from "@/actions/tables";
 import {
@@ -33,7 +32,7 @@ export function useTableMutations() {
   });
 
   const saveMutation = useOptimisticMutation({
-    mutationFn: saveTableAction,
+    mutationFn: createTableAction,
     getQueryKey: getTablesQueryKey,
     optimisticUpdate: addItem,
   });
@@ -80,7 +79,7 @@ export function useTableMutations() {
     saveTable(table: Table) {
       saveMutation.mutate({
         ...table,
-        id: crypto.randomUUID(),
+        id: crypto.randomUUID(), // Assign a new UUID to create a copy of the table
         saved: true,
       });
     },
