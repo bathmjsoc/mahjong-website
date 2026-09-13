@@ -29,12 +29,14 @@ export function useOptimisticMutation<TVariables, TData>({
       return { previousData, queryKey };
     },
     onError(_error, _variables, context) {
-      if (context?.previousData !== undefined) {
+      if (context) {
         queryClient.setQueryData(context.queryKey, context.previousData);
       }
     },
     onSettled(_data, _error, variables) {
-      void queryClient.invalidateQueries({ queryKey: getQueryKey(variables) });
+      const queryKey = queryKeyFn(variables);
+
+      return queryClient.invalidateQueries({ queryKey });
     },
   });
 }
@@ -54,25 +56,34 @@ export function useCacheMutators<T>({
     createItem(item: T) {
       const queryKey = getQueryKey(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) => [...items, item]);
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = [...currentData, item];
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
 
     updateItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-        items.map((current) => (getId(current) === itemId ? item : current)),
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = currentData.map((current) =>
+        getId(current) === itemId ? item : current,
       );
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
 
     removeItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-        items.filter((current) => getId(current) !== itemId),
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = currentData.filter(
+        (current) => getId(current) !== itemId,
       );
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
   };
 }
