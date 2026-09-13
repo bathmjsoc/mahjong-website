@@ -7,34 +7,39 @@ import type {
 } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
-type UseTournamentsType = {
+type UseCurrentTournamentType = {
+  handTypes: string[];
   scoringRulesMap: ScoringRulesMap;
-  tournament: Tournament;
 };
 
-export function useTournament(): UseTournamentsType {
+export function useCurrentTournament(): UseCurrentTournamentType {
   const tournamentId = useTournamentContext();
 
   const query = useSuspenseQuery({
     queryKey: ["tournament", tournamentId],
-    queryFn: () => fetchTournament(tournamentId),
-    select: selectTournament,
+    queryFn: () => fetchCurrentTournament(tournamentId),
+    select: selectCurrentTournament,
   });
 
   return query.data;
 }
 
-function selectTournament(tournament: Tournament): UseTournamentsType {
+function selectCurrentTournament(
+  tournament: Tournament,
+): UseCurrentTournamentType {
+  const handTypes = [...tournament.hand_types, "Other"];
   const scoringRulesMap = new Map(
     tournament.scoring_rules.map((rule) => [rule.faan, rule]),
   );
 
-  return { scoringRulesMap, tournament };
+  return { handTypes, scoringRulesMap };
 }
 
-async function fetchTournament(tournamentId: string): Promise<Tournament> {
+async function fetchCurrentTournament(
+  tournamentId: string,
+): Promise<Tournament> {
   const supabase = createClient();
-  const { data: tournament } = await supabase
+  const { data: currentTournament } = await supabase
     .from("tournaments")
     .select("*")
     .eq("id", tournamentId)
@@ -42,5 +47,5 @@ async function fetchTournament(tournamentId: string): Promise<Tournament> {
     .overrideTypes<SupabaseTournament, { merge: false }>()
     .throwOnError();
 
-  return tournament;
+  return currentTournament;
 }

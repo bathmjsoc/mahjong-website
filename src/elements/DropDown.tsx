@@ -4,7 +4,7 @@ import {
   createContext,
   type MouseEvent,
   type ReactNode,
-  useContext,
+  use,
 } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -27,7 +27,7 @@ export function DropDown({
   tooltip = "",
   disabled = false,
 }: DropDownProps) {
-  const parentClose = useContext(RootContext);
+  const parentClose = use(RootContext);
 
   const isNested = parentClose !== null;
 
@@ -42,8 +42,7 @@ export function DropDown({
               title={tooltip}
               disabled={disabled}
               className={twMerge(
-                "w-full rounded text-center outline-none transition",
-                isNested ? "p-1" : "bg-accent",
+                "w-full rounded p-1 text-center outline-none transition",
                 !disabled
                   ? [
                       "cursor-pointer",
@@ -88,7 +87,7 @@ function Item({
   disabled,
   ...props
 }: ItemProps) {
-  const closeRoot = useContext(RootContext);
+  const closeRoot = use(RootContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     onClick?.(e);

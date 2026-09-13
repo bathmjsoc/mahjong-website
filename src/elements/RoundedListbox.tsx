@@ -57,8 +57,7 @@ export function RoundedListbox<T>({
         className={twMerge(
           "bg-secondary text-primary",
           "border-2 border-primary outline-none",
-          "z-50 mt-2 max-h-50 w-(--button-width) p-1",
-          "no-scrollbar rounded-xl text-sm",
+          "no-scrollbar z-50 mt-2 max-h-50 rounded-xl p-1 text-sm",
           "transition duration-300 data-closed:scale-95 data-closed:opacity-0",
           optionsClassName,
         )}

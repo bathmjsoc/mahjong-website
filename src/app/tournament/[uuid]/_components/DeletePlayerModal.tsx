@@ -19,8 +19,9 @@ export function DeletePlayerModal({
 }: DeletePlayerModalProps) {
   const { deletePlayer } = usePlayerMutations();
 
+  const [notification, setNotification] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [deletedName, setDeletedName] = useState("");
 
   function handleClose() {
     setSelectedPlayer(null);
@@ -31,7 +32,10 @@ export function DeletePlayerModal({
     if (!selectedPlayer) return;
 
     deletePlayer(selectedPlayer);
-    setDeletedName(selectedPlayer.name);
+    setNotification(
+      `${selectedPlayer.name} has been removed from the tournament.`,
+    );
+    setShowNotification(true);
     handleClose();
   }
 
@@ -68,11 +72,11 @@ export function DeletePlayerModal({
       </Modal>
 
       <Notification
-        isOpen={!!deletedName}
-        close={() => setDeletedName("")}
+        isOpen={showNotification}
+        close={() => setShowNotification(false)}
         title="Player Deleted"
       >
-        {deletedName} has been removed from the tournament.
+        {notification}
       </Notification>
     </>
   );

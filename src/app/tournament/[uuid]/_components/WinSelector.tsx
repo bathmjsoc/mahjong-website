@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournament } from "@/hooks/tournaments/useTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 import { useTournamentContext } from "@/providers/TournamentProvider";
@@ -20,7 +20,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { scoringRulesMap, tournament } = useTournament();
+  const { handTypes, scoringRulesMap } = useCurrentTournament();
 
   const faanOptions = Array.from(scoringRulesMap.keys()).filter(
     (key) => key !== null,
@@ -106,8 +106,6 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   }
 
   function renderFaanOptions(winType: WinType, player: Player | null) {
-    const handTypes = [...tournament.hand_types, "Other"];
-
     return faanOptions.map((faan) => {
       if (faan === maxFaan) {
         return (
@@ -138,7 +136,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   return (
     <DropDown
       title="食"
-      buttonClassName={twMerge("rounded-full size-8", className)}
+      buttonClassName={twMerge("rounded-full size-8 bg-accent", className)}
       tooltip="Record Win"
       disabled={!occupant || opponents.length === 0}
     >

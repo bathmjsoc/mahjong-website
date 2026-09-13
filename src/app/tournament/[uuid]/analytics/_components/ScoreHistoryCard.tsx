@@ -1,5 +1,5 @@
 import { LineChart } from "@/elements/charts/LineChart";
-import { useTournament } from "@/hooks/tournaments/useTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import { getPointHistory } from "@/lib/scoring";
 import type { Log, Player } from "@/lib/types";
 
@@ -9,7 +9,7 @@ type ScoreHistoryCardProps = {
 };
 
 export function ScoreHistoryCard({ logs, player }: ScoreHistoryCardProps) {
-  const { scoringRulesMap } = useTournament();
+  const { scoringRulesMap } = useCurrentTournament();
 
   const scores = getPointHistory(logs, player, scoringRulesMap);
   const scoreData = [

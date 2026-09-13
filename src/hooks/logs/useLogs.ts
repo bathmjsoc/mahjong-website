@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useTournament } from "@/hooks/tournaments/useTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
 import type { Log, ScoringRulesMap } from "@/lib/types";
@@ -15,7 +15,7 @@ type UseLogsType = {
 export function useLogs(): UseLogsType {
   const tournamentId = useTournamentContext();
 
-  const { scoringRulesMap } = useTournament();
+  const { scoringRulesMap } = useCurrentTournament();
 
   const query = useSuspenseQuery({
     queryKey: ["logs", tournamentId],

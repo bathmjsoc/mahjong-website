@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -22,26 +22,19 @@ export function EditPlayerModal({
   const { updatePlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [newName, setNewName] = useState("");
-  const [notification, setNotification] = useState<string | null>(null);
+  const [notification, setNotification] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
     setError(null);
-    setNewName("");
     setSelectedPlayer(null);
     onClose();
   }
 
   function handleSelect(player: Player | null) {
     setError(null);
-    setNewName(player?.name ?? "");
     setSelectedPlayer(player);
-  }
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setError(null);
-    setNewName(e.target.value);
   }
 
   function handleSubmit(formData: FormData) {
@@ -66,7 +59,10 @@ export function EditPlayerModal({
 
     updatePlayer(selectedPlayer, updatedName);
 
-    setNotification(`"${selectedPlayer.name}" renamed to "${updatedName}".`);
+    setNotification(
+      `"${selectedPlayer.name}" has been renamed to "${updatedName}".`,
+    );
+    setShowNotification(true);
     handleClose();
   }
 
@@ -89,8 +85,9 @@ export function EditPlayerModal({
             <div className="flex flex-col gap-3">
               <LabelledInput
                 name="updatedName"
-                value={newName}
-                onChange={handleChange}
+                key={selectedPlayer.id}
+                defaultValue={selectedPlayer.name}
+                onChange={() => setError(null)}
                 type="text"
                 autoComplete="off"
               >
@@ -112,9 +109,9 @@ export function EditPlayerModal({
       </Modal>
 
       <Notification
-        isOpen={!!notification}
-        close={() => setNotification(null)}
-        title="Player Modified"
+        isOpen={showNotification}
+        close={() => setShowNotification(false)}
+        title="Player Updated"
       >
         {notification}
       </Notification>
