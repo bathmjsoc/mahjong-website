@@ -81,6 +81,7 @@ export function EditPlayerModal({
             <div className="flex flex-col gap-3">
               <LabelledInput
                 name="updatedName"
+                key={selectedPlayer.id}
                 defaultValue={selectedPlayer.name}
                 onChange={() => setError(null)}
                 type="text"
