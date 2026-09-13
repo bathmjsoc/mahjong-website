@@ -36,12 +36,9 @@ export async function createTournament(tournament: Tournament): Promise<void> {
 
 export async function updateTournament(tournament: Tournament): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase
+  await supabase
     .from("tournaments")
     .update(tournament)
-    .eq("id", tournament.id);
-
-  if (error) {
-    throw new Error(`updateTournament encountered an error: ${error.message}`);
-  }
+    .eq("id", tournament.id)
+    .throwOnError();
 }
