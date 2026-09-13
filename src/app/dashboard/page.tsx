@@ -1,20 +1,15 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
-import { createClient } from "@/lib/supabase/client";
-import type { SupabaseTournament, Tournament } from "@/lib/types";
+import { useTournaments } from "@/hooks/tournaments/useTournaments";
 import { CreateTournamentModal } from "./_components/CreateTournamentModal";
 import { TournamentList } from "./_components/TournamentList";
 
 export default function DashboardPage() {
-  const { data: tournaments } = useSuspenseQuery({
-    queryKey: ["tournaments"],
-    queryFn: fetchTournaments,
-  });
+  const { tournaments } = useTournaments();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -42,20 +37,4 @@ export default function DashboardPage() {
       <TournamentList tournaments={tournaments} />
     </div>
   );
-}
-
-async function fetchTournaments(): Promise<Tournament[]> {
-  const supabase = createClient();
-
-  const { data: tournaments, error } = await supabase
-    .from("tournaments")
-    .select("*")
-    .order("last_updated", { ascending: false })
-    .overrideTypes<SupabaseTournament[], { merge: false }>();
-
-  if (error) {
-    throw new Error(`fetchTournaments encountered an error: ${error.message}`);
-  }
-
-  return tournaments;
 }
