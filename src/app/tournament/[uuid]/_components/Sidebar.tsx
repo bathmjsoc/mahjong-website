@@ -59,8 +59,8 @@ export function Sidebar({ players }: SidebarProps) {
               onSelect={(player) => handleRegisterPlayer(player)}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}
-              placeholder="Register a member..."
-              emptyMessage="No member found"
+              placeholder="Register a player..."
+              emptyMessage="No player(s) found"
               inputClassName="w-88 h-10"
             />
 
