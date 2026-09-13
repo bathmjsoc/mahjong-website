@@ -15,7 +15,7 @@ export function useAttendanceMutations() {
     getQueryKey: getAttendanceQueryKey,
   });
 
-  const registerMutation = useOptimisticMutation({
+  const createMutation = useOptimisticMutation({
     mutationFn: upsertAttendanceAction,
     getQueryKey: getAttendanceQueryKey,
     optimisticUpdate: addItem,
@@ -29,7 +29,7 @@ export function useAttendanceMutations() {
 
   return {
     registerPlayer(sessionId: string, player: Player) {
-      registerMutation.mutate({
+      createMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
         registered: true,

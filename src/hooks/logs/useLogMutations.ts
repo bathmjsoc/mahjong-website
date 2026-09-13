@@ -24,7 +24,7 @@ export function useLogMutations() {
     optimisticUpdate: addItem,
   });
 
-  const disableMutation = useOptimisticMutation({
+  const updateMutation = useOptimisticMutation({
     mutationFn: updateLogAction,
     getQueryKey: getLogsQueryKey,
     optimisticUpdate: updateItem,
@@ -57,7 +57,7 @@ export function useLogMutations() {
     },
 
     disableLog(log: Log) {
-      disableMutation.mutate({ ...log, disabled: true });
+      updateMutation.mutate({ ...log, disabled: true });
     },
   };
 }

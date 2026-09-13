@@ -13,7 +13,9 @@ import type { Player, Table, Wind } from "@/lib/types";
 export function useTableMutations() {
   const queryClient = useQueryClient();
 
-  const getTablesQueryKey = (table: Table) => ["tables", table.session_id];
+  const getTablesQueryKey = (table: Table) => {
+    return ["tables", table.session_id];
+  };
 
   const { addItem, updateItem, removeItem } = useCacheItems<Table>({
     getId: (table) => table.id,
@@ -21,12 +23,6 @@ export function useTableMutations() {
   });
 
   const createMutation = useOptimisticMutation({
-    mutationFn: createTableAction,
-    getQueryKey: getTablesQueryKey,
-    optimisticUpdate: addItem,
-  });
-
-  const saveMutation = useOptimisticMutation({
     mutationFn: createTableAction,
     getQueryKey: getTablesQueryKey,
     optimisticUpdate: addItem,
@@ -63,7 +59,7 @@ export function useTableMutations() {
     },
 
     saveTable(table: Table) {
-      saveMutation.mutate({
+      createMutation.mutate({
         ...table,
         id: crypto.randomUUID(), // Assign a new UUID to create a copy of the table
         saved: true,
