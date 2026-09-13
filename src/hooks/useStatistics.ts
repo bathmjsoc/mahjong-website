@@ -1,6 +1,6 @@
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTournament } from "@/hooks/tournaments/useTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import {
   calculateGameStatistics,
   calculatePointStatistics,
@@ -15,7 +15,7 @@ export function useStatistics() {
 
   const { logs, overallScores, sessionScores } = useLogs();
   const { players } = usePlayers();
-  const { scoringRulesMap } = useTournament();
+  const { scoringRulesMap } = useCurrentTournament();
 
   return {
     calculateGameStatistics: (player: Player) => {
