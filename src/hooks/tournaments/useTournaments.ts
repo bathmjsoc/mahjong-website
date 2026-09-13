@@ -18,7 +18,7 @@ export function useTournaments(): UseTournamentsType {
 
 function selectTournaments(rawTournaments: Tournament[]): UseTournamentsType {
   const tournaments = rawTournaments.sort((a, b) =>
-    a.last_updated.localeCompare(b.last_updated),
+    b.last_updated.localeCompare(a.last_updated),
   );
 
   return { tournaments };
