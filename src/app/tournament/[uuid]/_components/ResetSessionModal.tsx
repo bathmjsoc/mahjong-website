@@ -15,11 +15,11 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
 
   const { createSession } = useSessionMutations();
 
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   function handleReset() {
     createSession(tournamentId);
-    setShowSuccess(true);
+    setShowNotification(true);
     onClose();
   }
 
@@ -39,8 +39,8 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
       </Modal>
 
       <Notification
-        isOpen={showSuccess}
-        close={() => setShowSuccess(false)}
+        isOpen={showNotification}
+        close={() => setShowNotification(false)}
         title="Session Reset"
       >
         A new session has started. All players and tables have been cleared.

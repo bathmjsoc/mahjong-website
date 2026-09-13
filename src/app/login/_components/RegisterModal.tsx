@@ -12,7 +12,7 @@ type RegisterModalProps = {
 };
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     handleSignUp,
     null,
@@ -22,7 +22,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     const result = await signUp(prevState, formData);
 
     if (result?.success) {
-      setShowSuccess(true);
+      setShowNotification(true);
       onClose();
     }
 
@@ -65,8 +65,8 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       </Modal>
 
       <Notification
-        isOpen={showSuccess}
-        close={() => setShowSuccess(false)}
+        isOpen={showNotification}
+        close={() => setShowNotification(false)}
         title="Account created!"
       >
         Please check your email to verify your account.
