@@ -4,7 +4,6 @@ import type { Attendance } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 type UseAttendanceType = {
-  attendance: Attendance[];
   lockedPlayerIds: Set<string>;
   registeredPlayerIds: Set<string>;
 };
@@ -35,7 +34,7 @@ function selectAttendance(attendance: Attendance[]): UseAttendanceType {
     }
   }
 
-  return { attendance, lockedPlayerIds, registeredPlayerIds };
+  return { lockedPlayerIds, registeredPlayerIds };
 }
 
 async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
