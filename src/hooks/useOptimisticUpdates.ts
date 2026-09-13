@@ -4,27 +4,27 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-type OptimisticMutationOptions<TVariables, TData> = {
+type UseOptimisticMutationType<TVariables, TData> = {
   mutationFn: (variables: TVariables) => Promise<TData>;
-  getQueryKey: (variables: TVariables) => QueryKey;
-  optimisticUpdate: (variables: TVariables) => void;
+  queryKeyFn: (variables: TVariables) => QueryKey;
+  optimisticFn: (variables: TVariables) => void;
 };
 
 export function useOptimisticMutation<TVariables, TData>({
   mutationFn,
-  getQueryKey,
-  optimisticUpdate,
-}: OptimisticMutationOptions<TVariables, TData>) {
+  queryKeyFn,
+  optimisticFn,
+}: UseOptimisticMutationType<TVariables, TData>) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: mutationFn,
     async onMutate(variables) {
-      const queryKey = getQueryKey(variables);
+      const queryKey = queryKeyFn(variables);
 
       await queryClient.cancelQueries({ queryKey });
       const previousData = queryClient.getQueryData(queryKey);
-      optimisticUpdate(variables);
+      optimisticFn(variables);
 
       return { previousData, queryKey };
     },
@@ -39,15 +39,15 @@ export function useOptimisticMutation<TVariables, TData>({
   });
 }
 
-type CachedItemsOptions<T> = {
+type UseCacheMutatorsType<T> = {
   getQueryKey: (item: T) => QueryKey;
   getId: (item: T) => string;
 };
 
-export function useCacheItems<T>({
+export function useCacheMutators<T>({
   getQueryKey,
   getId,
-}: CachedItemsOptions<T>) {
+}: UseCacheMutatorsType<T>) {
   const queryClient = useQueryClient();
 
   return {

@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { createSession as createSessionAction } from "@/actions/sessions";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Session } from "@/lib/types";
@@ -13,15 +13,15 @@ export function useSessionMutations() {
     return ["sessions", session.tournament_id];
   };
 
-  const { createItem } = useCacheItems<Session>({
+  const { createItem } = useCacheMutators<Session>({
     getId: (session) => session.id,
     getQueryKey: getSessionsQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createSessionAction,
-    getQueryKey: getSessionsQueryKey,
-    optimisticUpdate: createItem,
+    queryKeyFn: getSessionsQueryKey,
+    optimisticFn: createItem,
   });
 
   return {

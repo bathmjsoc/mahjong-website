@@ -1,6 +1,6 @@
 import { upsertAttendance as upsertAttendanceAction } from "@/actions/attendance";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Attendance, Player } from "@/lib/types";
@@ -10,21 +10,21 @@ export function useAttendanceMutations() {
     return ["attendance", attendance.session_id];
   };
 
-  const { createItem, updateItem } = useCacheItems<Attendance>({
+  const { createItem, updateItem } = useCacheMutators<Attendance>({
     getId: (attendance) => `${attendance.session_id}:${attendance.player_id}`,
     getQueryKey: getAttendanceQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: upsertAttendanceAction,
-    getQueryKey: getAttendanceQueryKey,
-    optimisticUpdate: createItem,
+    queryKeyFn: getAttendanceQueryKey,
+    optimisticFn: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: upsertAttendanceAction,
-    getQueryKey: getAttendanceQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getAttendanceQueryKey,
+    optimisticFn: updateItem,
   });
 
   return {

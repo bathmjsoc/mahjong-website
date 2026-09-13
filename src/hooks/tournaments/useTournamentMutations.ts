@@ -3,7 +3,7 @@ import {
   updateTournament as updateTournamentAction,
 } from "@/actions/tournaments";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { ScoringRule, Tournament } from "@/lib/types";
@@ -13,21 +13,21 @@ export function useTournamentMutations() {
     return ["tournaments"];
   };
 
-  const { createItem, updateItem } = useCacheItems<Tournament>({
+  const { createItem, updateItem } = useCacheMutators<Tournament>({
     getId: (tournament) => tournament.id,
     getQueryKey: getTournamentsQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createTournamentAction,
-    getQueryKey: getTournamentsQueryKey,
-    optimisticUpdate: createItem,
+    queryKeyFn: getTournamentsQueryKey,
+    optimisticFn: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updateTournamentAction,
-    getQueryKey: getTournamentsQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getTournamentsQueryKey,
+    optimisticFn: updateItem,
   });
 
   return {

@@ -5,7 +5,7 @@ import {
   updateTable as updateTableAction,
 } from "@/actions/tables";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Player, Table, Wind } from "@/lib/types";
@@ -17,27 +17,27 @@ export function useTableMutations() {
     return ["tables", table.session_id];
   };
 
-  const { createItem, updateItem, removeItem } = useCacheItems<Table>({
+  const { createItem, updateItem, removeItem } = useCacheMutators<Table>({
     getId: (table) => table.id,
     getQueryKey: getTablesQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createTableAction,
-    getQueryKey: getTablesQueryKey,
-    optimisticUpdate: createItem,
+    queryKeyFn: getTablesQueryKey,
+    optimisticFn: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updateTableAction,
-    getQueryKey: getTablesQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getTablesQueryKey,
+    optimisticFn: updateItem,
   });
 
   const deleteMutation = useOptimisticMutation({
     mutationFn: deleteTableAction,
-    getQueryKey: getTablesQueryKey,
-    optimisticUpdate: removeItem,
+    queryKeyFn: getTablesQueryKey,
+    optimisticFn: removeItem,
   });
 
   return {
