@@ -11,27 +11,20 @@ export async function createTournament(tournament: Tournament): Promise<void> {
   } = await supabase.auth.getUser();
   if (!user) return;
 
-  const { data: createdTournament, error } = await supabase
+  await supabase
     .from("tournaments")
     .insert({
       ...tournament,
       user_id: user.id, // Replace the client-side dummy value with the true UUID
     })
-    .select("id")
-    .single();
+    .throwOnError();
 
-  if (error) {
-    throw new Error(`createTournament encountered an error: ${error.message}`);
-  }
-
-  const initialSession = {
+  await createSession({
     id: crypto.randomUUID(),
-    tournament_id: createdTournament.id,
+    tournament_id: tournament.id,
     number: 1,
     start_date: new Date().toISOString().slice(0, 10),
-  };
-
-  await createSession(initialSession);
+  });
 }
 
 export async function updateTournament(tournament: Tournament): Promise<void> {
