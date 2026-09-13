@@ -1,16 +1,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-type TabMenuProps = {
-  children: ReactNode;
-  className?: string;
-};
+type TabMenuProps = ComponentProps<"nav">;
 
-export function TabMenu({ children, className }: TabMenuProps) {
+export function TabMenu({ children, className, ...props }: TabMenuProps) {
   return (
     <nav
+      {...props}
       className={twMerge("flex items-center justify-center gap-5", className)}
     >
       {children}
