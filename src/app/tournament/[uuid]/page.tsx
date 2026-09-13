@@ -83,7 +83,7 @@ export default function TournamentPage() {
       </div>
 
       <div className="flex w-full flex-col items-center overflow-hidden">
-        <div className="py-5">
+        <div className="py-9">
           <FilledButton
             onClick={handleShuffle}
             disabled={isShaking}
