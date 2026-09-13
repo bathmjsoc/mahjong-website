@@ -22,7 +22,8 @@ export function EditPlayerModal({
   const { updatePlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState<string | null>(null);
+  const [notification, setNotification] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -58,7 +59,10 @@ export function EditPlayerModal({
 
     updatePlayer(selectedPlayer, updatedName);
 
-    setNotification(`"${selectedPlayer.name}" renamed to "${updatedName}".`);
+    setNotification(
+      `"${selectedPlayer.name}" has been renamed to "${updatedName}".`,
+    );
+    setShowNotification(true);
     handleClose();
   }
 
@@ -105,9 +109,9 @@ export function EditPlayerModal({
       </Modal>
 
       <Notification
-        isOpen={!!notification}
-        close={() => setNotification(null)}
-        title="Player Updated!"
+        isOpen={showNotification}
+        close={() => setShowNotification(false)}
+        title="Player Updated"
       >
         {notification}
       </Notification>
