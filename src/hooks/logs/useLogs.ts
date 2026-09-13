@@ -48,15 +48,11 @@ function selectLogs(
 
 async function fetchLogs(tournamentId: string): Promise<Log[]> {
   const supabase = createClient();
-
-  const { data: logs, error } = await supabase
+  const { data: logs } = await supabase
     .from("logs")
     .select("*")
-    .eq("tournament_id", tournamentId);
-
-  if (error) {
-    throw new Error(`fetchLogs encountered an error: ${error.message}`);
-  }
+    .eq("tournament_id", tournamentId)
+    .throwOnError();
 
   return logs;
 }

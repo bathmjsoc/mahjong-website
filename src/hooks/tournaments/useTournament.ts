@@ -34,17 +34,13 @@ function selectTournament(tournament: Tournament): UseTournamentsType {
 
 async function fetchTournament(tournamentId: string): Promise<Tournament> {
   const supabase = createClient();
-
-  const { data: tournament, error } = await supabase
+  const { data: tournament } = await supabase
     .from("tournaments")
     .select("*")
     .eq("id", tournamentId)
     .single()
-    .overrideTypes<SupabaseTournament, { merge: false }>();
-
-  if (error) {
-    throw new Error(`fetchTournament encountered an error: ${error.message}`);
-  }
+    .overrideTypes<SupabaseTournament, { merge: false }>()
+    .throwOnError();
 
   return tournament;
 }

@@ -40,15 +40,11 @@ function selectAttendance(attendance: Attendance[]): UseAttendanceType {
 
 async function fetchAttendance(sessionId: string): Promise<Attendance[]> {
   const supabase = createClient();
-
-  const { data: attendance, error } = await supabase
+  const { data: attendance } = await supabase
     .from("attendance")
     .select("*")
-    .eq("session_id", sessionId);
-
-  if (error) {
-    throw new Error(`fetchAttendance encountered an error: ${error.message}`);
-  }
+    .eq("session_id", sessionId)
+    .throwOnError();
 
   return attendance;
 }
