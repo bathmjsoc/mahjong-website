@@ -5,19 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 import type { Tournament } from "@/lib/types";
 
 export async function createTournament(tournament: Tournament): Promise<void> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
+  const { user_id, ...tournamentData } = tournament; // Extract the user_id so that Supabase uses auth.uid()
 
-  await supabase
-    .from("tournaments")
-    .insert({
-      ...tournament,
-      user_id: user.id, // Replace the client-side dummy value with the true UUID
-    })
-    .throwOnError();
+  const supabase = await createClient();
+  await supabase.from("tournaments").insert(tournamentData).throwOnError();
 
   await createSession({
     id: crypto.randomUUID(),
