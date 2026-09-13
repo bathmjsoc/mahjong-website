@@ -8,8 +8,8 @@ import type {
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseCurrentTournamentType = {
+  handTypes: string[];
   scoringRulesMap: ScoringRulesMap;
-  tournament: Tournament;
 };
 
 export function useCurrentTournament(): UseCurrentTournamentType {
@@ -27,11 +27,12 @@ export function useCurrentTournament(): UseCurrentTournamentType {
 function selectCurrentTournament(
   tournament: Tournament,
 ): UseCurrentTournamentType {
+  const handTypes = [...tournament.hand_types, "Other"];
   const scoringRulesMap = new Map(
     tournament.scoring_rules.map((rule) => [rule.faan, rule]),
   );
 
-  return { scoringRulesMap, tournament };
+  return { handTypes, scoringRulesMap };
 }
 
 async function fetchCurrentTournament(

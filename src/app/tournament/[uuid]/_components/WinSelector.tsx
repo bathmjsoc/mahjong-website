@@ -20,7 +20,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { scoringRulesMap, tournament } = useCurrentTournament();
+  const { handTypes, scoringRulesMap } = useCurrentTournament();
 
   const faanOptions = Array.from(scoringRulesMap.keys()).filter(
     (key) => key !== null,
@@ -106,8 +106,6 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   }
 
   function renderFaanOptions(winType: WinType, player: Player | null) {
-    const handTypes = [...tournament.hand_types, "Other"];
-
     return faanOptions.map((faan) => {
       if (faan === maxFaan) {
         return (
