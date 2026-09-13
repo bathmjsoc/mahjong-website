@@ -42,8 +42,7 @@ export function DropDown({
               title={tooltip}
               disabled={disabled}
               className={twMerge(
-                "w-full rounded text-center outline-none transition",
-                isNested ? "p-1" : "bg-accent",
+                "w-full rounded p-1 text-center outline-none transition",
                 !disabled
                   ? [
                       "cursor-pointer",
