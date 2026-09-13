@@ -32,15 +32,11 @@ function selectSessions(rawSessions: Session[]): UseSessionsType {
 
 async function fetchSessions(tournamentId: string): Promise<Session[]> {
   const supabase = createClient();
-
-  const { data: sessions, error } = await supabase
+  const { data: sessions } = await supabase
     .from("sessions")
     .select("*")
-    .eq("tournament_id", tournamentId);
-
-  if (error) {
-    throw new Error(`fetchSessions encountered an error: ${error.message}`);
-  }
+    .eq("tournament_id", tournamentId)
+    .throwOnError();
 
   return sessions;
 }

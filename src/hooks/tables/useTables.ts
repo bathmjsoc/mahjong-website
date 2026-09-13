@@ -62,15 +62,11 @@ function selectTables(rawTables: Table[]): UseTablesType {
 
 async function fetchTables(sessionId: string): Promise<Table[]> {
   const supabase = createClient();
-
-  const { data: tables, error } = await supabase
+  const { data: tables } = await supabase
     .from("tables")
     .select("*")
-    .eq("session_id", sessionId);
-
-  if (error) {
-    throw new Error(`fetchTables encountered an error: ${error.message}`);
-  }
+    .eq("session_id", sessionId)
+    .throwOnError();
 
   return tables;
 }

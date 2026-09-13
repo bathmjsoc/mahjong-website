@@ -3,7 +3,7 @@ import {
   updateLog as updateLogAction,
 } from "@/actions/logs";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Log, Player, WinType } from "@/lib/types";
@@ -13,21 +13,21 @@ export function useLogMutations() {
     return ["logs", log.tournament_id];
   };
 
-  const { addItem, updateItem } = useCacheItems<Log>({
+  const { createItem, updateItem } = useCacheMutators<Log>({
     getId: (log) => log.id,
     getQueryKey: getLogsQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createLogAction,
-    getQueryKey: getLogsQueryKey,
-    optimisticUpdate: addItem,
+    queryKeyFn: getLogsQueryKey,
+    optimisticFn: createItem,
   });
 
-  const disableMutation = useOptimisticMutation({
+  const updateMutation = useOptimisticMutation({
     mutationFn: updateLogAction,
-    getQueryKey: getLogsQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getLogsQueryKey,
+    optimisticFn: updateItem,
   });
 
   return {
@@ -57,7 +57,7 @@ export function useLogMutations() {
     },
 
     disableLog(log: Log) {
-      disableMutation.mutate({ ...log, disabled: true });
+      updateMutation.mutate({ ...log, disabled: true });
     },
   };
 }

@@ -34,15 +34,11 @@ function selectPlayers(rawPlayers: Player[]): UsePlayersType {
 
 async function fetchPlayers(tournamentId: string): Promise<Player[]> {
   const supabase = createClient();
-
-  const { data: players, error } = await supabase
+  const { data: players } = await supabase
     .from("players")
     .select("*")
-    .eq("tournament_id", tournamentId);
-
-  if (error) {
-    throw new Error(`fetchPlayers encountered an error: ${error.message}`);
-  }
+    .eq("tournament_id", tournamentId)
+    .throwOnError();
 
   return players;
 }

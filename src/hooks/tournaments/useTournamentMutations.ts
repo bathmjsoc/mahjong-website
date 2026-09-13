@@ -3,7 +3,7 @@ import {
   updateTournament as updateTournamentAction,
 } from "@/actions/tournaments";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { ScoringRule, Tournament } from "@/lib/types";
@@ -13,21 +13,21 @@ export function useTournamentMutations() {
     return ["tournaments"];
   };
 
-  const { addItem, updateItem } = useCacheItems<Tournament>({
+  const { createItem, updateItem } = useCacheMutators<Tournament>({
     getId: (tournament) => tournament.id,
     getQueryKey: getTournamentsQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createTournamentAction,
-    getQueryKey: getTournamentsQueryKey,
-    optimisticUpdate: addItem,
+    queryKeyFn: getTournamentsQueryKey,
+    optimisticFn: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updateTournamentAction,
-    getQueryKey: getTournamentsQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getTournamentsQueryKey,
+    optimisticFn: updateItem,
   });
 
   return {
@@ -38,7 +38,7 @@ export function useTournamentMutations() {
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
-        user_id: "dummy", // The true UUID is assigned in the server action
+        user_id: "", // The real user_id is handled by Supabase using auth.uid()
         name: tournamentName,
         last_updated: new Date().toISOString(),
         player_count: 0,

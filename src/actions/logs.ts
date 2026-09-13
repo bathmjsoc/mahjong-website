@@ -5,18 +5,10 @@ import type { Log } from "@/lib/types";
 
 export async function createLog(log: Log): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase.from("logs").insert(log);
-
-  if (error) {
-    throw new Error(`createLog encountered an error: ${error.message}`);
-  }
+  await supabase.from("logs").insert(log).throwOnError();
 }
 
 export async function updateLog(log: Log): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase.from("logs").update(log).eq("id", log.id);
-
-  if (error) {
-    throw new Error(`updateLog encountered an error: ${error.message}`);
-  }
+  await supabase.from("logs").update(log).eq("id", log.id).throwOnError();
 }

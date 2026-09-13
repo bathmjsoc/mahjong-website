@@ -35,7 +35,7 @@ export function Sidebar({ players }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const playerOptions = players.filter(
+  const registeredPlayers = players.filter(
     (player) => !registeredPlayerIds.has(player.id),
   );
 
@@ -55,7 +55,7 @@ export function Sidebar({ players }: SidebarProps) {
         >
           <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
-              options={playerOptions}
+              options={registeredPlayers}
               onSelect={(player) => handleRegisterPlayer(player)}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}

@@ -3,7 +3,7 @@ import {
   updatePlayer as updatePlayerAction,
 } from "@/actions/players";
 import {
-  useCacheItems,
+  useCacheMutators,
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Player } from "@/lib/types";
@@ -13,27 +13,27 @@ export function usePlayerMutations() {
     return ["players", player.tournament_id];
   };
 
-  const { addItem, updateItem } = useCacheItems<Player>({
+  const { createItem, updateItem } = useCacheMutators<Player>({
     getId: (player) => player.id,
     getQueryKey: getPlayersQueryKey,
   });
 
   const createMutation = useOptimisticMutation({
     mutationFn: createPlayerAction,
-    getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: addItem,
+    queryKeyFn: getPlayersQueryKey,
+    optimisticFn: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updatePlayerAction,
-    getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getPlayersQueryKey,
+    optimisticFn: updateItem,
   });
 
   const deleteMutation = useOptimisticMutation({
     mutationFn: updatePlayerAction,
-    getQueryKey: getPlayersQueryKey,
-    optimisticUpdate: updateItem,
+    queryKeyFn: getPlayersQueryKey,
+    optimisticFn: updateItem,
   });
 
   return {

@@ -5,21 +5,14 @@ import type { Player } from "@/lib/types";
 
 export async function createPlayer(player: Player): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase.from("players").insert(player);
-
-  if (error) {
-    throw new Error(`createPlayer encountered an error: ${error.message}`);
-  }
+  await supabase.from("players").insert(player).throwOnError();
 }
 
 export async function updatePlayer(player: Player): Promise<void> {
   const supabase = await createClient();
-  const { error } = await supabase
+  await supabase
     .from("players")
     .update(player)
-    .eq("id", player.id);
-
-  if (error) {
-    throw new Error(`updatePlayer encountered an error: ${error.message}`);
-  }
+    .eq("id", player.id)
+    .throwOnError();
 }

@@ -4,75 +4,86 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-type OptimisticMutationOptions<TVariables, TData> = {
+type UseOptimisticMutationType<TVariables, TData> = {
   mutationFn: (variables: TVariables) => Promise<TData>;
-  getQueryKey: (variables: TVariables) => QueryKey;
-  optimisticUpdate: (variables: TVariables) => void;
+  queryKeyFn: (variables: TVariables) => QueryKey;
+  optimisticFn: (variables: TVariables) => void;
 };
 
 export function useOptimisticMutation<TVariables, TData>({
   mutationFn,
-  getQueryKey,
-  optimisticUpdate,
-}: OptimisticMutationOptions<TVariables, TData>) {
+  queryKeyFn,
+  optimisticFn,
+}: UseOptimisticMutationType<TVariables, TData>) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: mutationFn,
     async onMutate(variables) {
-      const queryKey = getQueryKey(variables);
+      const queryKey = queryKeyFn(variables);
 
       await queryClient.cancelQueries({ queryKey });
       const previousData = queryClient.getQueryData(queryKey);
-      optimisticUpdate(variables);
+      optimisticFn(variables);
 
       return { previousData, queryKey };
     },
     onError(_error, _variables, context) {
-      if (context?.previousData !== undefined) {
+      if (context) {
         queryClient.setQueryData(context.queryKey, context.previousData);
       }
     },
     onSettled(_data, _error, variables) {
-      void queryClient.invalidateQueries({ queryKey: getQueryKey(variables) });
+      const queryKey = queryKeyFn(variables);
+
+      return queryClient.invalidateQueries({ queryKey });
     },
   });
 }
 
-type CachedItemsOptions<T> = {
+type UseCacheMutatorsType<T> = {
   getQueryKey: (item: T) => QueryKey;
   getId: (item: T) => string;
 };
 
-export function useCacheItems<T>({
+export function useCacheMutators<T>({
   getQueryKey,
   getId,
-}: CachedItemsOptions<T>) {
+}: UseCacheMutatorsType<T>) {
   const queryClient = useQueryClient();
 
   return {
-    addItem(item: T) {
+    createItem(item: T) {
       const queryKey = getQueryKey(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) => [...items, item]);
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = [...currentData, item];
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
 
     updateItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-        items.map((current) => (getId(current) === itemId ? item : current)),
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = currentData.map((current) =>
+        getId(current) === itemId ? item : current,
       );
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
 
     removeItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      queryClient.setQueryData<T[]>(queryKey, (items = []) =>
-        items.filter((current) => getId(current) !== itemId),
+      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedData = currentData.filter(
+        (current) => getId(current) !== itemId,
       );
+
+      queryClient.setQueryData<T[]>(queryKey, updatedData);
     },
   };
 }
