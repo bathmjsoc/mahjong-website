@@ -51,7 +51,7 @@ export function useCacheItems<T>({
   const queryClient = useQueryClient();
 
   return {
-    addItem(item: T) {
+    createItem(item: T) {
       const queryKey = getQueryKey(item);
 
       queryClient.setQueryData<T[]>(queryKey, (items = []) => [...items, item]);

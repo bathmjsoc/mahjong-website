@@ -10,7 +10,7 @@ export function useAttendanceMutations() {
     return ["attendance", attendance.session_id];
   };
 
-  const { addItem, updateItem } = useCacheItems<Attendance>({
+  const { createItem, updateItem } = useCacheItems<Attendance>({
     getId: (attendance) => `${attendance.session_id}:${attendance.player_id}`,
     getQueryKey: getAttendanceQueryKey,
   });
@@ -18,7 +18,7 @@ export function useAttendanceMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: upsertAttendanceAction,
     getQueryKey: getAttendanceQueryKey,
-    optimisticUpdate: addItem,
+    optimisticUpdate: createItem,
   });
 
   const updateMutation = useOptimisticMutation({

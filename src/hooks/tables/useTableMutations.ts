@@ -17,7 +17,7 @@ export function useTableMutations() {
     return ["tables", table.session_id];
   };
 
-  const { addItem, updateItem, removeItem } = useCacheItems<Table>({
+  const { createItem, updateItem, removeItem } = useCacheItems<Table>({
     getId: (table) => table.id,
     getQueryKey: getTablesQueryKey,
   });
@@ -25,7 +25,7 @@ export function useTableMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: createTableAction,
     getQueryKey: getTablesQueryKey,
-    optimisticUpdate: addItem,
+    optimisticUpdate: createItem,
   });
 
   const updateMutation = useOptimisticMutation({

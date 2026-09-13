@@ -13,7 +13,7 @@ export function useLogMutations() {
     return ["logs", log.tournament_id];
   };
 
-  const { addItem, updateItem } = useCacheItems<Log>({
+  const { createItem, updateItem } = useCacheItems<Log>({
     getId: (log) => log.id,
     getQueryKey: getLogsQueryKey,
   });
@@ -21,7 +21,7 @@ export function useLogMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: createLogAction,
     getQueryKey: getLogsQueryKey,
-    optimisticUpdate: addItem,
+    optimisticUpdate: createItem,
   });
 
   const updateMutation = useOptimisticMutation({
