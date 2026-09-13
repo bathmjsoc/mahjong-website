@@ -72,7 +72,7 @@ export function DeletePlayerModal({
       <Notification
         isOpen={!!notification}
         close={() => setNotification(null)}
-        title="Player Deleted"
+        title="Player Deleted!"
       >
         {notification}
       </Notification>

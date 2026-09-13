@@ -107,7 +107,7 @@ export function EditPlayerModal({
       <Notification
         isOpen={!!notification}
         close={() => setNotification(null)}
-        title="Player Modified"
+        title="Player Updated!"
       >
         {notification}
       </Notification>
