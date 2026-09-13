@@ -21,12 +21,10 @@ type TabLinkProps = ComponentProps<typeof Link>;
 export function TabLink({ children, href, className, ...props }: TabLinkProps) {
   const pathname = usePathname();
 
-  const isActive = pathname === href;
-
   return (
     <Link
       href={href}
-      data-active={isActive}
+      data-active={pathname === href}
       {...props}
       className={twMerge(
         "bg-primary text-secondary",
