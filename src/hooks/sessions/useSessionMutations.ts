@@ -5,6 +5,7 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Session } from "@/lib/types";
+import { getCurrentDateString } from "@/lib/utils";
 
 export function useSessionMutations() {
   const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ export function useSessionMutations() {
         id: crypto.randomUUID(),
         tournament_id: tournamentId,
         number: sessionCount + 1,
-        start_date: new Date().toISOString().slice(0, 10),
+        start_date: getCurrentDateString(),
       });
     },
   };

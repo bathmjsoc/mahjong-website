@@ -92,3 +92,10 @@ export function stdDev(values: number[]): number {
 export function sum(values: number[]): number {
   return values.reduce((sum, value) => sum + value, 0);
 }
+
+/*
+ * Returns the current date in YYYY-MM-DD format
+ */
+export function getCurrentDateString() {
+  return new Date().toISOString().slice(0, 10);
+}
