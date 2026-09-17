@@ -30,12 +30,6 @@ export function usePlayerMutations() {
     optimisticFn: updateItem,
   });
 
-  const deleteMutation = useOptimisticMutation({
-    mutationFn: updatePlayerAction,
-    queryKeyFn: getPlayersQueryKey,
-    optimisticFn: updateItem,
-  });
-
   return {
     createPlayer(tournamentId: string, playerName: string) {
       createMutation.mutate({
@@ -51,7 +45,7 @@ export function usePlayerMutations() {
     },
 
     deletePlayer(player: Player) {
-      deleteMutation.mutate({ ...player, deleted: true });
+      updateMutation.mutate({ ...player, deleted: true });
     },
   };
 }

@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowUp, type LucideIcon, Minus } from "lucide-react";
 import type { Session } from "@/lib/types";
 
-type Trend = {
+type TrendStyling = {
   icon: LucideIcon;
   textColor: string;
   fillColor: string;
@@ -13,7 +13,7 @@ type Trend = {
 export function getSessionTrend(
   currentRank: number,
   previousRank: number,
-): Trend {
+): TrendStyling {
   if (currentRank < previousRank) {
     return {
       icon: ArrowUp,
@@ -39,8 +39,8 @@ export function getSessionTrend(
  * Maps a score to its corresponding Tailwind background color class
  */
 export function scoreToColor(score: number): string {
-  if (score < 0) return "bg-negative";
   if (score > 0) return "bg-positive";
+  if (score < 0) return "bg-negative";
   return "bg-neutral";
 }
 
@@ -48,6 +48,6 @@ export function scoreToColor(score: number): string {
  * Maps a score number to a special name, handling the special case of 'null = overall'
  */
 export function getSessionName(session: Session | null): string {
-  if (!session) return "Overall Standings";
+  if (session === null) return "Overall Standings";
   return `Session ${session.number} (${session.start_date})`;
 }

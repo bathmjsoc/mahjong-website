@@ -10,11 +10,7 @@ export async function updateSession(request: NextRequest) {
     throw new Error("Supabase environment variables are missing!");
   }
 
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
+  let response = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(url, key, {
     cookies: {
@@ -23,11 +19,7 @@ export async function updateSession(request: NextRequest) {
         items.forEach(({ name, value }) => {
           request.cookies.set(name, value);
         });
-        response = NextResponse.next({
-          request: {
-            headers: request.headers,
-          },
-        });
+        response = NextResponse.next({ request });
         items.forEach(({ name, value, options }) => {
           response.cookies.set(name, value, options);
         });

@@ -3,6 +3,7 @@
 import { createSession } from "@/actions/sessions";
 import { createClient } from "@/lib/supabase/server";
 import type { Tournament } from "@/lib/types";
+import { getCurrentDateString } from "@/lib/utils";
 
 export async function createTournament(tournament: Tournament): Promise<void> {
   const { user_id, ...tournamentData } = tournament; // Extract the user_id so that Supabase uses auth.uid()
@@ -14,7 +15,7 @@ export async function createTournament(tournament: Tournament): Promise<void> {
     id: crypto.randomUUID(),
     tournament_id: tournament.id,
     number: 1,
-    start_date: new Date().toISOString().slice(0, 10),
+    start_date: getCurrentDateString(),
   });
 }
 

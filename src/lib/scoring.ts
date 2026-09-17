@@ -85,7 +85,7 @@ export function sortPlayersByScore(
   players: Player[],
   scores: Record<string, number>,
 ): Player[] {
-  return players.sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
+  return players.toSorted((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
 }
 
 /*

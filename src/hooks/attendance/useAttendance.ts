@@ -26,12 +26,10 @@ function selectAttendance(attendance: Attendance[]): UseAttendanceType {
 
   for (const entry of attendance) {
     if (!entry.registered) continue;
-
     registeredPlayerIds.add(entry.player_id);
 
-    if (entry.locked) {
-      lockedPlayerIds.add(entry.player_id);
-    }
+    if (!entry.locked) continue;
+    lockedPlayerIds.add(entry.player_id);
   }
 
   return { lockedPlayerIds, registeredPlayerIds };
