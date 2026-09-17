@@ -12,10 +12,11 @@ type SessionProviderProps = {
 export function SessionProvider({ children }: SessionProviderProps) {
   const { sessions } = useSessions();
 
-  const sessionId = sessions.at(-1)?.id;
+  const currentSession = sessions.at(-1);
+  const sessionId = currentSession?.id;
 
   if (!sessionId) {
-    throw new Error("No session was found, but one should exist.");
+    throw new Error("Invalid State: The current tournament has no sessions.");
   }
 
   return <SessionContext value={sessionId}>{children}</SessionContext>;
@@ -26,7 +27,7 @@ export function useSessionContext(): string {
 
   if (!sessionId) {
     throw new Error(
-      "useSessionContext must be used within a <SessionProvider/>!",
+      "useSessionContext must be used within <SessionProvider/>!",
     );
   }
 

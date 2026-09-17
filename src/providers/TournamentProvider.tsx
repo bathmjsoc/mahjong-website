@@ -21,7 +21,7 @@ export function useTournamentContext(): string {
 
   if (!tournamentId) {
     throw new Error(
-      "useTournamentContext must be used within a <TournamentProvider/>!",
+      "useTournamentContext must be used within <TournamentProvider/>!",
     );
   }
 
