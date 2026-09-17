@@ -19,11 +19,11 @@ export function useStatistics() {
 
   return {
     calculateGameStatistics: (player: Player) => {
-      return calculateGameStatistics(logs, players, player);
+      return calculateGameStatistics(player, players, logs);
     },
 
     calculatePointStatistics: (player: Player) => {
-      return calculatePointStatistics(logs, players, player, scoringRulesMap);
+      return calculatePointStatistics(player, players, logs, scoringRulesMap);
     },
 
     calculateRankingStatistics: (player: Player) => {
@@ -37,7 +37,7 @@ export function useStatistics() {
     },
 
     calculateSessionStatistics: (player: Player) => {
-      return calculateSessionStatistics(sessionScores, players, player);
+      return calculateSessionStatistics(player, players, sessionScores);
     },
   };
 }

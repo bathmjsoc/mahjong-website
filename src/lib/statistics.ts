@@ -8,9 +8,9 @@ type Statistic = {
 };
 
 export function calculateGameStatistics(
-  logs: Log[],
-  players: Player[],
   player: Player,
+  players: Player[],
+  logs: Log[],
 ): Record<string, Statistic> {
   const gamesPlayed: Record<string, number> = Object.fromEntries(
     players.map((player) => [player.id, 0]),
@@ -39,9 +39,9 @@ export function calculateGameStatistics(
 }
 
 export function calculatePointStatistics(
-  logs: Log[],
-  players: Player[],
   player: Player,
+  players: Player[],
+  logs: Log[],
   scoringRulesMap: ScoringRulesMap,
 ): Record<string, Statistic> {
   const pointsWon: Record<string, number[]> = Object.fromEntries(
@@ -120,9 +120,9 @@ export function calculatePointStatistics(
 }
 
 export function calculateSessionStatistics(
-  sessionScores: Record<string, Record<string, number>>,
-  players: Player[],
   player: Player,
+  players: Player[],
+  sessionScores: Record<string, Record<string, number>>,
 ): Record<string, Statistic> {
   const scoresByPlayer: Record<string, number[]> = Object.fromEntries(
     players.map((player) => [player.id, []]),
