@@ -59,11 +59,13 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     switch (winType) {
       case "打出":
       case "包自摸":
+        if (!target) return;
+
         winners.push(occupant);
-        if (target) losers.push(target);
+        losers.push(target);
 
         for (const player of opponents) {
-          if (player.id !== target?.id) others.push(player);
+          if (player.id !== target.id) others.push(player);
         }
         break;
 
