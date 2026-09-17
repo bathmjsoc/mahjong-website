@@ -1,10 +1,12 @@
 import { RELATIVE_TIME_CUTOFFS } from "@/lib/constants";
 
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+const pluralRules = new Intl.PluralRules("en", { type: "ordinal" });
+
 /*
  * Formats a timestamp into human-readable relative time (e.g., "5 minutes ago")
  */
 export function formatRelativeTime(timestamp: string): string {
-  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
   const delta = Math.round((Date.parse(timestamp) - Date.now()) / 1000);
 
   for (const cutoff of RELATIVE_TIME_CUTOFFS) {
@@ -20,7 +22,6 @@ export function formatRelativeTime(timestamp: string): string {
  * Returns the ordinal suffix for a number (e.g., 1 -> st, 2 -> nd)
  */
 export function getOrdinalSuffix(number: number): string {
-  const pluralRules = new Intl.PluralRules("en", { type: "ordinal" });
   const suffixes: Record<string, string> = {
     one: "st",
     two: "nd",
