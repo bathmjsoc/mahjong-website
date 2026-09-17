@@ -16,7 +16,7 @@ export function useCurrentTournament(): UseCurrentTournamentType {
   const tournamentId = useTournamentContext();
 
   const query = useSuspenseQuery({
-    queryKey: ["tournament", tournamentId],
+    queryKey: ["tournaments", tournamentId],
     queryFn: () => fetchCurrentTournament(tournamentId),
     select: selectCurrentTournament,
   });
