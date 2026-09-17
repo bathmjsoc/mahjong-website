@@ -56,34 +56,34 @@ export function useCacheMutators<T>({
     createItem(item: T) {
       const queryKey = getQueryKey(item);
 
-      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
-      const updatedData = [...currentData, item];
+      const currentItems = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedItems = [...currentItems, item];
 
-      queryClient.setQueryData<T[]>(queryKey, updatedData);
+      queryClient.setQueryData<T[]>(queryKey, updatedItems);
     },
 
     updateItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
-      const updatedData = currentData.map((current) =>
+      const currentItems = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedItems = currentItems.map((current) =>
         getId(current) === itemId ? item : current,
       );
 
-      queryClient.setQueryData<T[]>(queryKey, updatedData);
+      queryClient.setQueryData<T[]>(queryKey, updatedItems);
     },
 
     removeItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
-      const currentData = queryClient.getQueryData<T[]>(queryKey) ?? [];
-      const updatedData = currentData.filter(
+      const currentItems = queryClient.getQueryData<T[]>(queryKey) ?? [];
+      const updatedItems = currentItems.filter(
         (current) => getId(current) !== itemId,
       );
 
-      queryClient.setQueryData<T[]>(queryKey, updatedData);
+      queryClient.setQueryData<T[]>(queryKey, updatedItems);
     },
   };
 }
