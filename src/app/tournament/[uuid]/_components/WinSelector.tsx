@@ -28,7 +28,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const maxFaan = Math.max(...faanOptions);
 
   const opponents: Player[] = [];
-  if (occupant) {
+  if (occupant !== null) {
     const SEAT_IDS = [
       table.east_id,
       table.south_id,
@@ -37,7 +37,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     ] as const;
 
     for (const id of SEAT_IDS) {
-      if (!id || id === occupant.id) continue;
+      if (id === null || id === occupant.id) continue;
 
       const player = playerMap.get(id);
       if (player) opponents.push(player);
@@ -50,7 +50,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     target?: Player | null,
     handType: string | null = null,
   ) {
-    if (!occupant) return;
+    if (occupant === null) return;
 
     const winners: Player[] = [];
     const losers: Player[] = [];
@@ -138,7 +138,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       title="食"
       buttonClassName={twMerge("rounded-full size-8 bg-accent", className)}
       tooltip="Record Win"
-      disabled={!occupant || opponents.length === 0}
+      disabled={occupant === null || opponents.length === 0}
     >
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (

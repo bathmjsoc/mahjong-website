@@ -45,7 +45,7 @@ export function TableSeat({
   );
 
   useEffect(() => {
-    if (!occupant?.id) return;
+    if (occupant === null) return;
 
     const eventName = `points-animation-${table.id}`;
 
@@ -68,7 +68,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant?.id, table.id, scoringRulesMap]);
+  }, [occupant, table.id, scoringRulesMap]);
 
   function handleSelect(player: Player | null) {
     updateTable(table, {

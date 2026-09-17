@@ -41,7 +41,7 @@ function selectTables(rawTables: Table[]): UseTablesType {
     ] as const;
 
     for (const id of seatIds) {
-      if (!id) continue;
+      if (id === null) continue;
 
       if (seatedPlayerIds.has(id)) {
         duplicatePlayerIds.add(id);
