@@ -22,12 +22,10 @@ export function useTables(): UseTablesType {
 }
 
 function selectTables(rawTables: Table[]): UseTablesType {
-  const tables = rawTables.toSorted((a, b) => {
-    if (a.saved !== b.saved) {
-      return Number(a.saved) - Number(b.saved);
-    }
-    return a.number - b.number;
-  });
+  const tables = rawTables.toSorted(
+    // Sort by table number, with saved tables at the end
+    (a, b) => Number(a.saved) - Number(b.saved) || a.number - b.number,
+  );
 
   const duplicatePlayerIds = new Set<string>();
   const seatedPlayerIds = new Set<string>();
