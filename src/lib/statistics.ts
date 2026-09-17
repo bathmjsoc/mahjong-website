@@ -176,7 +176,7 @@ export function calculateRankingStatistics(
     if (id === sessionId) continue;
 
     for (const [playerId, score] of Object.entries(scores)) {
-      previousScores[playerId] += score;
+      previousScores[playerId] = (previousScores[playerId] ?? 0) + score;
     }
   }
 
