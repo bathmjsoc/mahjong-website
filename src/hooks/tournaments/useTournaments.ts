@@ -62,7 +62,7 @@ function selectCurrentTournament(
   );
 
   if (!tournament) {
-    throw new Error(`Invalid State: The current tournament does not exist.`);
+    throw new Error("Invalid State: The current tournament does not exist.");
   }
 
   const handTypes = [...tournament.hand_types, "Other"];
