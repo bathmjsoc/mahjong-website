@@ -57,10 +57,12 @@ function selectCurrentTournament(
   tournaments: Tournament[],
   tournamentId: string,
 ): UseCurrentTournamentType {
-  const tournament = tournaments.find((t) => t.id === tournamentId);
+  const tournament = tournaments.find(
+    (tournament) => tournament.id === tournamentId,
+  );
 
   if (!tournament) {
-    throw new Error(`Tournament ${tournamentId} not found`);
+    throw new Error(`Invalid State: The current tournament does not exist.`);
   }
 
   const handTypes = [...tournament.hand_types, "Other"];
