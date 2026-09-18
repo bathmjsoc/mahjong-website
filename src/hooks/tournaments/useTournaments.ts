@@ -1,10 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import type {
-  ScoringRulesMap,
-  SupabaseTournament,
-  Tournament,
-} from "@/lib/types";
+import type { ScoringRule, SupabaseTournament, Tournament } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseTournamentsType = {
@@ -42,7 +38,7 @@ async function fetchTournaments(): Promise<Tournament[]> {
 
 type UseCurrentTournamentType = {
   handTypes: string[];
-  scoringRulesMap: ScoringRulesMap;
+  scoringRulesMap: Map<number | null, ScoringRule>;
 };
 
 export function useCurrentTournament(): UseCurrentTournamentType {
