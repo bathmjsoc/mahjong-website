@@ -29,7 +29,10 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
             players? This cannot be undone!
           </span>
 
-          <FilledButton className="bg-negative uppercase" onClick={handleSubmit}>
+          <FilledButton
+            className="bg-negative uppercase"
+            onClick={handleSubmit}
+          >
             Reset Session
           </FilledButton>
         </div>
