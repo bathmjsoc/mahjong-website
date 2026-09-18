@@ -30,18 +30,6 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
 }
 
 /*
- * Determine the winner/loser point deltas for a given faan and win type
- */
-export function getPointDeltas(
-  faan: number | null,
-  winType: WinType,
-  scoringRulesMap: ScoringRulesMap,
-): PointDelta {
-  const scoringRule = scoringRulesMap.get(faan);
-  return scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
-}
-
-/*
  * Calculate the cumulative point history for a player from the provided logs and scoring rules
  */
 export function getPointHistory(logs: Log[], player: Player): number[] {

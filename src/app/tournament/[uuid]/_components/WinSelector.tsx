@@ -4,7 +4,6 @@ import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
-import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
@@ -86,7 +85,8 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     winners: Player[],
     losers: Player[],
   ) {
-    const delta = getPointDeltas(faan, winType, scoringRulesMap);
+    const scoringRule = scoringRulesMap.get(faan);
+    const delta = scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
