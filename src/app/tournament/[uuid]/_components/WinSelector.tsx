@@ -75,22 +75,33 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    createLog(winType, handType, faan, winners, losers, others);
-    handleAnimations(winType, faan, winners, losers);
+    const delta = scoringRulesMap.get(faan)?.deltas[winType];
+    const winnerPoints = delta?.winner ?? 0;
+    const loserPoints = delta?.loser ?? 0;
+
+    createLog(
+      winType,
+      handType,
+      faan,
+      winners,
+      losers,
+      others,
+      winnerPoints,
+      loserPoints,
+    );
+    handleAnimations(faan, winners, losers, winnerPoints, loserPoints);
   }
 
   function handleAnimations(
-    winType: WinType,
     faan: number | null,
     winners: Player[],
     losers: Player[],
+    winnerPoints: number,
+    loserPoints: number,
   ) {
-    const scoringRule = scoringRulesMap.get(faan);
-    const delta = scoringRule?.deltas[winType] ?? { winner: 0, loser: 0 };
-
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
-        detail: { delta, winners, losers },
+        detail: { winners, losers, winnerPoints, loserPoints },
       }),
     );
 

@@ -81,9 +81,10 @@ export type LogSearchTag = {
 export type PointDelta = { winner: number; loser: number };
 
 export type PointsAnimationEvent = {
-  delta: PointDelta;
   winners: Player[];
   losers: Player[];
+  winnerPoints: number;
+  loserPoints: number;
 };
 
 export type ScoringRule = {
