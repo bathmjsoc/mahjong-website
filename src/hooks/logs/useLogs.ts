@@ -29,12 +29,18 @@ function selectLogs(rawLogs: Log[]): UseLogsType {
   );
 
   const logs = logsWithDisabled.filter((log) => !log.disabled);
-  const overallScores = getPlayerScores(logs, scoringRulesMap);
   const logsBySession = Map.groupBy(logs, (log) => log.session_id);
 
-  const sessionScores: Record<string, Record<string, number>> = {};
+  const overallScores: Record<string, number> = {}; // Record<player_id, score>
+  const sessionScores: Record<string, Record<string, number>> = {}; // Record<session_id, Record<player_id, score>>
+
   for (const [sessionId, sessionLogs] of logsBySession) {
-    sessionScores[sessionId] = getPlayerScores(sessionLogs, scoringRulesMap);
+    const scores = getPlayerScores(sessionLogs);
+    sessionScores[sessionId] = scores;
+
+    for (const [playerId, score] of Object.entries(scores)) {
+      overallScores[playerId] = (overallScores[playerId] ?? 0) + score;
+    }
   }
 
   return { logs, logsWithDisabled, overallScores, sessionScores };
