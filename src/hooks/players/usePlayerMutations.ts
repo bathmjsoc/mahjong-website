@@ -7,8 +7,11 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Player } from "@/lib/types";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function usePlayerMutations() {
+  const tournamentId = useTournamentContext();
+
   const getPlayersQueryKey = (player: Player) => {
     return ["players", player.tournament_id];
   };
@@ -31,7 +34,7 @@ export function usePlayerMutations() {
   });
 
   return {
-    createPlayer(tournamentId: string, playerName: string) {
+    createPlayer(playerName: string) {
       createMutation.mutate({
         id: crypto.randomUUID(),
         tournament_id: tournamentId,

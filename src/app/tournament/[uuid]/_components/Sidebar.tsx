@@ -13,7 +13,6 @@ import { SearchCombobox } from "@/elements/SearchCombobox";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import type { Player } from "@/lib/types";
-import { useSessionContext } from "@/providers/SessionProvider";
 import { CreatePlayerModal } from "./CreatePlayerModal";
 import { DeletePlayerModal } from "./DeletePlayerModal";
 import { EditPlayerModal } from "./EditPlayerModal";
@@ -27,8 +26,6 @@ type SidebarProps = {
 };
 
 export function Sidebar({ players }: SidebarProps) {
-  const sessionId = useSessionContext();
-
   const { registeredPlayerIds } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
 
@@ -38,10 +35,6 @@ export function Sidebar({ players }: SidebarProps) {
   const registeredPlayers = players.filter(
     (player) => !registeredPlayerIds.has(player.id),
   );
-
-  function handleRegisterPlayer(player: Player) {
-    registerPlayer(sessionId, player);
-  }
 
   return (
     <>
@@ -56,7 +49,7 @@ export function Sidebar({ players }: SidebarProps) {
           <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
               options={registeredPlayers}
-              onSelect={(player) => handleRegisterPlayer(player)}
+              onSelect={registerPlayer}
               getOptionLabel={(player) => player.name}
               getOptionKey={(player) => player.id}
               placeholder="Register a player..."

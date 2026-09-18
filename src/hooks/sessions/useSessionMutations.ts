@@ -6,8 +6,11 @@ import {
 } from "@/hooks/useOptimisticUpdates";
 import type { Session } from "@/lib/types";
 import { getCurrentDateString } from "@/lib/utils";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function useSessionMutations() {
+  const tournamentId = useTournamentContext();
+
   const queryClient = useQueryClient();
 
   const getSessionsQueryKey = (session: Session) => {
@@ -26,7 +29,7 @@ export function useSessionMutations() {
   });
 
   return {
-    createSession(tournamentId: string) {
+    createSession() {
       const sessions =
         queryClient.getQueryData<Session[]>(["sessions", tournamentId]) ?? [];
 

@@ -4,7 +4,6 @@ import { Modal } from "@/elements/Modal";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
@@ -17,8 +16,6 @@ export function CreatePlayerModal({
   onClose,
   players,
 }: CreatePlayerModalProps) {
-  const tournamentId = useTournamentContext();
-
   const { createPlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +38,7 @@ export function CreatePlayerModal({
       return;
     }
 
-    createPlayer(tournamentId, playerName);
+    createPlayer(playerName);
     handleClose();
   }
 

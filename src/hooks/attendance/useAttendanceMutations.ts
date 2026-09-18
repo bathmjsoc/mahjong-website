@@ -4,8 +4,11 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Attendance, Player } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 
 export function useAttendanceMutations() {
+  const sessionId = useSessionContext();
+
   const getAttendanceQueryKey = (attendance: Attendance) => {
     return ["attendance", attendance.session_id];
   };
@@ -28,7 +31,7 @@ export function useAttendanceMutations() {
   });
 
   return {
-    registerPlayer(sessionId: string, player: Player) {
+    registerPlayer(player: Player) {
       createMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
@@ -37,7 +40,7 @@ export function useAttendanceMutations() {
       });
     },
 
-    deregisterPlayer(sessionId: string, player: Player) {
+    deregisterPlayer(player: Player) {
       updateMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
@@ -46,7 +49,7 @@ export function useAttendanceMutations() {
       });
     },
 
-    lockPlayer(sessionId: string, player: Player) {
+    lockPlayer(player: Player) {
       updateMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
@@ -55,7 +58,7 @@ export function useAttendanceMutations() {
       });
     },
 
-    unlockPlayer(sessionId: string, player: Player) {
+    unlockPlayer(player: Player) {
       updateMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
