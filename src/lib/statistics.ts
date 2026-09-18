@@ -1,5 +1,4 @@
-import { getPointDeltas } from "@/lib/scoring";
-import type { Log, Player, ScoringRulesMap } from "@/lib/types";
+import type { Log, Player } from "@/lib/types";
 import { avg, stdDev } from "@/lib/utils";
 
 type Statistic = {
@@ -42,7 +41,6 @@ export function calculatePointStatistics(
   player: Player,
   players: Player[],
   logs: Log[],
-  scoringRulesMap: ScoringRulesMap,
 ): Record<string, Statistic> {
   const pointsWon: Record<string, number[]> = Object.fromEntries(
     players.map((player) => [player.id, []]),
@@ -52,14 +50,12 @@ export function calculatePointStatistics(
   );
 
   for (const log of logs) {
-    const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
-
     for (const playerId of log.winner_ids) {
-      pointsWon[playerId]?.push(delta.winner);
+      pointsWon[playerId]?.push(log.winner_points);
     }
 
     for (const playerId of log.loser_ids) {
-      pointsLost[playerId]?.push(delta.loser);
+      pointsLost[playerId]?.push(log.loser_points);
     }
   }
 

@@ -12,12 +12,14 @@ export type Log = {
   id: string;
   tournament_id: string;
   session_id: string;
-  faan: number | null;
   win_type: WinType;
+  hand_type: string | null;
+  faan: number | null;
   winner_ids: string[];
   loser_ids: string[];
   other_ids: string[];
-  hand_type: string | null;
+  winner_points: number;
+  loser_points: number;
   timestamp: string;
   disabled: boolean;
 };
@@ -79,11 +81,9 @@ export type LogSearchTag = {
 export type PointDelta = { winner: number; loser: number };
 
 export type PointsAnimationEvent = {
-  faan: number | null;
-  winType: WinType;
+  delta: PointDelta;
   winners: Player[];
   losers: Player[];
-  others: Player[];
 };
 
 export type ScoringRule = {

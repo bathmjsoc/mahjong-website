@@ -72,12 +72,14 @@ export type Database = {
           hand_type: string | null;
           id: string;
           loser_ids: string[];
+          loser_points: number;
           other_ids: string[];
           session_id: string;
           timestamp: string;
           tournament_id: string;
           win_type: Database["public"]["Enums"]["winType"];
           winner_ids: string[];
+          winner_points: number;
         };
         Insert: {
           disabled: boolean;
@@ -85,12 +87,14 @@ export type Database = {
           hand_type?: string | null;
           id: string;
           loser_ids: string[];
+          loser_points: number;
           other_ids: string[];
           session_id: string;
           timestamp: string;
           tournament_id: string;
           win_type: Database["public"]["Enums"]["winType"];
           winner_ids: string[];
+          winner_points: number;
         };
         Update: {
           disabled?: boolean;
@@ -98,12 +102,14 @@ export type Database = {
           hand_type?: string | null;
           id?: string;
           loser_ids?: string[];
+          loser_points?: number;
           other_ids?: string[];
           session_id?: string;
           timestamp?: string;
           tournament_id?: string;
           win_type?: Database["public"]["Enums"]["winType"];
           winner_ids?: string[];
+          winner_points?: number;
         };
         Relationships: [
           {

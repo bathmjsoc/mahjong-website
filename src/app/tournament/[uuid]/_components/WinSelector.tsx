@@ -4,9 +4,8 @@ import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
+import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
-import { useSessionContext } from "@/providers/SessionProvider";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
   table: Table;
@@ -15,9 +14,6 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
-  const sessionId = useSessionContext();
-  const tournamentId = useTournamentContext();
-
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
   const { handTypes, scoringRulesMap } = useCurrentTournament();
@@ -80,20 +76,21 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
-    createLog(
-      tournamentId,
-      sessionId,
-      faan,
-      winType,
-      winners,
-      losers,
-      others,
-      handType,
-    );
+    createLog(winType, handType, faan, winners, losers, others);
+    handleAnimations(winType, faan, winners, losers);
+  }
+
+  function handleAnimations(
+    winType: WinType,
+    faan: number | null,
+    winners: Player[],
+    losers: Player[],
+  ) {
+    const delta = getPointDeltas(faan, winType, scoringRulesMap);
 
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
-        detail: { faan, winType, winners, losers, others },
+        detail: { delta, winners, losers },
       }),
     );
 

@@ -1,10 +1,4 @@
-import type {
-  Log,
-  Player,
-  PointDelta,
-  ScoringRulesMap,
-  WinType,
-} from "@/lib/types";
+import type { Log, Player } from "@/lib/types";
 
 type GameResults = {
   wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
@@ -15,21 +9,16 @@ type GameResults = {
 /*
  * Calculates the cumulative score for each player from the provided logs and scoring rules
  */
-export function getPlayerScores(
-  logs: Log[],
-  scoringRulesMap: ScoringRulesMap,
-): Record<string, number> {
+export function getPlayerScores(logs: Log[]): Record<string, number> {
   const scores: Record<string, number> = {};
 
   for (const log of logs) {
-    const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
-
     for (const winner of log.winner_ids) {
-      scores[winner] = (scores[winner] ?? 0) + delta.winner;
+      scores[winner] = (scores[winner] ?? 0) + log.winner_points;
     }
 
     for (const loser of log.loser_ids) {
-      scores[loser] = (scores[loser] ?? 0) + delta.loser;
+      scores[loser] = (scores[loser] ?? 0) + log.loser_points;
     }
 
     for (const other of log.other_ids) {
@@ -55,21 +44,16 @@ export function getPointDeltas(
 /*
  * Calculate the cumulative point history for a player from the provided logs and scoring rules
  */
-export function getPointHistory(
-  logs: Log[],
-  player: Player,
-  scoringRulesMap: ScoringRulesMap,
-): number[] {
+export function getPointHistory(logs: Log[], player: Player): number[] {
   const scores = [0];
 
   for (const log of logs) {
     const previousPoints = scores.at(-1) ?? 0;
-    const delta = getPointDeltas(log.faan, log.win_type, scoringRulesMap);
 
     if (log.winner_ids.includes(player.id)) {
-      scores.push(previousPoints + delta.winner);
+      scores.push(previousPoints + log.winner_points);
     } else if (log.loser_ids.includes(player.id)) {
-      scores.push(previousPoints + delta.loser);
+      scores.push(previousPoints + log.loser_points);
     } else if (log.other_ids.includes(player.id)) {
       scores.push(previousPoints);
     }
