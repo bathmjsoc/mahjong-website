@@ -88,6 +88,7 @@ export default function TournamentPage() {
             onClick={handleShuffle}
             disabled={isShaking}
             className="rounded-full bg-primary p-3"
+            title="Shuffle Tables"
           >
             <Shuffle className="size-6" />
           </FilledButton>

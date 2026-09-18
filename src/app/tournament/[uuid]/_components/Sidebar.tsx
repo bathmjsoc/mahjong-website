@@ -99,6 +99,7 @@ export function Sidebar({ players }: SidebarProps) {
         <FilledButton
           onClick={() => setIsOpen(!isOpen)}
           className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"
+          title="Collapse/Expand Sidebar"
         >
           <ChevronRight
             className={twMerge(
