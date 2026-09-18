@@ -12,9 +12,8 @@ import type { Player, Table, Wind } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 export function useTableMutations() {
-  const sessionId = useSessionContext();
-
   const queryClient = useQueryClient();
+  const sessionId = useSessionContext();
 
   const getTablesQueryKey = (table: Table) => {
     return ["tables", table.session_id];

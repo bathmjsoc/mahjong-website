@@ -9,9 +9,8 @@ import { getCurrentDateString } from "@/lib/utils";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function useSessionMutations() {
-  const tournamentId = useTournamentContext();
-
   const queryClient = useQueryClient();
+  const tournamentId = useTournamentContext();
 
   const getSessionsQueryKey = (session: Session) => {
     return ["sessions", session.tournament_id];
