@@ -75,13 +75,11 @@ function PlayerRow({
   isUnseated,
   isFirstPlace,
 }: PlayerRowProps) {
-  const sessionId = useSessionContext();
-
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
     useAttendanceMutations();
 
   function handleLockToggle() {
-    isLocked ? unlockPlayer(sessionId, player) : lockPlayer(sessionId, player);
+    isLocked ? unlockPlayer(player) : lockPlayer(player);
   }
 
   return (
@@ -140,7 +138,7 @@ function PlayerRow({
       <td>
         <IconButton
           title="Deregister Player"
-          onClick={() => deregisterPlayer(sessionId, player)}
+          onClick={() => deregisterPlayer(player)}
           className="flex w-full items-center justify-center hover:text-negative"
         >
           <X className="size-5" />

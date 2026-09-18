@@ -9,9 +9,11 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Player, Table, Wind } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
 
 export function useTableMutations() {
   const queryClient = useQueryClient();
+  const sessionId = useSessionContext();
 
   const getTablesQueryKey = (table: Table) => {
     return ["tables", table.session_id];
@@ -41,7 +43,7 @@ export function useTableMutations() {
   });
 
   return {
-    createTable(sessionId: string) {
+    createTable() {
       const tables =
         queryClient.getQueryData<Table[]>(["tables", sessionId]) ?? [];
       const maxTableNumber = tables

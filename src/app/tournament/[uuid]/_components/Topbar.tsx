@@ -37,6 +37,7 @@ export function Topbar() {
         <FilledButton
           onClick={() => router.push("/dashboard")}
           className="size-9 rounded-xl bg-primary hover:text-info"
+          title="Return to Dashboard"
         >
           <LayoutDashboard className="size-5" />
         </FilledButton>
@@ -44,6 +45,7 @@ export function Topbar() {
         <FilledButton
           onClick={signOut}
           className="size-9 rounded-xl bg-primary hover:text-negative"
+          title="Sign Out"
         >
           <LogOut className="size-5" />
         </FilledButton>

@@ -7,8 +7,13 @@ import {
   useOptimisticMutation,
 } from "@/hooks/useOptimisticUpdates";
 import type { Log, Player, WinType } from "@/lib/types";
+import { useSessionContext } from "@/providers/SessionProvider";
+import { useTournamentContext } from "@/providers/TournamentProvider";
 
 export function useLogMutations() {
+  const sessionId = useSessionContext();
+  const tournamentId = useTournamentContext();
+
   const getLogsQueryKey = (log: Log) => {
     return ["logs", log.tournament_id];
   };
@@ -32,25 +37,27 @@ export function useLogMutations() {
 
   return {
     createLog(
-      tournamentId: string,
-      sessionId: string,
-      faan: number | null,
       winType: WinType,
+      handType: string | null,
+      faan: number | null,
       winners: Player[],
       losers: Player[],
       others: Player[],
-      handType: string | null,
+      winnerPoints: number,
+      loserPoints: number,
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
         tournament_id: tournamentId,
         session_id: sessionId,
-        faan: faan,
         win_type: winType,
+        hand_type: handType,
+        faan: faan,
         winner_ids: winners.map((player) => player.id),
         loser_ids: losers.map((player) => player.id),
         other_ids: others.map((player) => player.id),
-        hand_type: handType,
+        winner_points: winnerPoints,
+        loser_points: loserPoints,
         timestamp: new Date().toISOString(),
         disabled: false,
       });

@@ -72,25 +72,29 @@ export type Database = {
           hand_type: string | null;
           id: string;
           loser_ids: string[];
+          loser_points: number;
           other_ids: string[];
           session_id: string;
           timestamp: string;
           tournament_id: string;
           win_type: Database["public"]["Enums"]["winType"];
           winner_ids: string[];
+          winner_points: number;
         };
         Insert: {
-          disabled?: boolean;
+          disabled: boolean;
           faan?: number | null;
           hand_type?: string | null;
-          id?: string;
+          id: string;
           loser_ids: string[];
+          loser_points: number;
           other_ids: string[];
           session_id: string;
-          timestamp?: string;
+          timestamp: string;
           tournament_id: string;
           win_type: Database["public"]["Enums"]["winType"];
           winner_ids: string[];
+          winner_points: number;
         };
         Update: {
           disabled?: boolean;
@@ -98,12 +102,14 @@ export type Database = {
           hand_type?: string | null;
           id?: string;
           loser_ids?: string[];
+          loser_points?: number;
           other_ids?: string[];
           session_id?: string;
           timestamp?: string;
           tournament_id?: string;
           win_type?: Database["public"]["Enums"]["winType"];
           winner_ids?: string[];
+          winner_points?: number;
         };
         Relationships: [
           {
@@ -130,8 +136,8 @@ export type Database = {
           tournament_id: string;
         };
         Insert: {
-          deleted?: boolean;
-          id?: string;
+          deleted: boolean;
+          id: string;
           name: string;
           tournament_id: string;
         };
@@ -159,9 +165,9 @@ export type Database = {
           tournament_id: string;
         };
         Insert: {
-          id?: string;
+          id: string;
           number: number;
-          start_date?: string;
+          start_date: string;
           tournament_id: string;
         };
         Update: {
@@ -193,10 +199,10 @@ export type Database = {
         };
         Insert: {
           east_id?: string | null;
-          id?: string;
+          id: string;
           north_id?: string | null;
           number: number;
-          saved?: boolean;
+          saved: boolean;
           session_id: string;
           south_id?: string | null;
           west_id?: string | null;
@@ -261,10 +267,10 @@ export type Database = {
         };
         Insert: {
           hand_types: string[];
-          id?: string;
-          last_updated?: string;
+          id: string;
+          last_updated: string;
           name: string;
-          player_count?: number;
+          player_count: number;
           scoring_rules: Json[];
           user_id?: string;
         };

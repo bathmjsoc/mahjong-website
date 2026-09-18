@@ -1,8 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
 import { getPlayerScores } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/client";
-import type { Log, ScoringRulesMap } from "@/lib/types";
+import type { Log } from "@/lib/types";
 import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type UseLogsType = {
@@ -15,32 +14,33 @@ type UseLogsType = {
 export function useLogs(): UseLogsType {
   const tournamentId = useTournamentContext();
 
-  const { scoringRulesMap } = useCurrentTournament();
-
   const query = useSuspenseQuery({
     queryKey: ["logs", tournamentId],
     queryFn: () => fetchLogs(tournamentId),
-    select: (logs) => selectLogs(logs, scoringRulesMap),
+    select: (logs) => selectLogs(logs),
   });
 
   return query.data;
 }
 
-function selectLogs(
-  rawLogs: Log[],
-  scoringRulesMap: ScoringRulesMap,
-): UseLogsType {
+function selectLogs(rawLogs: Log[]): UseLogsType {
   const logsWithDisabled = rawLogs.toSorted((a, b) =>
     b.timestamp.localeCompare(a.timestamp),
   );
 
   const logs = logsWithDisabled.filter((log) => !log.disabled);
-  const overallScores = getPlayerScores(logs, scoringRulesMap);
   const logsBySession = Map.groupBy(logs, (log) => log.session_id);
 
-  const sessionScores: Record<string, Record<string, number>> = {};
+  const overallScores: Record<string, number> = {}; // Record<player_id, score>
+  const sessionScores: Record<string, Record<string, number>> = {}; // Record<session_id, Record<player_id, score>>
+
   for (const [sessionId, sessionLogs] of logsBySession) {
-    sessionScores[sessionId] = getPlayerScores(sessionLogs, scoringRulesMap);
+    const scores = getPlayerScores(sessionLogs);
+    sessionScores[sessionId] = scores;
+
+    for (const [playerId, score] of Object.entries(scores)) {
+      overallScores[playerId] = (overallScores[playerId] ?? 0) + score;
+    }
   }
 
   return { logs, logsWithDisabled, overallScores, sessionScores };

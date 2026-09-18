@@ -5,8 +5,6 @@ import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
-import { getPointDeltas } from "@/lib/scoring";
 import type { Player, PointsAnimationEvent, Table, Wind } from "@/lib/types";
 import { WinSelector } from "./WinSelector";
 
@@ -29,7 +27,6 @@ export function TableSeat({
   const { playerMap, players } = usePlayers();
   const { updateTable } = useTableMutations();
   const { duplicatePlayerIds } = useTables();
-  const { scoringRulesMap } = useCurrentTournament();
 
   const [animationPoints, setAnimationPoints] = useState<number>(0);
 
@@ -52,15 +49,17 @@ export function TableSeat({
     const handleAnimation = (event: Event) => {
       if (!(event instanceof CustomEvent)) return;
 
-      const { faan, winType, winners, losers }: PointsAnimationEvent =
-        event.detail;
-
-      const pointDeltas = getPointDeltas(faan, winType, scoringRulesMap);
+      const {
+        winners,
+        losers,
+        winnerPoints,
+        loserPoints,
+      }: PointsAnimationEvent = event.detail;
 
       if (winners.some((player) => player.id === occupant.id)) {
-        setAnimationPoints(pointDeltas.winner);
+        setAnimationPoints(winnerPoints);
       } else if (losers.some((player) => player.id === occupant.id)) {
-        setAnimationPoints(pointDeltas.loser);
+        setAnimationPoints(loserPoints);
       }
 
       setTimeout(() => setAnimationPoints(0), 2000);
@@ -68,7 +67,7 @@ export function TableSeat({
 
     window.addEventListener(eventName, handleAnimation);
     return () => window.removeEventListener(eventName, handleAnimation);
-  }, [occupant, table.id, scoringRulesMap]);
+  }, [occupant, table.id]);
 
   function handleSelect(player: Player | null) {
     updateTable(table, {

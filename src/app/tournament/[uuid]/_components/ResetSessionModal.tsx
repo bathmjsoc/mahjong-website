@@ -3,7 +3,6 @@ import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
 import { Notification } from "@/elements/Notification";
 import { useSessionMutations } from "@/hooks/sessions/useSessionMutations";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type ResetSessionModalProps = {
   isOpen: boolean;
@@ -11,14 +10,12 @@ type ResetSessionModalProps = {
 };
 
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
-  const tournamentId = useTournamentContext();
-
   const { createSession } = useSessionMutations();
 
   const [showNotification, setShowNotification] = useState(false);
 
-  function handleReset() {
-    createSession(tournamentId);
+  function handleSubmit() {
+    createSession();
     setShowNotification(true);
     onClose();
   }
@@ -32,7 +29,10 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
             players? This cannot be undone!
           </span>
 
-          <FilledButton className="bg-negative uppercase" onClick={handleReset}>
+          <FilledButton
+            className="bg-negative uppercase"
+            onClick={handleSubmit}
+          >
             Reset Session
           </FilledButton>
         </div>

@@ -3,10 +3,8 @@ import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
-import { useSessionContext } from "@/providers/SessionProvider";
-import { useTournamentContext } from "@/providers/TournamentProvider";
 
 type WinSelectorProps = {
   table: Table;
@@ -15,9 +13,6 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
-  const sessionId = useSessionContext();
-  const tournamentId = useTournamentContext();
-
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
   const { handTypes, scoringRulesMap } = useCurrentTournament();
@@ -80,20 +75,33 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         break;
     }
 
+    const delta = scoringRulesMap.get(faan)?.deltas[winType];
+    const winnerPoints = delta?.winner ?? 0;
+    const loserPoints = delta?.loser ?? 0;
+
     createLog(
-      tournamentId,
-      sessionId,
-      faan,
       winType,
+      handType,
+      faan,
       winners,
       losers,
       others,
-      handType,
+      winnerPoints,
+      loserPoints,
     );
+    handleAnimations(faan, winners, losers, winnerPoints, loserPoints);
+  }
 
+  function handleAnimations(
+    faan: number | null,
+    winners: Player[],
+    losers: Player[],
+    winnerPoints: number,
+    loserPoints: number,
+  ) {
     window.dispatchEvent(
       new CustomEvent<PointsAnimationEvent>(`points-animation-${table.id}`, {
-        detail: { faan, winType, winners, losers, others },
+        detail: { winners, losers, winnerPoints, loserPoints },
       }),
     );
 
