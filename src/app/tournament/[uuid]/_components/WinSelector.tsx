@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { DropDown } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
-import { useCurrentTournament } from "@/hooks/tournaments/useCurrentTournament";
+import { useCurrentTournament } from "@/hooks/tournaments/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
 type WinSelectorProps = {
