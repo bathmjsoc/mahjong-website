@@ -28,7 +28,7 @@ export function DeletePlayerModal({
     onClose();
   }
 
-  function handleDelete() {
+  function handleSubmit() {
     if (!selectedPlayer) return;
 
     deletePlayer(selectedPlayer);
@@ -63,7 +63,7 @@ export function DeletePlayerModal({
 
           <FilledButton
             className="bg-negative uppercase"
-            onClick={handleDelete}
+            onClick={handleSubmit}
             disabled={!selectedPlayer}
           >
             Delete Player

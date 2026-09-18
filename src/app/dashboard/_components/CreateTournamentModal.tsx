@@ -31,6 +31,14 @@ export function CreateTournamentModal({
 
   const [isSubmitting, startTransition] = useTransition();
 
+  function handleClose() {
+    setError(null);
+    setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
+    setScoringRules([DEFAULT_SCORING_RULE]);
+    setBoomHands("");
+    onClose();
+  }
+
   function handleSubmit(formData: FormData) {
     const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
@@ -54,14 +62,6 @@ export function CreateTournamentModal({
       createTournament(tournamentName, rules, handTypes);
       handleClose();
     });
-  }
-
-  function handleClose() {
-    setError(null);
-    setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
-    setScoringRules([DEFAULT_SCORING_RULE]);
-    setBoomHands("");
-    onClose();
   }
 
   return (

@@ -17,8 +17,8 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
 
   const [showNotification, setShowNotification] = useState(false);
 
-  function handleReset() {
-    createSession(tournamentId);
+  function handleSubmit() {
+    createSession();
     setShowNotification(true);
     onClose();
   }
@@ -32,7 +32,7 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
             players? This cannot be undone!
           </span>
 
-          <FilledButton className="bg-negative uppercase" onClick={handleReset}>
+          <FilledButton className="bg-negative uppercase" onClick={handleSubmit}>
             Reset Session
           </FilledButton>
         </div>
