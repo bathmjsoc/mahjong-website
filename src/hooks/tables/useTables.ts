@@ -51,11 +51,7 @@ function selectTables(rawTables: Table[]): UseTablesType {
     }
   }
 
-  return {
-    duplicatePlayerIds,
-    seatedPlayerIds,
-    tables,
-  };
+  return { duplicatePlayerIds, seatedPlayerIds, tables };
 }
 
 async function fetchTables(sessionId: string): Promise<Table[]> {
