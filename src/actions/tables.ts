@@ -3,8 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Table } from "@/lib/types";
 
-export async function createTables(payload: Table | Table[]): Promise<void> {
-  const tables = Array.isArray(payload) ? payload : [payload];
+export async function createTables(data: Table | Table[]): Promise<void> {
+  const tables = Array.isArray(data) ? data : [data];
   if (tables.length === 0) return;
 
   const supabase = await createClient();
@@ -16,8 +16,8 @@ export async function updateTable(table: Table): Promise<void> {
   await supabase.from("tables").update(table).eq("id", table.id).throwOnError();
 }
 
-export async function deleteTables(payload: Table | Table[]): Promise<void> {
-  const tables = Array.isArray(payload) ? payload : [payload];
+export async function deleteTables(data: Table | Table[]): Promise<void> {
+  const tables = Array.isArray(data) ? data : [data];
   if (tables.length === 0) return;
 
   const supabase = await createClient();
