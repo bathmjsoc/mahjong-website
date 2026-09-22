@@ -3,12 +3,12 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Log } from "@/lib/types";
 
-export async function createLogs(data: Log | Log[]): Promise<void> {
-  const logs = Array.isArray(data) ? data : [data];
-  if (logs.length === 0) return;
+export async function createLogs(logs: Log | Log[]): Promise<void> {
+  const payload = Array.isArray(logs) ? logs : [logs];
+  if (payload.length === 0) return;
 
   const supabase = await createClient();
-  await supabase.from("logs").insert(logs).throwOnError();
+  await supabase.from("logs").insert(payload).throwOnError();
 }
 
 export async function updateLog(log: Log): Promise<void> {
