@@ -16,6 +16,11 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [showNotification, setShowNotification] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  function handleClose() {
+    setError(null);
+    onClose();
+  }
+
   function handleSubmit(formData: FormData) {
     const email = parseFormString(formData, "email");
     const password = parseFormString(formData, "password");
@@ -34,13 +39,13 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       }
 
       setShowNotification(true);
-      onClose();
+      handleClose();
     });
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} title="Create Account">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
         <form action={handleSubmit} className="flex w-xs flex-col gap-3">
           <LabelledInput
             name="email"
