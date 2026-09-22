@@ -35,7 +35,7 @@ export function ColumnChart({ data, title }: ColumnChartProps) {
       },
     },
     title: {
-      text: title,
+      text: title?.toUpperCase(),
       align: "center",
       offsetY: 5,
       style: {

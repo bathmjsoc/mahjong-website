@@ -20,7 +20,7 @@ export function ScoreHistoryCard({ logs, player }: ScoreHistoryCardProps) {
 
   return (
     <div className="h-90 w-150">
-      <LineChart data={scoreData} title="SCORE HISTORY" />
+      <LineChart data={scoreData} title="Score History" />
     </div>
   );
 }
