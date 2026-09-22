@@ -1,6 +1,7 @@
-import { PencilRuler, Play, Users } from "lucide-react";
+import { PencilRuler, Play, Plus, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { CreateTournamentModal } from "@/app/dashboard/_components/CreateTournamentModal";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
 import { formatRelativeTime } from "@/lib/utils";
@@ -11,18 +12,31 @@ type TournamentListProps = {
 };
 
 export function TournamentList({ tournaments }: TournamentListProps) {
-  if (tournaments.length === 0) {
-    return (
-      <div className="text-primary text-xs italic">No tournaments found!</div>
-    );
-  }
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   return (
-    <div className="grid w-full grid-cols-[repeat(auto-fit,300px)] justify-center gap-5">
-      {tournaments.map((tournament) => (
-        <TournamentCard key={tournament.id} tournament={tournament} />
-      ))}
-    </div>
+    <>
+      <div className="grid w-full grid-cols-[repeat(auto-fit,300px)] justify-center gap-5">
+        {tournaments.map((tournament) => (
+          <TournamentCard key={tournament.id} tournament={tournament} />
+        ))}
+
+        <div className="flex flex-1 items-center justify-center">
+          <FilledButton
+            onClick={() => setIsCreateModalOpen(true)}
+            className="rounded-full p-3"
+            title="Create Tournament"
+          >
+            <Plus className="size-7" />
+          </FilledButton>
+        </div>
+      </div>
+
+      <CreateTournamentModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
+    </>
   );
 }
 
