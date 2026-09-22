@@ -1,5 +1,5 @@
 import {
-  createPlayer as createPlayerAction,
+  createPlayers as createPlayerAction,
   updatePlayer as updatePlayerAction,
 } from "@/actions/players";
 import {

@@ -38,7 +38,7 @@ export function useTournamentMutations() {
     ) {
       createMutation.mutate({
         id: crypto.randomUUID(),
-        user_id: "", // The real user_id is handled by Supabase using auth.uid()
+        user_id: "", // The real user_id is determined by Supabase using auth.uid()
         name: tournamentName,
         last_updated: new Date().toISOString(),
         player_count: 0,

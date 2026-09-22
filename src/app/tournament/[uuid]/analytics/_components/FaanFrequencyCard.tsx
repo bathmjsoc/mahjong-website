@@ -18,7 +18,7 @@ export function FaanFrequencyCard({ logs, player }: FaanFrequencyCardProps) {
 
   return (
     <div className="h-90 w-150">
-      <ColumnChart data={faanFrequencyData} title="FAAN FREQUENCY" />
+      <ColumnChart data={faanFrequencyData} title="Faan Frequency" />
     </div>
   );
 }

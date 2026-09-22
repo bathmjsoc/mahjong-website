@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type PropsWithChildren, useState } from "react";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
@@ -35,34 +35,38 @@ export default function AnalyticsPage() {
         <div className="flex gap-5">
           <div className="flex flex-col gap-5">
             <div className="flex gap-5">
-              <div className="rounded-lg bg-primary p-5">
+              <Card>
                 <RankingCard player={selectedPlayer} />
-              </div>
+              </Card>
 
-              <div className="rounded-lg bg-primary p-5">
+              <Card>
                 <GameOutcomesCard logs={logs} player={selectedPlayer} />
-              </div>
+              </Card>
             </div>
 
-            <div className="rounded-lg bg-primary p-5">
+            <Card>
               <StatisticsCard
                 player={selectedPlayer}
                 playerCount={players.length}
               />
-            </div>
+            </Card>
           </div>
 
           <div className="flex flex-col gap-5">
-            <div className="rounded-lg bg-primary p-5">
+            <Card>
               <ScoreHistoryCard logs={logs} player={selectedPlayer} />
-            </div>
+            </Card>
 
-            <div className="rounded-lg bg-primary p-5">
+            <Card>
               <FaanFrequencyCard logs={logs} player={selectedPlayer} />
-            </div>
+            </Card>
           </div>
         </div>
       )}
     </div>
   );
+}
+
+export function Card({ children }: PropsWithChildren) {
+  return <div className="rounded-lg bg-primary p-5">{children}</div>;
 }

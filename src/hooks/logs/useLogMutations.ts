@@ -1,5 +1,5 @@
 import {
-  createLog as createLogAction,
+  createLogs as createLogAction,
   updateLog as updateLogAction,
 } from "@/actions/logs";
 import {

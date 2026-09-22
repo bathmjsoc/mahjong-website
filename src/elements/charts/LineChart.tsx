@@ -33,7 +33,7 @@ export function LineChart({ data, title }: LineGraphProps) {
       width: 3,
     },
     title: {
-      text: title,
+      text: title?.toUpperCase(),
       align: "center",
       offsetY: 5,
       style: {

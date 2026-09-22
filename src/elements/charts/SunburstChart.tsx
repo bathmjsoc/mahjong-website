@@ -42,7 +42,7 @@ export function SunburstChart({ data, title }: SunburstChartProps) {
       colors: ["var(--color-secondary)"],
     },
     title: {
-      text: title,
+      text: title?.toUpperCase(),
       align: "center",
       style: {
         fontSize: "20px",

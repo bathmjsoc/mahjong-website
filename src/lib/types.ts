@@ -60,16 +60,13 @@ export type Tournament = {
 };
 
 // ---------- Other Types ----------
-export type ActionState = {
-  error?: string;
-  success?: boolean;
-} | null;
-
 export type ChartData = {
   title: string;
   data: Record<string, number>;
   color?: string;
 };
+
+export type FormResult = { success: true } | { success: false; error: string };
 
 export type LogSearchTag = {
   id: string;

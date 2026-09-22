@@ -11,17 +11,17 @@ export function GameOutcomesCard({ logs, player }: GameOutcomesCardProps) {
   const gameResults = getGameResults(logs, player);
   const gameResultsData = [
     {
-      title: "WINS",
+      title: "Wins",
       data: gameResults.wins,
       color: "var(--color-positive)",
     },
     {
-      title: "LOSSES",
+      title: "Losses",
       data: gameResults.losses,
       color: "var(--color-negative)",
     },
     {
-      title: "OTHERS",
+      title: "Other",
       data: gameResults.others,
       color: "var(--color-info)",
     },
@@ -29,7 +29,7 @@ export function GameOutcomesCard({ logs, player }: GameOutcomesCardProps) {
 
   return (
     <div className="h-90 w-100">
-      <SunburstChart data={gameResultsData} title="GAME OUTCOMES" />
+      <SunburstChart data={gameResultsData} title="Game Outcomes" />
     </div>
   );
 }

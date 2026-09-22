@@ -54,7 +54,7 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
         )}
       >
-        {sessionMap.get(log.session_id)?.number ?? "N/A"}
+        {sessionMap.get(log.session_id)?.number}
       </td>
 
       <td
@@ -64,11 +64,11 @@ function LogRow({ log }: LogRowProps) {
           "truncate border-x-0 border-y p-2 text-center",
         )}
       >
-        {log.faan ?? "N/A"}
+        {log.faan}
       </td>
 
       <td
-        title={WIN_TYPE_MAP[log.win_type] ?? "N/A"}
+        title={WIN_TYPE_MAP[log.win_type] ?? undefined}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
@@ -84,7 +84,8 @@ function LogRow({ log }: LogRowProps) {
         )}
       >
         {log.winner_ids
-          .map((id) => playerMap.get(id)?.name ?? "N/A")
+          .map((id) => playerMap.get(id)?.name)
+          .filter(Boolean)
           .join(", ")}
       </td>
 
@@ -94,7 +95,10 @@ function LogRow({ log }: LogRowProps) {
           "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
         )}
       >
-        {log.loser_ids.map((id) => playerMap.get(id)?.name ?? "N/A").join(", ")}
+        {log.loser_ids
+          .map((id) => playerMap.get(id)?.name)
+          .filter(Boolean)
+          .join(", ")}
       </td>
 
       <td>

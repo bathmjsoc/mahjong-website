@@ -1,17 +1,18 @@
 "use server";
 
-import { createSession } from "@/actions/sessions";
+import { createSessions } from "@/actions/sessions";
 import { createClient } from "@/lib/supabase/server";
 import type { Tournament } from "@/lib/types";
 import { getCurrentDateString } from "@/lib/utils";
 
 export async function createTournament(tournament: Tournament): Promise<void> {
-  const { user_id, ...tournamentData } = tournament; // Extract the user_id so that Supabase uses auth.uid()
+  const { user_id, ...tournamentData } = tournament; // Extract user_id so that Supabase uses auth.uid()
 
   const supabase = await createClient();
   await supabase.from("tournaments").insert(tournamentData).throwOnError();
 
-  await createSession({
+  // A tournament must have at least one session, so we initialize one immediately after the tournament is created
+  await createSessions({
     id: crypto.randomUUID(),
     tournament_id: tournament.id,
     number: 1,

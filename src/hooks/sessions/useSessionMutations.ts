@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { createSession as createSessionAction } from "@/actions/sessions";
+import { createSessions as createSessionAction } from "@/actions/sessions";
 import {
   useCacheMutators,
   useOptimisticMutation,
