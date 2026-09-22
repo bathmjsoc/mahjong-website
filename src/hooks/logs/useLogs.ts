@@ -17,7 +17,7 @@ export function useLogs(): UseLogsType {
   const query = useSuspenseQuery({
     queryKey: ["logs", tournamentId],
     queryFn: () => fetchLogs(tournamentId),
-    select: (logs) => selectLogs(logs),
+    select: selectLogs,
   });
 
   return query.data;
