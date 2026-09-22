@@ -18,6 +18,7 @@ export default function DashboardPage() {
       <FilledButton
         onClick={signOut}
         className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
+        title="Sign Out"
       >
         <LogOut className="size-5" />
       </FilledButton>

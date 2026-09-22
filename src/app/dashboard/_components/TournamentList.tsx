@@ -49,12 +49,18 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
           <div className="flex gap-3">
             <Link href={`/tournament/${tournament.id}`} className="flex-1">
-              <FilledButton className="flex w-full items-center justify-center">
+              <FilledButton
+                className="flex w-full items-center justify-center"
+                title="Play Tournament"
+              >
                 <Play className="size-5" />
               </FilledButton>
             </Link>
 
-            <FilledButton onClick={() => setIsEditModalOpen(true)}>
+            <FilledButton
+              onClick={() => setIsEditModalOpen(true)}
+              title="Edit Tournament"
+            >
               <PencilRuler className="size-5" />
             </FilledButton>
           </div>
