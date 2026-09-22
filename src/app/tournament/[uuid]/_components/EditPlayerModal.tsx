@@ -41,7 +41,6 @@ export function EditPlayerModal({
     if (!selectedPlayer) return;
 
     const updatedName = parseFormString(formData, "updatedName");
-
     if (!updatedName) {
       setError("Player Name is required.");
       return;

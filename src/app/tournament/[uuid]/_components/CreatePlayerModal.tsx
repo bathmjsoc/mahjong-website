@@ -27,7 +27,6 @@ export function CreatePlayerModal({
 
   function handleSubmit(formData: FormData) {
     const playerName = parseFormString(formData, "playerName");
-
     if (!playerName) {
       setError("Player Name is required.");
       return;
