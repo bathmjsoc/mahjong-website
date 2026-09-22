@@ -68,8 +68,8 @@ export default function TournamentPage() {
       <Sidebar players={players} />
 
       <div
-        title={wind ? WIND_MAP[wind] : "N/A"}
         className="absolute top-20 right-5 rounded-2xl bg-primary"
+        title={wind ? WIND_MAP[wind] : "N/A"}
       >
         <RoundedListbox<WindKey>
           value={wind}
