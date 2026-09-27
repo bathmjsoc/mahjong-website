@@ -29,7 +29,7 @@ export function CreateTournamentModal({
     DEFAULT_SCORING_RULE,
   ]);
 
-  const [isSubmitting, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   function handleClose() {
     setError(null);
@@ -98,7 +98,7 @@ export function CreateTournamentModal({
 
         <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
-        <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
+        <FilledButton type="submit" disabled={isPending} className="w-sm">
           Create Tournament
         </FilledButton>
       </form>

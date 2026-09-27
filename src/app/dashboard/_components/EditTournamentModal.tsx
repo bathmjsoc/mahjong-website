@@ -32,7 +32,7 @@ export function EditTournamentModal({
     tournament.scoring_rules.filter((rule) => rule.faan !== null),
   );
 
-  const [isSubmitting, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   function handleSubmit(formData: FormData) {
     const tournamentName = parseFormString(formData, "tournamentName");
@@ -94,7 +94,7 @@ export function EditTournamentModal({
 
         <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
-        <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
+        <FilledButton type="submit" disabled={isPending} className="w-sm">
           Update Tournament
         </FilledButton>
       </form>
