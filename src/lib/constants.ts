@@ -22,11 +22,11 @@ export const DEFAULT_SCORING_RULE = {
 } as const satisfies ScoringRule;
 
 export const RELATIVE_TIME_CUTOFFS = [
-  { unit: "year", seconds: 31536000 },
-  { unit: "month", seconds: 2592000 },
-  { unit: "week", seconds: 604800 },
-  { unit: "day", seconds: 86400 },
-  { unit: "hour", seconds: 3600 },
+  { unit: "year", seconds: 60 * 60 * 24 * 365 },
+  { unit: "month", seconds: 60 * 60 * 24 * 30 },
+  { unit: "week", seconds: 60 * 60 * 24 * 7 },
+  { unit: "day", seconds: 60 * 60 * 24 },
+  { unit: "hour", seconds: 60 * 60 },
   { unit: "minute", seconds: 60 },
 ] as const satisfies RelativeTimeCutoff[];
 
