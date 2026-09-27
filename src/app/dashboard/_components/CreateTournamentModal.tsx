@@ -69,7 +69,7 @@ export function CreateTournamentModal({
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-200 w-2xl flex-col items-center justify-center gap-4"
+        className="flex h-200 w-2xl flex-col items-center justify-center gap-5"
       >
         <div className="flex flex-col gap-3">
           <LabelledInput
