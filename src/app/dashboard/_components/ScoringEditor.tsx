@@ -23,7 +23,7 @@ export function ScoringEditor({
   }
 
   function handleRemoveRule() {
-    if (scoringRules.length === 1) return;
+    if (scoringRules.length === 1) return; // Prevents the user from removing the last rule
 
     setScoringRules(scoringRules.slice(0, -1));
   }
