@@ -72,9 +72,9 @@ export function EditTournamentModal({
             defaultValue={tournament.name}
             onChange={() => setError(null)}
             type="text"
-            autoComplete="off"
             autoFocus
             required
+            disabled={isPending}
             inputClassName="w-sm"
           >
             Tournament Name

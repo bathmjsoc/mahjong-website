@@ -76,9 +76,9 @@ export function CreateTournamentModal({
             name="tournamentName"
             onChange={() => setError(null)}
             type="text"
-            autoComplete="off"
             autoFocus
             required
+            disabled={isPending}
             inputClassName="w-sm"
           >
             Tournament Name
