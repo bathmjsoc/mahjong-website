@@ -55,7 +55,9 @@ export function LoginForm() {
           Password
         </LabelledInput>
 
-        {error && <p className="text-center text-negative text-xs">{error}</p>}
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
 
         <FilledButton type="submit" disabled={isPending}>
           Sign In

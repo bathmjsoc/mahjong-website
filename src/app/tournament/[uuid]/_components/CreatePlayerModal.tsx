@@ -54,7 +54,10 @@ export function CreatePlayerModal({
         >
           Player Name
         </LabelledInput>
-        {error && <p className="text-center text-negative text-xs">{error}</p>}
+
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
       </form>
     </Modal>
   );

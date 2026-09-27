@@ -67,7 +67,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           </LabelledInput>
 
           {error && (
-            <p className="text-center text-negative text-xs">{error}</p>
+            <span className="text-center text-negative text-xs">{error}</span>
           )}
 
           <FilledButton type="submit" disabled={isPending}>
