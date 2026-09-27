@@ -21,7 +21,7 @@ export function TournamentList({ tournaments }: TournamentListProps) {
           <TournamentCard key={tournament.id} tournament={tournament} />
         ))}
 
-        <div className="w-75 h-40 flex items-center justify-center">
+        <div className="flex h-40 w-75 items-center justify-center">
           <FilledButton
             onClick={() => setIsCreateModalOpen(true)}
             className="rounded-full p-3"
@@ -49,7 +49,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
   return (
     <>
-      <div className="w-75 h-40 flex flex-col gap-3 rounded-lg bg-primary p-3 text-secondary">
+      <div className="flex h-40 w-75 flex-col gap-3 rounded-lg bg-primary p-3 text-secondary">
         <span className="mb-auto line-clamp-2 text-lg">{tournament.name}</span>
 
         <div className="flex items-center justify-between text-xs">

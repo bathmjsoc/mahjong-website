@@ -74,7 +74,6 @@ export function EditTournamentModal({
             type="text"
             autoFocus
             required
-            disabled={isPending}
             inputClassName="w-sm"
           >
             Tournament Name

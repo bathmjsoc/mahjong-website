@@ -53,7 +53,6 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             autoComplete="email"
             autoFocus
             required
-            disabled={isPending}
           >
             Email Address
           </LabelledInput>
@@ -63,7 +62,6 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             type="password"
             autoComplete="new-password"
             required
-            disabled={isPending}
           >
             Password
           </LabelledInput>

@@ -78,7 +78,6 @@ export function CreateTournamentModal({
             type="text"
             autoFocus
             required
-            disabled={isPending}
             inputClassName="w-sm"
           >
             Tournament Name

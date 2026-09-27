@@ -42,7 +42,6 @@ export function LoginForm() {
           autoComplete="email"
           autoFocus
           required
-          disabled={isPending}
         >
           Email Address
         </LabelledInput>
@@ -52,7 +51,6 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          disabled={isPending}
         >
           Password
         </LabelledInput>
