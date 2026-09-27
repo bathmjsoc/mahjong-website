@@ -8,8 +8,8 @@ export function BoomHandEditor({
   setBoomHands,
 }: BoomHandEditorProps) {
   return (
-    <>
-      <div className="w-full rounded bg-secondary/15 p-2 text-center text-sm">
+    <div className="flex w-full flex-col gap-3">
+      <div className="rounded bg-secondary/15 p-2 text-center text-sm">
         Boom Hands
       </div>
 
@@ -17,8 +17,8 @@ export function BoomHandEditor({
         value={boomHands}
         placeholder="Enter boom hand types (separated by commas)..."
         onChange={(e) => setBoomHands(e.target.value)}
-        className="no-scrollbar h-30 w-full resize-none rounded border-2 p-1 text-xs outline-none"
+        className="no-scrollbar h-20 resize-none rounded border-2 p-1 text-xs outline-none"
       />
-    </>
+    </div>
   );
 }
