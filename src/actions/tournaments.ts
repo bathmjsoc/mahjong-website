@@ -6,10 +6,10 @@ import type { Tournament } from "@/lib/types";
 import { getCurrentDateString } from "@/lib/utils";
 
 export async function createTournament(tournament: Tournament): Promise<void> {
-  const { user_id, ...tournamentData } = tournament; // Extract user_id so that Supabase uses auth.uid()
+  const { user_id, ...payload } = tournament; // Extract user_id so that Supabase uses auth.uid()
 
   const supabase = await createClient();
-  await supabase.from("tournaments").insert(tournamentData).throwOnError();
+  await supabase.from("tournaments").insert(payload).throwOnError();
 
   // A tournament must have at least one session, so we initialize one immediately after the tournament is created
   await createSessions({
