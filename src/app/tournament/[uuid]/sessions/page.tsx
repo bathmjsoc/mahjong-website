@@ -56,7 +56,7 @@ export default function SessionsPage() {
           onChange={setSelectedSession}
           getOptionLabel={getSessionName}
           placeholder="Overall Standings"
-          getOptionKey={(session) => session?.id ?? "overall-standings"}
+          getOptionKey={(session) => session?.id ?? "overall"}
           buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
         />
 
