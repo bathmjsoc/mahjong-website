@@ -1,20 +1,12 @@
 import { Eye, EyeOff, Info } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { IconButton } from "@/elements/IconButton";
-import type { LogSearchTag } from "@/lib/types";
+import { useLogFilters } from "@/hooks/useLogFilters";
 import { normalizeText, parseFormString } from "@/lib/utils";
 
-type LogSearchBarProps = {
-  addTag: (tag: LogSearchTag) => void;
-  showDisabledLogs: boolean;
-  toggleDisabledLogs: () => void;
-};
+export function LogSearchBar() {
+  const { addTag, showDisabledLogs, toggleDisabledLogs } = useLogFilters();
 
-export function LogSearchBar({
-  addTag,
-  showDisabledLogs,
-  toggleDisabledLogs,
-}: LogSearchBarProps) {
   function handleSubmit(formData: FormData) {
     const query = parseFormString(formData, "query");
     if (!query) return;
@@ -28,8 +20,6 @@ export function LogSearchBar({
       case "faan":
       case "player":
         addTag({
-          id: crypto.randomUUID(),
-          label: `${key}=${value}`,
           key: key,
           value: value,
         });

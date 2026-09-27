@@ -69,9 +69,7 @@ export type ChartData = {
 export type FormResult = { success: true } | { success: false; error: string };
 
 export type LogSearchTag = {
-  id: string;
-  label: string;
-  key: "session" | "type" | "faan" | "player";
+  key: string;
   value: string;
 };
 
