@@ -75,7 +75,7 @@ export type LogSearchTag = {
   value: string;
 };
 
-export type PointDelta = { winner: number; loser: number };
+type PointDelta = { winner: number; loser: number };
 
 export type PointsAnimationEvent = {
   winners: Player[];
