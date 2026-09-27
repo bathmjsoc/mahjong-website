@@ -10,7 +10,7 @@ type GameResults = {
  * Calculates the cumulative score for each player from the provided logs and scoring rules
  */
 export function getPlayerScores(logs: Log[]): Record<string, number> {
-  const scores: Record<string, number> = {};
+  const scores: Record<string, number> = {}; // Record<player_id, score>
 
   for (const log of logs) {
     for (const winner of log.winner_ids) {
@@ -90,7 +90,7 @@ export function countFaanFrequency(
   logs: Log[],
   player: Player,
 ): Record<number, number> {
-  const counts: Record<number, number> = {};
+  const counts: Record<number, number> = {}; // Record<faan, count>
 
   for (const log of logs) {
     if (log.winner_ids.includes(player.id) && log.faan !== null) {

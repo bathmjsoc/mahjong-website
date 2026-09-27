@@ -68,7 +68,7 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
-        title={WIN_TYPE_MAP[log.win_type] ?? undefined}
+        title={WIN_TYPE_MAP[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",

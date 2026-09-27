@@ -45,19 +45,18 @@
 @layer base {
   html {
     background: var(--color-background);
-    scrollbar-gutter: stable; /* Not ideal, but fixes some issues */
+    scrollbar-gutter: stable;
   }
 }
 
 @layer components {
   .apexcharts-menu {
-    color: var(--color-primary); /* Otherwise text is white-on-white */
+    color: var(--color-primary);
   }
 }
 
 @utility no-scrollbar {
   scrollbar-width: none;
-
   &::-webkit-scrollbar {
     display: none;
   }

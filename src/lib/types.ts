@@ -69,13 +69,11 @@ export type ChartData = {
 export type FormResult = { success: true } | { success: false; error: string };
 
 export type LogSearchTag = {
-  id: string;
-  label: string;
-  key: "session" | "type" | "faan" | "player";
+  key: string;
   value: string;
 };
 
-export type PointDelta = { winner: number; loser: number };
+type PointDelta = { winner: number; loser: number };
 
 export type PointsAnimationEvent = {
   winners: Player[];

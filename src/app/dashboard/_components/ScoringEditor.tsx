@@ -23,14 +23,14 @@ export function ScoringEditor({
   }
 
   function handleRemoveRule() {
-    if (scoringRules.length === 1) return;
+    if (scoringRules.length === 1) return; // Prevents the user from removing the last rule
 
     setScoringRules(scoringRules.slice(0, -1));
   }
 
   return (
-    <>
-      <div className="w-full rounded bg-secondary/15 p-2 text-center text-sm">
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      <div className="rounded bg-secondary/15 p-2 text-center text-sm">
         Scoring Rules
       </div>
 
@@ -39,28 +39,28 @@ export function ScoringEditor({
         onChange={setFalseWinRule}
       />
 
-      <div className="scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent flex h-full flex-col gap-4 overflow-y-auto">
+      <div className="scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent scrollbar-gutter-stable overflow-y-auto">
         <ScoringRulesTable
           scoringRules={scoringRules}
           onChange={setScoringRules}
         />
 
-        <div className="flex items-center justify-center gap-4">
+        <div className="mt-3 flex items-center justify-center gap-3">
           <FilledButton
             onClick={handleAddRule}
-            className="size-9 rounded-full bg-positive"
+            className="rounded-full bg-positive"
           >
             <Plus className="size-5" />
           </FilledButton>
 
           <FilledButton
             onClick={handleRemoveRule}
-            className="size-9 rounded-full bg-negative"
+            className="rounded-full bg-negative"
           >
             <Minus className="size-5" />
           </FilledButton>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -29,7 +29,7 @@ export function CreateTournamentModal({
     DEFAULT_SCORING_RULE,
   ]);
 
-  const [isSubmitting, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   function handleClose() {
     setError(null);
@@ -69,14 +69,13 @@ export function CreateTournamentModal({
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-200 w-2xl flex-col items-center justify-center gap-4"
+        className="flex h-200 w-2xl flex-col items-center justify-center gap-5"
       >
         <div className="flex flex-col gap-3">
           <LabelledInput
             name="tournamentName"
             onChange={() => setError(null)}
             type="text"
-            autoComplete="off"
             autoFocus
             required
             inputClassName="w-sm"
@@ -98,7 +97,7 @@ export function CreateTournamentModal({
 
         <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
-        <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
+        <FilledButton type="submit" disabled={isPending} className="w-sm">
           Create Tournament
         </FilledButton>
       </form>

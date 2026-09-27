@@ -57,7 +57,6 @@ export function DeletePlayerModal({
           {selectedPlayer && (
             <span className="text-xs">
               Are you sure you want to remove "<b>{selectedPlayer.name}</b>"?
-              This cannot be undone!
             </span>
           )}
 

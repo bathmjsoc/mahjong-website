@@ -15,12 +15,5 @@ jobs:
       - name: Ping Database
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |       
-          psql $DATABASE_URL -c "
-            INSERT INTO public.keep_alive DEFAULT VALUES;
-          
-            DELETE FROM public.keep_alive 
-            WHERE id NOT IN (
-              SELECT id FROM public.keep_alive ORDER BY timestamp DESC LIMIT 5
-            );
-          "
+        run: |
+          psql $DATABASE_URL -c "SELECT 1;"

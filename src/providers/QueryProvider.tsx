@@ -22,7 +22,7 @@ export function QueryProvider({ children }: PropsWithChildren) {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted) return null; // This isn't ideal, but it fixes hydration issues related to useSuspenseQuery
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

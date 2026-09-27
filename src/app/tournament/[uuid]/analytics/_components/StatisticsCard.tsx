@@ -35,6 +35,7 @@ export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
           label="Games Played"
           ranking={`#${gameStatistics.games_played.ranking} of ${playerCount}`}
         />
+
         <Statistic
           icon={Activity}
           value={pointsStatistics.standard_deviation.value.toFixed(2)}
@@ -50,6 +51,7 @@ export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
           label="Highest Session Score"
           ranking={`#${sessionStatistics.highest_session_score.ranking} of ${playerCount}`}
         />
+
         <Statistic
           icon={ChevronsDown}
           value={sessionStatistics.lowest_session_score.value}
@@ -65,6 +67,7 @@ export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
           label="Average Points Won"
           ranking={`#${pointsStatistics.average_points_won.ranking} of ${playerCount}`}
         />
+
         <Statistic
           icon={TrendingDown}
           value={pointsStatistics.average_points_lost.value.toFixed(2)}

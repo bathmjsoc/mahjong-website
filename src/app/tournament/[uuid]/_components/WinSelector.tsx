@@ -13,9 +13,9 @@ type WinSelectorProps = {
 };
 
 export function WinSelector({ table, occupant, className }: WinSelectorProps) {
+  const { handTypes, scoringRulesMap } = useCurrentTournament();
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
-  const { handTypes, scoringRulesMap } = useCurrentTournament();
 
   const faanOptions = Array.from(scoringRulesMap.keys()).filter(
     (key) => key !== null,

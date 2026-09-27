@@ -1,115 +1,21 @@
 "use client";
 
-import { X } from "lucide-react";
-import { useMemo, useState } from "react";
-import { IconButton } from "@/elements/IconButton";
-import { useLogs } from "@/hooks/logs/useLogs";
-import { usePlayers } from "@/hooks/players/usePlayers";
-import { useSessions } from "@/hooks/sessions/useSessions";
-import type { Log, LogSearchTag } from "@/lib/types";
-import { normalizeText } from "@/lib/utils";
+import { useLogFilters } from "@/hooks/useLogFilters";
 import { LogList } from "./_components/LogList";
 import { LogSearchBar } from "./_components/LogSearchBar";
+import { TagList } from "./_components/TagList";
 
 export default function LogsPage() {
-  const { logs, logsWithDisabled } = useLogs();
-  const { playerMap } = usePlayers();
-  const { sessionMap } = useSessions();
-
-  const [showDisabledLogs, setShowDisabledLogs] = useState(false);
-  const [tags, setTags] = useState<LogSearchTag[]>([]);
-
-  const baseLogs = showDisabledLogs ? logsWithDisabled : logs;
-
-  const tagFilters = useMemo(
-    () => ({
-      session: (log: Log, tag: LogSearchTag) => {
-        const session = sessionMap.get(log.session_id);
-        return session?.number === parseInt(tag.value, 10);
-      },
-
-      type: (log: Log, tag: LogSearchTag) => {
-        return normalizeText(log.win_type) === normalizeText(tag.value);
-      },
-
-      faan: (log: Log, tag: LogSearchTag) => {
-        return log.faan === parseInt(tag.value, 10);
-      },
-
-      player: (log: Log, tag: LogSearchTag) => {
-        const isWinner = log.winner_ids.some((id) => {
-          const playerName = playerMap.get(id)?.name ?? "";
-          return normalizeText(playerName) === normalizeText(tag.value);
-        });
-
-        const isLoser = log.loser_ids.some((id) => {
-          const playerName = playerMap.get(id)?.name ?? "";
-          return normalizeText(playerName) === normalizeText(tag.value);
-        });
-
-        return isWinner || isLoser;
-      },
-    }),
-    [playerMap, sessionMap],
-  );
-
-  const filteredLogs = useMemo(() => {
-    if (tags.length === 0) return baseLogs;
-
-    return baseLogs.filter((log) =>
-      tags.every((tag) => tagFilters[tag.key](log, tag)),
-    );
-  }, [baseLogs, tagFilters, tags]);
-
-  function handleAddTag(tag: LogSearchTag) {
-    setTags((tags) => [...tags, tag]);
-  }
-
-  function handleRemoveTag(id: string) {
-    setTags((tags) => tags.filter((tag) => tag.id !== id));
-  }
-
-  function handleToggleDisabledLogs() {
-    setShowDisabledLogs((showDisabledLogs) => !showDisabledLogs);
-  }
+  const { filteredLogs } = useLogFilters();
 
   return (
     <div className="flex flex-col items-center gap-10 p-10">
       <div className="flex flex-col items-center justify-center gap-2">
-        <LogSearchBar
-          addTag={handleAddTag}
-          showDisabledLogs={showDisabledLogs}
-          toggleDisabledLogs={handleToggleDisabledLogs}
-        />
-
-        <div className="flex w-xl flex-wrap items-center justify-center gap-2">
-          {tags.map((tag) => (
-            <Tag key={tag.id} tag={tag} removeTag={handleRemoveTag} />
-          ))}
-        </div>
+        <LogSearchBar />
+        <TagList />
       </div>
 
       <LogList logs={filteredLogs} />
-    </div>
-  );
-}
-
-type TagProps = {
-  tag: LogSearchTag;
-  removeTag: (id: string) => void;
-};
-
-function Tag({ tag, removeTag }: TagProps) {
-  return (
-    <div className="flex items-center justify-center gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs">
-      {tag.label}
-
-      <IconButton
-        onClick={() => removeTag(tag.id)}
-        className="hover:text-negative"
-      >
-        <X className="size-3" />
-      </IconButton>
     </div>
   );
 }

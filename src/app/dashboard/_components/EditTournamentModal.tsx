@@ -32,7 +32,7 @@ export function EditTournamentModal({
     tournament.scoring_rules.filter((rule) => rule.faan !== null),
   );
 
-  const [isSubmitting, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   function handleSubmit(formData: FormData) {
     const tournamentName = parseFormString(formData, "tournamentName");
@@ -64,7 +64,7 @@ export function EditTournamentModal({
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-200 w-2xl flex-col items-center justify-center gap-4"
+        className="flex h-200 w-2xl flex-col items-center justify-center gap-5"
       >
         <div className="flex flex-col gap-3">
           <LabelledInput
@@ -72,7 +72,6 @@ export function EditTournamentModal({
             defaultValue={tournament.name}
             onChange={() => setError(null)}
             type="text"
-            autoComplete="off"
             autoFocus
             required
             inputClassName="w-sm"
@@ -94,7 +93,7 @@ export function EditTournamentModal({
 
         <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
-        <FilledButton type="submit" disabled={isSubmitting} className="w-sm">
+        <FilledButton type="submit" disabled={isPending} className="w-sm">
           Update Tournament
         </FilledButton>
       </form>

@@ -1,10 +1,10 @@
 import { PencilRuler, Play, Plus, Users } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { CreateTournamentModal } from "@/app/dashboard/_components/CreateTournamentModal";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
 import { formatRelativeTime } from "@/lib/utils";
+import { CreateTournamentModal } from "./CreateTournamentModal";
 import { EditTournamentModal } from "./EditTournamentModal";
 
 type TournamentListProps = {
@@ -16,12 +16,12 @@ export function TournamentList({ tournaments }: TournamentListProps) {
 
   return (
     <>
-      <div className="grid w-full grid-cols-[repeat(auto-fit,300px)] justify-center gap-5">
+      <div className="grid grid-cols-[repeat(auto-fit,300px)] justify-center gap-5">
         {tournaments.map((tournament) => (
           <TournamentCard key={tournament.id} tournament={tournament} />
         ))}
 
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex h-40 w-75 items-center justify-center">
           <FilledButton
             onClick={() => setIsCreateModalOpen(true)}
             className="rounded-full p-3"
@@ -49,35 +49,33 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
   return (
     <>
-      <div className="flex flex-col justify-between gap-3 rounded-lg bg-primary p-3 text-secondary">
-        <span className="line-clamp-2 text-lg">{tournament.name}</span>
+      <div className="flex h-40 w-75 flex-col gap-3 rounded-lg bg-primary p-3 text-secondary">
+        <span className="mb-auto line-clamp-2 text-lg">{tournament.name}</span>
 
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center justify-between gap-1">
-              <Users className="size-4" />
-              {tournament.player_count}
-            </div>
-            Updated {formatRelativeTime(tournament.last_updated)}
-          </div>
+        <div className="flex items-center justify-between text-xs">
+          <span className="flex items-center gap-1">
+            <Users className="size-4" />
+            {tournament.player_count}
+          </span>
+          Updated {formatRelativeTime(tournament.last_updated)}
+        </div>
 
-          <div className="flex gap-3">
-            <Link href={`/tournament/${tournament.id}`} className="flex-1">
-              <FilledButton
-                className="flex w-full items-center justify-center"
-                title="Play Tournament"
-              >
-                <Play className="size-5" />
-              </FilledButton>
-            </Link>
-
+        <div className="flex gap-3">
+          <Link href={`/tournament/${tournament.id}`} className="w-full">
             <FilledButton
-              onClick={() => setIsEditModalOpen(true)}
-              title="Edit Tournament"
+              className="flex w-full items-center justify-center"
+              title="Open Tournament"
             >
-              <PencilRuler className="size-5" />
+              <Play className="size-5" />
             </FilledButton>
-          </div>
+          </Link>
+
+          <FilledButton
+            onClick={() => setIsEditModalOpen(true)}
+            title="Edit Tournament"
+          >
+            <PencilRuler className="size-5" />
+          </FilledButton>
         </div>
       </div>
 

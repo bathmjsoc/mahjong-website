@@ -86,14 +86,12 @@ export function TableSeat({
           tableClassName,
         )}
       >
-        {/* Scoring Menu */}
         <WinSelector
           table={table}
           className={buttonClassName}
           occupant={occupant}
         />
 
-        {/* Player Select Menu */}
         <RoundedListbox<Player>
           value={occupant}
           options={registeredPlayers}
@@ -108,7 +106,6 @@ export function TableSeat({
         />
       </div>
 
-      {/* Point Delta Animation */}
       {animationPoints !== 0 && (
         <span
           className={twMerge(

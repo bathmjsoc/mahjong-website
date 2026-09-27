@@ -95,7 +95,6 @@ export function Sidebar({ players }: SidebarProps) {
           </div>
         </div>
 
-        {/* Collapse/Expand Sidebar Button */}
         <FilledButton
           onClick={() => setIsOpen(!isOpen)}
           className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"

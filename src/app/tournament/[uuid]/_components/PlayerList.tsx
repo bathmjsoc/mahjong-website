@@ -44,6 +44,7 @@ export function PlayerList({ players }: PlayerListProps) {
           </th>
         </tr>
       </thead>
+
       <tbody>
         {rankedPlayers.map((player) => (
           <PlayerRow
@@ -51,7 +52,7 @@ export function PlayerList({ players }: PlayerListProps) {
             player={player}
             score={scores[player.id] ?? 0}
             isLocked={lockedPlayerIds.has(player.id)}
-            isUnseated={!seatedPlayerIds.has(player.id)}
+            isSeated={seatedPlayerIds.has(player.id)}
             isFirstPlace={player.id === firstPlacePlayer.id}
           />
         ))}
@@ -64,7 +65,7 @@ type PlayerRowProps = {
   player: Player;
   score: number;
   isLocked: boolean;
-  isUnseated: boolean;
+  isSeated: boolean;
   isFirstPlace: boolean;
 };
 
@@ -72,7 +73,7 @@ function PlayerRow({
   player,
   score,
   isLocked,
-  isUnseated,
+  isSeated,
   isFirstPlace,
 }: PlayerRowProps) {
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
@@ -84,7 +85,6 @@ function PlayerRow({
 
   return (
     <tr>
-      {/* Lock/Unlock Player Icon */}
       <td>
         <IconButton
           title={isLocked ? "Unlock Player" : "Lock Player"}
@@ -112,9 +112,9 @@ function PlayerRow({
 
       <td
         className={twMerge(
-          "relative border-2 border-secondary px-2 py-1 text-left",
-          "text-secondary transition duration-300",
-          isUnseated && "text-negative",
+          "border-2 border-secondary px-2 py-1 text-left",
+          "relative transition duration-300",
+          !isSeated && "text-negative",
           isLocked && "text-neutral",
         )}
       >
@@ -127,14 +127,13 @@ function PlayerRow({
 
       <td
         className={twMerge(
-          "border-2 border-secondary text-center",
+          "border-2 border-secondary px-2 py-1 text-center",
           scoreToColor(score),
         )}
       >
         {score}
       </td>
 
-      {/* Deregister Player Icon */}
       <td>
         <IconButton
           title="Deregister Player"

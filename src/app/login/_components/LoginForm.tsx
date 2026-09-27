@@ -42,7 +42,6 @@ export function LoginForm() {
           autoComplete="email"
           autoFocus
           required
-          disabled={isPending}
         >
           Email Address
         </LabelledInput>
@@ -52,12 +51,13 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          disabled={isPending}
         >
           Password
         </LabelledInput>
 
-        {error && <p className="text-center text-negative text-xs">{error}</p>}
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
 
         <FilledButton type="submit" disabled={isPending}>
           Sign In

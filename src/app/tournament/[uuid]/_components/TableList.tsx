@@ -24,7 +24,6 @@ export function TableList({ tables, className }: TableListProps) {
         <TableCard key={table.id} table={table} />
       ))}
 
-      {/* Add New Table Button */}
       <div className="flex size-70 items-center justify-center">
         <FilledButton
           onClick={createTable}
@@ -57,6 +56,7 @@ function TableCard({ table }: TableProps) {
         table={table}
         gridPosition="row-start-1 col-start-1 col-span-5"
       />
+
       <TableSeat
         wind="south"
         table={table}
@@ -64,12 +64,14 @@ function TableCard({ table }: TableProps) {
         tableClassName="-rotate-90"
         buttonClassName="rotate-90"
       />
+
       <TableSeat
         wind="west"
         table={table}
         gridPosition="row-start-5 col-start-1 col-span-5"
         tableClassName="flex-row-reverse"
       />
+
       <TableSeat
         wind="north"
         table={table}
@@ -77,13 +79,12 @@ function TableCard({ table }: TableProps) {
         tableClassName="rotate-90"
         buttonClassName="-rotate-90"
       />
-      {/* Table Number */}
+
       <div className="col-start-3 row-start-3 flex items-center justify-center text-7xl text-primary">
         {table.saved ? "S" : table.number}
       </div>
 
       <div className="col-span-3 col-start-2 row-start-4 flex items-center justify-center gap-5">
-        {/* Save Table Button */}
         <FilledButton
           onClick={() => saveTable(table)}
           className="rounded-full bg-primary enabled:hover:text-info"
@@ -93,7 +94,6 @@ function TableCard({ table }: TableProps) {
           <Archive className="size-4" />
         </FilledButton>
 
-        {/* Delete Table Button */}
         <FilledButton
           onClick={() => deleteTable(table)}
           className="rounded-full bg-primary hover:text-negative"
