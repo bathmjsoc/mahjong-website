@@ -4,26 +4,27 @@ import type { TransitionStartFunction } from "react";
 import { createTables, deleteTables } from "@/actions/tables";
 import { FilledButton } from "@/elements/FilledButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
-import { usePlayers } from "@/hooks/players/usePlayers";
-import { useTables } from "@/hooks/tables/useTables";
+import type { Player, Table } from "@/lib/types";
 import { shuffle } from "@/lib/utils";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 type ShuffleButtonProps = {
   isShaking: boolean;
   startTransition: TransitionStartFunction;
+  players: Player[];
+  tables: Table[];
 };
 
 export function ShuffleButton({
   isShaking,
   startTransition,
+  players,
+  tables,
 }: ShuffleButtonProps) {
   const queryClient = useQueryClient();
   const sessionId = useSessionContext();
 
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
-  const { players } = usePlayers();
-  const { tables } = useTables();
 
   async function handleShuffle() {
     const availableTables = tables.filter((table) => !table.saved);

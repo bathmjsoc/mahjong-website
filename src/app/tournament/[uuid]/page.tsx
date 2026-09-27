@@ -28,6 +28,8 @@ export default function TournamentPage() {
             <ShuffleButton
               isShaking={isShaking}
               startTransition={startTransition}
+              players={players}
+              tables={tables}
             />
           </div>
 
