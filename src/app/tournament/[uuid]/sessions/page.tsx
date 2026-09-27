@@ -40,7 +40,7 @@ export default function SessionsPage() {
     const url = URL.createObjectURL(blob);
     const link = Object.assign(document.createElement("a"), {
       href: url,
-      download: "logs.json",
+      download: "mahjong-website.json",
     });
 
     link.click();
