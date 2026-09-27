@@ -10,16 +10,18 @@ export default function DashboardPage() {
   const { tournaments } = useTournaments();
 
   return (
-    <div className="flex items-center justify-center pt-16">
+    <>
+      <div className="pt-16">
+        <TournamentList tournaments={tournaments} />
+      </div>
+
       <FilledButton
         onClick={signOut}
-        className="absolute top-3 right-3 size-9 rounded-xl bg-primary hover:text-negative"
+        className="fixed top-3 right-3 rounded-xl bg-primary hover:text-negative"
         title="Sign Out"
       >
         <LogOut className="size-5" />
       </FilledButton>
-
-      <TournamentList tournaments={tournaments} />
-    </div>
+    </>
   );
 }
