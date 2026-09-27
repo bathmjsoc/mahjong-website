@@ -27,6 +27,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
           <th className="w-25">Score</th>
         </tr>
       </thead>
+
       <tbody className="divide-y divide-primary">
         {rankedPlayers.map((player, index) => (
           <PlayerRow
@@ -60,7 +61,14 @@ function PlayerRow({ player, position, score }: PlayerRowProps) {
 
       <td>{player.name}</td>
 
-      <td className={twMerge("border-r", scoreColor)}>{score}</td>
+      <td
+        className={twMerge(
+          "border-primary border-r text-secondary",
+          scoreColor,
+        )}
+      >
+        {score}
+      </td>
     </tr>
   );
 }
