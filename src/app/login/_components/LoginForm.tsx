@@ -25,7 +25,6 @@ export function LoginForm() {
 
       if (!result.success) {
         setError(result.error);
-        return;
       }
     });
   }

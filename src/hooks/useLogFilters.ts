@@ -29,7 +29,7 @@ export function useLogFilters() {
       tags.every((tag) => {
         switch (tag.key) {
           case "session": {
-            const searchSession = parseInt(tag.value, 10);
+            const searchSession = Number.parseInt(tag.value, 10);
             return sessionMap.get(log.session_id)?.number === searchSession;
           }
 
@@ -39,7 +39,7 @@ export function useLogFilters() {
           }
 
           case "faan": {
-            const searchFaan = parseInt(tag.value, 10);
+            const searchFaan = Number.parseInt(tag.value, 10);
             return log.faan === searchFaan;
           }
 
