@@ -33,9 +33,9 @@ export function TableSeat({
   const occupantId = table[`${wind}_id`];
   const occupant = (occupantId && playerMap.get(occupantId)) || null;
 
-  const isDuplicate = !!occupantId && duplicatePlayerIds.has(occupantId);
-  const isLocked = !!occupantId && lockedPlayerIds.has(occupantId);
-  const isRegistered = !!occupantId && registeredPlayerIds.has(occupantId);
+  const isDuplicate = occupantId && duplicatePlayerIds.has(occupantId);
+  const isLocked = occupantId && lockedPlayerIds.has(occupantId);
+  const isRegistered = occupantId && registeredPlayerIds.has(occupantId);
 
   const registeredPlayers = players.filter((player) =>
     registeredPlayerIds.has(player.id),

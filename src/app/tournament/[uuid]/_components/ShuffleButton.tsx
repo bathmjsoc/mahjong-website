@@ -26,7 +26,7 @@ export function ShuffleButton({
 
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
 
-  async function handleShuffle() {
+  function handleShuffle() {
     const availableTables = tables.filter((table) => !table.saved);
     const availablePlayers = players.filter(
       (player) =>
@@ -35,7 +35,7 @@ export function ShuffleButton({
 
     startTransition(async () => {
       const shuffledPlayers = shuffle(availablePlayers);
-      const newTables = [];
+      const newTables: Table[] = [];
 
       while (shuffledPlayers.length > 0) {
         const [east = null, south = null, west = null, north = null] =

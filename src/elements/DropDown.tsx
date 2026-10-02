@@ -43,14 +43,14 @@ export function DropDown({
               disabled={disabled}
               className={twMerge(
                 "w-full rounded p-1 text-center outline-none transition",
-                !disabled
-                  ? [
+                disabled
+                  ? "cursor-not-allowed opacity-50"
+                  : [
                       "cursor-pointer",
                       isNested
                         ? "hover:bg-primary/25"
                         : "hover:scale-93 active:scale-87",
-                    ]
-                  : "cursor-not-allowed opacity-50",
+                    ],
                 buttonClassName,
               )}
             >
