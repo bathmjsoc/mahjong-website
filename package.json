@@ -9,10 +9,10 @@
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@supabase/ssr": "^0.12.7",
-    "@tanstack/react-query": "^5.104.0",
+    "@tanstack/react-query": "^5.104.1",
     "apexcharts": "^7.8.0",
     "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.49.0",
+    "lucide-react": "^1.51.0",
     "next": "^16.3.8",
     "react": "^19.3.0",
     "react-apexcharts": "^2.1.1",
