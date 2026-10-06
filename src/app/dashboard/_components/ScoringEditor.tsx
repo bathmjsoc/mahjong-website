@@ -6,17 +6,17 @@ import { FalseWinRuleInput } from "./FalseWinRuleInput";
 import { ScoringRulesTable } from "./ScoringRulesTable";
 
 type ScoringEditorProps = {
-  scoringRules: ScoringRule[];
-  setScoringRules: (rules: ScoringRule[]) => void;
   falseWinRule: ScoringRule;
   setFalseWinRule: (rule: ScoringRule) => void;
+  scoringRules: ScoringRule[];
+  setScoringRules: (rules: ScoringRule[]) => void;
 };
 
 export function ScoringEditor({
-  scoringRules,
-  setScoringRules,
   falseWinRule,
   setFalseWinRule,
+  scoringRules,
+  setScoringRules,
 }: ScoringEditorProps) {
   function handleAddRule() {
     setScoringRules([...scoringRules, DEFAULT_SCORING_RULE]);
