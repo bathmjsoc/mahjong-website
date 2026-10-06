@@ -69,35 +69,28 @@ export function EditTournamentModal({
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-200 w-2xl flex-col items-center justify-center gap-5"
+        className="flex h-200 w-2xl flex-col items-center gap-5"
       >
-        <div className="flex flex-col gap-3">
-          <LabelledInput
-            name="tournamentName"
-            defaultValue={tournament.name}
-            onChange={() => setError(null)}
-            type="text"
-            autoFocus
-            required
-            inputClassName="w-sm"
-          >
-            Tournament Name
-          </LabelledInput>
-
-          {error && (
-            <span className="text-center text-negative text-xs">{error}</span>
-          )}
-        </div>
+        <LabelledInput
+          name="tournamentName"
+          defaultValue={tournament.name}
+          type="text"
+          autoFocus
+          inputClassName="w-sm"
+        >
+          Tournament Name
+        </LabelledInput>
 
         <ScoringEditor
-          scoringRules={scoringRules}
-          setScoringRules={setScoringRules}
           falseWinRule={falseWinRule}
           setFalseWinRule={setFalseWinRule}
+          scoringRules={scoringRules}
+          setScoringRules={setScoringRules}
         />
 
         <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
 
+        {error && <span className="text-negative text-xs">{error}</span>}
         <FilledButton type="submit" disabled={isPending} className="w-sm">
           Update Tournament
         </FilledButton>
