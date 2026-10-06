@@ -34,6 +34,11 @@ export function EditTournamentModal({
 
   const [isPending, startTransition] = useTransition();
 
+  function handleClose() {
+    setError(null);
+    onClose();
+  }
+
   function handleSubmit(formData: FormData) {
     const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
@@ -55,12 +60,12 @@ export function EditTournamentModal({
     startTransition(() => {
       const rules = [...scoringRules, falseWinRule];
       updateTournament(tournament, tournamentName, rules, handTypes);
-      onClose();
+      handleClose();
     });
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Tournament">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Edit Tournament">
       <form
         action={handleSubmit}
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
