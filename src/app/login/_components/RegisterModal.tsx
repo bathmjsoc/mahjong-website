@@ -14,6 +14,7 @@ type RegisterModalProps = {
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [showNotification, setShowNotification] = useState(false);
+
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
@@ -79,7 +80,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       <Notification
         close={() => setShowNotification(false)}
         isOpen={showNotification}
-        title="Account created!"
+        title="Account Created!"
       >
         Please check your email to verify your account.
       </Notification>

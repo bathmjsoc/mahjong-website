@@ -8,7 +8,8 @@ import { RegisterModal } from "./RegisterModal";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(formData: FormData) {
@@ -38,6 +39,7 @@ export function LoginForm() {
         <LabelledInput
           autoComplete="email"
           autoFocus
+          inputClassName="w-full"
           name="email"
           required
           type="email"
@@ -62,19 +64,17 @@ export function LoginForm() {
           Sign In
         </FilledButton>
 
-        <div className="-mb-1 flex items-center justify-center">
-          <TextButton
-            className="text-xs"
-            onClick={() => setIsRegisterOpen(true)}
-          >
-            Register
-          </TextButton>
-        </div>
+        <TextButton
+          className="-mb-1 text-xs"
+          onClick={() => setIsRegisterModalOpen(true)}
+        >
+          Register
+        </TextButton>
       </form>
 
       <RegisterModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
       />
     </>
   );

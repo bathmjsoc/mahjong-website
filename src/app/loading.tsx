@@ -17,7 +17,7 @@ export default function Loading() {
   }, []);
 
   return (
-    <div className="flex min-h-dvh select-none flex-col items-center justify-center bg-background">
+    <div className="flex min-h-dvh select-none flex-col items-center justify-center">
       <div className="relative h-25 w-20 rounded-lg bg-secondary">
         {TILES.map((tile, index) => (
           <span

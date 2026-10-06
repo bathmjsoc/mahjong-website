@@ -76,6 +76,7 @@ export function EditTournamentModal({
           defaultValue={tournament.name}
           inputClassName="w-sm"
           name="tournamentName"
+          required
           type="text"
         >
           Tournament Name

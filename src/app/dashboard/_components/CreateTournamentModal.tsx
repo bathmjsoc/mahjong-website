@@ -74,6 +74,7 @@ export function CreateTournamentModal({
           autoFocus
           inputClassName="w-sm"
           name="tournamentName"
+          required
           type="text"
         >
           Tournament Name
