@@ -45,7 +45,7 @@ export function ScoringEditor({
           onChange={setScoringRules}
         />
 
-        <div className="mt-3 flex items-center justify-center gap-3">
+        <div className="mt-3 flex justify-center gap-3">
           <FilledButton
             onClick={handleAddRule}
             className="rounded-full bg-positive"

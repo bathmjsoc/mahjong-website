@@ -45,11 +45,11 @@ export function ScoringRulesTable({
       </thead>
 
       <tbody>
-        {scoringRules.map((rule, index) => (
+        {scoringRules.map((scoringRule, index) => (
           <ScoringRuleRow
             // biome-ignore lint/suspicious/noArrayIndexKey: Rules are only added/removed from the end
             key={index}
-            rule={rule}
+            scoringRule={scoringRule}
             onChange={(updatedRule) => handleRuleChange(index, updatedRule)}
           />
         ))}
@@ -59,25 +59,25 @@ export function ScoringRulesTable({
 }
 
 type ScoringRuleRowProps = {
-  rule: ScoringRule;
+  scoringRule: ScoringRule;
   onChange: (updatedRule: ScoringRule) => void;
 };
 
-function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
-  function handleFaanChange(faan: number) {
-    onChange({ ...rule, faan });
-  }
-
+function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
   function handleDeltaChange(
     winType: WinType,
     field: "winner" | "loser",
     value: number,
   ) {
-    const newRule = structuredClone(rule);
+    const newRule = structuredClone(scoringRule);
 
     newRule.deltas[winType] ??= { winner: 0, loser: 0 };
     newRule.deltas[winType][field] = value;
     onChange(newRule);
+  }
+
+  function handleFaanChange(faan: number) {
+    onChange({ ...scoringRule, faan });
   }
 
   return (
@@ -85,7 +85,7 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
       <td className="px-2 py-1">
         <LabelledInput
           type="number"
-          defaultValue={rule.faan ?? 0}
+          defaultValue={scoringRule.faan ?? 0}
           inputClassName="no-spinner"
           onBlur={(e) => handleFaanChange(e.target.valueAsNumber || 0)}
         />
@@ -96,7 +96,7 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
           <td className="border-l px-2 py-1">
             <LabelledInput
               type="number"
-              defaultValue={rule.deltas[winType]?.winner ?? 0}
+              defaultValue={scoringRule.deltas[winType]?.winner ?? 0}
               inputClassName="no-spinner"
               onBlur={(e) =>
                 handleDeltaChange(
@@ -111,7 +111,7 @@ function ScoringRuleRow({ rule, onChange }: ScoringRuleRowProps) {
           <td className="px-2 py-1">
             <LabelledInput
               type="number"
-              defaultValue={rule.deltas[winType]?.loser ?? 0}
+              defaultValue={scoringRule.deltas[winType]?.loser ?? 0}
               inputClassName="no-spinner"
               onBlur={(e) =>
                 handleDeltaChange(winType, "loser", e.target.valueAsNumber || 0)
