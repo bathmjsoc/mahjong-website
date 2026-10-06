@@ -1,5 +1,5 @@
 import { Cog, Play, Plus, Users } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
@@ -45,6 +45,7 @@ type TournamentCardProps = {
 };
 
 function TournamentCard({ tournament }: TournamentCardProps) {
+  const router = useRouter();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
@@ -62,14 +63,13 @@ function TournamentCard({ tournament }: TournamentCardProps) {
           </div>
 
           <div className="flex gap-3">
-            <Link href={`/tournament/${tournament.id}`} className="w-full">
-              <FilledButton
-                className="flex w-full justify-center"
-                title="Open Tournament"
-              >
-                <Play className="size-5" />
-              </FilledButton>
-            </Link>
+            <FilledButton
+              onClick={() => router.push(`/tournament/${tournament.id}`)}
+              className="flex w-full justify-center"
+              title="Open Tournament"
+            >
+              <Play className="size-5" />
+            </FilledButton>
 
             <FilledButton
               onClick={() => setIsEditModalOpen(true)}
