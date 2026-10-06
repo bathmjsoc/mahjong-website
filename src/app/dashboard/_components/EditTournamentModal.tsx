@@ -22,7 +22,6 @@ export function EditTournamentModal({
 }: EditTournamentModalProps) {
   const { updateTournament } = useTournamentMutations();
 
-  const [boomHands, setBoomHands] = useState(tournament.hand_types.join(", "));
   const [error, setError] = useState<string | null>(null);
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     tournament.scoring_rules.find((rule) => rule.faan === null) ??
@@ -52,6 +51,7 @@ export function EditTournamentModal({
       return;
     }
 
+    const boomHands = parseFormString(formData, "boomHands") || "";
     const handTypes = boomHands
       .split(",")
       .map((handType) => handType.trim())
@@ -88,7 +88,7 @@ export function EditTournamentModal({
           setScoringRules={setScoringRules}
         />
 
-        <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
+        <BoomHandEditor defaultValue={tournament.hand_types.join(", ")} />
 
         {error && <span className="text-negative text-xs">{error}</span>}
         <FilledButton type="submit" disabled={isPending} className="w-sm">

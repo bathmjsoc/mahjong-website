@@ -20,7 +20,6 @@ export function CreateTournamentModal({
 }: CreateTournamentModalProps) {
   const { createTournament } = useTournamentMutations();
 
-  const [boomHands, setBoomHands] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     DEFAULT_FALSE_WIN_RULE,
@@ -32,7 +31,6 @@ export function CreateTournamentModal({
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
-    setBoomHands("");
     setError(null);
     setFalseWinRule(DEFAULT_FALSE_WIN_RULE);
     setScoringRules([DEFAULT_SCORING_RULE]);
@@ -52,6 +50,7 @@ export function CreateTournamentModal({
       return;
     }
 
+    const boomHands = parseFormString(formData, "boomHands") || "";
     const handTypes = boomHands
       .split(",")
       .map((handType) => handType.trim())
@@ -87,7 +86,7 @@ export function CreateTournamentModal({
           setScoringRules={setScoringRules}
         />
 
-        <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
+        <BoomHandEditor defaultValue="" />
 
         {error && <span className="text-negative text-xs">{error}</span>}
         <FilledButton type="submit" disabled={isPending} className="w-sm">
