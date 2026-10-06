@@ -41,7 +41,7 @@ export function EditTournamentModal({
   function handleSubmit(formData: FormData) {
     const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
-      setError("Tournament Name is required");
+      setError("Tournament Name is required.");
       return;
     }
 
@@ -58,7 +58,7 @@ export function EditTournamentModal({
       .filter((handType) => handType.length > 0);
 
     startTransition(() => {
-      const rules = [...scoringRules, falseWinRule];
+      const rules = [falseWinRule, ...scoringRules];
       updateTournament(tournament, tournamentName, rules, handTypes);
       handleClose();
     });
