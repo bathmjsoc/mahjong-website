@@ -87,22 +87,22 @@ export function TableSeat({
         )}
       >
         <WinSelector
-          table={table}
           className={buttonClassName}
           occupant={occupant}
+          table={table}
         />
 
         <RoundedListbox<Player>
-          value={occupant}
-          options={registeredPlayers}
-          onChange={handleSelect}
-          getOptionLabel={(player) => player.name}
-          getOptionKey={(player) => player.id}
+          buttonClassName="h-8 text-xs tracking-tighter rounded-full"
           disabled={table.saved}
           emptyMessage="No players found"
-          placeholder="[EMPTY]"
-          buttonClassName="h-8 text-xs tracking-tighter rounded-full"
+          getOptionKey={(player) => player.id}
+          getOptionLabel={(player) => player.name}
+          onChange={handleSelect}
+          options={registeredPlayers}
           optionsClassName="w-auto"
+          placeholder="[EMPTY]"
+          value={occupant}
         />
       </div>
 

@@ -36,20 +36,20 @@ export function LoginForm() {
         className="flex w-sm flex-col gap-3 rounded-lg bg-primary p-5 text-secondary"
       >
         <LabelledInput
-          name="email"
-          type="email"
           autoComplete="email"
           autoFocus
+          name="email"
           required
+          type="email"
         >
           Email Address
         </LabelledInput>
 
         <LabelledInput
-          name="password"
-          type="password"
           autoComplete="current-password"
+          name="password"
           required
+          type="password"
         >
           Password
         </LabelledInput>
@@ -58,14 +58,14 @@ export function LoginForm() {
           <span className="text-center text-negative text-xs">{error}</span>
         )}
 
-        <FilledButton type="submit" disabled={isPending}>
+        <FilledButton disabled={isPending} type="submit">
           Sign In
         </FilledButton>
 
         <div className="-mb-1 flex items-center justify-center">
           <TextButton
-            onClick={() => setIsRegisterOpen(true)}
             className="text-xs"
+            onClick={() => setIsRegisterOpen(true)}
           >
             Register
           </TextButton>

@@ -26,8 +26,8 @@ export function TableList({ tables, className }: TableListProps) {
 
       <div className="flex size-70 items-center justify-center">
         <FilledButton
-          onClick={createTable}
           className="rounded-full p-3"
+          onClick={createTable}
           title="Add New Table"
         >
           <Plus className="size-7" />
@@ -52,32 +52,32 @@ function TableCard({ table }: TableProps) {
       )}
     >
       <TableSeat
-        wind="east"
-        table={table}
         gridPosition="row-start-1 col-start-1 col-span-5"
+        table={table}
+        wind="east"
       />
 
       <TableSeat
-        wind="south"
-        table={table}
-        gridPosition="col-start-1 row-start-1 row-span-5"
-        tableClassName="-rotate-90"
         buttonClassName="rotate-90"
+        gridPosition="col-start-1 row-start-1 row-span-5"
+        table={table}
+        tableClassName="-rotate-90"
+        wind="south"
       />
 
       <TableSeat
-        wind="west"
-        table={table}
         gridPosition="row-start-5 col-start-1 col-span-5"
+        table={table}
         tableClassName="flex-row-reverse"
+        wind="west"
       />
 
       <TableSeat
-        wind="north"
-        table={table}
-        gridPosition="col-start-5 row-start-1 row-span-5"
-        tableClassName="rotate-90"
         buttonClassName="-rotate-90"
+        gridPosition="col-start-5 row-start-1 row-span-5"
+        table={table}
+        tableClassName="rotate-90"
+        wind="north"
       />
 
       <div className="col-start-3 row-start-3 flex items-center justify-center text-7xl text-primary">
@@ -86,17 +86,17 @@ function TableCard({ table }: TableProps) {
 
       <div className="col-span-3 col-start-2 row-start-4 flex items-center justify-center gap-5">
         <FilledButton
-          onClick={() => saveTable(table)}
           className="rounded-full bg-primary enabled:hover:text-info"
           disabled={table.saved}
+          onClick={() => saveTable(table)}
           title="Save Table"
         >
           <Archive className="size-4" />
         </FilledButton>
 
         <FilledButton
-          onClick={() => deleteTable(table)}
           className="rounded-full bg-primary hover:text-negative"
+          onClick={() => deleteTable(table)}
           title="Delete Table"
         >
           <Trash2 className="size-4" />

@@ -53,12 +53,12 @@ export function LineChart({ data, title }: LineGraphProps) {
 
   return (
     <ReactApexChart
-      type="line"
-      series={series}
-      options={options}
-      height="100%"
-      width="100%"
       className="rounded-lg bg-secondary"
+      height="100%"
+      options={options}
+      series={series}
+      type="line"
+      width="100%"
     />
   );
 }

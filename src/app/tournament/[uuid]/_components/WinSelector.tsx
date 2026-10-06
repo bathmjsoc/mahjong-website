@@ -119,7 +119,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     return faanOptions.map((faan) => {
       if (faan === maxFaan) {
         return (
-          <DropDown title={String(faan)} key={faan}>
+          <DropDown key={faan} title={String(faan)}>
             {handTypes.map((handType) => (
               <DropDown.Item
                 key={handType}
@@ -145,10 +145,10 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   return (
     <DropDown
-      title="食"
       buttonClassName={twMerge("rounded-full size-8 bg-accent", className)}
-      tooltip="Record Win"
       disabled={occupant === null || opponents.length === 0}
+      title="食"
+      tooltip="Record Win"
     >
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
@@ -173,8 +173,8 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       <div className="border-primary border-t" />
 
       <DropDown.Item
-        onClick={() => handleWin("詐糊", null)}
         className="text-negative"
+        onClick={() => handleWin("詐糊", null)}
       >
         詐糊 (False Win)
       </DropDown.Item>

@@ -35,27 +35,27 @@ export function ScoringEditor({
       </div>
 
       <FalseWinRuleInput
-        scoringRule={falseWinRule}
         onChange={setFalseWinRule}
+        scoringRule={falseWinRule}
       />
 
       <div className="scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent scrollbar-gutter-stable overflow-y-auto">
         <ScoringRulesTable
-          scoringRules={scoringRules}
           onChange={setScoringRules}
+          scoringRules={scoringRules}
         />
 
         <div className="mt-3 flex justify-center gap-3">
           <FilledButton
-            onClick={handleAddRule}
             className="rounded-full bg-positive"
+            onClick={handleAddRule}
           >
             <Plus className="size-5" />
           </FilledButton>
 
           <FilledButton
-            onClick={handleRemoveRule}
             className="rounded-full bg-negative"
+            onClick={handleRemoveRule}
           >
             <Minus className="size-5" />
           </FilledButton>

@@ -44,14 +44,14 @@ export function DeletePlayerModal({
       <Modal isOpen={isOpen} onClose={handleClose} title="Delete Player">
         <div className="flex w-xs flex-col gap-3">
           <RoundedListbox<Player>
-            value={selectedPlayer}
-            options={players}
-            onChange={setSelectedPlayer}
-            getOptionLabel={(player) => player.name}
-            getOptionKey={(player) => player.id}
-            emptyMessage="No players found"
-            placeholder="Select a player..."
             buttonClassName="text-primary rounded-lg w-xs p-2"
+            emptyMessage="No players found"
+            getOptionKey={(player) => player.id}
+            getOptionLabel={(player) => player.name}
+            onChange={setSelectedPlayer}
+            options={players}
+            placeholder="Select a player..."
+            value={selectedPlayer}
           />
 
           {selectedPlayer && (
@@ -62,8 +62,8 @@ export function DeletePlayerModal({
 
           <FilledButton
             className="bg-negative uppercase"
-            onClick={handleSubmit}
             disabled={!selectedPlayer}
+            onClick={handleSubmit}
           >
             Delete Player
           </FilledButton>
@@ -71,8 +71,8 @@ export function DeletePlayerModal({
       </Modal>
 
       <Notification
-        isOpen={showNotification}
         close={() => setShowNotification(false)}
+        isOpen={showNotification}
         title="Player Deleted"
       >
         {notification}

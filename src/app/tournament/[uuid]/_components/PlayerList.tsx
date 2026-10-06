@@ -48,12 +48,12 @@ export function PlayerList({ players }: PlayerListProps) {
       <tbody>
         {rankedPlayers.map((player) => (
           <PlayerRow
+            isFirstPlace={player.id === firstPlacePlayer.id}
+            isLocked={lockedPlayerIds.has(player.id)}
+            isSeated={seatedPlayerIds.has(player.id)}
             key={player.id}
             player={player}
             score={scores[player.id] ?? 0}
-            isLocked={lockedPlayerIds.has(player.id)}
-            isSeated={seatedPlayerIds.has(player.id)}
-            isFirstPlace={player.id === firstPlacePlayer.id}
           />
         ))}
       </tbody>
@@ -87,9 +87,9 @@ function PlayerRow({
     <tr>
       <td>
         <IconButton
-          title={isLocked ? "Unlock Player" : "Lock Player"}
-          onClick={handleLockToggle}
           className="flex w-full items-center justify-center"
+          onClick={handleLockToggle}
+          title={isLocked ? "Unlock Player" : "Lock Player"}
         >
           <div className="relative size-4">
             <LockKeyhole
@@ -136,9 +136,9 @@ function PlayerRow({
 
       <td>
         <IconButton
-          title="Deregister Player"
-          onClick={() => deregisterPlayer(player)}
           className="flex w-full items-center justify-center hover:text-negative"
+          onClick={() => deregisterPlayer(player)}
+          title="Deregister Player"
         >
           <X className="size-5" />
         </IconButton>

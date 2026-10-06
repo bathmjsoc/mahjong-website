@@ -48,20 +48,20 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
         <form action={handleSubmit} className="flex w-xs flex-col gap-3">
           <LabelledInput
-            name="email"
-            type="email"
             autoComplete="email"
             autoFocus
+            name="email"
             required
+            type="email"
           >
             Email Address
           </LabelledInput>
 
           <LabelledInput
-            name="password"
-            type="password"
             autoComplete="new-password"
+            name="password"
             required
+            type="password"
           >
             Password
           </LabelledInput>
@@ -70,15 +70,15 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             <span className="text-center text-negative text-xs">{error}</span>
           )}
 
-          <FilledButton type="submit" disabled={isPending}>
+          <FilledButton disabled={isPending} type="submit">
             Create Account
           </FilledButton>
         </form>
       </Modal>
 
       <Notification
-        isOpen={showNotification}
         close={() => setShowNotification(false)}
+        isOpen={showNotification}
         title="Account created!"
       >
         Please check your email to verify your account.

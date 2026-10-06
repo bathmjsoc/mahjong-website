@@ -31,48 +31,48 @@ export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
       <div className="flex flex-col gap-5">
         <Statistic
           icon={Swords}
-          value={gameStatistics.games_played.value}
           label="Games Played"
           ranking={`#${gameStatistics.games_played.ranking} of ${playerCount}`}
+          value={gameStatistics.games_played.value}
         />
 
         <Statistic
           icon={Activity}
-          value={pointsStatistics.standard_deviation.value.toFixed(2)}
           label="Standard Deviation"
           ranking={`#${pointsStatistics.standard_deviation.ranking} of ${playerCount}`}
+          value={pointsStatistics.standard_deviation.value.toFixed(2)}
         />
       </div>
 
       <div className="flex flex-col gap-5">
         <Statistic
           icon={ChevronsUp}
-          value={sessionStatistics.highest_session_score.value}
           label="Highest Session Score"
           ranking={`#${sessionStatistics.highest_session_score.ranking} of ${playerCount}`}
+          value={sessionStatistics.highest_session_score.value}
         />
 
         <Statistic
           icon={ChevronsDown}
-          value={sessionStatistics.lowest_session_score.value}
           label="Lowest Session Score"
           ranking={`#${sessionStatistics.lowest_session_score.ranking} of ${playerCount}`}
+          value={sessionStatistics.lowest_session_score.value}
         />
       </div>
 
       <div className="flex flex-col gap-5">
         <Statistic
           icon={TrendingUp}
-          value={pointsStatistics.average_points_won.value.toFixed(2)}
           label="Average Points Won"
           ranking={`#${pointsStatistics.average_points_won.ranking} of ${playerCount}`}
+          value={pointsStatistics.average_points_won.value.toFixed(2)}
         />
 
         <Statistic
           icon={TrendingDown}
-          value={pointsStatistics.average_points_lost.value.toFixed(2)}
           label="Average Points Lost"
           ranking={`#${pointsStatistics.average_points_lost.ranking} of ${playerCount}`}
+          value={pointsStatistics.average_points_lost.value.toFixed(2)}
         />
       </div>
     </div>

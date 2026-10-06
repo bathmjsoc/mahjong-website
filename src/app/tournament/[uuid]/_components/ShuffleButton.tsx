@@ -63,9 +63,9 @@ export function ShuffleButton({
 
   return (
     <FilledButton
-      onClick={handleShuffle}
-      disabled={isShaking}
       className="rounded-full bg-primary p-3"
+      disabled={isShaking}
+      onClick={handleShuffle}
       title="Shuffle Tables"
     >
       <Shuffle className="size-6" />

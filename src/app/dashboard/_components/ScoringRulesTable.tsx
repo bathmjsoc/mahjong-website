@@ -24,10 +24,10 @@ export function ScoringRulesTable({
 
           {WIN_TYPES.map((winType) => (
             <th
-              key={winType}
-              colSpan={2}
-              title={WIN_TYPE_MAP[winType]}
               className="border-l"
+              colSpan={2}
+              key={winType}
+              title={WIN_TYPE_MAP[winType]}
             >
               {winType}
             </th>
@@ -49,8 +49,8 @@ export function ScoringRulesTable({
           <ScoringRuleRow
             // biome-ignore lint/suspicious/noArrayIndexKey: Rules are only added/removed from the end
             key={index}
-            scoringRule={scoringRule}
             onChange={(updatedRule) => handleRuleChange(index, updatedRule)}
+            scoringRule={scoringRule}
           />
         ))}
       </tbody>
@@ -84,10 +84,10 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
     <tr>
       <td className="px-2 py-1">
         <LabelledInput
-          type="number"
           defaultValue={scoringRule.faan ?? 0}
           inputClassName="no-spinner"
           onBlur={(e) => handleFaanChange(e.target.valueAsNumber || 0)}
+          type="number"
         />
       </td>
 
@@ -95,7 +95,6 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
         <Fragment key={`${winType}_deltas`}>
           <td className="border-l px-2 py-1">
             <LabelledInput
-              type="number"
               defaultValue={scoringRule.deltas[winType]?.winner ?? 0}
               inputClassName="no-spinner"
               onBlur={(e) =>
@@ -105,17 +104,18 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
                   e.target.valueAsNumber || 0,
                 )
               }
+              type="number"
             />
           </td>
 
           <td className="px-2 py-1">
             <LabelledInput
-              type="number"
               defaultValue={scoringRule.deltas[winType]?.loser ?? 0}
               inputClassName="no-spinner"
               onBlur={(e) =>
                 handleDeltaChange(winType, "loser", e.target.valueAsNumber || 0)
               }
+              type="number"
             />
           </td>
         </Fragment>

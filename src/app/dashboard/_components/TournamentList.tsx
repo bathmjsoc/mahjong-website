@@ -23,8 +23,8 @@ export function TournamentList({ tournaments }: TournamentListProps) {
 
         <div className="flex h-40 w-75 items-center justify-center">
           <FilledButton
-            onClick={() => setIsCreateModalOpen(true)}
             className="rounded-full p-3"
+            onClick={() => setIsCreateModalOpen(true)}
             title="Create Tournament"
           >
             <Plus className="size-7" />
@@ -64,8 +64,8 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
           <div className="flex gap-3">
             <FilledButton
-              onClick={() => router.push(`/tournament/${tournament.id}`)}
               className="flex w-full justify-center"
+              onClick={() => router.push(`/tournament/${tournament.id}`)}
               title="Open Tournament"
             >
               <Play className="size-5" />
@@ -83,8 +83,8 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
       <EditTournamentModal
         isOpen={isEditModalOpen}
-        tournament={tournament}
         onClose={() => setIsEditModalOpen(false)}
+        tournament={tournament}
       />
     </>
   );

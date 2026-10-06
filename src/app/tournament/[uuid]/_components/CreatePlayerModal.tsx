@@ -45,12 +45,12 @@ export function CreatePlayerModal({
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Player">
       <form action={handleSubmit} className="flex w-xs flex-col gap-3">
         <LabelledInput
-          name="playerName"
-          onChange={() => setError(null)}
-          type="text"
           autoComplete="off"
           autoFocus
+          name="playerName"
+          onChange={() => setError(null)}
           required
+          type="text"
         >
           Player Name
         </LabelledInput>

@@ -31,13 +31,13 @@ export default function SessionsPage() {
     <>
       <div className="flex flex-col items-center gap-5 py-10">
         <RoundedListbox<Session | null>
-          value={selectedSession}
-          options={[null, ...sessions]}
-          onChange={setSelectedSession}
-          getOptionLabel={getSessionName}
-          placeholder="Overall Standings"
-          getOptionKey={(session) => session?.id ?? "overall"}
           buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
+          getOptionKey={(session) => session?.id ?? "overall"}
+          getOptionLabel={getSessionName}
+          onChange={setSelectedSession}
+          options={[null, ...sessions]}
+          placeholder="Overall Standings"
+          value={selectedSession}
         />
 
         <div className="flex w-sm gap-2">
@@ -61,10 +61,10 @@ export default function SessionsPage() {
       </div>
 
       <ViewGraphModal
-        players={activePlayers}
-        scores={scores}
         isOpen={isGraphModalOpen}
         onClose={() => setIsGraphModalOpen(false)}
+        players={activePlayers}
+        scores={scores}
       />
     </>
   );

@@ -48,44 +48,44 @@ export function Sidebar({ players }: SidebarProps) {
         >
           <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
-              options={registeredPlayers}
-              onSelect={registerPlayer}
-              getOptionLabel={(player) => player.name}
-              getOptionKey={(player) => player.id}
-              placeholder="Register a player..."
               emptyMessage="No player(s) found"
+              getOptionKey={(player) => player.id}
+              getOptionLabel={(player) => player.name}
               inputClassName="w-88 h-10"
+              onSelect={registerPlayer}
+              options={registeredPlayers}
+              placeholder="Register a player..."
             />
 
             <div className="flex gap-15">
               <IconButton
-                title="Create Player"
-                onClick={() => setActiveModal("create")}
                 className="hover:text-positive"
+                onClick={() => setActiveModal("create")}
+                title="Create Player"
               >
                 <UserPlus className="size-6" />
               </IconButton>
 
               <IconButton
-                title="Edit Player"
-                onClick={() => setActiveModal("edit")}
                 className="hover:text-neutral"
+                onClick={() => setActiveModal("edit")}
+                title="Edit Player"
               >
                 <UserPen className="size-6" />
               </IconButton>
 
               <IconButton
-                title="Delete Player"
-                onClick={() => setActiveModal("delete")}
                 className="hover:text-negative"
+                onClick={() => setActiveModal("delete")}
+                title="Delete Player"
               >
                 <UserMinus className="size-6" />
               </IconButton>
 
               <IconButton
-                title="Reset Session"
-                onClick={() => setActiveModal("reset")}
                 className="hover:text-info"
+                onClick={() => setActiveModal("reset")}
+                title="Reset Session"
               >
                 <RefreshCw className="size-6" />
               </IconButton>
@@ -96,8 +96,8 @@ export function Sidebar({ players }: SidebarProps) {
         </div>
 
         <FilledButton
-          onClick={() => setIsOpen(!isOpen)}
           className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"
+          onClick={() => setIsOpen(!isOpen)}
           title="Collapse/Expand Sidebar"
         >
           <ChevronRight

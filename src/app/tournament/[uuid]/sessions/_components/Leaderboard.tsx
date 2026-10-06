@@ -33,8 +33,8 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
           <PlayerRow
             key={player.id}
             player={player}
-            score={scores[player.id] ?? 0}
             position={index + 1}
+            score={scores[player.id] ?? 0}
           />
         ))}
       </tbody>

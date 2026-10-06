@@ -67,29 +67,29 @@ export function CreateTournamentModal({
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Tournament">
       <form
         action={handleSubmit}
-        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
         className="flex h-200 w-2xl flex-col items-center gap-5"
+        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <LabelledInput
-          name="tournamentName"
-          type="text"
           autoFocus
           inputClassName="w-sm"
+          name="tournamentName"
+          type="text"
         >
           Tournament Name
         </LabelledInput>
 
         <ScoringEditor
           falseWinRule={falseWinRule}
-          setFalseWinRule={setFalseWinRule}
           scoringRules={scoringRules}
+          setFalseWinRule={setFalseWinRule}
           setScoringRules={setScoringRules}
         />
 
         <BoomHandEditor defaultValue="" />
 
         {error && <span className="text-negative text-xs">{error}</span>}
-        <FilledButton type="submit" disabled={isPending} className="w-sm">
+        <FilledButton className="w-sm" disabled={isPending} type="submit">
           Create Tournament
         </FilledButton>
       </form>

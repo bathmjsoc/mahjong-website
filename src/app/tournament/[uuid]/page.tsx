@@ -27,15 +27,15 @@ export default function TournamentPage() {
           <div className="py-9">
             <ShuffleButton
               isShaking={isShaking}
-              startTransition={startTransition}
               players={players}
+              startTransition={startTransition}
               tables={tables}
             />
           </div>
 
           <TableList
-            tables={tables}
             className={isShaking ? "animate-shake" : ""}
+            tables={tables}
           />
         </div>
       </div>
@@ -45,13 +45,13 @@ export default function TournamentPage() {
         title={wind ? WIND_MAP[wind] : "N/A"}
       >
         <RoundedListbox<WindKey>
-          value={wind}
-          options={WINDS}
-          onChange={setWind}
-          getOptionLabel={(wind) => wind}
-          getOptionKey={(wind) => wind}
-          getOptionTooltip={(wind) => WIND_MAP[wind] ?? "N/A"}
           buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
+          getOptionKey={(wind) => wind}
+          getOptionLabel={(wind) => wind}
+          getOptionTooltip={(wind) => WIND_MAP[wind] ?? "N/A"}
+          onChange={setWind}
+          options={WINDS}
+          value={wind}
         />
       </div>
     </>

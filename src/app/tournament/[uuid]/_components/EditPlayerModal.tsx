@@ -70,25 +70,25 @@ export function EditPlayerModal({
       <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
         <form action={handleSubmit} className="flex flex-col gap-5">
           <RoundedListbox<Player>
-            value={selectedPlayer}
-            options={players}
-            onChange={handleSelect}
-            getOptionLabel={(player) => player.name}
-            getOptionKey={(player) => player.id}
-            emptyMessage="No players found"
-            placeholder="Select a player..."
             buttonClassName="text-primary rounded-lg w-xs p-2"
+            emptyMessage="No players found"
+            getOptionKey={(player) => player.id}
+            getOptionLabel={(player) => player.name}
+            onChange={handleSelect}
+            options={players}
+            placeholder="Select a player..."
+            value={selectedPlayer}
           />
 
           {selectedPlayer && (
             <div className="flex flex-col gap-3">
               <LabelledInput
-                name="updatedName"
-                key={selectedPlayer.id}
+                autoComplete="off"
                 defaultValue={selectedPlayer.name}
+                key={selectedPlayer.id}
+                name="updatedName"
                 onChange={() => setError(null)}
                 type="text"
-                autoComplete="off"
               >
                 Player Name
               </LabelledInput>
@@ -101,15 +101,15 @@ export function EditPlayerModal({
             </div>
           )}
 
-          <FilledButton type="submit" disabled={!selectedPlayer}>
+          <FilledButton disabled={!selectedPlayer} type="submit">
             Update Player
           </FilledButton>
         </form>
       </Modal>
 
       <Notification
-        isOpen={showNotification}
         close={() => setShowNotification(false)}
+        isOpen={showNotification}
         title="Player Updated"
       >
         {notification}

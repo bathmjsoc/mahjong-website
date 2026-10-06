@@ -39,8 +39,8 @@ export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
       </Modal>
 
       <Notification
-        isOpen={showNotification}
         close={() => setShowNotification(false)}
+        isOpen={showNotification}
         title="Session Reset"
       >
         A new session has started. All players and tables have been cleared.

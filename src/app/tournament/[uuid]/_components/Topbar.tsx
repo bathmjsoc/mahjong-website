@@ -24,9 +24,9 @@ export function Topbar() {
       <TabMenu>
         {TABS.map((tab) => (
           <TabLink
-            key={tab.href}
-            href={`/tournament/${tournamentId}${tab.href}`}
             className="w-30"
+            href={`/tournament/${tournamentId}${tab.href}`}
+            key={tab.href}
           >
             {tab.label}
           </TabLink>
@@ -35,16 +35,16 @@ export function Topbar() {
 
       <div className="flex gap-5">
         <FilledButton
-          onClick={() => router.push("/dashboard")}
           className="rounded-xl bg-primary hover:text-info"
+          onClick={() => router.push("/dashboard")}
           title="Return to Dashboard"
         >
           <LayoutDashboard className="size-5" />
         </FilledButton>
 
         <FilledButton
-          onClick={signOut}
           className="rounded-xl bg-primary hover:text-negative"
+          onClick={signOut}
           title="Sign Out"
         >
           <LogOut className="size-5" />

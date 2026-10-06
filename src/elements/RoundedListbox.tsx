@@ -39,21 +39,20 @@ export function RoundedListbox<T>({
   const isPlaceholder = value === null;
 
   return (
-    <Listbox value={value} onChange={onChange}>
+    <Listbox onChange={onChange} value={value}>
       <ListboxButton
-        disabled={disabled}
         className={twMerge(
           isPlaceholder ? "text-negative" : "text-primary",
           "w-full cursor-pointer truncate bg-secondary text-center font-bold outline-none",
           "transition duration-300 enabled:hover:bg-secondary/75 disabled:cursor-not-allowed",
           buttonClassName,
         )}
+        disabled={disabled}
       >
         {isPlaceholder ? placeholder : getOptionLabel(value)}
       </ListboxButton>
       <ListboxOptions
         anchor="bottom"
-        transition
         className={twMerge(
           "bg-secondary text-primary",
           "border-2 border-primary outline-none",
@@ -61,21 +60,22 @@ export function RoundedListbox<T>({
           "transition duration-300 data-closed:scale-95 data-closed:opacity-0",
           optionsClassName,
         )}
+        transition
       >
         {options.length === 0 ? (
           <div className="p-1 text-center text-xs italic">{emptyMessage}</div>
         ) : (
           options.map((item) => (
             <ListboxOption
-              key={getOptionKey(item)}
-              value={item}
-              title={getOptionTooltip?.(item)}
               className={twMerge(
                 "flex items-center justify-center",
                 "cursor-pointer rounded-md p-1 outline-none",
                 "transition duration-300 hover:bg-primary/25",
                 optionClassName,
               )}
+              key={getOptionKey(item)}
+              title={getOptionTooltip?.(item)}
+              value={item}
             >
               {getOptionLabel(item)}
             </ListboxOption>

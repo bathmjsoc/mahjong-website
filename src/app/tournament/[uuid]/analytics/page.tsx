@@ -22,13 +22,13 @@ export default function AnalyticsPage() {
   return (
     <div className="flex flex-col items-center gap-10 py-10">
       <RoundedListbox<Player>
-        value={selectedPlayer}
-        options={activePlayers}
-        onChange={setSelectedPlayer}
-        getOptionLabel={(player) => player.name}
-        placeholder="Select a player..."
-        getOptionKey={(player) => player.id}
         buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
+        getOptionKey={(player) => player.id}
+        getOptionLabel={(player) => player.name}
+        onChange={setSelectedPlayer}
+        options={activePlayers}
+        placeholder="Select a player..."
+        value={selectedPlayer}
       />
 
       {selectedPlayer && (

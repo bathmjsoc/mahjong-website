@@ -24,13 +24,13 @@ export function Notification({
 
   return (
     <Transition
-      show={isOpen}
       enter="transition duration-300"
       enterFrom="translate-y-2 opacity-0"
       enterTo="translate-y-0 opacity-100"
       leave="transition duration-300"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
+      show={isOpen}
     >
       <div className="fixed right-5 bottom-5 z-99">
         <div className="w-xs rounded-lg border-2 border-primary bg-secondary p-3 text-primary">

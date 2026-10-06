@@ -53,13 +53,13 @@ export function SunburstChart({ data, title }: SunburstChartProps) {
 
   return (
     <ReactApexChart
+      className="text-secondary"
+      height="100%"
+      options={options}
+      series={series}
       // @ts-expect-error: "sunburst" is a valid type (but is missing from the list)
       type="sunburst"
-      series={series}
-      options={options}
-      height="100%"
       width="100%"
-      className="text-secondary"
     />
   );
 }
