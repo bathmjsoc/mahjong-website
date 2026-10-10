@@ -24,14 +24,14 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   const opponents: Player[] = [];
   if (occupant !== null) {
-    const SEAT_IDS = [
+    const seatIds = [
       table.east_id,
       table.south_id,
       table.west_id,
       table.north_id,
     ] as const;
 
-    for (const id of SEAT_IDS) {
+    for (const id of seatIds) {
       if (id === null || id === occupant.id) continue;
 
       const player = playerMap.get(id);
