@@ -19,7 +19,7 @@ export default function SessionsPage() {
   const { sessions } = useSessions();
 
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
-  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState<boolean>(false);
 
   const scores = selectedSession
     ? (sessionScores[selectedSession.id] ?? {})

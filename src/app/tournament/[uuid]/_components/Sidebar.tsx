@@ -29,7 +29,7 @@ export function Sidebar({ players }: SidebarProps) {
   const { registeredPlayerIds } = useAttendance();
   const { registerPlayer } = useAttendanceMutations();
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
   const registeredPlayers = players.filter(

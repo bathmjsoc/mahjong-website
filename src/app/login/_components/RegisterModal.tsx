@@ -13,7 +13,7 @@ type RegisterModalProps = {
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [error, setError] = useState<string | null>(null);
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   const [isPending, startTransition] = useTransition();
 

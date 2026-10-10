@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 const TILES = ["🀄︎", "🀅", "🀆"] as const;
 
 export default function Loading() {
-  const [activeTileIndex, setActiveTileIndex] = useState(0);
+  const [activeTileIndex, setActiveTileIndex] = useState<number>(0);
 
   useEffect(() => {
     const interval = setInterval(() => {

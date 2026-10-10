@@ -30,7 +30,7 @@ export function SearchCombobox<T>({
   optionsClassName,
   optionClassName,
 }: SearchComboboxProps<T>) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
 
   const filteredOptions =
     query === ""

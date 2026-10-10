@@ -12,7 +12,7 @@ type TournamentListProps = {
 };
 
 export function TournamentList({ tournaments }: TournamentListProps) {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -47,7 +47,7 @@ type TournamentCardProps = {
 function TournamentCard({ tournament }: TournamentCardProps) {
   const router = useRouter();
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   return (
     <>

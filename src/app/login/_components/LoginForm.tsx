@@ -8,7 +8,8 @@ import { RegisterModal } from "./RegisterModal";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] =
+    useState<boolean>(false);
 
   const [isPending, startTransition] = useTransition();
 
