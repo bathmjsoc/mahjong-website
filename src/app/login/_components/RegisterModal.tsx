@@ -13,7 +13,10 @@ type RegisterModalProps = {
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [error, setError] = useState<string | null>(null);
-  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    message: "",
+  });
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,9 +28,8 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   function handleSubmit(formData: FormData) {
     const email = parseFormString(formData, "email");
     const password = parseFormString(formData, "password");
-
     if (!email || !password) {
-      setError("Email and password are required.");
+      setError("Email and Password cannot be empty.");
       return;
     }
 
@@ -39,7 +41,10 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
         return;
       }
 
-      setShowNotification(true);
+      setNotification({
+        isOpen: true,
+        message: `Check your email to verify your account.`,
+      });
       handleClose();
     });
   }
@@ -78,11 +83,11 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       </Modal>
 
       <Notification
-        close={() => setShowNotification(false)}
-        isOpen={showNotification}
+        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
+        isOpen={notification.isOpen}
         title="Account Created!"
       >
-        Please check your email to verify your account.
+        {notification.message}
       </Notification>
     </>
   );
