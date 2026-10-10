@@ -54,7 +54,7 @@ export function RoundedListbox<T>({
       <ListboxOptions
         anchor="bottom"
         className={twMerge(
-          "bg-secondary text-primary",
+          "w-(--button-width) bg-secondary text-primary",
           "border-2 border-primary outline-none",
           "no-scrollbar z-50 mt-2 max-h-50 rounded-xl p-1 text-sm",
           "transition duration-300 data-closed:scale-95 data-closed:opacity-0",
@@ -68,7 +68,7 @@ export function RoundedListbox<T>({
           options.map((item) => (
             <ListboxOption
               className={twMerge(
-                "flex items-center justify-center",
+                "block truncate text-center",
                 "cursor-pointer rounded-md p-1 outline-none",
                 "transition duration-300 hover:bg-primary/25",
                 optionClassName,

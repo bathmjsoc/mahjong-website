@@ -99,7 +99,7 @@ export function TableSeat({
           getOptionLabel={(player) => player?.name ?? "[EMPTY]"}
           onChange={handleSelect}
           options={[null, ...registeredPlayers]}
-          optionsClassName="w-39"
+          optionsClassName="w-50"
           placeholder="[EMPTY]"
           value={occupant}
         />
