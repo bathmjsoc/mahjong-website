@@ -71,7 +71,7 @@ export function EditPlayerModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Update Player">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Edit Player">
         <form action={handleSubmit} className="flex w-xs flex-col gap-3">
           <RoundedListbox<Player>
             buttonClassName="text-primary rounded-lg w-xs p-2"
@@ -107,7 +107,7 @@ export function EditPlayerModal({
           )}
 
           <FilledButton disabled={!selectedPlayer} type="submit">
-            Update Player
+            Edit Player
           </FilledButton>
         </form>
       </Modal>

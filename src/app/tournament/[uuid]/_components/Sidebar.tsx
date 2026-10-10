@@ -46,7 +46,7 @@ export function Sidebar({ players }: SidebarProps) {
             isOpen ? "w-md px-5" : "w-0 px-0",
           )}
         >
-          <div className="flex min-w-max max-w-md flex-col items-center gap-5 py-10">
+          <div className="flex flex-col items-center gap-5 py-10">
             <SearchCombobox<Player>
               emptyMessage="No player(s) found"
               getOptionKey={(player) => player.id}
@@ -96,9 +96,8 @@ export function Sidebar({ players }: SidebarProps) {
         </div>
 
         <FilledButton
-          className="mt-5 -ml-1 h-20 w-10 rounded-r-2xl bg-primary text-secondary"
+          className="mt-5 -ml-1 h-20 w-10 rounded-r-xl rounded-l-none bg-primary"
           onClick={() => setIsOpen(!isOpen)}
-          title="Collapse/Expand Sidebar"
         >
           <ChevronRight
             className={twMerge(
