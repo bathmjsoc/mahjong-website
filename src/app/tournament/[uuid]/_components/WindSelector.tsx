@@ -13,7 +13,7 @@ export function WindSelector() {
         buttonClassName="border-primary border-2 size-20 text-5xl font-normal rounded-2xl"
         getOptionKey={(wind) => wind}
         getOptionLabel={(wind) => wind}
-        getOptionTooltip={(wind) => WIND_MAP[wind] ?? "N/A"}
+        getOptionTooltip={(wind) => WIND_MAP[wind]}
         onChange={setWind}
         options={WINDS}
         value={wind}
