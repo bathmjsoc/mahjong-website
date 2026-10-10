@@ -145,7 +145,10 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
   return (
     <DropDown
-      buttonClassName={twMerge("rounded-full size-8 bg-accent", className)}
+      buttonClassName={twMerge(
+        "rounded-full size-8 bg-accent text-secondary",
+        className,
+      )}
       disabled={occupant === null || opponents.length === 0}
       title="食"
       tooltip="Record Win"
