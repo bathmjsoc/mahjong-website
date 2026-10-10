@@ -33,12 +33,12 @@ export function PlayerList({ players }: PlayerListProps) {
   const firstPlacePlayer = sortPlayersByScore(players, overallScores)[0];
 
   return (
-    <table>
+    <table className="w-full table-fixed">
       <thead>
         <tr>
           <th className="w-7" />
-          <th className="w-68">Name</th>
-          <th className="w-20">Score</th>
+          <th className="w-66">Name</th>
+          <th className="w-22">Score</th>
           <th className="w-7 text-[10px] opacity-66">
             [{registeredPlayerIds.size}]
           </th>
@@ -122,7 +122,7 @@ function PlayerRow({
           <span className="absolute -top-3 -left-3 -rotate-45">👑</span>
         )}
 
-        {player.name}
+        <span className="block truncate">{player.name}</span>
       </td>
 
       <td
@@ -131,7 +131,7 @@ function PlayerRow({
           scoreToColor(score),
         )}
       >
-        {score}
+        <span className="block truncate">{score}</span>
       </td>
 
       <td>
