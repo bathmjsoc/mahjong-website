@@ -4,6 +4,7 @@ import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { useLogs } from "@/hooks/logs/useLogs";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
 import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
@@ -33,12 +34,12 @@ export function PlayerList({ players }: PlayerListProps) {
   const firstPlacePlayer = sortPlayersByScore(players, overallScores)[0];
 
   return (
-    <table>
+    <table className="w-full table-fixed">
       <thead>
         <tr>
           <th className="w-7" />
-          <th className="w-68">Name</th>
-          <th className="w-20">Score</th>
+          <th className="w-66">Name</th>
+          <th className="w-22">Score</th>
           <th className="w-7 text-[10px] opacity-66">
             [{registeredPlayerIds.size}]
           </th>
@@ -48,12 +49,12 @@ export function PlayerList({ players }: PlayerListProps) {
       <tbody>
         {rankedPlayers.map((player) => (
           <PlayerRow
+            isFirstPlace={player.id === firstPlacePlayer.id}
+            isLocked={lockedPlayerIds.has(player.id)}
+            isSeated={seatedPlayerIds.has(player.id)}
             key={player.id}
             player={player}
             score={scores[player.id] ?? 0}
-            isLocked={lockedPlayerIds.has(player.id)}
-            isSeated={seatedPlayerIds.has(player.id)}
-            isFirstPlace={player.id === firstPlacePlayer.id}
           />
         ))}
       </tbody>
@@ -78,8 +79,14 @@ function PlayerRow({
 }: PlayerRowProps) {
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
     useAttendanceMutations();
+  const { unseatPlayer } = useTableMutations();
 
-  function handleLockToggle() {
+  function handleDeregisterPlayer() {
+    deregisterPlayer(player);
+    unseatPlayer(player);
+  }
+
+  function handleToggleLock() {
     isLocked ? unlockPlayer(player) : lockPlayer(player);
   }
 
@@ -87,9 +94,9 @@ function PlayerRow({
     <tr>
       <td>
         <IconButton
-          title={isLocked ? "Unlock Player" : "Lock Player"}
-          onClick={handleLockToggle}
           className="flex w-full items-center justify-center"
+          onClick={handleToggleLock}
+          title={isLocked ? "Unlock Player" : "Lock Player"}
         >
           <div className="relative size-4">
             <LockKeyhole
@@ -122,7 +129,7 @@ function PlayerRow({
           <span className="absolute -top-3 -left-3 -rotate-45">👑</span>
         )}
 
-        {player.name}
+        <span className="block truncate">{player.name}</span>
       </td>
 
       <td
@@ -131,14 +138,14 @@ function PlayerRow({
           scoreToColor(score),
         )}
       >
-        {score}
+        <span className="block truncate">{score}</span>
       </td>
 
       <td>
         <IconButton
-          title="Deregister Player"
-          onClick={() => deregisterPlayer(player)}
           className="flex w-full items-center justify-center hover:text-negative"
+          onClick={handleDeregisterPlayer}
+          title="Deregister Player"
         >
           <X className="size-5" />
         </IconButton>

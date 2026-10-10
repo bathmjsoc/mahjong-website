@@ -1,5 +1,5 @@
-import { PencilRuler, Play, Plus, Users } from "lucide-react";
-import Link from "next/link";
+import { Cog, Play, Plus, Users } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
@@ -12,7 +12,7 @@ type TournamentListProps = {
 };
 
 export function TournamentList({ tournaments }: TournamentListProps) {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -23,8 +23,8 @@ export function TournamentList({ tournaments }: TournamentListProps) {
 
         <div className="flex h-40 w-75 items-center justify-center">
           <FilledButton
-            onClick={() => setIsCreateModalOpen(true)}
             className="rounded-full p-3"
+            onClick={() => setIsCreateModalOpen(true)}
             title="Create Tournament"
           >
             <Plus className="size-7" />
@@ -45,44 +45,47 @@ type TournamentCardProps = {
 };
 
 function TournamentCard({ tournament }: TournamentCardProps) {
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const router = useRouter();
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   return (
     <>
-      <div className="flex h-40 w-75 flex-col gap-3 rounded-lg bg-primary p-3 text-secondary">
-        <span className="mb-auto line-clamp-2 text-lg">{tournament.name}</span>
+      <div className="flex h-40 w-75 flex-col justify-between rounded-lg bg-primary p-3 text-secondary">
+        <span className="line-clamp-2 text-lg">{tournament.name}</span>
 
-        <div className="flex items-center justify-between text-xs">
-          <span className="flex items-center gap-1">
-            <Users className="size-4" />
-            {tournament.player_count}
-          </span>
-          Updated {formatRelativeTime(tournament.last_updated)}
-        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex justify-between text-xs">
+            <span className="flex gap-1">
+              <Users className="size-4" />
+              {tournament.player_count}
+            </span>
+            Updated {formatRelativeTime(tournament.last_updated)}
+          </div>
 
-        <div className="flex gap-3">
-          <Link href={`/tournament/${tournament.id}`} className="w-full">
+          <div className="flex gap-3">
             <FilledButton
-              className="flex w-full items-center justify-center"
+              className="flex w-full justify-center"
+              onClick={() => router.push(`/tournament/${tournament.id}`)}
               title="Open Tournament"
             >
               <Play className="size-5" />
             </FilledButton>
-          </Link>
 
-          <FilledButton
-            onClick={() => setIsEditModalOpen(true)}
-            title="Edit Tournament"
-          >
-            <PencilRuler className="size-5" />
-          </FilledButton>
+            <FilledButton
+              onClick={() => setIsEditModalOpen(true)}
+              title="Edit Tournament"
+            >
+              <Cog className="size-5" />
+            </FilledButton>
+          </div>
         </div>
       </div>
 
       <EditTournamentModal
         isOpen={isEditModalOpen}
-        tournament={tournament}
         onClose={() => setIsEditModalOpen(false)}
+        tournament={tournament}
       />
     </>
   );

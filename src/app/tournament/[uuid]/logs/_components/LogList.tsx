@@ -58,21 +58,21 @@ function LogRow({ log }: LogRowProps) {
       </td>
 
       <td
-        title={log.hand_type ?? undefined}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
         )}
+        title={log.hand_type ?? undefined}
       >
         {log.faan}
       </td>
 
       <td
-        title={WIN_TYPE_MAP[log.win_type]}
         className={twMerge(
           log.disabled ? "border-negative" : "border-primary",
           "truncate border-x-0 border-y p-2 text-center",
         )}
+        title={WIN_TYPE_MAP[log.win_type]}
       >
         {log.win_type}
       </td>
@@ -104,9 +104,9 @@ function LogRow({ log }: LogRowProps) {
       <td>
         {!log.disabled && (
           <IconButton
-            title="Disable Log"
-            onClick={() => disableLog(log)}
             className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
+            onClick={() => disableLog(log)}
+            title="Disable Log"
           >
             <Trash2 className="size-5" />
           </IconButton>

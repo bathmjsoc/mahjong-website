@@ -11,13 +11,13 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className="pt-16">
+      <div className="p-16">
         <TournamentList tournaments={tournaments} />
       </div>
 
       <FilledButton
+        className="fixed top-3.5 right-0 rounded-xl bg-primary hover:text-negative"
         onClick={signOut}
-        className="fixed top-3 right-3 rounded-xl bg-primary hover:text-negative"
         title="Sign Out"
       >
         <LogOut className="size-5" />

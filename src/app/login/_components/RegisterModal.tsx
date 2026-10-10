@@ -13,7 +13,11 @@ type RegisterModalProps = {
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   const [error, setError] = useState<string | null>(null);
-  const [showNotification, setShowNotification] = useState(false);
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    message: "",
+  });
+
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
@@ -24,9 +28,8 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   function handleSubmit(formData: FormData) {
     const email = parseFormString(formData, "email");
     const password = parseFormString(formData, "password");
-
     if (!email || !password) {
-      setError("Email and password are required.");
+      setError("Email and Password cannot be empty.");
       return;
     }
 
@@ -38,7 +41,10 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
         return;
       }
 
-      setShowNotification(true);
+      setNotification({
+        isOpen: true,
+        message: `Check your email to verify your account.`,
+      });
       handleClose();
     });
   }
@@ -48,20 +54,20 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
       <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
         <form action={handleSubmit} className="flex w-xs flex-col gap-3">
           <LabelledInput
-            name="email"
-            type="email"
             autoComplete="email"
             autoFocus
+            name="email"
             required
+            type="email"
           >
             Email Address
           </LabelledInput>
 
           <LabelledInput
-            name="password"
-            type="password"
             autoComplete="new-password"
+            name="password"
             required
+            type="password"
           >
             Password
           </LabelledInput>
@@ -70,18 +76,18 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
             <span className="text-center text-negative text-xs">{error}</span>
           )}
 
-          <FilledButton type="submit" disabled={isPending}>
+          <FilledButton disabled={isPending} type="submit">
             Create Account
           </FilledButton>
         </form>
       </Modal>
 
       <Notification
-        isOpen={showNotification}
-        close={() => setShowNotification(false)}
-        title="Account created!"
+        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
+        isOpen={notification.isOpen}
+        title="Account Created!"
       >
-        Please check your email to verify your account.
+        {notification.message}
       </Notification>
     </>
   );

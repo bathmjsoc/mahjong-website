@@ -31,15 +31,15 @@ export function LogSearchBar() {
       <SearchInstructions />
 
       <input
+        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
         name="query"
         placeholder="Enter a query..."
-        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
       />
 
       <IconButton
-        title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
-        onClick={toggleDisabledLogs}
         className="flex items-center justify-center text-primary hover:text-info"
+        onClick={toggleDisabledLogs}
+        title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
       >
         <div className="relative size-5">
           <Eye

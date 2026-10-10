@@ -81,6 +81,33 @@ export function useTableMutations() {
       updateMutation.mutate(updatedTable);
     },
 
+    unseatPlayer(player: Player) {
+      const tables =
+        queryClient.getQueryData<Table[]>(["tables", sessionId]) ?? [];
+
+      for (const table of tables) {
+        if (table.saved) continue;
+
+        const seatIds = [
+          table.east_id,
+          table.south_id,
+          table.west_id,
+          table.north_id,
+        ] as const;
+
+        if (!seatIds.includes(player.id)) continue;
+
+        const updatedTable = { ...table };
+
+        if (updatedTable.east_id === player.id) updatedTable.east_id = null;
+        if (updatedTable.south_id === player.id) updatedTable.south_id = null;
+        if (updatedTable.west_id === player.id) updatedTable.west_id = null;
+        if (updatedTable.north_id === player.id) updatedTable.north_id = null;
+
+        updateMutation.mutate(updatedTable);
+      }
+    },
+
     deleteTable(table: Table) {
       deleteMutation.mutate(table);
     },

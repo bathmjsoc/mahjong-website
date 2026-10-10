@@ -39,8 +39,6 @@ export function DropDown({
         return (
           <RootContext value={rootClose}>
             <PopoverButton
-              title={tooltip}
-              disabled={disabled}
               className={twMerge(
                 "w-full rounded p-1 text-center outline-none transition",
                 disabled
@@ -53,6 +51,8 @@ export function DropDown({
                     ],
                 buttonClassName,
               )}
+              disabled={disabled}
+              title={tooltip}
             >
               {title}
             </PopoverButton>
@@ -98,13 +98,13 @@ function Item({
     <button
       type={type}
       {...props}
-      disabled={disabled}
-      onClick={handleClick}
       className={twMerge(
         "w-full cursor-pointer rounded p-1 text-center outline-none",
         "hover:bg-primary/25",
         className,
       )}
+      disabled={disabled}
+      onClick={handleClick}
     >
       {children}
     </button>

@@ -22,7 +22,6 @@ export function EditTournamentModal({
 }: EditTournamentModalProps) {
   const { updateTournament } = useTournamentMutations();
 
-  const [boomHands, setBoomHands] = useState(tournament.hand_types.join(", "));
   const [error, setError] = useState<string | null>(null);
   const [falseWinRule, setFalseWinRule] = useState<ScoringRule>(
     tournament.scoring_rules.find((rule) => rule.faan === null) ??
@@ -34,66 +33,77 @@ export function EditTournamentModal({
 
   const [isPending, startTransition] = useTransition();
 
-  function handleSubmit(formData: FormData) {
-    const tournamentName = parseFormString(formData, "tournamentName");
-    if (!tournamentName) {
-      setError("Tournament Name is required");
-      return;
-    }
+  function handleClose() {
+    setError(null);
+    onClose();
+  }
 
+  function handleSubmit(formData: FormData) {
     const faanOptions = scoringRules.map((rule) => rule.faan);
     if (new Set(faanOptions).size !== faanOptions.length) {
       setError("Duplicate Faan values are not allowed.");
       return;
     }
 
+    const tournamentName = parseFormString(formData, "tournamentName");
+    if (!tournamentName) {
+      setError("Tournament Name is required.");
+      return;
+    }
+
+    const rules = [falseWinRule, ...scoringRules];
+    const deltas = rules.flatMap((rule) => Object.values(rule.deltas));
+    if (
+      deltas.some(
+        (delta) =>
+          Math.abs(delta.winner) > 9999 || Math.abs(delta.loser) > 9999,
+      )
+    ) {
+      setError("Point deltas must be in the range [-9999, 9999].");
+      return;
+    }
+
+    const boomHands = parseFormString(formData, "boomHands") || "";
     const handTypes = boomHands
       .split(",")
       .map((handType) => handType.trim())
       .filter((handType) => handType.length > 0);
 
     startTransition(() => {
-      const rules = [...scoringRules, falseWinRule];
       updateTournament(tournament, tournamentName, rules, handTypes);
-      onClose();
+      handleClose();
     });
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Tournament">
+    <Modal isOpen={isOpen} onClose={handleClose} title="Edit Tournament">
       <form
         action={handleSubmit}
+        className="flex h-200 w-2xl flex-col items-center gap-5"
         onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
-        className="flex h-200 w-2xl flex-col items-center justify-center gap-5"
       >
-        <div className="flex flex-col gap-3">
-          <LabelledInput
-            name="tournamentName"
-            defaultValue={tournament.name}
-            onChange={() => setError(null)}
-            type="text"
-            autoFocus
-            required
-            inputClassName="w-sm"
-          >
-            Tournament Name
-          </LabelledInput>
-
-          {error && (
-            <span className="text-center text-negative text-xs">{error}</span>
-          )}
-        </div>
+        <LabelledInput
+          autoFocus
+          defaultValue={tournament.name}
+          inputClassName="w-sm"
+          name="tournamentName"
+          required
+          type="text"
+        >
+          Tournament Name
+        </LabelledInput>
 
         <ScoringEditor
-          scoringRules={scoringRules}
-          setScoringRules={setScoringRules}
           falseWinRule={falseWinRule}
+          scoringRules={scoringRules}
           setFalseWinRule={setFalseWinRule}
+          setScoringRules={setScoringRules}
         />
 
-        <BoomHandEditor boomHands={boomHands} setBoomHands={setBoomHands} />
+        <BoomHandEditor defaultValue={tournament.hand_types.join(", ")} />
 
-        <FilledButton type="submit" disabled={isPending} className="w-sm">
+        {error && <span className="text-negative text-xs">{error}</span>}
+        <FilledButton className="w-sm" disabled={isPending} type="submit">
           Update Tournament
         </FilledButton>
       </form>

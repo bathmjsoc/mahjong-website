@@ -47,12 +47,12 @@ export function ColumnChart({ data, title }: ColumnChartProps) {
 
   return (
     <ReactApexChart
-      type="bar"
-      series={series}
-      options={options}
-      height="100%"
-      width="100%"
       className="rounded-lg bg-secondary"
+      height="100%"
+      options={options}
+      series={series}
+      type="bar"
+      width="100%"
     />
   );
 }

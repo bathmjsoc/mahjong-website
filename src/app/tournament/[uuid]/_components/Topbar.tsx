@@ -15,41 +15,40 @@ const TABS = [
 ] as const;
 
 export function Topbar() {
-  const tournamentId = useTournamentContext();
-
   const router = useRouter();
+  const tournamentId = useTournamentContext();
 
   return (
     <div className="z-50 flex h-15 items-center justify-between bg-accent px-5">
       <TabMenu>
         {TABS.map((tab) => (
           <TabLink
-            key={tab.href}
-            href={`/tournament/${tournamentId}${tab.href}`}
             className="w-30"
+            href={`/tournament/${tournamentId}${tab.href}`}
+            key={tab.href}
           >
             {tab.label}
           </TabLink>
         ))}
       </TabMenu>
 
-      <div className="flex gap-5">
+      <TabMenu>
         <FilledButton
-          onClick={() => router.push("/dashboard")}
           className="rounded-xl bg-primary hover:text-info"
+          onClick={() => router.push("/dashboard")}
           title="Return to Dashboard"
         >
           <LayoutDashboard className="size-5" />
         </FilledButton>
 
         <FilledButton
-          onClick={signOut}
           className="rounded-xl bg-primary hover:text-negative"
+          onClick={signOut}
           title="Sign Out"
         >
           <LogOut className="size-5" />
         </FilledButton>
-      </div>
+      </TabMenu>
     </div>
   );
 }
