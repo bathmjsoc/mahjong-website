@@ -27,11 +27,11 @@ export function ShuffleButton({
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
 
   function handleShuffle() {
-    const availableTables = tables.filter((table) => !table.saved);
     const availablePlayers = players.filter(
       (player) =>
         registeredPlayerIds.has(player.id) && !lockedPlayerIds.has(player.id),
     );
+    const availableTables = tables.filter((table) => !table.saved);
 
     startTransition(async () => {
       const shuffledPlayers = shuffle(availablePlayers);
@@ -63,12 +63,13 @@ export function ShuffleButton({
 
   return (
     <FilledButton
-      className="rounded-full bg-primary p-3"
+      className="flex h-10 w-50 items-center justify-center gap-2 bg-primary text-sm"
       disabled={isShaking}
       onClick={handleShuffle}
       title="Shuffle Tables"
     >
-      <Shuffle className="size-6" />
+      <Shuffle className="size-5" />
+      Shuffle Tables
     </FilledButton>
   );
 }
