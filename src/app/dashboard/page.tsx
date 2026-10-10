@@ -16,7 +16,7 @@ export default function DashboardPage() {
       </div>
 
       <FilledButton
-        className="fixed top-3 right-3 rounded-xl bg-primary hover:text-negative"
+        className="fixed top-3.5 right-0 rounded-xl bg-primary hover:text-negative"
         onClick={signOut}
         title="Sign Out"
       >
