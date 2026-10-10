@@ -4,6 +4,7 @@ import { IconButton } from "@/elements/IconButton";
 import { useAttendance } from "@/hooks/attendance/useAttendance";
 import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutations";
 import { useLogs } from "@/hooks/logs/useLogs";
+import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
 import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
@@ -78,8 +79,14 @@ function PlayerRow({
 }: PlayerRowProps) {
   const { deregisterPlayer, lockPlayer, unlockPlayer } =
     useAttendanceMutations();
+  const { unseatPlayer } = useTableMutations();
 
-  function handleLockToggle() {
+  function handleDeregisterPlayer() {
+    deregisterPlayer(player);
+    unseatPlayer(player);
+  }
+
+  function handleToggleLock() {
     isLocked ? unlockPlayer(player) : lockPlayer(player);
   }
 
@@ -88,7 +95,7 @@ function PlayerRow({
       <td>
         <IconButton
           className="flex w-full items-center justify-center"
-          onClick={handleLockToggle}
+          onClick={handleToggleLock}
           title={isLocked ? "Unlock Player" : "Lock Player"}
         >
           <div className="relative size-4">
@@ -137,7 +144,7 @@ function PlayerRow({
       <td>
         <IconButton
           className="flex w-full items-center justify-center hover:text-negative"
-          onClick={() => deregisterPlayer(player)}
+          onClick={handleDeregisterPlayer}
           title="Deregister Player"
         >
           <X className="size-5" />
