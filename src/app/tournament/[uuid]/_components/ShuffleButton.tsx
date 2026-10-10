@@ -63,7 +63,7 @@ export function ShuffleButton({
 
   return (
     <FilledButton
-      className="flex h-10 w-50 items-center justify-center gap-2 bg-primary text-sm"
+      className="flex h-10 w-50 items-center justify-center gap-2 rounded-xl bg-primary text-sm"
       disabled={isShaking}
       onClick={handleShuffle}
       title="Shuffle Tables"
