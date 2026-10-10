@@ -19,7 +19,7 @@ export default function TournamentPage() {
       <div className="flex min-h-dvh">
         <Sidebar players={players} />
 
-        <div className="flex w-full flex-col items-center">
+        <div className="flex w-full flex-col items-center overflow-hidden">
           <div className="py-9">
             <ShuffleButton
               isShaking={isShaking}
