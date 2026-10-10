@@ -39,15 +39,27 @@ export function EditTournamentModal({
   }
 
   function handleSubmit(formData: FormData) {
+    const faanOptions = scoringRules.map((rule) => rule.faan);
+    if (new Set(faanOptions).size !== faanOptions.length) {
+      setError("Duplicate Faan values are not allowed.");
+      return;
+    }
+
     const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
       setError("Tournament Name is required.");
       return;
     }
 
-    const faanOptions = scoringRules.map((rule) => rule.faan);
-    if (new Set(faanOptions).size !== faanOptions.length) {
-      setError("Duplicate Faan values are not allowed.");
+    const rules = [falseWinRule, ...scoringRules];
+    const deltas = rules.flatMap((rule) => Object.values(rule.deltas));
+    if (
+      deltas.some(
+        (delta) =>
+          Math.abs(delta.winner) > 9999 || Math.abs(delta.loser) > 9999,
+      )
+    ) {
+      setError("Point deltas must be in the range [-9999, 9999].");
       return;
     }
 
@@ -58,7 +70,6 @@ export function EditTournamentModal({
       .filter((handType) => handType.length > 0);
 
     startTransition(() => {
-      const rules = [falseWinRule, ...scoringRules];
       updateTournament(tournament, tournamentName, rules, handTypes);
       handleClose();
     });
