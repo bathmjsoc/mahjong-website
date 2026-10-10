@@ -46,6 +46,7 @@ type TournamentCardProps = {
 
 function TournamentCard({ tournament }: TournamentCardProps) {
   const router = useRouter();
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
