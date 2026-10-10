@@ -8,19 +8,21 @@ import type { Player } from "@/lib/types";
 
 type DeletePlayerModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   players: Player[];
+  onClose: () => void;
 };
 
 export function DeletePlayerModal({
   isOpen,
-  onClose,
   players,
+  onClose,
 }: DeletePlayerModalProps) {
   const { deletePlayer } = usePlayerMutations();
 
-  const [notification, setNotification] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    message: "",
+  });
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -32,17 +34,21 @@ export function DeletePlayerModal({
     if (!selectedPlayer) return;
 
     deletePlayer(selectedPlayer);
-    setNotification(
-      `${selectedPlayer.name} has been removed from the tournament.`,
-    );
-    setShowNotification(true);
+    setNotification({
+      isOpen: true,
+      message: `Removed ${selectedPlayer.name} from the tournament.`,
+    });
     handleClose();
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Delete Player">
-        <div className="flex w-xs flex-col gap-3">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Remove Player">
+        <form
+          action={handleSubmit}
+          className="flex w-xs flex-col gap-3"
+          onKeyDownCapture={(e) => e.key === "Enter" && e.preventDefault()}
+        >
           <RoundedListbox<Player>
             buttonClassName="text-primary rounded-lg w-xs p-2"
             emptyMessage="No players found"
@@ -55,27 +61,27 @@ export function DeletePlayerModal({
           />
 
           {selectedPlayer && (
-            <span className="text-xs">
-              Are you sure you want to remove "<b>{selectedPlayer.name}</b>"?
+            <span className="text-center text-xs">
+              Are you sure you want to remove <b>{selectedPlayer.name}</b>?
             </span>
           )}
 
           <FilledButton
             className="bg-negative uppercase"
             disabled={!selectedPlayer}
-            onClick={handleSubmit}
+            type="submit"
           >
-            Delete Player
+            Remove Player
           </FilledButton>
-        </div>
+        </form>
       </Modal>
 
       <Notification
-        close={() => setShowNotification(false)}
-        isOpen={showNotification}
-        title="Player Deleted"
+        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
+        isOpen={notification.isOpen}
+        title="Player Removed"
       >
-        {notification}
+        {notification.message}
       </Notification>
     </>
   );

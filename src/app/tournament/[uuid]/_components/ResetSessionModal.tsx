@@ -12,38 +12,45 @@ type ResetSessionModalProps = {
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
   const { createSession } = useSessionMutations();
 
-  const [showNotification, setShowNotification] = useState(false);
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    message: "",
+  });
 
   function handleSubmit() {
     createSession();
-    setShowNotification(true);
+    setNotification({
+      isOpen: true,
+      message: "A new session has started with all players deregistered.",
+    });
     onClose();
   }
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} title="Reset Session">
-        <div className="flex w-xs flex-col gap-3">
+        <form
+          action={handleSubmit}
+          className="flex w-xs flex-col gap-3"
+          onKeyDownCapture={(e) => e.key === "Enter" && e.preventDefault()}
+        >
           <span className="text-xs">
-            Are you sure you want to reset the session and deregister all
+            Are you sure you want to start a new session and deregister all
             players? This cannot be undone!
           </span>
 
-          <FilledButton
-            className="bg-negative uppercase"
-            onClick={handleSubmit}
-          >
+          <FilledButton className="bg-negative uppercase" type="submit">
             Reset Session
           </FilledButton>
-        </div>
+        </form>
       </Modal>
 
       <Notification
-        close={() => setShowNotification(false)}
-        isOpen={showNotification}
+        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
+        isOpen={notification.isOpen}
         title="Session Reset"
       >
-        A new session has started. All players and tables have been cleared.
+        {notification.message}
       </Notification>
     </>
   );

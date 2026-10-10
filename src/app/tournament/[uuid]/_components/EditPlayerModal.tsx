@@ -10,20 +10,22 @@ import { parseFormString } from "@/lib/utils";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   players: Player[];
+  onClose: () => void;
 };
 
 export function EditPlayerModal({
   isOpen,
-  onClose,
   players,
+  onClose,
 }: EditPlayerModalProps) {
   const { updatePlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
+  const [notification, setNotification] = useState({
+    isOpen: false,
+    message: "",
+  });
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -40,35 +42,37 @@ export function EditPlayerModal({
   function handleSubmit(formData: FormData) {
     if (!selectedPlayer) return;
 
-    const updatedName = parseFormString(formData, "updatedName");
-    if (!updatedName) {
-      setError("Player Name is required.");
+    const playerName = parseFormString(formData, "playerName");
+    if (!playerName) {
+      setError("Player Name cannot be empty.");
+      return;
+    } else if (playerName.length > 40) {
+      setError("Player Name cannot exceed 40 characters.");
       return;
     }
 
     if (
       players.some(
         (player) =>
-          player.name === updatedName && player.id !== selectedPlayer.id,
+          player.name === playerName && player.id !== selectedPlayer.id,
       )
     ) {
-      setError("This name is already taken.");
+      setError(`The name "${playerName}" is already taken.`);
       return;
     }
 
-    updatePlayer(selectedPlayer, updatedName);
-
-    setNotification(
-      `"${selectedPlayer.name}" has been renamed to "${updatedName}".`,
-    );
-    setShowNotification(true);
+    updatePlayer(selectedPlayer, playerName);
+    setNotification({
+      isOpen: true,
+      message: `Renamed "${selectedPlayer.name}" to "${playerName}".`,
+    });
     handleClose();
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
-        <form action={handleSubmit} className="flex flex-col gap-5">
+      <Modal isOpen={isOpen} onClose={handleClose} title="Update Player">
+        <form action={handleSubmit} className="flex w-xs flex-col gap-3">
           <RoundedListbox<Player>
             buttonClassName="text-primary rounded-lg w-xs p-2"
             emptyMessage="No players found"
@@ -84,9 +88,10 @@ export function EditPlayerModal({
             <div className="flex flex-col gap-3">
               <LabelledInput
                 autoComplete="off"
+                autoFocus
                 defaultValue={selectedPlayer.name}
                 key={selectedPlayer.id}
-                name="updatedName"
+                name="playerName"
                 onChange={() => setError(null)}
                 type="text"
               >
@@ -108,11 +113,11 @@ export function EditPlayerModal({
       </Modal>
 
       <Notification
-        close={() => setShowNotification(false)}
-        isOpen={showNotification}
+        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
+        isOpen={notification.isOpen}
         title="Player Updated"
       >
-        {notification}
+        {notification.message}
       </Notification>
     </>
   );
