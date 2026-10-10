@@ -2,6 +2,7 @@ import type { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
 import { sum } from "@/lib/utils";
+import "apexcharts/sunburst";
 
 type SunburstChartProps = {
   data: ChartData[];
