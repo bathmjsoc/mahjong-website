@@ -79,7 +79,7 @@ export function TableSeat({
     <div className={twMerge("flex items-center justify-center", gridPosition)}>
       <div
         className={twMerge(
-          "flex items-center justify-between gap-1 bg-primary text-secondary",
+          "flex gap-1 bg-primary",
           "w-50 shrink-0 rounded-full p-1 transition duration-300",
           isLocked && "ring-2 ring-neutral",
           (isDuplicate || !isRegistered) && "ring-2 ring-negative",
@@ -92,15 +92,14 @@ export function TableSeat({
           table={table}
         />
 
-        <RoundedListbox<Player>
-          buttonClassName="h-8 text-xs tracking-tighter rounded-full"
+        <RoundedListbox<Player | null>
+          buttonClassName="text-xs tracking-tighter rounded-full"
           disabled={table.saved}
-          emptyMessage="No players found"
-          getOptionKey={(player) => player.id}
-          getOptionLabel={(player) => player.name}
+          getOptionKey={(player) => player?.id ?? "[EMPTY]"}
+          getOptionLabel={(player) => player?.name ?? "[EMPTY]"}
           onChange={handleSelect}
-          options={registeredPlayers}
-          optionsClassName="w-auto"
+          options={[null, ...registeredPlayers]}
+          optionsClassName="w-39"
           placeholder="[EMPTY]"
           value={occupant}
         />
