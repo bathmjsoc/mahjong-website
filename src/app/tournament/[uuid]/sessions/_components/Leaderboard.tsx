@@ -49,21 +49,20 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player, position, score }: PlayerRowProps) {
-  const suffix = getOrdinalSuffix(position);
-  const scoreColor = scoreToColor(score);
-
   return (
     <tr className="text-center text-primary text-sm">
       <td>
         {position}
-        {suffix}
+        {getOrdinalSuffix(position)}
       </td>
 
       <td>
         <span className="block truncate">{player.name}</span>
       </td>
 
-      <td className={twMerge("text-secondary", scoreColor)}>{score}</td>
+      <td className={twMerge("text-secondary", scoreToColor(score))}>
+        {score}
+      </td>
     </tr>
   );
 }
