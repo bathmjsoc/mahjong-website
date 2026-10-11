@@ -4,8 +4,7 @@ import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import type { Tournament } from "@/lib/types";
 import { formatRelativeTime } from "@/lib/utils";
-import { CreateTournamentModal } from "./CreateTournamentModal";
-import { EditTournamentModal } from "./EditTournamentModal";
+import { TournamentModal } from "./TournamentModal";
 
 type TournamentListProps = {
   tournaments: Tournament[];
@@ -32,7 +31,7 @@ export function TournamentList({ tournaments }: TournamentListProps) {
         </div>
       </div>
 
-      <CreateTournamentModal
+      <TournamentModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
@@ -82,7 +81,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
         </div>
       </div>
 
-      <EditTournamentModal
+      <TournamentModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         tournament={tournament}
