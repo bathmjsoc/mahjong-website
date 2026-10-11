@@ -100,3 +100,12 @@ export function sum(values: number[]): number {
 export function getCurrentDateString() {
   return new Date().toISOString().slice(0, 10);
 }
+
+/*
+ * Truncates a string to a maximum length, including the trailing '...'
+ */
+export function truncate(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text;
+  if (maxLength <= 3) return text.slice(0, maxLength);
+  return `${text.slice(0, maxLength - 3).trimEnd()}...`;
+}
