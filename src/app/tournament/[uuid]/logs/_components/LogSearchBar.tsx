@@ -31,7 +31,7 @@ export function LogSearchBar() {
       <SearchInstructions />
 
       <input
-        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary p-2 text-center outline-none"
+        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center outline-none"
         name="query"
         placeholder="Enter a query..."
       />
