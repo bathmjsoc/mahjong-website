@@ -40,7 +40,7 @@ export default function SessionsPage() {
         <ViewGraphButton
           players={activePlayers}
           scores={scores}
-          title={getSessionName(selectedSession)}
+          session={selectedSession}
         />
 
         <DownloadLogsButton

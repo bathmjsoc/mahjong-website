@@ -1,19 +1,20 @@
 import { ChartColumn } from "lucide-react";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
-import type { Player } from "@/lib/types";
+import { getSessionName } from "@/lib/helpers";
+import type { Player, Session } from "@/lib/types";
 import { ScoreGraphModal } from "./ScoreGraphModal";
 
 type ViewGraphButtonProps = {
   players: Player[];
   scores: Record<string, number>;
-  title: string;
+  session: Session | null;
 };
 
 export function ViewGraphButton({
   players,
   scores,
-  title,
+  session,
 }: ViewGraphButtonProps) {
   const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
 
@@ -32,7 +33,7 @@ export function ViewGraphButton({
         onClose={() => setIsGraphModalOpen(false)}
         players={players}
         scores={scores}
-        title={title}
+        title={getSessionName(session)}
       />
     </>
   );
