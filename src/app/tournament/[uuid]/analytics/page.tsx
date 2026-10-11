@@ -20,7 +20,7 @@ export default function AnalyticsPage() {
   const activePlayers = players.filter((player) => player.id in overallScores);
 
   return (
-    <div className="flex flex-col items-center gap-10 py-10">
+    <div className="flex flex-col items-center gap-10 p-10">
       <RoundedListbox<Player>
         buttonClassName="text-primary border-primary border-2 h-10 rounded-lg w-sm"
         getOptionKey={(player) => player.id}
