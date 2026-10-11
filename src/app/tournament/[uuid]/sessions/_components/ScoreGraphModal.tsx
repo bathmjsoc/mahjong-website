@@ -4,7 +4,7 @@ import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 import { truncate } from "@/lib/utils";
 
-type ViewGraphModalProps = {
+type ScoreGraphModalProps = {
   isOpen: boolean;
   players: Player[];
   scores: Record<string, number>;
@@ -12,13 +12,13 @@ type ViewGraphModalProps = {
   onClose: () => void;
 };
 
-export function ViewGraphModal({
+export function ScoreGraphModal({
   isOpen,
   players,
   scores,
   title,
   onClose,
-}: ViewGraphModalProps) {
+}: ScoreGraphModalProps) {
   const rankedPlayers = sortPlayersByScore(players, scores);
   const rankedPlayerData = [
     {

@@ -1,0 +1,39 @@
+import { ChartColumn } from "lucide-react";
+import { useState } from "react";
+import { FilledButton } from "@/elements/FilledButton";
+import type { Player } from "@/lib/types";
+import { ScoreGraphModal } from "./ScoreGraphModal";
+
+type ViewGraphButtonProps = {
+  players: Player[];
+  scores: Record<string, number>;
+  title: string;
+};
+
+export function ViewGraphButton({
+  players,
+  scores,
+  title,
+}: ViewGraphButtonProps) {
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
+
+  return (
+    <>
+      <FilledButton
+        className="flex w-full justify-center gap-2 text-sm"
+        onClick={() => setIsGraphModalOpen(true)}
+      >
+        <ChartColumn className="size-5" />
+        View Graph
+      </FilledButton>
+
+      <ScoreGraphModal
+        isOpen={isGraphModalOpen}
+        onClose={() => setIsGraphModalOpen(false)}
+        players={players}
+        scores={scores}
+        title={title}
+      />
+    </>
+  );
+}
