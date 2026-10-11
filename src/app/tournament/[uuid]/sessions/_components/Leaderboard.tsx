@@ -19,12 +19,12 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
   const rankedPlayers = sortPlayersByScore(players, scores);
 
   return (
-    <table className="table-fixed border border-primary">
+    <table className="w-xl table-fixed border border-primary">
       <thead className="bg-primary text-secondary">
         <tr>
-          <th className="w-25">Rank</th>
-          <th className="w-75">Name</th>
-          <th className="w-25">Score</th>
+          <th>Rank</th>
+          <th className="w-sm">Name</th>
+          <th>Score</th>
         </tr>
       </thead>
 
@@ -54,21 +54,16 @@ function PlayerRow({ player, position, score }: PlayerRowProps) {
 
   return (
     <tr className="text-center text-primary text-sm">
-      <td className="border-l">
+      <td>
         {position}
         {suffix}
       </td>
 
-      <td>{player.name}</td>
-
-      <td
-        className={twMerge(
-          "border-primary border-r text-secondary",
-          scoreColor,
-        )}
-      >
-        {score}
+      <td>
+        <span className="block truncate">{player.name}</span>
       </td>
+
+      <td className={twMerge("text-secondary", scoreColor)}>{score}</td>
     </tr>
   );
 }
