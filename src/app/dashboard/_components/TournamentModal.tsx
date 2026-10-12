@@ -97,7 +97,7 @@ export function TournamentModal({
       <form
         action={handleSubmit}
         className="flex h-200 w-2xl flex-col items-center gap-5"
-        onKeyDown={(e) => e.key === "Enter" && e.preventDefault()}
+        onKeyDownCapture={(e) => e.key === "Enter" && e.preventDefault()}
       >
         <LabelledInput
           autoFocus

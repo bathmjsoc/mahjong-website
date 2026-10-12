@@ -7,7 +7,7 @@ type GameResults = {
 };
 
 /*
- * Calculates the cumulative score for each player from the provided logs and scoring rules
+ * Calculates the cumulative score for each player from the provided logs
  */
 export function getPlayerScores(logs: Log[]): Record<string, number> {
   const scores: Record<string, number> = {}; // Record<player_id, score>
@@ -30,7 +30,7 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
 }
 
 /*
- * Calculate the cumulative point history for a player from the provided logs and scoring rules
+ * Calculate the cumulative point history for a player from the provided logs
  */
 export function getPointHistory(logs: Log[], player: Player): number[] {
   const scores = [0];
