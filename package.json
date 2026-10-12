@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "format": "biome format --write",
     "lint": "biome check --write ."
   },
   "dependencies": {
