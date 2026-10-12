@@ -82,22 +82,25 @@ export function calculatePointStatistics(
   });
 
   const averagePointsWon = currentMetrics.averagePointsWon;
-  const averagePointsWonRank =
-    allMetrics.filter((metrics) => {
-      return metrics.averagePointsWon > averagePointsWon;
-    }).length + 1;
+  const averagePointsWonRank = Number.isNaN(averagePointsWon)
+    ? Number.NaN
+    : allMetrics.filter((metrics) => {
+        return metrics.averagePointsWon > averagePointsWon;
+      }).length + 1;
 
   const averagePointsLost = currentMetrics.averagePointsLost;
-  const averagePointsLostRank =
-    allMetrics.filter((metrics) => {
-      return metrics.averagePointsLost < averagePointsLost;
-    }).length + 1;
+  const averagePointsLostRank = Number.isNaN(averagePointsLost)
+    ? Number.NaN
+    : allMetrics.filter((metrics) => {
+        return metrics.averagePointsLost < averagePointsLost;
+      }).length + 1;
 
   const standardDeviation = currentMetrics.standardDeviation;
-  const standardDeviationRank =
-    allMetrics.filter((metrics) => {
-      return metrics.standardDeviation < standardDeviation;
-    }).length + 1;
+  const standardDeviationRank = Number.isNaN(standardDeviation)
+    ? Number.NaN
+    : allMetrics.filter((metrics) => {
+        return metrics.standardDeviation < standardDeviation;
+      }).length + 1;
 
   return {
     average_points_won: {
@@ -133,17 +136,21 @@ export function calculateSessionStatistics(
   const currentScores = scoresByPlayer[player.id];
   const allScores = players.map((player) => scoresByPlayer[player.id]);
 
-  const highestSessionScore = Math.max(...currentScores);
-  const highestSessionScoreRank =
-    allScores.filter((scores) => {
-      return scores.length > 0 && Math.max(...scores) > highestSessionScore;
-    }).length + 1;
+  const highestSessionScore =
+    currentScores.length > 0 ? Math.max(...currentScores) : Number.NaN;
+  const highestSessionScoreRank = Number.isNaN(highestSessionScore)
+    ? Number.NaN
+    : allScores.filter((scores) => {
+        return scores.length > 0 && Math.max(...scores) > highestSessionScore;
+      }).length + 1;
 
-  const lowestSessionScore = Math.min(...currentScores);
-  const lowestSessionScoreRank =
-    allScores.filter((scores) => {
-      return scores.length > 0 && Math.min(...scores) < lowestSessionScore;
-    }).length + 1;
+  const lowestSessionScore =
+    currentScores.length > 0 ? Math.min(...currentScores) : Number.NaN;
+  const lowestSessionScoreRank = Number.isNaN(lowestSessionScore)
+    ? Number.NaN
+    : allScores.filter((scores) => {
+        return scores.length > 0 && Math.min(...scores) < lowestSessionScore;
+      }).length + 1;
 
   return {
     highest_session_score: {
