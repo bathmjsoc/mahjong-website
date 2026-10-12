@@ -2,12 +2,12 @@ import type { ApexOptions } from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 import type { ChartData } from "@/lib/types";
 
-type LineGraphProps = {
+type LineChartProps = {
   data: ChartData[];
   title?: string;
 };
 
-export function LineChart({ data, title }: LineGraphProps) {
+export function LineChart({ data, title }: LineChartProps) {
   const series = data.map((item) => ({
     name: item.title,
     data: Object.entries(item.data).map(([name, data]) => ({

@@ -32,7 +32,7 @@ export function Sidebar({ players }: SidebarProps) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
 
-  const registeredPlayers = players.filter(
+  const unregisteredPlayers = players.filter(
     (player) => !registeredPlayerIds.has(player.id),
   );
 
@@ -53,7 +53,7 @@ export function Sidebar({ players }: SidebarProps) {
               getOptionLabel={(player) => player.name}
               inputClassName="w-88 h-10"
               onSelect={registerPlayer}
-              options={registeredPlayers}
+              options={unregisteredPlayers}
               placeholder="Register a player..."
             />
 
