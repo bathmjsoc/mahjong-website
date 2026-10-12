@@ -19,7 +19,7 @@ export function ScoringEditor({
   setScoringRules,
 }: ScoringEditorProps) {
   function handleAddRule() {
-    setScoringRules([...scoringRules, DEFAULT_SCORING_RULE]);
+    setScoringRules([...scoringRules, structuredClone(DEFAULT_SCORING_RULE)]);
   }
 
   function handleRemoveRule() {
