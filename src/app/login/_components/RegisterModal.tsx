@@ -17,7 +17,6 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
     isOpen: false,
     message: "",
   });
-
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {

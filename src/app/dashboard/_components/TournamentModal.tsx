@@ -32,7 +32,6 @@ export function TournamentModal({
       DEFAULT_SCORING_RULE,
     ],
   );
-
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {

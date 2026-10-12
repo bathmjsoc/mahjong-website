@@ -16,10 +16,9 @@ type PlayerListProps = {
 };
 
 export function PlayerList({ players }: PlayerListProps) {
-  const sessionId = useSessionContext();
-
   const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const { overallScores, sessionScores } = useLogs();
+  const sessionId = useSessionContext();
   const { seatedPlayerIds } = useTables();
 
   if (registeredPlayerIds.size === 0) {

@@ -21,10 +21,9 @@ export function ShuffleButton({
   players,
   tables,
 }: ShuffleButtonProps) {
+  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
   const queryClient = useQueryClient();
   const sessionId = useSessionContext();
-
-  const { lockedPlayerIds, registeredPlayerIds } = useAttendance();
 
   function handleShuffle() {
     const availablePlayers = players.filter(

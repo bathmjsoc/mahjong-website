@@ -7,12 +7,11 @@ import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
 
 export function useLogFilters() {
+  const { logs, logsWithDisabled } = useLogs();
   const pathname = usePathname();
+  const { playerMap } = usePlayers();
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const { logs, logsWithDisabled } = useLogs();
-  const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
   const showDisabledLogs = searchParams.get("disabled") === "true";
