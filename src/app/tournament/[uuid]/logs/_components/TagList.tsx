@@ -7,27 +7,25 @@ export function TagList() {
 
   return (
     <div className="flex w-xl flex-wrap justify-center gap-2">
-      {tags
-        .filter((tag) => tag.key !== "disabled")
-        .map((tag) => {
-          const label = `${tag.key}=${tag.value}`;
+      {tags.map((tag) => {
+        const label = `${tag.key}=${tag.value}`;
 
-          return (
-            <div
-              className="flex gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs"
-              key={label}
+        return (
+          <div
+            className="flex gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs"
+            key={label}
+          >
+            {label}
+
+            <IconButton
+              className="hover:text-negative"
+              onClick={() => removeTag(tag)}
             >
-              {label}
-
-              <IconButton
-                className="hover:text-negative"
-                onClick={() => removeTag(tag)}
-              >
-                <X className="size-3" />
-              </IconButton>
-            </div>
-          );
-        })}
+              <X className="size-3" />
+            </IconButton>
+          </div>
+        );
+      })}
     </div>
   );
 }

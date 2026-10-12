@@ -18,9 +18,11 @@ export function useLogFilters() {
   const showDisabledLogs = searchParams.get("disabled") === "true";
   const baseLogs = showDisabledLogs ? logsWithDisabled : logs;
 
-  const tags: LogSearchTag[] = Array.from(searchParams).map(([key, value]) => {
-    return { key, value };
-  });
+  const tags: LogSearchTag[] = useMemo(() => {
+    return [...searchParams]
+      .filter(([key]) => key !== "disabled")
+      .map(([key, value]) => ({ key, value }));
+  }, [searchParams]);
 
   const filteredLogs = useMemo(() => {
     if (tags.length === 0) return baseLogs;
