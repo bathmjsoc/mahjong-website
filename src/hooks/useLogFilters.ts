@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useLogs } from "@/hooks/logs/useLogs";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useSessions } from "@/hooks/sessions/useSessions";
-import type { LogSearchTag } from "@/lib/types";
+import type { Log, LogSearchTag } from "@/lib/types";
 import { normalizeText } from "@/lib/utils";
 
 export function useLogFilters() {
@@ -19,7 +19,7 @@ export function useLogFilters() {
   const baseLogs = showDisabledLogs ? logsWithDisabled : logs;
 
   const tags: LogSearchTag[] = useMemo(() => {
-    return [...searchParams]
+    return Array.from(searchParams)
       .filter(([key]) => key !== "disabled")
       .map(([key, value]) => ({ key, value }));
   }, [searchParams]);
@@ -27,45 +27,46 @@ export function useLogFilters() {
   const filteredLogs = useMemo(() => {
     if (tags.length === 0) return baseLogs;
 
-    return baseLogs.filter((log) =>
-      tags.every((tag) => {
-        switch (tag.key) {
-          case "session": {
-            const searchSession = Number.parseInt(tag.value, 10);
-            return sessionMap.get(log.session_id)?.number === searchSession;
-          }
-
-          case "type": {
-            const searchType = normalizeText(tag.value);
-            return normalizeText(log.win_type) === searchType;
-          }
-
-          case "faan": {
-            const searchFaan = Number.parseInt(tag.value, 10);
-            return log.faan === searchFaan;
-          }
-
-          case "player": {
-            const searchName = normalizeText(tag.value);
-
-            const isWinner = log.winner_ids.some((id) => {
-              const playerName = playerMap.get(id)?.name ?? "";
-              return normalizeText(playerName) === searchName;
-            });
-
-            const isLoser = log.loser_ids.some((id) => {
-              const playerName = playerMap.get(id)?.name ?? "";
-              return normalizeText(playerName) === searchName;
-            });
-
-            return isWinner || isLoser;
-          }
-
-          default:
-            return true;
+    const filters = tags.map((tag) => {
+      switch (tag.key) {
+        case "session": {
+          const session = Number.parseInt(tag.value, 10);
+          return (log: Log) => {
+            const sessionNumber = sessionMap.get(log.session_id)?.number;
+            return sessionNumber === session;
+          };
         }
-      }),
-    );
+
+        case "type": {
+          const type = normalizeText(tag.value);
+          return (log: Log) => normalizeText(log.win_type) === type;
+        }
+
+        case "faan": {
+          const faan = Number.parseInt(tag.value, 10);
+          return (log: Log) => log.faan === faan;
+        }
+
+        case "player": {
+          const name = normalizeText(tag.value);
+
+          return (log: Log) => {
+            const playerIds = [...log.winner_ids, ...log.loser_ids];
+
+            return playerIds.some((id) => {
+              const playerName = playerMap.get(id)?.name ?? "";
+              return normalizeText(playerName) === name;
+            });
+          };
+        }
+
+        default: {
+          return () => true;
+        }
+      }
+    });
+
+    return baseLogs.filter((log) => filters.every((matchFn) => matchFn(log)));
   }, [baseLogs, playerMap, sessionMap, tags]);
 
   return {
