@@ -56,6 +56,7 @@ export function useTournamentMutations() {
       updateMutation.mutate({
         ...tournament,
         name: tournamentName,
+        last_updated: new Date().toISOString(),
         scoring_rules: scoringRules,
         hand_types: handTypes,
       });
