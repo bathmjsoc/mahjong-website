@@ -2,7 +2,6 @@ import { BarChart } from "@/elements/charts/BarChart";
 import { Modal } from "@/elements/Modal";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
-import { truncate } from "@/lib/utils";
 
 type ScoreGraphModalProps = {
   isOpen: boolean;
@@ -24,10 +23,7 @@ export function ScoreGraphModal({
     {
       title: "Score",
       data: Object.fromEntries(
-        rankedPlayers.map((player) => [
-          truncate(player.name, 20),
-          scores[player.id] ?? 0,
-        ]),
+        rankedPlayers.map((player) => [player.name, scores[player.id] ?? 0]),
       ),
     },
   ];
