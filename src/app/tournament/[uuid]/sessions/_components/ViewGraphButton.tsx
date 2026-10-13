@@ -16,7 +16,7 @@ export function ViewGraphButton({
   scores,
   session,
 }: ViewGraphButtonProps) {
-  const [isGraphModalOpen, setIsGraphModalOpen] = useState(false);
+  const [isGraphModalOpen, setIsGraphModalOpen] = useState<boolean>(false);
 
   return (
     <>

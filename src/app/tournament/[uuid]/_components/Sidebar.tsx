@@ -97,7 +97,7 @@ export function Sidebar({ players }: SidebarProps) {
 
         <FilledButton
           className="mt-5 -ml-1 h-20 w-10 rounded-r-xl rounded-l-none bg-primary"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen((open) => !open)}
         >
           <ChevronRight
             className={twMerge(

@@ -39,7 +39,6 @@ export function LoginForm() {
         <LabelledInput
           autoComplete="email"
           autoFocus
-          inputClassName="w-full"
           name="email"
           required
           type="email"

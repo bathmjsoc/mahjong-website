@@ -42,7 +42,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
 
       setNotification({
         isOpen: true,
-        message: `Check your email to verify your account.`,
+        message: "Check your email to verify your account.",
       });
       handleClose();
     });
