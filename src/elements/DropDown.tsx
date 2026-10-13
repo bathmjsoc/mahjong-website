@@ -24,7 +24,7 @@ export function DropDown({
   children,
   buttonClassName,
   panelClassName,
-  tooltip = "",
+  tooltip,
   disabled = false,
 }: DropDownProps) {
   const parentClose = use(RootContext);
