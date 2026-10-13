@@ -35,7 +35,7 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
 export function getPointHistory(logs: Log[], player: Player): number[] {
   const scores = [0];
 
-  for (const log of logs) {
+  for (const log of logs.toReversed()) {
     const previousPoints = scores.at(-1) ?? 0;
 
     if (log.winner_ids.includes(player.id)) {
