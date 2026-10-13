@@ -53,24 +53,17 @@ export function useCacheMutators<T>({
   const queryClient = useQueryClient();
 
   return {
-    createItem(item: T) {
-      const queryKey = getQueryKey(item);
-
-      const currentItems = queryClient.getQueryData<T[]>(queryKey) ?? [];
-      const updatedItems = [...currentItems, item];
-
-      queryClient.setQueryData<T[]>(queryKey, updatedItems);
-    },
-
-    updateItem(item: T) {
+    upsertItem(item: T) {
       const queryKey = getQueryKey(item);
       const itemId = getId(item);
 
       const currentItems = queryClient.getQueryData<T[]>(queryKey) ?? [];
-      const updatedItems = currentItems.map((current) =>
-        getId(current) === itemId ? item : current,
+      const index = currentItems.findIndex(
+        (current) => getId(current) === itemId,
       );
 
+      const updatedItems =
+        index === -1 ? [...currentItems, item] : currentItems.with(index, item);
       queryClient.setQueryData<T[]>(queryKey, updatedItems);
     },
 

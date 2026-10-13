@@ -16,7 +16,7 @@ export function usePlayerMutations() {
     return ["players", player.tournament_id];
   };
 
-  const { createItem, updateItem } = useCacheMutators<Player>({
+  const { upsertItem } = useCacheMutators<Player>({
     getId: (player) => player.id,
     getQueryKey: getPlayersQueryKey,
   });
@@ -24,13 +24,13 @@ export function usePlayerMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: createPlayerAction,
     queryKeyFn: getPlayersQueryKey,
-    optimisticFn: createItem,
+    optimisticFn: upsertItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updatePlayerAction,
     queryKeyFn: getPlayersQueryKey,
-    optimisticFn: updateItem,
+    optimisticFn: upsertItem,
   });
 
   return {

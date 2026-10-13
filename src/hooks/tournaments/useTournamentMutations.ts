@@ -13,7 +13,7 @@ export function useTournamentMutations() {
     return ["tournaments"];
   };
 
-  const { createItem, updateItem } = useCacheMutators<Tournament>({
+  const { upsertItem } = useCacheMutators<Tournament>({
     getId: (tournament) => tournament.id,
     getQueryKey: getTournamentsQueryKey,
   });
@@ -21,13 +21,13 @@ export function useTournamentMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: createTournamentAction,
     queryKeyFn: getTournamentsQueryKey,
-    optimisticFn: createItem,
+    optimisticFn: upsertItem,
   });
 
   const updateMutation = useOptimisticMutation({
     mutationFn: updateTournamentAction,
     queryKeyFn: getTournamentsQueryKey,
-    optimisticFn: updateItem,
+    optimisticFn: upsertItem,
   });
 
   return {
