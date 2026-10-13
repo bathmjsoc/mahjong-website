@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
-import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
+import { scoreToColor } from "@/lib/ui";
 import { getOrdinalSuffix } from "@/lib/utils";
 
 type LeaderboardProps = {

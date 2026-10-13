@@ -6,9 +6,9 @@ import { useAttendanceMutations } from "@/hooks/attendance/useAttendanceMutation
 import { useLogs } from "@/hooks/logs/useLogs";
 import { useTableMutations } from "@/hooks/tables/useTableMutations";
 import { useTables } from "@/hooks/tables/useTables";
-import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
+import { scoreToColor } from "@/lib/ui";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 type PlayerListProps = {

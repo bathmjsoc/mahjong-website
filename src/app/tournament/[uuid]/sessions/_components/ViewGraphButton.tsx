@@ -1,8 +1,8 @@
 import { ChartColumn } from "lucide-react";
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
-import { getSessionName } from "@/lib/helpers";
 import type { Player, Session } from "@/lib/types";
+import { getSessionName } from "@/lib/ui";
 import { ScoreGraphModal } from "./ScoreGraphModal";
 
 type ViewGraphButtonProps = {

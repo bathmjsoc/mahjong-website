@@ -1,8 +1,8 @@
 import { Trophy } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { useStatistics } from "@/hooks/useStatistics";
-import { getSessionTrend } from "@/lib/helpers";
 import type { Player } from "@/lib/types";
+import { getSessionTrend } from "@/lib/ui";
 import { getOrdinalSuffix } from "@/lib/utils";
 
 type RankingCardProps = {
