@@ -1,4 +1,4 @@
-import type { Tables } from "@/lib/database.types";
+import type { Tables } from "@/lib/supabase/database.types";
 
 // ---------- Database Types ----------
 export type Attendance = {
