@@ -3,6 +3,7 @@ import { Oxygen_Mono } from "next/font/google";
 import { type PropsWithChildren, ViewTransition } from "react";
 import { QueryProvider } from "@/providers/QueryProvider";
 import "./globals.css";
+import { NotificationProvider } from "@/providers/NotificationProvider";
 
 export const metadata: Metadata = {
   title: "mahjong-website",
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="en">
       <body className={oxygenMono.className}>
         <QueryProvider>
-          <ViewTransition>{children}</ViewTransition>
+          <NotificationProvider>
+            <ViewTransition>{children}</ViewTransition>
+          </NotificationProvider>
         </QueryProvider>
       </body>
     </html>

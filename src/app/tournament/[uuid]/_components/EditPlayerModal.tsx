@@ -2,11 +2,11 @@ import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
@@ -19,13 +19,10 @@ export function EditPlayerModal({
   players,
   onClose,
 }: EditPlayerModalProps) {
+  const { notify } = useNotificationContext();
   const { updatePlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState({
-    isOpen: false,
-    message: "",
-  });
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -62,63 +59,51 @@ export function EditPlayerModal({
     }
 
     updatePlayer(selectedPlayer, playerName);
-    setNotification({
-      isOpen: true,
-      message: `Renamed "${selectedPlayer.name}" to "${playerName}".`,
-    });
+    notify(
+      "Player Updated",
+      `Renamed "${selectedPlayer.name}" to "${playerName}".`,
+    );
     handleClose();
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Edit Player">
-        <form action={handleSubmit} className="flex w-xs flex-col gap-3">
-          <RoundedListbox<Player>
-            buttonClassName="text-primary rounded-lg w-xs p-2"
-            emptyMessage="No players found"
-            getOptionKey={(player) => player.id}
-            getOptionLabel={(player) => player.name}
-            onChange={handleSelect}
-            options={players}
-            placeholder="Select a player..."
-            value={selectedPlayer}
-          />
+    <Modal isOpen={isOpen} onClose={handleClose} title="Edit Player">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
+        <RoundedListbox<Player>
+          buttonClassName="text-primary rounded-lg w-xs p-2"
+          emptyMessage="No players found"
+          getOptionKey={(player) => player.id}
+          getOptionLabel={(player) => player.name}
+          onChange={handleSelect}
+          options={players}
+          placeholder="Select a player..."
+          value={selectedPlayer}
+        />
 
-          {selectedPlayer && (
-            <div className="flex flex-col gap-3">
-              <LabelledInput
-                autoComplete="off"
-                autoFocus
-                defaultValue={selectedPlayer.name}
-                key={selectedPlayer.id}
-                name="playerName"
-                onChange={() => setError(null)}
-                type="text"
-              >
-                Player Name
-              </LabelledInput>
+        {selectedPlayer && (
+          <div className="flex flex-col gap-3">
+            <LabelledInput
+              autoComplete="off"
+              autoFocus
+              defaultValue={selectedPlayer.name}
+              key={selectedPlayer.id}
+              name="playerName"
+              onChange={() => setError(null)}
+              type="text"
+            >
+              Player Name
+            </LabelledInput>
 
-              {error && (
-                <span className="text-center text-negative text-xs">
-                  {error}
-                </span>
-              )}
-            </div>
-          )}
+            {error && (
+              <span className="text-center text-negative text-xs">{error}</span>
+            )}
+          </div>
+        )}
 
-          <FilledButton disabled={!selectedPlayer} type="submit">
-            Edit Player
-          </FilledButton>
-        </form>
-      </Modal>
-
-      <Notification
-        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
-        isOpen={notification.isOpen}
-        title="Player Updated"
-      >
-        {notification.message}
-      </Notification>
-    </>
+        <FilledButton disabled={!selectedPlayer} type="submit">
+          Edit Player
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

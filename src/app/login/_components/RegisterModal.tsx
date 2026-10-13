@@ -3,8 +3,8 @@ import { signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type RegisterModalProps = {
   isOpen: boolean;
@@ -12,11 +12,9 @@ type RegisterModalProps = {
 };
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
+  const { notify } = useNotificationContext();
+
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState({
-    isOpen: false,
-    message: "",
-  });
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
@@ -40,54 +38,41 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
         return;
       }
 
-      setNotification({
-        isOpen: true,
-        message: "Check your email to verify your account.",
-      });
+      notify("Account Created", "Check your email to verify your account.");
       handleClose();
     });
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
-        <form action={handleSubmit} className="flex w-xs flex-col gap-3">
-          <LabelledInput
-            autoComplete="email"
-            autoFocus
-            name="email"
-            required
-            type="email"
-          >
-            Email Address
-          </LabelledInput>
+    <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
+        <LabelledInput
+          autoComplete="email"
+          autoFocus
+          name="email"
+          required
+          type="email"
+        >
+          Email Address
+        </LabelledInput>
 
-          <LabelledInput
-            autoComplete="new-password"
-            name="password"
-            required
-            type="password"
-          >
-            Password
-          </LabelledInput>
+        <LabelledInput
+          autoComplete="new-password"
+          name="password"
+          required
+          type="password"
+        >
+          Password
+        </LabelledInput>
 
-          {error && (
-            <span className="text-center text-negative text-xs">{error}</span>
-          )}
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
 
-          <FilledButton disabled={isPending} type="submit">
-            Create Account
-          </FilledButton>
-        </form>
-      </Modal>
-
-      <Notification
-        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
-        isOpen={notification.isOpen}
-        title="Account Created!"
-      >
-        {notification.message}
-      </Notification>
-    </>
+        <FilledButton disabled={isPending} type="submit">
+          Create Account
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

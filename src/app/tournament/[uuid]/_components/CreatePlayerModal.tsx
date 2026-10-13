@@ -2,10 +2,10 @@ import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
@@ -18,13 +18,10 @@ export function CreatePlayerModal({
   players,
   onClose,
 }: CreatePlayerModalProps) {
+  const { notify } = useNotificationContext();
   const { createPlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState({
-    isOpen: false,
-    message: "",
-  });
 
   function handleClose() {
     setError(null);
@@ -47,43 +44,30 @@ export function CreatePlayerModal({
     }
 
     createPlayer(playerName);
-    setNotification({
-      isOpen: true,
-      message: `Added ${playerName} to the tournament.`,
-    });
+    notify("Player Created", `Added ${playerName} to the tournament.`);
     handleClose();
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Create Player">
-        <form action={handleSubmit} className="flex w-xs flex-col gap-3">
-          <LabelledInput
-            autoComplete="off"
-            autoFocus
-            name="playerName"
-            onChange={() => setError(null)}
-            required
-            type="text"
-          >
-            Player Name
-          </LabelledInput>
+    <Modal isOpen={isOpen} onClose={handleClose} title="Create Player">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
+        <LabelledInput
+          autoComplete="off"
+          autoFocus
+          name="playerName"
+          onChange={() => setError(null)}
+          required
+          type="text"
+        >
+          Player Name
+        </LabelledInput>
 
-          {error && (
-            <span className="text-center text-negative text-xs">{error}</span>
-          )}
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
 
-          <FilledButton type="submit">Create Player</FilledButton>
-        </form>
-      </Modal>
-
-      <Notification
-        close={() => setNotification((state) => ({ ...state, isOpen: false }))}
-        isOpen={notification.isOpen}
-        title="Player Created"
-      >
-        {notification.message}
-      </Notification>
-    </>
+        <FilledButton type="submit">Create Player</FilledButton>
+      </form>
+    </Modal>
   );
 }
