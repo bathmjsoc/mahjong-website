@@ -46,42 +46,35 @@ function LogRow({ log }: LogRowProps) {
   const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
+  const borderColor = log.disabled ? "border-negative" : "border-primary";
+
   return (
     <tr className={log.disabled ? "text-negative" : "text-primary"}>
       <td
         className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
           "rounded-l-xl border-y border-r-0 border-l p-2 text-center",
+          borderColor,
         )}
       >
         {sessionMap.get(log.session_id)?.number}
       </td>
 
       <td
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y p-2 text-center",
-        )}
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
         title={log.hand_type ?? undefined}
       >
         {log.faan}
       </td>
 
       <td
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y p-2 text-center",
-        )}
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
         title={WIN_TYPE_MAP[log.win_type]}
       >
         {log.win_type}
       </td>
 
       <td
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "border-x-0 border-y p-2 text-center",
-        )}
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
       >
         {log.winner_ids
           .map((id) => playerMap.get(id)?.name)
@@ -91,8 +84,8 @@ function LogRow({ log }: LogRowProps) {
 
       <td
         className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
           "rounded-r-xl border-y border-r border-l-0 p-2 text-center",
+          borderColor,
         )}
       >
         {log.loser_ids
