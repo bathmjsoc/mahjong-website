@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
@@ -32,7 +32,6 @@ export function TournamentModal({
       DEFAULT_SCORING_RULE,
     ],
   );
-  const [isPending, startTransition] = useTransition();
 
   function handleClose() {
     setError(null);
@@ -49,15 +48,15 @@ export function TournamentModal({
   }
 
   function handleSubmit(formData: FormData) {
-    const faanOptions = scoringRules.map((rule) => rule.faan);
-    if (new Set(faanOptions).size !== faanOptions.length) {
-      setError("Duplicate Faan values are not allowed.");
-      return;
-    }
-
     const tournamentName = parseFormString(formData, "tournamentName");
     if (!tournamentName) {
       setError("Tournament Name is required.");
+      return;
+    }
+
+    const faanOptions = scoringRules.map((rule) => rule.faan);
+    if (new Set(faanOptions).size !== faanOptions.length) {
+      setError("Duplicate Faan values are not allowed.");
       return;
     }
 
@@ -79,12 +78,13 @@ export function TournamentModal({
       .map((handType) => handType.trim())
       .filter((handType) => handType.length > 0);
 
-    startTransition(() => {
-      tournament
-        ? updateTournament(tournament, tournamentName, rules, handTypes)
-        : createTournament(tournamentName, rules, handTypes);
-      handleClose();
-    });
+    if (tournament) {
+      updateTournament(tournament, tournamentName, rules, handTypes);
+    } else {
+      createTournament(tournamentName, rules, handTypes);
+    }
+
+    handleClose();
   }
 
   return (
@@ -121,7 +121,7 @@ export function TournamentModal({
         />
 
         {error && <span className="text-negative text-xs">{error}</span>}
-        <FilledButton className="w-sm" disabled={isPending} type="submit">
+        <FilledButton className="w-sm" type="submit">
           {tournament ? "Update Tournament" : "Create Tournament"}
         </FilledButton>
       </form>
