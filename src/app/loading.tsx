@@ -22,7 +22,8 @@ export default function Loading() {
         {TILES.map((tile, index) => (
           <span
             className={twMerge(
-              "absolute flex h-26 w-20 items-center justify-center text-[145px] transition duration-500",
+              "flex h-26 w-20 items-center justify-center text-[145px] text-primary",
+              "absolute transition duration-500",
               index === activeTileIndex
                 ? "translate-y-0 opacity-100"
                 : "translate-y-2 opacity-0",
