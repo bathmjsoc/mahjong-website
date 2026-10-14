@@ -40,6 +40,7 @@ export function LoginForm() {
           autoComplete="email"
           autoFocus
           name="email"
+          onChange={() => setError(null)}
           required
           type="email"
         >
@@ -49,6 +50,7 @@ export function LoginForm() {
         <LabelledInput
           autoComplete="current-password"
           name="password"
+          onChange={() => setError(null)}
           required
           type="password"
         >

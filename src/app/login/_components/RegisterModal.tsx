@@ -50,6 +50,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
           autoComplete="email"
           autoFocus
           name="email"
+          onChange={() => setError(null)}
           required
           type="email"
         >
@@ -59,6 +60,7 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
         <LabelledInput
           autoComplete="new-password"
           name="password"
+          onChange={() => setError(null)}
           required
           type="password"
         >

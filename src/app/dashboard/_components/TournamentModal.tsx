@@ -103,6 +103,7 @@ export function TournamentModal({
           defaultValue={tournament?.name}
           inputClassName="w-sm"
           name="tournamentName"
+          onChange={() => setError(null)}
           required
           type="text"
         >
