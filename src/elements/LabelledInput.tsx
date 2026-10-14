@@ -15,6 +15,7 @@ export function LabelledInput({
   return (
     <div className="relative">
       <input
+        maxLength={100}
         {...props}
         className={twMerge(
           "bg-primary text-secondary",

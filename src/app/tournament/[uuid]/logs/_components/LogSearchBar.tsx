@@ -32,6 +32,7 @@ export function LogSearchBar() {
 
       <input
         className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center outline-none"
+        maxLength={100}
         name="query"
         placeholder="Enter a query..."
       />
