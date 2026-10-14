@@ -19,8 +19,6 @@ export function ScoringEditor({
   setScoringRules,
 }: ScoringEditorProps) {
   function handleAddRule() {
-    if (scoringRules.length > 100) return; // Prevents the user from creating too many rules
-
     setScoringRules([...scoringRules, structuredClone(DEFAULT_SCORING_RULE)]);
   }
 
