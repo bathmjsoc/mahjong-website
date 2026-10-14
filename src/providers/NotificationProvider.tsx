@@ -20,7 +20,7 @@ export function NotificationProvider({ children }: PropsWithChildren) {
     setNotification({ isOpen: true, title, message });
   }
 
-  function close() {
+  function onClose() {
     setNotification((state) => ({ ...state, isOpen: false }));
   }
 
@@ -28,8 +28,8 @@ export function NotificationProvider({ children }: PropsWithChildren) {
     <NotificationContext value={{ notify }}>
       {children}
       <Notification
-        close={close}
         isOpen={notification.isOpen}
+        onClose={onClose}
         title={notification.title}
       >
         {notification.message}
