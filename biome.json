@@ -4,7 +4,8 @@
     "enabled": true,
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "organizeImports": "on",
+        "useSortedAttributes": "on"
       }
     }
   },
@@ -15,7 +16,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!.next", "!node_modules"]
+    "includes": ["**", "!.next", "!node_modules", "!next-env.d.ts"]
   },
   "formatter": {
     "enabled": true,

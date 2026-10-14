@@ -2,9 +2,10 @@
 
 import { createClient } from "@/lib/supabase/server";
 import type { Log } from "@/lib/types";
+import { toArray } from "@/lib/utils";
 
 export async function createLogs(logs: Log | Log[]): Promise<void> {
-  const payload = Array.isArray(logs) ? logs : [logs];
+  const payload = toArray(logs);
   if (payload.length === 0) return;
 
   const supabase = await createClient();

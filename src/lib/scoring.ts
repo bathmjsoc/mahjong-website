@@ -1,13 +1,13 @@
-import type { Log, Player } from "@/lib/types";
+import type { Log, Player, WinType } from "@/lib/types";
 
 type GameResults = {
-  wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  wins: Record<WinType, number>;
+  losses: Record<WinType, number>;
+  others: Record<WinType, number>;
 };
 
 /*
- * Calculates the cumulative score for each player from the provided logs and scoring rules
+ * Calculates the cumulative score for each player from the provided logs
  */
 export function getPlayerScores(logs: Log[]): Record<string, number> {
   const scores: Record<string, number> = {}; // Record<player_id, score>
@@ -30,12 +30,12 @@ export function getPlayerScores(logs: Log[]): Record<string, number> {
 }
 
 /*
- * Calculate the cumulative point history for a player from the provided logs and scoring rules
+ * Calculate the cumulative point history for a player from the provided logs
  */
 export function getPointHistory(logs: Log[], player: Player): number[] {
   const scores = [0];
 
-  for (const log of logs) {
+  for (const log of logs.toReversed()) {
     const previousPoints = scores.at(-1) ?? 0;
 
     if (log.winner_ids.includes(player.id)) {

@@ -1,26 +1,25 @@
 import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type DeletePlayerModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   players: Player[];
+  onClose: () => void;
 };
 
 export function DeletePlayerModal({
   isOpen,
-  onClose,
   players,
+  onClose,
 }: DeletePlayerModalProps) {
+  const { notify } = useNotificationContext();
   const { deletePlayer } = usePlayerMutations();
 
-  const [notification, setNotification] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -32,51 +31,45 @@ export function DeletePlayerModal({
     if (!selectedPlayer) return;
 
     deletePlayer(selectedPlayer);
-    setNotification(
-      `${selectedPlayer.name} has been removed from the tournament.`,
+    notify(
+      "Player Removed",
+      `Removed ${selectedPlayer.name} from the tournament.`,
     );
-    setShowNotification(true);
     handleClose();
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Delete Player">
-        <div className="flex w-xs flex-col gap-3">
-          <RoundedListbox<Player>
-            value={selectedPlayer}
-            options={players}
-            onChange={setSelectedPlayer}
-            getOptionLabel={(player) => player.name}
-            getOptionKey={(player) => player.id}
-            emptyMessage="No players found"
-            placeholder="Select a player..."
-            buttonClassName="text-primary rounded-lg w-xs p-2"
-          />
-
-          {selectedPlayer && (
-            <span className="text-xs">
-              Are you sure you want to remove "<b>{selectedPlayer.name}</b>"?
-            </span>
-          )}
-
-          <FilledButton
-            className="bg-negative uppercase"
-            onClick={handleSubmit}
-            disabled={!selectedPlayer}
-          >
-            Delete Player
-          </FilledButton>
-        </div>
-      </Modal>
-
-      <Notification
-        isOpen={showNotification}
-        close={() => setShowNotification(false)}
-        title="Player Deleted"
+    <Modal isOpen={isOpen} onClose={handleClose} title="Remove Player">
+      <form
+        action={handleSubmit}
+        className="flex w-xs flex-col gap-3"
+        onKeyDownCapture={(e) => e.key === "Enter" && e.preventDefault()}
       >
-        {notification}
-      </Notification>
-    </>
+        <RoundedListbox<Player>
+          buttonClassName="text-primary rounded-lg w-xs p-2"
+          emptyMessage="No players found"
+          getOptionKey={(player) => player.id}
+          getOptionLabel={(player) => player.name}
+          onChange={setSelectedPlayer}
+          options={players}
+          placeholder="Select a player..."
+          value={selectedPlayer}
+        />
+
+        {selectedPlayer && (
+          <span className="text-center text-xs">
+            Are you sure you want to remove <b>{selectedPlayer.name}</b>?
+          </span>
+        )}
+
+        <FilledButton
+          className="bg-negative uppercase"
+          disabled={!selectedPlayer}
+          type="submit"
+        >
+          Remove Player
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

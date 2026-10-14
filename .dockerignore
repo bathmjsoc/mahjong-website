@@ -1,12 +1,6 @@
-.dockerignore
 .env
 .git
 .github
-.gitignore
 .idea
 .next
-biome.json
-docker-compose.yml
-Dockerfile
 node_modules
-README.md

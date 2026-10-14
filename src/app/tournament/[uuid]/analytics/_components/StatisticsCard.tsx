@@ -27,54 +27,48 @@ export function StatisticsCard({ player, playerCount }: StatisticsCardProps) {
   const sessionStatistics = calculateSessionStatistics(player);
 
   return (
-    <div className="flex gap-5">
-      <div className="flex flex-col gap-5">
-        <Statistic
-          icon={Swords}
-          value={gameStatistics.games_played.value}
-          label="Games Played"
-          ranking={`#${gameStatistics.games_played.ranking} of ${playerCount}`}
-        />
+    <div className="grid grid-cols-3 gap-5">
+      <Statistic
+        icon={Swords}
+        label="Games Played"
+        ranking={`#${gameStatistics.games_played.ranking} of ${playerCount}`}
+        value={gameStatistics.games_played.value}
+      />
 
-        <Statistic
-          icon={Activity}
-          value={pointsStatistics.standard_deviation.value.toFixed(2)}
-          label="Standard Deviation"
-          ranking={`#${pointsStatistics.standard_deviation.ranking} of ${playerCount}`}
-        />
-      </div>
+      <Statistic
+        icon={ChevronsUp}
+        label="Highest Session Score"
+        ranking={`#${sessionStatistics.highest_session_score.ranking} of ${playerCount}`}
+        value={sessionStatistics.highest_session_score.value}
+      />
 
-      <div className="flex flex-col gap-5">
-        <Statistic
-          icon={ChevronsUp}
-          value={sessionStatistics.highest_session_score.value}
-          label="Highest Session Score"
-          ranking={`#${sessionStatistics.highest_session_score.ranking} of ${playerCount}`}
-        />
+      <Statistic
+        icon={TrendingUp}
+        label="Average Points Won"
+        ranking={`#${pointsStatistics.average_points_won.ranking} of ${playerCount}`}
+        value={pointsStatistics.average_points_won.value.toFixed(2)}
+      />
 
-        <Statistic
-          icon={ChevronsDown}
-          value={sessionStatistics.lowest_session_score.value}
-          label="Lowest Session Score"
-          ranking={`#${sessionStatistics.lowest_session_score.ranking} of ${playerCount}`}
-        />
-      </div>
+      <Statistic
+        icon={Activity}
+        label="Standard Deviation"
+        ranking={`#${pointsStatistics.standard_deviation.ranking} of ${playerCount}`}
+        value={pointsStatistics.standard_deviation.value.toFixed(2)}
+      />
 
-      <div className="flex flex-col gap-5">
-        <Statistic
-          icon={TrendingUp}
-          value={pointsStatistics.average_points_won.value.toFixed(2)}
-          label="Average Points Won"
-          ranking={`#${pointsStatistics.average_points_won.ranking} of ${playerCount}`}
-        />
+      <Statistic
+        icon={ChevronsDown}
+        label="Lowest Session Score"
+        ranking={`#${sessionStatistics.lowest_session_score.ranking} of ${playerCount}`}
+        value={sessionStatistics.lowest_session_score.value}
+      />
 
-        <Statistic
-          icon={TrendingDown}
-          value={pointsStatistics.average_points_lost.value.toFixed(2)}
-          label="Average Points Lost"
-          ranking={`#${pointsStatistics.average_points_lost.ranking} of ${playerCount}`}
-        />
-      </div>
+      <Statistic
+        icon={TrendingDown}
+        label="Average Points Lost"
+        ranking={`#${pointsStatistics.average_points_lost.ranking} of ${playerCount}`}
+        value={pointsStatistics.average_points_lost.value.toFixed(2)}
+      />
     </div>
   );
 }
@@ -91,7 +85,7 @@ function Statistic({ icon, value, label, ranking }: StatisticProps) {
 
   return (
     <div className="flex w-50 flex-col items-center rounded-lg bg-secondary/15 p-2 text-secondary">
-      <LucideIcon className="mb-2 size-10" />
+      <LucideIcon className="mb-1 size-10" />
       <span className="font-bold text-xl">{value}</span>
       <span className="text-xs uppercase opacity-66">{label}</span>
       <span className="text-[10px] uppercase opacity-66">{ranking}</span>

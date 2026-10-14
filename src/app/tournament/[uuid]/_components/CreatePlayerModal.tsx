@@ -1,21 +1,24 @@
 import { useState } from "react";
+import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type CreatePlayerModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   players: Player[];
+  onClose: () => void;
 };
 
 export function CreatePlayerModal({
   isOpen,
-  onClose,
   players,
+  onClose,
 }: CreatePlayerModalProps) {
+  const { notify } = useNotificationContext();
   const { createPlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
@@ -28,16 +31,20 @@ export function CreatePlayerModal({
   function handleSubmit(formData: FormData) {
     const playerName = parseFormString(formData, "playerName");
     if (!playerName) {
-      setError("Player Name is required.");
+      setError("Player Name cannot be empty.");
+      return;
+    } else if (playerName.length > 40) {
+      setError("Player Name cannot exceed 40 characters.");
       return;
     }
 
     if (players.some((player) => player.name === playerName)) {
-      setError("This name is already taken.");
+      setError(`The name "${playerName}" is already taken.`);
       return;
     }
 
     createPlayer(playerName);
+    notify("Player Created", `Added ${playerName} to the tournament.`);
     handleClose();
   }
 
@@ -45,12 +52,12 @@ export function CreatePlayerModal({
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Player">
       <form action={handleSubmit} className="flex w-xs flex-col gap-3">
         <LabelledInput
-          name="playerName"
-          onChange={() => setError(null)}
-          type="text"
           autoComplete="off"
           autoFocus
+          name="playerName"
+          onChange={() => setError(null)}
           required
+          type="text"
         >
           Player Name
         </LabelledInput>
@@ -58,6 +65,8 @@ export function CreatePlayerModal({
         {error && (
           <span className="text-center text-negative text-xs">{error}</span>
         )}
+
+        <FilledButton type="submit">Create Player</FilledButton>
       </form>
     </Modal>
   );

@@ -3,19 +3,21 @@ import { Modal } from "@/elements/Modal";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
 
-type ViewGraphModalProps = {
+type ScoreGraphModalProps = {
+  isOpen: boolean;
   players: Player[];
   scores: Record<string, number>;
-  isOpen: boolean;
+  title: string;
   onClose: () => void;
 };
 
-export function ViewGraphModal({
+export function ScoreGraphModal({
+  isOpen,
   players,
   scores,
-  isOpen,
+  title,
   onClose,
-}: ViewGraphModalProps) {
+}: ScoreGraphModalProps) {
   const rankedPlayers = sortPlayersByScore(players, scores);
   const rankedPlayerData = [
     {
@@ -27,9 +29,9 @@ export function ViewGraphModal({
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="View Graph">
+    <Modal isOpen={isOpen} onClose={onClose} title={title}>
       <div
-        className="w-xl"
+        className="w-3xl"
         style={{ height: Math.max(rankedPlayers.length * 30, 400) }}
       >
         <BarChart data={rankedPlayerData} />

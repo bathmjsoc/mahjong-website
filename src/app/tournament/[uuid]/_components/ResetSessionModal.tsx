@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { useSessionMutations } from "@/hooks/sessions/useSessionMutations";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type ResetSessionModalProps = {
   isOpen: boolean;
@@ -10,41 +9,34 @@ type ResetSessionModalProps = {
 };
 
 export function ResetSessionModal({ isOpen, onClose }: ResetSessionModalProps) {
+  const { notify } = useNotificationContext();
   const { createSession } = useSessionMutations();
-
-  const [showNotification, setShowNotification] = useState(false);
 
   function handleSubmit() {
     createSession();
-    setShowNotification(true);
+    notify(
+      "Session Reset",
+      "A new session has started with all players deregistered.",
+    );
     onClose();
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose} title="Reset Session">
-        <div className="flex w-xs flex-col gap-3">
-          <span className="text-xs">
-            Are you sure you want to reset the session and deregister all
-            players? This cannot be undone!
-          </span>
-
-          <FilledButton
-            className="bg-negative uppercase"
-            onClick={handleSubmit}
-          >
-            Reset Session
-          </FilledButton>
-        </div>
-      </Modal>
-
-      <Notification
-        isOpen={showNotification}
-        close={() => setShowNotification(false)}
-        title="Session Reset"
+    <Modal isOpen={isOpen} onClose={onClose} title="Reset Session">
+      <form
+        action={handleSubmit}
+        className="flex w-xs flex-col gap-3"
+        onKeyDownCapture={(e) => e.key === "Enter" && e.preventDefault()}
       >
-        A new session has started. All players and tables have been cleared.
-      </Notification>
-    </>
+        <span className="text-xs">
+          Are you sure you want to start a new session and deregister all
+          players? This cannot be undone!
+        </span>
+
+        <FilledButton className="bg-negative uppercase" type="submit">
+          Reset Session
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

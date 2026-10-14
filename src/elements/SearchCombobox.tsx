@@ -30,7 +30,7 @@ export function SearchCombobox<T>({
   optionsClassName,
   optionClassName,
 }: SearchComboboxProps<T>) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
 
   const filteredOptions =
     query === ""
@@ -47,15 +47,15 @@ export function SearchCombobox<T>({
   }
 
   return (
-    <Combobox value={null} onChange={handleSelect} onClose={() => setQuery("")}>
+    <Combobox onChange={handleSelect} onClose={() => setQuery("")} value={null}>
       <ComboboxInput
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder={placeholder}
         className={twMerge(
           "bg-secondary text-primary",
           "w-full cursor-text rounded-md p-2 text-center outline-none",
           inputClassName,
         )}
+        onChange={(event) => setQuery(event.target.value)}
+        placeholder={placeholder}
       />
 
       <ComboboxOptions
@@ -72,14 +72,14 @@ export function SearchCombobox<T>({
         ) : (
           filteredOptions.map((item) => (
             <ComboboxOption
-              key={getOptionKey(item)}
-              value={item}
               className={twMerge(
                 "flex items-center justify-center",
                 "cursor-pointer truncate rounded-md p-2 outline-none",
                 "transition duration-300 hover:bg-primary/25",
                 optionClassName,
               )}
+              key={getOptionKey(item)}
+              value={item}
             >
               {getOptionLabel(item)}
             </ComboboxOption>

@@ -33,9 +33,11 @@ export function TableSeat({
   const occupantId = table[`${wind}_id`];
   const occupant = (occupantId && playerMap.get(occupantId)) || null;
 
-  const isDuplicate = occupantId && duplicatePlayerIds.has(occupantId);
-  const isLocked = occupantId && lockedPlayerIds.has(occupantId);
-  const isRegistered = occupantId && registeredPlayerIds.has(occupantId);
+  const isDuplicate = Boolean(occupantId && duplicatePlayerIds.has(occupantId));
+  const isLocked = Boolean(occupantId && lockedPlayerIds.has(occupantId));
+  const isRegistered = Boolean(
+    occupantId && registeredPlayerIds.has(occupantId),
+  );
 
   const registeredPlayers = players.filter((player) =>
     registeredPlayerIds.has(player.id),
@@ -79,7 +81,7 @@ export function TableSeat({
     <div className={twMerge("flex items-center justify-center", gridPosition)}>
       <div
         className={twMerge(
-          "flex items-center justify-between gap-1 bg-primary text-secondary",
+          "flex gap-1 bg-primary",
           "w-50 shrink-0 rounded-full p-1 transition duration-300",
           isLocked && "ring-2 ring-neutral",
           (isDuplicate || !isRegistered) && "ring-2 ring-negative",
@@ -87,22 +89,21 @@ export function TableSeat({
         )}
       >
         <WinSelector
-          table={table}
           className={buttonClassName}
           occupant={occupant}
+          table={table}
         />
 
-        <RoundedListbox<Player>
-          value={occupant}
-          options={registeredPlayers}
-          onChange={handleSelect}
-          getOptionLabel={(player) => player.name}
-          getOptionKey={(player) => player.id}
+        <RoundedListbox<Player | null>
+          buttonClassName="text-xs tracking-tighter rounded-full"
           disabled={table.saved}
-          emptyMessage="No players found"
+          getOptionKey={(player) => player?.id ?? "[EMPTY]"}
+          getOptionLabel={(player) => player?.name ?? "[EMPTY]"}
+          onChange={handleSelect}
+          options={[null, ...registeredPlayers]}
+          optionsClassName="w-50"
           placeholder="[EMPTY]"
-          buttonClassName="h-8 text-xs tracking-tighter rounded-full"
-          optionsClassName="w-auto"
+          value={occupant}
         />
       </div>
 

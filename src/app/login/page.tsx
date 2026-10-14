@@ -14,8 +14,8 @@ export default function LoginPage() {
         <span className="flex gap-1.5">
           Website by
           <Link
-            href="https://github.com/edwinauton"
             className="hover:underline"
+            href="https://github.com/edwinauton"
           >
             Edwin Auton
           </Link>
@@ -23,7 +23,7 @@ export default function LoginPage() {
         •
         <span className="flex gap-1.5">
           Concept by
-          <Link href="https://github.com/duskt" className="hover:underline">
+          <Link className="hover:underline" href="https://github.com/duskt">
             Guy Johns
           </Link>
         </span>

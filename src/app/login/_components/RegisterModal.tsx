@@ -3,8 +3,8 @@ import { signUp } from "@/actions/auth";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type RegisterModalProps = {
   isOpen: boolean;
@@ -12,8 +12,9 @@ type RegisterModalProps = {
 };
 
 export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
+  const { notify } = useNotificationContext();
+
   const [error, setError] = useState<string | null>(null);
-  const [showNotification, setShowNotification] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function handleClose() {
@@ -24,9 +25,8 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
   function handleSubmit(formData: FormData) {
     const email = parseFormString(formData, "email");
     const password = parseFormString(formData, "password");
-
     if (!email || !password) {
-      setError("Email and password are required.");
+      setError("Email and Password cannot be empty.");
       return;
     }
 
@@ -38,51 +38,41 @@ export function RegisterModal({ isOpen, onClose }: RegisterModalProps) {
         return;
       }
 
-      setShowNotification(true);
+      notify("Account Created", "Check your email to verify your account.");
       handleClose();
     });
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
-        <form action={handleSubmit} className="flex w-xs flex-col gap-3">
-          <LabelledInput
-            name="email"
-            type="email"
-            autoComplete="email"
-            autoFocus
-            required
-          >
-            Email Address
-          </LabelledInput>
+    <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
+        <LabelledInput
+          autoComplete="email"
+          autoFocus
+          name="email"
+          required
+          type="email"
+        >
+          Email Address
+        </LabelledInput>
 
-          <LabelledInput
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-          >
-            Password
-          </LabelledInput>
+        <LabelledInput
+          autoComplete="new-password"
+          name="password"
+          required
+          type="password"
+        >
+          Password
+        </LabelledInput>
 
-          {error && (
-            <span className="text-center text-negative text-xs">{error}</span>
-          )}
+        {error && (
+          <span className="text-center text-negative text-xs">{error}</span>
+        )}
 
-          <FilledButton type="submit" disabled={isPending}>
-            Create Account
-          </FilledButton>
-        </form>
-      </Modal>
-
-      <Notification
-        isOpen={showNotification}
-        close={() => setShowNotification(false)}
-        title="Account created!"
-      >
-        Please check your email to verify your account.
-      </Notification>
-    </>
+        <FilledButton disabled={isPending} type="submit">
+          Create Account
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

@@ -10,10 +10,9 @@ import type { Player } from "@/lib/types";
 import { useSessionContext } from "@/providers/SessionProvider";
 
 export function useStatistics() {
-  const sessionId = useSessionContext();
-
   const { logs, overallScores, sessionScores } = useLogs();
   const { players } = usePlayers();
+  const sessionId = useSessionContext();
 
   return {
     calculateGameStatistics: (player: Player) => {

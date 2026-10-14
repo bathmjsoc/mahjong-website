@@ -2,28 +2,27 @@ import { useState } from "react";
 import { FilledButton } from "@/elements/FilledButton";
 import { LabelledInput } from "@/elements/LabelledInput";
 import { Modal } from "@/elements/Modal";
-import { Notification } from "@/elements/Notification";
 import { RoundedListbox } from "@/elements/RoundedListbox";
 import { usePlayerMutations } from "@/hooks/players/usePlayerMutations";
 import type { Player } from "@/lib/types";
 import { parseFormString } from "@/lib/utils";
+import { useNotificationContext } from "@/providers/NotificationProvider";
 
 type EditPlayerModalProps = {
   isOpen: boolean;
-  onClose: () => void;
   players: Player[];
+  onClose: () => void;
 };
 
 export function EditPlayerModal({
   isOpen,
-  onClose,
   players,
+  onClose,
 }: EditPlayerModalProps) {
+  const { notify } = useNotificationContext();
   const { updatePlayer } = usePlayerMutations();
 
   const [error, setError] = useState<string | null>(null);
-  const [notification, setNotification] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   function handleClose() {
@@ -40,80 +39,71 @@ export function EditPlayerModal({
   function handleSubmit(formData: FormData) {
     if (!selectedPlayer) return;
 
-    const updatedName = parseFormString(formData, "updatedName");
-    if (!updatedName) {
-      setError("Player Name is required.");
+    const playerName = parseFormString(formData, "playerName");
+    if (!playerName) {
+      setError("Player Name cannot be empty.");
+      return;
+    } else if (playerName.length > 40) {
+      setError("Player Name cannot exceed 40 characters.");
       return;
     }
 
     if (
       players.some(
         (player) =>
-          player.name === updatedName && player.id !== selectedPlayer.id,
+          player.name === playerName && player.id !== selectedPlayer.id,
       )
     ) {
-      setError("This name is already taken.");
+      setError(`The name "${playerName}" is already taken.`);
       return;
     }
 
-    updatePlayer(selectedPlayer, updatedName);
-
-    setNotification(
-      `"${selectedPlayer.name}" has been renamed to "${updatedName}".`,
+    updatePlayer(selectedPlayer, playerName);
+    notify(
+      "Player Updated",
+      `Renamed "${selectedPlayer.name}" to "${playerName}".`,
     );
-    setShowNotification(true);
     handleClose();
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={handleClose} title="Modify Player">
-        <form action={handleSubmit} className="flex flex-col gap-5">
-          <RoundedListbox<Player>
-            value={selectedPlayer}
-            options={players}
-            onChange={handleSelect}
-            getOptionLabel={(player) => player.name}
-            getOptionKey={(player) => player.id}
-            emptyMessage="No players found"
-            placeholder="Select a player..."
-            buttonClassName="text-primary rounded-lg w-xs p-2"
-          />
+    <Modal isOpen={isOpen} onClose={handleClose} title="Edit Player">
+      <form action={handleSubmit} className="flex w-xs flex-col gap-3">
+        <RoundedListbox<Player>
+          buttonClassName="text-primary rounded-lg w-xs p-2"
+          emptyMessage="No players found"
+          getOptionKey={(player) => player.id}
+          getOptionLabel={(player) => player.name}
+          onChange={handleSelect}
+          options={players}
+          placeholder="Select a player..."
+          value={selectedPlayer}
+        />
 
-          {selectedPlayer && (
-            <div className="flex flex-col gap-3">
-              <LabelledInput
-                name="updatedName"
-                key={selectedPlayer.id}
-                defaultValue={selectedPlayer.name}
-                onChange={() => setError(null)}
-                type="text"
-                autoComplete="off"
-              >
-                Player Name
-              </LabelledInput>
+        {selectedPlayer && (
+          <div className="flex flex-col gap-3">
+            <LabelledInput
+              autoComplete="off"
+              autoFocus
+              defaultValue={selectedPlayer.name}
+              key={selectedPlayer.id}
+              name="playerName"
+              onChange={() => setError(null)}
+              type="text"
+            >
+              Player Name
+            </LabelledInput>
 
-              {error && (
-                <span className="text-center text-negative text-xs">
-                  {error}
-                </span>
-              )}
-            </div>
-          )}
+            {error && (
+              <span className="text-center text-negative text-xs">{error}</span>
+            )}
+          </div>
+        )}
 
-          <FilledButton type="submit" disabled={!selectedPlayer}>
-            Update Player
-          </FilledButton>
-        </form>
-      </Modal>
-
-      <Notification
-        isOpen={showNotification}
-        close={() => setShowNotification(false)}
-        title="Player Updated"
-      >
-        {notification}
-      </Notification>
-    </>
+        <FilledButton disabled={!selectedPlayer} type="submit">
+          Edit Player
+        </FilledButton>
+      </form>
+    </Modal>
   );
 }

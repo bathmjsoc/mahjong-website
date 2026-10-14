@@ -17,14 +17,14 @@ export function LogList({ logs }: LogListProps) {
   }
 
   return (
-    <table className="w-full max-w-7xl border-separate border-spacing-y-2 text-primary text-sm">
+    <table className="w-350 table-fixed border-separate border-spacing-y-2 text-primary text-sm">
       <thead>
         <tr>
-          <th className="w-[10%]">Session</th>
-          <th className="w-[10%]">Faan</th>
-          <th className="w-[10%]">Type</th>
-          <th className="w-auto">Winner(s)</th>
-          <th className="w-auto">Loser(s)</th>
+          <th className="w-1/10">Session</th>
+          <th className="w-1/10">Faan</th>
+          <th className="w-1/10">Type</th>
+          <th>Winner(s)</th>
+          <th>Loser(s)</th>
           <th className="w-7" />
         </tr>
       </thead>
@@ -46,42 +46,36 @@ function LogRow({ log }: LogRowProps) {
   const { playerMap } = usePlayers();
   const { sessionMap } = useSessions();
 
+  const borderColor = log.disabled ? "border-negative" : "border-primary";
+
   return (
     <tr className={log.disabled ? "text-negative" : "text-primary"}>
       <td
         className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "truncate rounded-l-xl border-y border-r-0 border-l p-2 text-center",
+          "rounded-l-xl border-y border-r-0 border-l p-2 text-center",
+          borderColor,
         )}
+        title={sessionMap.get(log.session_id)?.start_date}
       >
         {sessionMap.get(log.session_id)?.number}
       </td>
 
       <td
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
         title={log.hand_type ?? undefined}
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "truncate border-x-0 border-y p-2 text-center",
-        )}
       >
         {log.faan}
       </td>
 
       <td
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
         title={WIN_TYPE_MAP[log.win_type]}
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "truncate border-x-0 border-y p-2 text-center",
-        )}
       >
         {log.win_type}
       </td>
 
       <td
-        className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "truncate border-x-0 border-y p-2 text-center",
-        )}
+        className={twMerge("border-x-0 border-y p-2 text-center", borderColor)}
       >
         {log.winner_ids
           .map((id) => playerMap.get(id)?.name)
@@ -91,8 +85,8 @@ function LogRow({ log }: LogRowProps) {
 
       <td
         className={twMerge(
-          log.disabled ? "border-negative" : "border-primary",
-          "truncate rounded-r-xl border-y border-r border-l-0 p-2 text-center",
+          "rounded-r-xl border-y border-r border-l-0 p-2 text-center",
+          borderColor,
         )}
       >
         {log.loser_ids
@@ -104,9 +98,9 @@ function LogRow({ log }: LogRowProps) {
       <td>
         {!log.disabled && (
           <IconButton
-            title="Disable Log"
-            onClick={() => disableLog(log)}
             className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
+            onClick={() => disableLog(log)}
+            title="Disable Log"
           >
             <Trash2 className="size-5" />
           </IconButton>

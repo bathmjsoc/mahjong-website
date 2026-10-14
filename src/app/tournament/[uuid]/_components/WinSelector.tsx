@@ -1,10 +1,12 @@
 import confetti from "canvas-confetti";
 import { twMerge } from "tailwind-merge";
-import { DropDown } from "@/elements/DropDown";
+import { DropDown, DropDownItem } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useCurrentTournament } from "@/hooks/tournaments/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
+
+const MAHJONG_TILE = confetti.shapeFromText({ text: "🀄" });
 
 type WinSelectorProps = {
   table: Table;
@@ -17,21 +19,21 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
 
-  const faanOptions = Array.from(scoringRulesMap.keys()).filter(
-    (key) => key !== null,
-  );
+  const faanOptions = Array.from(scoringRulesMap.keys())
+    .filter((key) => key !== null)
+    .sort((a, b) => a - b);
   const maxFaan = Math.max(...faanOptions);
 
   const opponents: Player[] = [];
   if (occupant !== null) {
-    const SEAT_IDS = [
+    const seatIds = [
       table.east_id,
       table.south_id,
       table.west_id,
       table.north_id,
     ] as const;
 
-    for (const id of SEAT_IDS) {
+    for (const id of seatIds) {
       if (id === null || id === occupant.id) continue;
 
       const player = playerMap.get(id);
@@ -42,7 +44,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   function handleWin(
     winType: WinType,
     faan: number | null,
-    target?: Player | null,
+    target: Player | null = null,
     handType: string | null = null,
   ) {
     if (occupant === null) return;
@@ -109,7 +111,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       confetti({
         particleCount: 500,
         spread: 360,
-        shapes: [confetti.shapeFromText({ text: "🀄" })],
+        shapes: [MAHJONG_TILE],
         scalar: 2,
       });
     }
@@ -119,36 +121,39 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
     return faanOptions.map((faan) => {
       if (faan === maxFaan) {
         return (
-          <DropDown title={String(faan)} key={faan}>
+          <DropDown key={faan} title={String(faan)}>
             {handTypes.map((handType) => (
-              <DropDown.Item
+              <DropDownItem
                 key={handType}
                 onClick={() => handleWin(winType, faan, player, handType)}
               >
                 {handType}
-              </DropDown.Item>
+              </DropDownItem>
             ))}
           </DropDown>
         );
       }
 
       return (
-        <DropDown.Item
+        <DropDownItem
           key={faan}
           onClick={() => handleWin(winType, faan, player)}
         >
           {faan}
-        </DropDown.Item>
+        </DropDownItem>
       );
     });
   }
 
   return (
     <DropDown
-      title="食"
-      buttonClassName={twMerge("rounded-full size-8 bg-accent", className)}
-      tooltip="Record Win"
+      buttonClassName={twMerge(
+        "rounded-full size-8 bg-accent text-secondary",
+        className,
+      )}
       disabled={occupant === null || opponents.length === 0}
+      title="食"
+      tooltip="Record Win"
     >
       <DropDown title="打出 (Throw)">
         {opponents.map((player) => (
@@ -172,12 +177,12 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
       <div className="border-primary border-t" />
 
-      <DropDown.Item
-        onClick={() => handleWin("詐糊", null)}
+      <DropDownItem
         className="text-negative"
+        onClick={() => handleWin("詐糊", null)}
       >
         詐糊 (False Win)
-      </DropDown.Item>
+      </DropDownItem>
     </DropDown>
   );
 }

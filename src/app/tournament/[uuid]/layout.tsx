@@ -28,10 +28,10 @@ const getTournamentName = cache(
 export async function generateMetadata({
   params,
 }: TournamentLayoutProps): Promise<Metadata> {
-  const { uuid: tournamentId } = await params;
+  const { uuid } = await params;
 
   try {
-    return { title: await getTournamentName(tournamentId) };
+    return { title: await getTournamentName(uuid) };
   } catch {
     notFound();
   }
@@ -41,10 +41,10 @@ export default async function TournamentLayout({
   children,
   params,
 }: TournamentLayoutProps) {
-  const { uuid: tournamentId } = await params;
+  const { uuid } = await params;
 
   return (
-    <TournamentProvider tournamentId={tournamentId}>
+    <TournamentProvider tournamentId={uuid}>
       <SessionProvider>
         <Topbar />
         {children}

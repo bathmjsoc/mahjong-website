@@ -24,7 +24,7 @@ export function DropDown({
   children,
   buttonClassName,
   panelClassName,
-  tooltip = "",
+  tooltip,
   disabled = false,
 }: DropDownProps) {
   const parentClose = use(RootContext);
@@ -39,8 +39,6 @@ export function DropDown({
         return (
           <RootContext value={rootClose}>
             <PopoverButton
-              title={tooltip}
-              disabled={disabled}
               className={twMerge(
                 "w-full rounded p-1 text-center outline-none transition",
                 disabled
@@ -53,6 +51,8 @@ export function DropDown({
                     ],
                 buttonClassName,
               )}
+              disabled={disabled}
+              title={tooltip}
             >
               {title}
             </PopoverButton>
@@ -77,16 +77,16 @@ export function DropDown({
   );
 }
 
-type ItemProps = ComponentProps<"button">;
+type DropDownItemProps = ComponentProps<"button">;
 
-function Item({
+export function DropDownItem({
   type = "button",
   onClick,
   children,
   className,
   disabled,
   ...props
-}: ItemProps) {
+}: DropDownItemProps) {
   const closeRoot = use(RootContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
@@ -98,17 +98,15 @@ function Item({
     <button
       type={type}
       {...props}
-      disabled={disabled}
-      onClick={handleClick}
       className={twMerge(
         "w-full cursor-pointer rounded p-1 text-center outline-none",
         "hover:bg-primary/25",
         className,
       )}
+      disabled={disabled}
+      onClick={handleClick}
     >
       {children}
     </button>
   );
 }
-
-DropDown.Item = Item;

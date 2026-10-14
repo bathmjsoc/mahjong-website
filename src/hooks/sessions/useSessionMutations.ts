@@ -16,7 +16,7 @@ export function useSessionMutations() {
     return ["sessions", session.tournament_id];
   };
 
-  const { createItem } = useCacheMutators<Session>({
+  const { upsertItem } = useCacheMutators<Session>({
     getId: (session) => session.id,
     getQueryKey: getSessionsQueryKey,
   });
@@ -24,7 +24,7 @@ export function useSessionMutations() {
   const createMutation = useOptimisticMutation({
     mutationFn: createSessionAction,
     queryKeyFn: getSessionsQueryKey,
-    optimisticFn: createItem,
+    optimisticFn: upsertItem,
   });
 
   return {

@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
-import { scoreToColor } from "@/lib/helpers";
 import { sortPlayersByScore } from "@/lib/scoring";
 import type { Player } from "@/lib/types";
+import { scoreToColor } from "@/lib/ui";
 import { getOrdinalSuffix } from "@/lib/utils";
 
 type LeaderboardProps = {
@@ -19,12 +19,12 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
   const rankedPlayers = sortPlayersByScore(players, scores);
 
   return (
-    <table className="table-fixed border border-primary">
+    <table className="w-xl table-fixed border border-primary">
       <thead className="bg-primary text-secondary">
         <tr>
-          <th className="w-25">Rank</th>
-          <th className="w-75">Name</th>
-          <th className="w-25">Score</th>
+          <th>Rank</th>
+          <th className="w-sm">Name</th>
+          <th>Score</th>
         </tr>
       </thead>
 
@@ -33,8 +33,8 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
           <PlayerRow
             key={player.id}
             player={player}
-            score={scores[player.id] ?? 0}
             position={index + 1}
+            score={scores[player.id] ?? 0}
           />
         ))}
       </tbody>
@@ -49,24 +49,18 @@ type PlayerRowProps = {
 };
 
 function PlayerRow({ player, position, score }: PlayerRowProps) {
-  const suffix = getOrdinalSuffix(position);
-  const scoreColor = scoreToColor(score);
-
   return (
     <tr className="text-center text-primary text-sm">
-      <td className="border-l">
+      <td>
         {position}
-        {suffix}
+        {getOrdinalSuffix(position)}
       </td>
 
-      <td>{player.name}</td>
+      <td>
+        <span className="block truncate">{player.name}</span>
+      </td>
 
-      <td
-        className={twMerge(
-          "border-primary border-r text-secondary",
-          scoreColor,
-        )}
-      >
+      <td className={twMerge("text-secondary", scoreToColor(score))}>
         {score}
       </td>
     </tr>

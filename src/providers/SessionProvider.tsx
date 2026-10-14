@@ -1,15 +1,11 @@
 "use client";
 
-import { createContext, type ReactNode, use } from "react";
+import { createContext, type PropsWithChildren, use } from "react";
 import { useSessions } from "@/hooks/sessions/useSessions";
 
 const SessionContext = createContext<string | undefined>(undefined);
 
-type SessionProviderProps = {
-  children: ReactNode;
-};
-
-export function SessionProvider({ children }: SessionProviderProps) {
+export function SessionProvider({ children }: PropsWithChildren) {
   const { sessions } = useSessions();
 
   const currentSession = sessions.at(-1);

@@ -31,15 +31,15 @@ export function LogSearchBar() {
       <SearchInstructions />
 
       <input
+        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center outline-none"
         name="query"
         placeholder="Enter a query..."
-        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center text-sm outline-none"
       />
 
       <IconButton
-        title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
-        onClick={toggleDisabledLogs}
         className="flex items-center justify-center text-primary hover:text-info"
+        onClick={toggleDisabledLogs}
+        title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
       >
         <div className="relative size-5">
           <Eye
@@ -63,7 +63,9 @@ export function LogSearchBar() {
 function SearchInstructions() {
   return (
     <div className="group relative inline-block">
-      <Info className="size-5 cursor-pointer transition duration-300 hover:text-info" />
+      <IconButton className="flex items-center justify-center text-primary hover:text-info">
+        <Info className="size-5" />
+      </IconButton>
 
       <div className="absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 border-primary bg-secondary p-2 text-xs group-hover:block">
         <span className="font-bold">How to Search Logs</span>

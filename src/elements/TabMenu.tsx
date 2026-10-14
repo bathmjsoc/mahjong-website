@@ -23,8 +23,8 @@ export function TabLink({ children, href, className, ...props }: TabLinkProps) {
 
   return (
     <Link
-      href={href}
       data-active={pathname === href}
+      href={href}
       {...props}
       className={twMerge(
         "bg-primary text-secondary",

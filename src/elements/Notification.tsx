@@ -3,7 +3,7 @@ import { type ReactNode, useEffect } from "react";
 
 type NotificationProps = {
   isOpen: boolean;
-  close: () => void;
+  onClose: () => void;
   title: string;
   children: ReactNode;
   duration?: number;
@@ -11,26 +11,26 @@ type NotificationProps = {
 
 export function Notification({
   isOpen,
-  close,
   title,
   children,
+  onClose,
   duration = 5000,
 }: NotificationProps) {
   useEffect(() => {
     if (!isOpen) return;
-    const timer = setTimeout(close, duration);
+    const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
-  }, [isOpen, close, duration]);
+  }, [isOpen, onClose, duration]);
 
   return (
     <Transition
-      show={isOpen}
       enter="transition duration-300"
       enterFrom="translate-y-2 opacity-0"
       enterTo="translate-y-0 opacity-100"
       leave="transition duration-300"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
+      show={isOpen}
     >
       <div className="fixed right-5 bottom-5 z-99">
         <div className="w-xs rounded-lg border-2 border-primary bg-secondary p-3 text-primary">

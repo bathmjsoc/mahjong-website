@@ -100,3 +100,10 @@ export function sum(values: number[]): number {
 export function getCurrentDateString() {
   return new Date().toISOString().slice(0, 10);
 }
+
+/*
+ * Returns the provided data as an array
+ */
+export function toArray<T>(input: T | T[]): T[] {
+  return Array.isArray(input) ? input : [input];
+}
