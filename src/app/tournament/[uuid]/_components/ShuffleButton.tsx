@@ -65,7 +65,6 @@ export function ShuffleButton({
       className="flex h-10 w-50 items-center justify-center gap-2 rounded-xl bg-primary text-sm"
       disabled={isShaking}
       onClick={handleShuffle}
-      title="Shuffle Tables"
     >
       <Shuffle className="size-5" />
       Shuffle Tables
