@@ -77,16 +77,16 @@ export function DropDown({
   );
 }
 
-type ItemProps = ComponentProps<"button">;
+type DropDownItemProps = ComponentProps<"button">;
 
-function Item({
+export function DropDownItem({
   type = "button",
   onClick,
   children,
   className,
   disabled,
   ...props
-}: ItemProps) {
+}: DropDownItemProps) {
   const closeRoot = use(RootContext);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
@@ -110,5 +110,3 @@ function Item({
     </button>
   );
 }
-
-DropDown.Item = Item;

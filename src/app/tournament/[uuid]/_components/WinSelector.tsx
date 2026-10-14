@@ -1,6 +1,6 @@
 import confetti from "canvas-confetti";
 import { twMerge } from "tailwind-merge";
-import { DropDown } from "@/elements/DropDown";
+import { DropDown, DropDownItem } from "@/elements/DropDown";
 import { useLogMutations } from "@/hooks/logs/useLogMutations";
 import { usePlayers } from "@/hooks/players/usePlayers";
 import { useCurrentTournament } from "@/hooks/tournaments/useTournaments";
@@ -121,24 +121,24 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
         return (
           <DropDown key={faan} title={String(faan)}>
             {handTypes.map((handType) => (
-              <DropDown.Item
+              <DropDownItem
                 key={handType}
                 onClick={() => handleWin(winType, faan, player, handType)}
               >
                 {handType}
-              </DropDown.Item>
+              </DropDownItem>
             ))}
           </DropDown>
         );
       }
 
       return (
-        <DropDown.Item
+        <DropDownItem
           key={faan}
           onClick={() => handleWin(winType, faan, player)}
         >
           {faan}
-        </DropDown.Item>
+        </DropDownItem>
       );
     });
   }
@@ -175,12 +175,12 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
 
       <div className="border-primary border-t" />
 
-      <DropDown.Item
+      <DropDownItem
         className="text-negative"
         onClick={() => handleWin("詐糊", null)}
       >
         詐糊 (False Win)
-      </DropDown.Item>
+      </DropDownItem>
     </DropDown>
   );
 }
