@@ -12,7 +12,6 @@ export function BoomHandEditor({ defaultValue }: BoomHandEditorProps) {
       <textarea
         className="no-scrollbar h-20 resize-none rounded border-2 p-1 text-xs outline-none"
         defaultValue={defaultValue}
-        maxLength={500}
         name="boomHands"
         placeholder="Enter boom hand types (separated by commas)..."
       />
