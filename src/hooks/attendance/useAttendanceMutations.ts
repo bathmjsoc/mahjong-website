@@ -18,13 +18,7 @@ export function useAttendanceMutations() {
     getQueryKey: getAttendanceQueryKey,
   });
 
-  const createMutation = useOptimisticMutation({
-    mutationFn: upsertAttendanceAction,
-    queryKeyFn: getAttendanceQueryKey,
-    optimisticFn: upsertItem,
-  });
-
-  const updateMutation = useOptimisticMutation({
+  const upsertMutation = useOptimisticMutation({
     mutationFn: upsertAttendanceAction,
     queryKeyFn: getAttendanceQueryKey,
     optimisticFn: upsertItem,
@@ -32,7 +26,7 @@ export function useAttendanceMutations() {
 
   return {
     registerPlayer(player: Player) {
-      createMutation.mutate({
+      upsertMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
         registered: true,
@@ -41,7 +35,7 @@ export function useAttendanceMutations() {
     },
 
     deregisterPlayer(player: Player) {
-      updateMutation.mutate({
+      upsertMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
         registered: false,
@@ -50,7 +44,7 @@ export function useAttendanceMutations() {
     },
 
     lockPlayer(player: Player) {
-      updateMutation.mutate({
+      upsertMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
         registered: true,
@@ -59,7 +53,7 @@ export function useAttendanceMutations() {
     },
 
     unlockPlayer(player: Player) {
-      updateMutation.mutate({
+      upsertMutation.mutate({
         session_id: sessionId,
         player_id: player.id,
         registered: true,
