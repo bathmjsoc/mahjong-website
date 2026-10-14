@@ -48,7 +48,7 @@ export function PlayerList({ players }: PlayerListProps) {
       <tbody>
         {rankedPlayers.map((player) => (
           <PlayerRow
-            isFirstPlace={player.id === firstPlacePlayer.id}
+            isFirstPlace={player.id === firstPlacePlayer?.id}
             isLocked={lockedPlayerIds.has(player.id)}
             isSeated={seatedPlayerIds.has(player.id)}
             key={player.id}

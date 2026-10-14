@@ -95,7 +95,7 @@ function TableCard({ table }: TableProps) {
         </FilledButton>
 
         <FilledButton
-          className="rounded-full bg-primary hover:text-negative"
+          className="rounded-full bg-primary enabled:hover:text-negative"
           onClick={() => deleteTable(table)}
           title="Delete Table"
         >

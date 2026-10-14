@@ -6,6 +6,8 @@ import { usePlayers } from "@/hooks/players/usePlayers";
 import { useCurrentTournament } from "@/hooks/tournaments/useTournaments";
 import type { Player, PointsAnimationEvent, Table, WinType } from "@/lib/types";
 
+const MAHJONG_TILE = confetti.shapeFromText({ text: "🀄" });
+
 type WinSelectorProps = {
   table: Table;
   occupant: Player | null;
@@ -109,7 +111,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
       confetti({
         particleCount: 500,
         spread: 360,
-        shapes: [confetti.shapeFromText({ text: "🀄" })],
+        shapes: [MAHJONG_TILE],
         scalar: 2,
       });
     }
