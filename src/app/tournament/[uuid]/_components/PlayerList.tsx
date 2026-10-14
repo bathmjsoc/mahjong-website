@@ -40,7 +40,7 @@ export function PlayerList({ players }: PlayerListProps) {
           <th className="w-66">Name</th>
           <th className="w-22">Score</th>
           <th className="w-7 text-[10px] opacity-66">
-            [{registeredPlayerIds.size}]
+            [{rankedPlayers.length}]
           </th>
         </tr>
       </thead>
