@@ -86,6 +86,8 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
         <LabelledInput
           defaultValue={scoringRule.faan ?? 0}
           inputClassName="no-spinner"
+          max={9999}
+          min={-9999}
           onBlur={(e) => handleFaanChange(e.target.valueAsNumber || 0)}
           type="number"
         />
@@ -97,6 +99,8 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
             <LabelledInput
               defaultValue={scoringRule.deltas[winType]?.winner ?? 0}
               inputClassName="no-spinner"
+              max={9999}
+              min={-9999}
               onBlur={(e) =>
                 handleDeltaChange(
                   winType,
@@ -112,6 +116,8 @@ function ScoringRuleRow({ scoringRule, onChange }: ScoringRuleRowProps) {
             <LabelledInput
               defaultValue={scoringRule.deltas[winType]?.loser ?? 0}
               inputClassName="no-spinner"
+              max={9999}
+              min={-9999}
               onBlur={(e) =>
                 handleDeltaChange(winType, "loser", e.target.valueAsNumber || 0)
               }

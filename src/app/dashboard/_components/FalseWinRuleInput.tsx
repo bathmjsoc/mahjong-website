@@ -27,6 +27,8 @@ export function FalseWinRuleInput({
       <LabelledInput
         defaultValue={scoringRule.deltas.詐糊?.winner ?? 0}
         inputClassName="no-spinner w-50"
+        max={9999}
+        min={-9999}
         onBlur={(e) => handleDeltaChange("winner", e.target.valueAsNumber || 0)}
         type="number"
       >
@@ -36,6 +38,8 @@ export function FalseWinRuleInput({
       <LabelledInput
         defaultValue={scoringRule.deltas.詐糊?.loser ?? 0}
         inputClassName="no-spinner w-50"
+        max={9999}
+        min={-9999}
         onBlur={(e) => handleDeltaChange("loser", e.target.valueAsNumber || 0)}
         type="number"
       >
