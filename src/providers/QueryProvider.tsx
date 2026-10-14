@@ -10,8 +10,8 @@ export function QueryProvider({ children }: PropsWithChildren) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 15 * 1000,
-            refetchInterval: 15 * 1000,
+            staleTime: 30 * 1000,
+            refetchInterval: 30 * 1000,
             refetchOnWindowFocus: "always",
           },
         },
