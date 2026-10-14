@@ -1,9 +1,9 @@
-import type { Log, Player } from "@/lib/types";
+import type { Log, Player, WinType } from "@/lib/types";
 
 type GameResults = {
-  wins: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  losses: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
-  others: { 打出: number; 自摸: number; 包自摸: number; 詐糊: number };
+  wins: Record<WinType, number>;
+  losses: Record<WinType, number>;
+  others: Record<WinType, number>;
 };
 
 /*
