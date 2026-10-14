@@ -36,7 +36,7 @@ export default function TournamentPage() {
         </div>
       </div>
 
-      <div className="fixed top-20 right-5">
+      <div className="absolute top-20 right-5">
         <WindSelector />
       </div>
     </>
