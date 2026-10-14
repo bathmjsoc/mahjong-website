@@ -17,9 +17,9 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   const { createLog } = useLogMutations();
   const { playerMap } = usePlayers();
 
-  const faanOptions = Array.from(scoringRulesMap.keys()).filter(
-    (key) => key !== null,
-  );
+  const faanOptions = Array.from(scoringRulesMap.keys())
+    .filter((key) => key !== null)
+    .sort((a, b) => a - b);
   const maxFaan = Math.max(...faanOptions);
 
   const opponents: Player[] = [];
