@@ -55,6 +55,7 @@ function LogRow({ log }: LogRowProps) {
           "rounded-l-xl border-y border-r-0 border-l p-2 text-center",
           borderColor,
         )}
+        title={sessionMap.get(log.session_id)?.start_date}
       >
         {sessionMap.get(log.session_id)?.number}
       </td>
