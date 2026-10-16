@@ -5,7 +5,16 @@ import { WIND_MAP, WINDS } from "@/lib/constants";
 type WindKey = (typeof WINDS)[number];
 
 export function WindSelector() {
-  const [wind, setWind] = useState<WindKey | null>(WINDS[0]);
+  const [wind, setWind] = useState<WindKey>(
+    WINDS.find((wind) => wind === localStorage.getItem("wind")) ?? WINDS[0],
+  );
+
+  function handleWindChange(wind: WindKey | null) {
+    if (!wind) return;
+
+    localStorage.setItem("wind", wind);
+    setWind(wind);
+  }
 
   return (
     <div title={wind ? WIND_MAP[wind] : "N/A"}>
@@ -14,7 +23,7 @@ export function WindSelector() {
         getOptionKey={(wind) => wind}
         getOptionLabel={(wind) => wind}
         getOptionTooltip={(wind) => WIND_MAP[wind]}
-        onChange={setWind}
+        onChange={handleWindChange}
         options={WINDS}
         value={wind}
       />
