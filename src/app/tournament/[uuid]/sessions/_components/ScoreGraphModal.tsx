@@ -32,7 +32,7 @@ export function ScoreGraphModal({
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       <div
         className="w-3xl"
-        style={{ height: Math.max(rankedPlayers.length * 30, 400) }}
+        style={{ height: Math.max(rankedPlayers.length * 15, 400) }}
       >
         <BarChart data={rankedPlayerData} />
       </div>
