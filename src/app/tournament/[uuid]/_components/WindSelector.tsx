@@ -6,7 +6,8 @@ type WindKey = (typeof WINDS)[number];
 
 export function WindSelector() {
   const [wind, setWind] = useState<WindKey>(
-    WINDS.find((wind) => wind === localStorage.getItem("wind")) ?? WINDS[0],
+    () =>
+      WINDS.find((wind) => wind === localStorage.getItem("wind")) ?? WINDS[0],
   );
 
   function handleWindChange(wind: WindKey | null) {
