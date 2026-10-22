@@ -12,7 +12,7 @@ export function TagList() {
 
         return (
           <div
-            className="flex gap-1 rounded-full bg-accent px-2 py-1 text-secondary text-xs"
+            className="bg-accent text-secondary flex gap-1 rounded-full px-2 py-1 text-xs"
             key={label}
           >
             {label}

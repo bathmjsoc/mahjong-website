@@ -40,7 +40,7 @@ export function DropDown({
           <RootContext value={rootClose}>
             <PopoverButton
               className={twMerge(
-                "w-full rounded p-1 text-center outline-none transition",
+                "w-full rounded p-1 text-center transition outline-none",
                 disabled
                   ? "cursor-not-allowed opacity-50"
                   : [
@@ -61,7 +61,7 @@ export function DropDown({
                 anchor={isNested ? "right start" : "bottom"}
                 className={twMerge(
                   "bg-secondary text-primary",
-                  "border-2 border-primary outline-none",
+                  "border-primary border-2 outline-none",
                   "z-50 flex flex-col rounded-xl p-1 text-sm",
                   isNested ? "ml-2" : "mt-2",
                   panelClassName,

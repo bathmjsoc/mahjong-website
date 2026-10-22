@@ -20,15 +20,15 @@ export function RankingCard({ player }: RankingCardProps) {
   const LucideIcon = trend.icon;
 
   return (
-    <div className="flex h-90 w-45 flex-col items-center justify-center gap-5 text-secondary">
-      <div className="flex size-40 items-center justify-center rounded-full bg-accent/30 shadow-[0_0_30px] shadow-accent/50 ring-2 ring-accent/60 brightness-150">
+    <div className="text-secondary flex h-90 w-45 flex-col items-center justify-center gap-5">
+      <div className="bg-accent/30 shadow-accent/50 ring-accent/60 flex size-40 items-center justify-center rounded-full shadow-[0_0_30px] ring-2 brightness-150">
         <Trophy className="size-20" strokeWidth={1.5} />
       </div>
 
       <div className="flex flex-col items-center">
         <div className="flex items-baseline">
-          <span className="font-bold text-5xl">{currentRank}</span>
-          <span className="font-bold text-2xl">
+          <span className="text-5xl font-bold">{currentRank}</span>
+          <span className="text-2xl font-bold">
             {getOrdinalSuffix(currentRank)}
           </span>
         </div>
@@ -43,7 +43,7 @@ export function RankingCard({ player }: RankingCardProps) {
         )}
       >
         <LucideIcon className="size-4" />
-        <span className="font-bold text-xs">Session Trend</span>
+        <span className="text-xs font-bold">Session Trend</span>
       </div>
     </div>
   );

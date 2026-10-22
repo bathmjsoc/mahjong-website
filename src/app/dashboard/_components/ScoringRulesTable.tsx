@@ -18,7 +18,7 @@ export function ScoringRulesTable({
 
   return (
     <table className="w-full table-fixed border-collapse">
-      <thead className="sticky top-0 z-10 bg-primary">
+      <thead className="bg-primary sticky top-0 z-10">
         <tr>
           <th rowSpan={2}>Faan</th>
 

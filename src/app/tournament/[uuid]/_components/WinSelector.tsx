@@ -148,7 +148,7 @@ export function WinSelector({ table, occupant, className }: WinSelectorProps) {
   return (
     <DropDown
       buttonClassName={twMerge(
-        "rounded-full size-8 bg-accent text-secondary",
+        "bg-accent text-secondary size-8 rounded-full",
         className,
       )}
       disabled={occupant === null || opponents.length === 0}

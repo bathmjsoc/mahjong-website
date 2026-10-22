@@ -30,7 +30,7 @@ export function TabLink({ children, href, className, ...props }: TabLinkProps) {
         "bg-primary text-secondary",
         "rounded-xl border-2 border-transparent p-1 outline-none",
         "flex items-center justify-center transition duration-300",
-        "hover:scale-97 active:scale-95 data-[active=true]:border-secondary",
+        "data-[active=true]:border-secondary hover:scale-97 active:scale-95",
         className,
       )}
     >

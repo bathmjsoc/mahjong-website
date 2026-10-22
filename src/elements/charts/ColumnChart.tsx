@@ -47,7 +47,7 @@ export function ColumnChart({ data, title }: ColumnChartProps) {
 
   return (
     <ReactApexChart
-      className="rounded-lg bg-secondary"
+      className="bg-secondary rounded-lg"
       height="100%"
       options={options}
       series={series}

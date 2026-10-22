@@ -17,12 +17,12 @@ export default function Loading() {
   }, []);
 
   return (
-    <div className="flex min-h-dvh select-none flex-col items-center justify-center">
-      <div className="relative h-25 w-20 rounded-lg bg-secondary">
+    <div className="flex min-h-dvh flex-col items-center justify-center select-none">
+      <div className="bg-secondary relative h-25 w-20 rounded-lg">
         {TILES.map((tile, index) => (
           <span
             className={twMerge(
-              "flex h-26 w-20 items-center justify-center text-[145px] text-primary",
+              "text-primary flex h-26 w-20 items-center justify-center text-[145px]",
               "absolute transition duration-500",
               index === activeTileIndex
                 ? "translate-y-0 opacity-100"
@@ -35,7 +35,7 @@ export default function Loading() {
         ))}
       </div>
 
-      <span className="mt-5 text-primary uppercase">Loading...</span>
+      <span className="text-primary mt-5 uppercase">Loading...</span>
     </div>
   );
 }

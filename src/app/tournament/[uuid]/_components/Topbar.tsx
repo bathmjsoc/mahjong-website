@@ -19,7 +19,7 @@ export function Topbar() {
   const tournamentId = useTournamentContext();
 
   return (
-    <div className="z-50 flex h-15 items-center justify-between bg-accent px-5">
+    <div className="bg-accent z-50 flex h-15 items-center justify-between px-5">
       <TabMenu>
         {TABS.map((tab) => (
           <TabLink
@@ -34,7 +34,7 @@ export function Topbar() {
 
       <TabMenu>
         <FilledButton
-          className="rounded-xl bg-primary hover:text-info"
+          className="bg-primary hover:text-info rounded-xl"
           onClick={() => router.push("/dashboard")}
           title="Return to Dashboard"
         >
@@ -42,7 +42,7 @@ export function Topbar() {
         </FilledButton>
 
         <FilledButton
-          className="rounded-xl bg-primary hover:text-negative"
+          className="bg-primary hover:text-negative rounded-xl"
           onClick={signOut}
           title="Sign Out"
         >
