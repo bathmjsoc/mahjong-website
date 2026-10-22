@@ -80,13 +80,13 @@ function TableCard({ table }: TableProps) {
         wind="north"
       />
 
-      <div className="col-start-3 row-start-3 flex items-center justify-center text-7xl text-primary">
+      <div className="text-primary col-start-3 row-start-3 flex items-center justify-center text-7xl">
         {table.saved ? "S" : table.number}
       </div>
 
       <div className="col-span-3 col-start-2 row-start-4 flex items-center justify-center gap-5">
         <FilledButton
-          className="rounded-full bg-primary enabled:hover:text-info"
+          className="bg-primary enabled:hover:text-info rounded-full"
           disabled={table.saved}
           onClick={() => saveTable(table)}
           title="Save Table"
@@ -95,7 +95,7 @@ function TableCard({ table }: TableProps) {
         </FilledButton>
 
         <FilledButton
-          className="rounded-full bg-primary enabled:hover:text-negative"
+          className="bg-primary enabled:hover:text-negative rounded-full"
           onClick={() => deleteTable(table)}
           title="Delete Table"
         >

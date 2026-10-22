@@ -10,7 +10,7 @@ export default function LoginPage() {
         <LoginForm />
       </div>
 
-      <footer className="fixed bottom-0 left-0 -mb-1 flex gap-2 rounded-tr-xl bg-primary px-4 py-2 text-[10px] text-secondary uppercase">
+      <footer className="bg-primary text-secondary fixed bottom-0 left-0 -mb-1 flex gap-2 rounded-tr-xl px-4 py-2 text-[10px] uppercase">
         <span className="flex gap-1.5">
           Website by
           <Link

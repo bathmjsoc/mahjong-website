@@ -68,5 +68,5 @@ export default function AnalyticsPage() {
 }
 
 function Card({ children }: PropsWithChildren) {
-  return <div className="rounded-lg bg-primary p-5">{children}</div>;
+  return <div className="bg-primary rounded-lg p-5">{children}</div>;
 }

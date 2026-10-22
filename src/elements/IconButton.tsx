@@ -14,8 +14,8 @@ export function IconButton({
       type={type}
       {...props}
       className={twMerge(
-        "text-secondary outline-none transition duration-300",
-        "enabled:cursor-pointer enabled:active:scale-90 enabled:hover:scale-95",
+        "text-secondary transition duration-300 outline-none",
+        "enabled:cursor-pointer enabled:hover:scale-95 enabled:active:scale-90",
         "disabled:cursor-not-allowed",
         className,
       )}

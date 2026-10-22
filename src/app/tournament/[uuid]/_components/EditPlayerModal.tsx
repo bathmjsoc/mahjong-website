@@ -95,7 +95,7 @@ export function EditPlayerModal({
             </LabelledInput>
 
             {error && (
-              <span className="text-center text-negative text-xs">{error}</span>
+              <span className="text-negative text-center text-xs">{error}</span>
             )}
           </div>
         )}

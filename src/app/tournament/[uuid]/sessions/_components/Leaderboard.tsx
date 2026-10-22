@@ -19,7 +19,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
   const rankedPlayers = sortPlayersByScore(players, scores);
 
   return (
-    <table className="w-xl table-fixed border border-primary">
+    <table className="border-primary w-xl table-fixed border">
       <thead className="bg-primary text-secondary">
         <tr>
           <th>Rank</th>
@@ -28,7 +28,7 @@ export function Leaderboard({ players, scores }: LeaderboardProps) {
         </tr>
       </thead>
 
-      <tbody className="divide-y divide-primary">
+      <tbody className="divide-primary divide-y">
         {rankedPlayers.map((player, index) => (
           <PlayerRow
             key={player.id}
@@ -50,7 +50,7 @@ type PlayerRowProps = {
 
 function PlayerRow({ player, position, score }: PlayerRowProps) {
   return (
-    <tr className="text-center text-primary text-sm">
+    <tr className="text-primary text-center text-sm">
       <td>
         {position}
         {getOrdinalSuffix(position)}

@@ -75,7 +75,7 @@ export function SearchCombobox<T>({
               className={twMerge(
                 "flex items-center justify-center",
                 "cursor-pointer truncate rounded-md p-2 outline-none",
-                "transition duration-300 hover:bg-primary/25",
+                "hover:bg-primary/25 transition duration-300",
                 optionClassName,
               )}
               key={getOptionKey(item)}

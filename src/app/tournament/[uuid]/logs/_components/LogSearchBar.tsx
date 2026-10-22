@@ -31,13 +31,13 @@ export function LogSearchBar() {
       <SearchInstructions />
 
       <input
-        className="h-10 w-sm rounded-lg border-2 border-primary bg-secondary px-2 text-center outline-none"
+        className="border-primary bg-secondary h-10 w-sm rounded-lg border-2 px-2 text-center outline-none"
         name="query"
         placeholder="Enter a query..."
       />
 
       <IconButton
-        className="flex items-center justify-center text-primary hover:text-info"
+        className="text-primary hover:text-info flex items-center justify-center"
         onClick={toggleDisabledLogs}
         title={showDisabledLogs ? "Hide Disabled Logs" : "Show Disabled Logs"}
       >
@@ -63,11 +63,11 @@ export function LogSearchBar() {
 function SearchInstructions() {
   return (
     <div className="group relative inline-block">
-      <IconButton className="flex items-center justify-center text-primary hover:text-info">
+      <IconButton className="text-primary hover:text-info flex items-center justify-center">
         <Info className="size-5" />
       </IconButton>
 
-      <div className="absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 border-primary bg-secondary p-2 text-xs group-hover:block">
+      <div className="border-primary bg-secondary absolute left-1/2 z-10 mt-3 hidden w-max -translate-x-1/2 rounded-xl border-2 p-2 text-xs group-hover:block">
         <span className="font-bold">How to Search Logs</span>
 
         <ol className="list-inside list-decimal">

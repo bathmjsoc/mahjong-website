@@ -43,8 +43,8 @@ export function RoundedListbox<T>({
       <ListboxButton
         className={twMerge(
           isPlaceholder ? "text-negative" : "text-primary",
-          "w-full cursor-pointer truncate bg-secondary px-2 text-center font-bold outline-none",
-          "transition duration-300 enabled:hover:bg-secondary/75 disabled:cursor-not-allowed",
+          "bg-secondary w-full cursor-pointer truncate px-2 text-center font-bold outline-none",
+          "enabled:hover:bg-secondary/75 transition duration-300 disabled:cursor-not-allowed",
           buttonClassName,
         )}
         disabled={disabled}
@@ -54,8 +54,8 @@ export function RoundedListbox<T>({
       <ListboxOptions
         anchor="bottom"
         className={twMerge(
-          "w-(--button-width) bg-secondary text-primary",
-          "border-2 border-primary outline-none",
+          "bg-secondary text-primary w-(--button-width)",
+          "border-primary border-2 outline-none",
           "no-scrollbar z-50 mt-2 max-h-50 rounded-xl p-1 text-sm",
           "transition duration-300 data-closed:scale-95 data-closed:opacity-0",
           optionsClassName,
@@ -70,7 +70,7 @@ export function RoundedListbox<T>({
               className={twMerge(
                 "block truncate text-center",
                 "cursor-pointer rounded-md p-1 outline-none",
-                "transition duration-300 hover:bg-primary/25",
+                "hover:bg-primary/25 transition duration-300",
                 optionClassName,
               )}
               key={getOptionKey(item)}

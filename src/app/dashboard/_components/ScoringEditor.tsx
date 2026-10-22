@@ -30,7 +30,7 @@ export function ScoringEditor({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div className="rounded bg-secondary/15 p-2 text-center text-sm">
+      <div className="bg-secondary/15 rounded p-2 text-center text-sm">
         Scoring Rules
       </div>
 
@@ -39,7 +39,7 @@ export function ScoringEditor({
         scoringRule={falseWinRule}
       />
 
-      <div className="scrollbar-thin scrollbar-thumb-secondary scrollbar-track-transparent scrollbar-gutter-stable overflow-y-auto">
+      <div className="scrollbar-thumb-secondary scrollbar-thin scrollbar-track-transparent scrollbar-gutter-stable overflow-y-auto">
         <ScoringRulesTable
           onChange={setScoringRules}
           scoringRules={scoringRules}
@@ -47,14 +47,14 @@ export function ScoringEditor({
 
         <div className="mt-3 flex justify-center gap-3">
           <FilledButton
-            className="rounded-full bg-positive"
+            className="bg-positive rounded-full"
             onClick={handleAddRule}
           >
             <Plus className="size-5" />
           </FilledButton>
 
           <FilledButton
-            className="rounded-full bg-negative"
+            className="bg-negative rounded-full"
             onClick={handleRemoveRule}
           >
             <Minus className="size-5" />

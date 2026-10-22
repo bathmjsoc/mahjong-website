@@ -84,9 +84,9 @@ function Statistic({ icon, value, label, ranking }: StatisticProps) {
   const LucideIcon = icon;
 
   return (
-    <div className="flex w-50 flex-col items-center rounded-lg bg-secondary/15 p-2 text-secondary">
+    <div className="bg-secondary/15 text-secondary flex w-50 flex-col items-center rounded-lg p-2">
       <LucideIcon className="mb-1 size-10" />
-      <span className="font-bold text-xl">{value}</span>
+      <span className="text-xl font-bold">{value}</span>
       <span className="text-xs uppercase opacity-66">{label}</span>
       <span className="text-[10px] uppercase opacity-66">{ranking}</span>
     </div>

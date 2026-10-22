@@ -45,7 +45,7 @@ export function BarChart({ data }: BarChartProps) {
 
   return (
     <ReactApexChart
-      className="rounded-lg bg-secondary"
+      className="bg-secondary rounded-lg"
       height="100%"
       options={options}
       series={series}

@@ -81,10 +81,10 @@ export function TableSeat({
     <div className={twMerge("flex items-center justify-center", gridPosition)}>
       <div
         className={twMerge(
-          "flex gap-1 bg-primary",
+          "bg-primary flex gap-1",
           "w-50 shrink-0 rounded-full p-1 transition duration-300",
-          isLocked && "ring-2 ring-neutral",
-          (isDuplicate || !isRegistered) && "ring-2 ring-negative",
+          isLocked && "ring-neutral ring-2",
+          (isDuplicate || !isRegistered) && "ring-negative ring-2",
           tableClassName,
         )}
       >
@@ -110,7 +110,7 @@ export function TableSeat({
       {animationPoints !== 0 && (
         <span
           className={twMerge(
-            "pointer-events-none absolute animate-fly-out font-bold outline-text",
+            "animate-fly-out outline-text pointer-events-none absolute font-bold",
             animationPoints > 0 ? "text-positive" : "text-negative",
           )}
         >

@@ -34,7 +34,7 @@ export function LoginForm() {
     <>
       <form
         action={handleSubmit}
-        className="flex w-sm flex-col gap-3 rounded-lg bg-primary p-5 text-secondary"
+        className="bg-primary text-secondary flex w-sm flex-col gap-3 rounded-lg p-5"
       >
         <LabelledInput
           autoComplete="email"
@@ -58,7 +58,7 @@ export function LoginForm() {
         </LabelledInput>
 
         {error && (
-          <span className="text-center text-negative text-xs">{error}</span>
+          <span className="text-negative text-center text-xs">{error}</span>
         )}
 
         <FilledButton disabled={isPending} type="submit">

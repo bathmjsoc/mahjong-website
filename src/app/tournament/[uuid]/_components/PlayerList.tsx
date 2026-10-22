@@ -118,7 +118,7 @@ function PlayerRow({
 
       <td
         className={twMerge(
-          "border-2 border-secondary px-2 py-1 text-left",
+          "border-secondary border-2 px-2 py-1 text-left",
           "relative transition duration-300",
           !isSeated && "text-negative",
           isLocked && "text-neutral",
@@ -133,7 +133,7 @@ function PlayerRow({
 
       <td
         className={twMerge(
-          "border-2 border-secondary px-2 py-1 text-center",
+          "border-secondary border-2 px-2 py-1 text-center",
           scoreToColor(score),
         )}
       >
@@ -142,7 +142,7 @@ function PlayerRow({
 
       <td>
         <IconButton
-          className="flex w-full items-center justify-center hover:text-negative"
+          className="hover:text-negative flex w-full items-center justify-center"
           onClick={handleDeregisterPlayer}
           title="Deregister Player"
         >

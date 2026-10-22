@@ -17,7 +17,7 @@ export function LogList({ logs }: LogListProps) {
   }
 
   return (
-    <table className="w-350 table-fixed border-separate border-spacing-y-2 text-primary text-sm">
+    <table className="text-primary w-350 table-fixed border-separate border-spacing-y-2 text-sm">
       <thead>
         <tr>
           <th className="w-1/10">Session</th>
@@ -98,7 +98,7 @@ function LogRow({ log }: LogRowProps) {
       <td>
         {!log.disabled && (
           <IconButton
-            className="flex w-full items-center justify-center text-primary enabled:hover:text-negative"
+            className="text-primary enabled:hover:text-negative flex w-full items-center justify-center"
             onClick={() => disableLog(log)}
             title="Disable Log"
           >

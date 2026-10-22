@@ -50,7 +50,7 @@ function TournamentCard({ tournament }: TournamentCardProps) {
 
   return (
     <>
-      <div className="flex h-40 w-75 flex-col justify-between rounded-lg bg-primary p-3 text-secondary">
+      <div className="bg-primary text-secondary flex h-40 w-75 flex-col justify-between rounded-lg p-3">
         <span className="line-clamp-2 text-lg">{tournament.name}</span>
 
         <div className="flex flex-col gap-3">

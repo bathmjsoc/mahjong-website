@@ -33,8 +33,8 @@ export function Notification({
       show={isOpen}
     >
       <div className="fixed right-5 bottom-5 z-99">
-        <div className="w-xs rounded-lg border-2 border-primary bg-secondary p-3 text-primary">
-          <div className="mb-2 font-bold text-md">{title}</div>
+        <div className="border-primary bg-secondary text-primary w-xs rounded-lg border-2 p-3">
+          <div className="text-md mb-2 font-bold">{title}</div>
           <div className="text-xs">{children}</div>
         </div>
       </div>

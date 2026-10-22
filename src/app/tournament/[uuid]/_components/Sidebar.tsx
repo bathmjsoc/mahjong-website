@@ -96,7 +96,7 @@ export function Sidebar({ players }: SidebarProps) {
         </div>
 
         <FilledButton
-          className="mt-5 -ml-1 h-20 w-10 rounded-r-xl rounded-l-none bg-primary"
+          className="bg-primary mt-5 -ml-1 h-20 w-10 rounded-l-none rounded-r-xl"
           onClick={() => setIsOpen((open) => !open)}
         >
           <ChevronRight
