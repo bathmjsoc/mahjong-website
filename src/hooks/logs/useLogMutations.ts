@@ -58,7 +58,7 @@ export function useLogMutations() {
         other_ids: others.map((player) => player.id),
         winner_points: winnerPoints,
         loser_points: loserPoints,
-        timestamp: new Date().toISOString(),
+        timestamp: Temporal.Now.instant().toString(),
         disabled: false,
       });
     },
