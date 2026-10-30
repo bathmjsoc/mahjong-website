@@ -40,7 +40,7 @@ export function useTournamentMutations() {
         id: crypto.randomUUID(),
         user_id: "", // The real user_id is determined by Supabase using auth.uid()
         name: tournamentName,
-        last_updated: Temporal.Now.instant().toString(),
+        last_updated: new Date().toISOString(),
         player_count: 0,
         scoring_rules: scoringRules,
         hand_types: handTypes,
@@ -56,7 +56,7 @@ export function useTournamentMutations() {
       updateMutation.mutate({
         ...tournament,
         name: tournamentName,
-        last_updated: Temporal.Now.instant().toString(),
+        last_updated: new Date().toISOString(),
         scoring_rules: scoringRules,
         hand_types: handTypes,
       });

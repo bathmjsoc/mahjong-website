@@ -98,7 +98,7 @@ export function sum(values: number[]): number {
  * Returns the current date in YYYY-MM-DD format
  */
 export function getCurrentDateString() {
-  return Temporal.Now.plainDateISO().toString();
+  return new Date().toISOString().slice(0, 10);
 }
 
 /*
