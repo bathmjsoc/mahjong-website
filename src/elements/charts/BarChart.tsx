@@ -41,6 +41,11 @@ export function BarChart({ data }: BarChartProps) {
     tooltip: {
       enabled: false,
     },
+    xaxis: {
+      labels: {
+        hideOverlappingLabels: false,
+      },
+    },
   };
 
   return (
