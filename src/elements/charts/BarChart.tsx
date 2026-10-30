@@ -23,7 +23,7 @@ export function BarChart({ data }: BarChartProps) {
     colors: ["#285d33"],
     dataLabels: {
       enabled: true,
-      offsetX: 25,
+      offsetX: 20,
       style: {
         colors: ["#35363a"],
       },
@@ -38,8 +38,20 @@ export function BarChart({ data }: BarChartProps) {
         },
       },
     },
+    states: {
+      hover: {
+        filter: {
+          type: "none",
+        },
+      },
+    },
     tooltip: {
       enabled: false,
+    },
+    xaxis: {
+      labels: {
+        hideOverlappingLabels: false,
+      },
     },
   };
 
