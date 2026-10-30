@@ -23,7 +23,7 @@ export function BarChart({ data }: BarChartProps) {
     colors: ["#285d33"],
     dataLabels: {
       enabled: true,
-      offsetX: 25,
+      offsetX: 20,
       style: {
         colors: ["#35363a"],
       },
@@ -35,6 +35,13 @@ export function BarChart({ data }: BarChartProps) {
         borderRadiusApplication: "end",
         dataLabels: {
           position: "top",
+        },
+      },
+    },
+    states: {
+      hover: {
+        filter: {
+          type: "none",
         },
       },
     },
