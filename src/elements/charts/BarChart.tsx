@@ -4,9 +4,10 @@ import type { ChartData } from "@/lib/types";
 
 type BarChartProps = {
   data: ChartData[];
+  title?: string
 };
 
-export function BarChart({ data }: BarChartProps) {
+export function BarChart({ data, title }: BarChartProps) {
   const series = data.map((item) => ({
     name: item.title,
     data: Object.entries(item.data).map(([name, data]) => ({
@@ -19,6 +20,11 @@ export function BarChart({ data }: BarChartProps) {
     chart: {
       type: "bar",
       fontFamily: "Helvetica",
+    },
+    title: {
+      text: title,
+      align: "center",
+      style: { fontSize: "16px", fontWeight: 600, color: "#35363a" },
     },
     colors: ["#285d33"],
     dataLabels: {
