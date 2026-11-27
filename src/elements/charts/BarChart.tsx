@@ -4,7 +4,7 @@ import type { ChartData } from "@/lib/types";
 
 type BarChartProps = {
   data: ChartData[];
-  title?: string
+  title?: string;
 };
 
 export function BarChart({ data, title }: BarChartProps) {
@@ -20,11 +20,16 @@ export function BarChart({ data, title }: BarChartProps) {
     chart: {
       type: "bar",
       fontFamily: "Helvetica",
+      toolbar: {
+        export: {
+          scale: 3,
+        },
+      },
     },
     title: {
       text: title,
       align: "center",
-      style: { fontSize: "16px", fontWeight: 600, color: "#35363a" },
+      style: { fontSize: "20px", color: "#35363a" },
     },
     colors: ["#285d33"],
     dataLabels: {

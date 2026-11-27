@@ -30,8 +30,8 @@ export function ScoreGraphModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
-      <div className="max-h-[70vh] w-3xl overflow-y-auto">
-        <div style={{ height: Math.max(rankedPlayers.length * 32 + 80, 400) }}>
+      <div className="scrollbar-thumb-secondary max-h-[90vh] w-5xl scrollbar-thin scrollbar-track-transparent scrollbar-gutter-stable overflow-y-auto">
+        <div style={{ height: Math.max(rankedPlayers.length * 16, 400) }}>
           <BarChart data={rankedPlayerData} title={title} />
         </div>
       </div>
