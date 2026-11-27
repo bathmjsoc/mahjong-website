@@ -20,6 +20,11 @@ export function BarChart({ data, title }: BarChartProps) {
     chart: {
       type: "bar",
       fontFamily: "Helvetica",
+      toolbar: {
+        export: {
+          scale: 3,
+        },
+      },
     },
     title: {
       text: title,
