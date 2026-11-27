@@ -4,7 +4,7 @@ import type { ChartData } from "@/lib/types";
 
 type BarChartProps = {
   data: ChartData[];
-  title?: string
+  title?: string;
 };
 
 export function BarChart({ data, title }: BarChartProps) {
