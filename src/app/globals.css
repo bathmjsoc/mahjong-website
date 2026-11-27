@@ -50,7 +50,7 @@
 }
 
 @layer components {
-  .apexcharts-menu {
+  .apexcharts-menu-item {
     color: var(--color-primary);
   }
 }
