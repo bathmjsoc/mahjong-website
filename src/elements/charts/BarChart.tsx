@@ -24,7 +24,7 @@ export function BarChart({ data, title }: BarChartProps) {
     title: {
       text: title,
       align: "center",
-      style: { fontSize: "16px", fontWeight: 600, color: "#35363a" },
+      style: { fontSize: "20px", color: "#35363a" },
     },
     colors: ["#285d33"],
     dataLabels: {
